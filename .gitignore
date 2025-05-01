@@ -1,0 +1,18 @@
+# Build
+bin/
+obj/
+
+# Visual Studio
+*.user
+*.suo
+*.pdb
+.vs/
+
+# Rider / ReSharper
+.idea/
+
+# Publicación
+publish/
+
+# Paquetes NuGet
+*.nupkg
