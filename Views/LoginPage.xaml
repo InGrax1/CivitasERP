@@ -45,5 +45,11 @@
                 Content="Iniciar Sesión"
                 Height="30" Margin="0,20,0,0"
                 Click="btnLogin_Click"/>
+        <!-- Botón Registrar datos -->
+        <Button x:Name="btnRegister"
+            Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+            Content="Registrar datos"
+            Height="30" Margin="0,55,0,-35"
+            Click="btnRegister_Click"/>
     </Grid>
 </Window>

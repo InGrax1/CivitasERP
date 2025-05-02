@@ -97,7 +97,9 @@
                 Margin="0,20,0,0"
                 FontWeight="Bold"
                 Background="#007ACC"
+                Click="btnRegister_Click"
                 Foreground="White"/>
+
             <Button x:Name="btnRegresar"
                 Content="Regresar"
                 Height="35"
