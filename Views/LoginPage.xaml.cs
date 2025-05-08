@@ -61,6 +61,9 @@ namespace CivitasERP.Views
 
             if (h.ObtenerSHA256(contraseña).SequenceEqual(c.ObtenerHashContraseña(usuario))) {
                 MessageBox.Show("usuario y contrasña correctos ");
+                this.Hide();
+                HomePage HomePage = new HomePage();
+                HomePage.Show();
             }
             else {
                 MessageBox.Show("usuario o contrasña incorrectos la contraseña correcta es " );

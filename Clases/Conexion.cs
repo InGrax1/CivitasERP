@@ -14,7 +14,7 @@ namespace CivitasERP.Clases
         public string ObtenerCadenaConexion() {
 
             string conexion;
-            conexion = "Server=JESUSNEGRETE;Database=Proyecto;Integrated Security=True;";
+            conexion = "Server=INGRAX;Database=CivitasERP;Integrated Security=True;";
             return conexion;
         }
     }

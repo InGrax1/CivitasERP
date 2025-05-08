@@ -12,7 +12,7 @@ namespace CivitasERP.Clases
 {
     public class Bd_admin 
     {
-        string conexionString = "Server=JESUSNEGRETE;Database=Proyecto;Integrated Security=True;";
+        string conexionString = "Server=INGRAX;Database=CivitasERP;Integrated Security=True;";
 
         public byte[] ObtenerHashContraseña(string Usuario)
         {

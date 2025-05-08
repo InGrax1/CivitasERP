@@ -11,8 +11,9 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="169*"/>
-            <RowDefinition Height="11*"/>
+            <RowDefinition Height="254*"/>
+            <RowDefinition Height="761*"/>
+            <RowDefinition Height="66*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="215"/>
@@ -20,14 +21,13 @@
         </Grid.ColumnDefinitions>
 
 
-        <StackPanel Grid.Column="0" Grid.Row="0" Panel.ZIndex="2" HorizontalAlignment="Left" Margin="0,0,0,750">
-            <Button Content="☰" FontSize="24" Width="40" Height="40" Background="Transparent" BorderBrush="Transparent" Foreground="Black" Margin="-80,0,0,0"/>
-            <Ellipse Width="137" Height="137" Stroke="Black" StrokeThickness="2" Fill="Gray" Margin="0,50,0,0"/>
+        <StackPanel Grid.Column="0" Grid.Row="0" Panel.ZIndex="2" HorizontalAlignment="Left" Margin="6,43,0,750" Grid.RowSpan="2">
+            <Ellipse Width="137" Height="137" Stroke="Black" StrokeThickness="2" Fill="WhiteSmoke" Margin="0,50,0,0"/>
         </StackPanel>
 
         <!-- Sidebar -->
-        <Border Background="Transparent" Grid.Column="0" Grid.RowSpan="2">
-            <Border CornerRadius="50" Margin="0,154,0,-47" >
+        <Border Background="Transparent" Grid.Column="0" Grid.RowSpan="3">
+            <Border CornerRadius="0,30,0,30" Margin="0,154,0,0" >
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                         <GradientStop Color="#1C2F5F" Offset="0"/>
@@ -38,11 +38,11 @@
                 <StackPanel HorizontalAlignment="Center" Width="250">
 
                     <!-- Info Usuario -->
-                    <TextBlock Text="ING" Foreground="White" FontSize="20" FontWeight="Bold" TextAlignment="Center" Margin="0,100,0,20" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal"/>
-                    <TextBlock Text="Name" Foreground="White" FontSize="16" TextAlignment="Center" Margin="0,-10,0,20" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal"/>
+                    <TextBlock Text="ING" Foreground="White" FontSize="20" FontWeight="Bold" TextAlignment="Center" Margin="0,80,0,20" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal" Width="215"/>
+                    <TextBlock Text="Name" Foreground="White" FontSize="16" TextAlignment="Center" Margin="0,-20,0,20" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal" Width="218"/>
 
                     <!-- Botones de Menú -->
-                    <StackPanel VerticalAlignment="Top" Margin="0,10,0,0">
+                    <StackPanel VerticalAlignment="Top" Margin="0,105,0,0">
                         <!-- Botón 1 -->
                         <Border Background="#4772E3" CornerRadius="10" Margin="20,5">
                             <Button Height="40" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="Bold" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal">
@@ -91,19 +91,18 @@
         </Border>
 
         <!-- Área de contenido principal -->
-        <Grid Grid.Column="1" Background="White" Grid.RowSpan="2">
+        <Grid Grid.Column="1" Background="White" Grid.RowSpan="3">
 
             <!-- Topbar -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0">
-                <Button Width="30" Height="30" Background="Transparent" BorderBrush="Transparent" Content="🔔" FontSize="20" Margin="0,0,5,0"/>
 
                 <Border Background="LightBlue" CornerRadius="30" Margin="0,0,5,0">
-                    <Button Width="30" Height="30" Background="Transparent" BorderBrush="Transparent" Content="-" FontSize="20" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal"/>
+                    <Button Width="35" Height="35" Background="Transparent" BorderBrush="Transparent" Content="-" FontSize="20" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal"/>
                 </Border>
 
 
                 <Border Background="LightCoral" CornerRadius="30">
-                    <Button Width="30" Height="30" Background="Transparent" BorderBrush="Transparent" Content="X" FontSize="15" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal"/>
+                    <Button Width="35" Height="35" Background="Transparent" BorderBrush="Transparent" Content="X" FontSize="15" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal"/>
                 </Border>
             </StackPanel>
 
