@@ -76,6 +76,12 @@ namespace CivitasERP.Views
                 
         }
 
+        private void brnResetPassword(object sender, RoutedEventArgs e)
+        {
+            //Prueba de momento NO OFICIAL
+            WindowState = WindowState.Minimized;
+        }
+
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
             RegisterPage registerPage = new RegisterPage();

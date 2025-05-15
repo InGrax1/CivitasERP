@@ -89,7 +89,7 @@
 
 
                 <Border Background="LightCoral" CornerRadius="30">
-                    <Button Name="btnExit" Width="35" Height="35" Background="Transparent" BorderBrush="Transparent" Content="X" FontSize="15" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal" Click="Button_Click"/>
+                    <Button Name="btnExit" Width="35" Height="35" Background="Transparent" BorderBrush="Transparent" Content="X" FontSize="15" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal" Click="btnExit_Click"/>
                 </Border>
             </StackPanel>
 
