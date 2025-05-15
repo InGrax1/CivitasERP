@@ -139,13 +139,14 @@
                             BorderThickness="1"
                             Margin="0,5,0,0" Grid.RowSpan="2"
                             HorizontalAlignment="Center">
-                        <TextBlock x:Name="txtUsuario"
+                        <TextBox x:Name="txtUsuario"
                                    Height="25"
                                    Width="250"
                                    Background="Transparent"
                                    Foreground="White"
                                    Margin="10,0,0,0"
-                                   HorizontalAlignment="Center"/>
+                                   HorizontalAlignment="Center"
+                                   BorderThickness="0"/>
                     </Border>
                     <!--Contraseña-->
                     <TextBlock  Grid.Row="2" Grid.Column="0"
