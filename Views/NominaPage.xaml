@@ -5,18 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CivitasERP.Views"
         mc:Ignorable="d"
-        Title="NominaPage" Height="1080" Width="1920">
+        Title="NominaPage" Height="1080" Width="1920"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        MouseLeftButtonDown="DragWindow">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="259*"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="141*"/>
         </Grid.ColumnDefinitions>
 
+        <!--Foto de perfil-->
         <StackPanel Grid.Column="0" Grid.Row="0" Panel.ZIndex="2" HorizontalAlignment="Left" Margin="6,43,0,800">
             <Ellipse Width="137" Height="137" Stroke="Black" StrokeThickness="2" Fill="WhiteSmoke" Margin="0,50,0,0"/>
         </StackPanel>
-        <Border Background="Transparent" Grid.Column="0" Margin="0,0,1028,-16">
-            <Border CornerRadius="0,30,0,30" Margin="0,154,0,0" >
+        
+        <!--Menu Lateral-->
+        <Border Background="White" Grid.Column="0" Margin="0,0,1028,-16" CornerRadius="30,0,0,30" Panel.ZIndex="1">
+            <Border CornerRadius="0,30,0,30" Margin="0,154,0,0">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                         <GradientStop Color="#1C2F5F" Offset="0"/>
@@ -32,7 +41,7 @@
 
                     <!-- Botones de Menú -->
                     <StackPanel VerticalAlignment="Top" Margin="0,105,0,0">
-                        <!-- Botón 1 -->
+                        <!-- Botón Menu -->
                         <Border Background="#4772E3" CornerRadius="10" Margin="20,5">
                             <Button Height="40" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="Bold" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -42,7 +51,7 @@
                             </Button>
                         </Border>
 
-                        <!-- Botón 2 -->
+                        <!-- Botón Nomina -->
                         <Border Background="#274288" CornerRadius="10" Margin="20,5">
                             <Button Height="40" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="Bold" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -52,7 +61,7 @@
                             </Button>
                         </Border>
 
-                        <!-- Botón 3 -->
+                        <!-- Botón Pase de lista -->
                         <Border Background="#274288" CornerRadius="10" Margin="20,5">
                             <Button Height="40" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="Bold" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -63,9 +72,7 @@
                         </Border>
                     </StackPanel>
 
-
-
-                    <!-- Logosut-->
+                    <!-- Logout-->
                     <StackPanel VerticalAlignment="Bottom" Margin="0,450,0,0">
                         <Button Margin="0,20,0,0" Background="Transparent" Foreground="White" BorderBrush="Transparent" HorizontalAlignment="Center">
                             <StackPanel Orientation="Horizontal">
@@ -78,112 +85,121 @@
                 </StackPanel>
             </Border>
         </Border>
-        <Grid Background="White" Grid.ColumnSpan="2" Margin="215,0,0,-16">
-
-            <!-- Topbar -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0">
-
-                <Border Background="LightBlue" CornerRadius="30" Margin="0,0,5,0">
-                    <Button Name="btnMin" Width="35" Height="35" Background="Transparent" BorderBrush="Transparent" Content="-" FontSize="20" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal" Click="btnMin_Click"/>
-                </Border>
 
 
-                <Border Background="LightCoral" CornerRadius="30">
-                    <Button Name="btnExit" Width="35" Height="35" Background="Transparent" BorderBrush="Transparent" Content="X" FontSize="15" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal" Click="btnExit_Click"/>
-                </Border>
-            </StackPanel>
 
+        <Border CornerRadius="30,30,30,30" Grid.ColumnSpan="2" Background="White" Panel.ZIndex="0" Margin="0,0,0,-16">
+            <Grid Background="Transparent" Grid.ColumnSpan="2" Margin="215,0,0,0" Height="1096" VerticalAlignment="Top">
 
-            <!-- 2) Datos de obra -->
-            <Grid Grid.Row="1" Margin="64,20,40,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="1.5*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+                <!-- Topbar -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0">
 
-                <!-- Título -->
-                <TextBlock Grid.ColumnSpan="3"
-                   Text="Lista de personal y nomina"
-                   FontSize="26"
-                   FontWeight="Bold"
-                   Margin="0,0,0,10"/>
-
-                <!-- Obra -->
-                <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,0,10,0">
-                    <Border Background="White" CornerRadius="20">
-                        <TextBlock Text="Obra" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="16"/>
+                    <Border Background="LightBlue" CornerRadius="30" Margin="0,0,5,0">
+                        <Button Name="btnMin" Width="35" Height="35" Background="Transparent" BorderBrush="Transparent" Content="-" FontSize="20" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal" Click="btnMin_Click"/>
                     </Border>
-                    <TextBox Width="200" Height="25" Padding="5"
-                     BorderBrush="CornflowerBlue" BorderThickness="1"
-                     Background="White"/>
+
+
+                    <Border Background="LightCoral" CornerRadius="30">
+                        <Button Name="btnExit" Width="35" Height="35" Background="Transparent" BorderBrush="Transparent" Content="X" FontSize="15" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal" Click="btnExit_Click"/>
+                    </Border>
                 </StackPanel>
 
-                <!-- Ubicación -->
-                <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,40,10,0">
-                    <TextBlock Text="Ubicación" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="16"/>
-                    <TextBox Width="200" Height="25" Padding="5"
-                     BorderBrush="CornflowerBlue" BorderThickness="1"
-                     Background="White"/>
-                </StackPanel>
 
-                <!-- Periodo -->
-                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
-                    <TextBlock Text="Periodo" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                    <TextBox Width="80" Height="25" Background="#D6D6F5" BorderThickness="0" Margin="0,0,5,0"/>
-                    <TextBlock Text="al" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                    <TextBox Width="80" Height="25" Background="#D6D6F5" BorderThickness="0"/>
-                </StackPanel>
+                <!-- 2) Datos de obra -->
+                <Grid Grid.Row="1" Margin="64,20,40,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                <!-- Semana -->
-                <Button Grid.Column="1"
-                Content="Semana 1"
-                Width="90" Height="30"
-                Background="#6666FF"
-                Foreground="White"
-                FontWeight="Bold"
-                BorderThickness="0"
-                HorizontalAlignment="Left" Margin="376,42,0,38" Grid.RowSpan="2"/>
-            </Grid>
+                    <!-- Título -->
+                    <TextBlock Grid.ColumnSpan="3"
+                               Text="Lista de personal y nomina"
+                               FontSize="26"
+                               FontWeight="Bold"
+                               Margin="0,0,0,10"/>
 
-            <!-- Contenido Central DATA GRID -->
-            <Border Background="#E5E5E5" Margin="64,177,54,102" CornerRadius="20">
+                    <!-- Obra -->
+                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,-20,10,0" Grid.ColumnSpan="2">
+                        <TextBlock Text="Obra" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="16" Background="Transparent"/>
+                        <Border Background="WhiteSmoke" CornerRadius="10" BorderThickness="1" BorderBrush="#6666FF" Width="310" Height="20">
+                            <TextBox Width="310" Height="20" Padding="5"
+                                     BorderBrush="Transparent" BorderThickness="0"
+                                     Background="Transparent"/>
+                        </Border >
+                        
+                    </StackPanel>
 
-                <Grid Margin="7">
-                    <DataGrid x:Name="dataGridNomina"
-                  AutoGenerateColumns="False"
-                  HeadersVisibility="Column"
-                  CanUserAddRows="False"
-                  CanUserDeleteRows="False"
-                  IsReadOnly="True"
-                  Margin="0"
-                  VerticalAlignment="Stretch"
-                  HorizontalAlignment="Stretch">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="#" Binding="{Binding ID}" />
-                            <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
-                            <DataGridTextColumn Header="Categoria" Binding="{Binding Categoria}" />
-                            <DataGridTextColumn Header="Dias Trabajados" Binding="{Binding DiasTrabajados}" />
-                            <DataGridTextColumn Header="Dias" Binding="{Binding Dias}" />
-                            <DataGridTextColumn Header="Sueldo por Jornada" Binding="{Binding SueldoJornada}" />
-                            <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal}" />
-                            <DataGridTextColumn Header="Horas Extra" Binding="{Binding HorasExtra}" />
-                            <DataGridTextColumn Header="Precio por Hora Extra" Binding="{Binding PHoraExtra}" />
-                            <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding SuelExtra}" />
-                            <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado}" />
-                            <DataGridTextColumn Header="SUELDO TOTAL" Binding="{Binding SuelTotal}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <!-- Ubicación -->
+                    <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Margin="0,50,10,0">
+                        <TextBlock Text="Ubicación" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="16"/>
+                        <Border Background="WhiteSmoke" CornerRadius="10" BorderThickness="1" BorderBrush="#6666FF" Width="276" Height="20">
+                            <TextBox Width="276" Height="20" Padding="5"
+                                     BorderBrush="Transparent" BorderThickness="0"
+                                     Background="Transparent"/>
+                        </Border>
+                        
+                    </StackPanel>
+
+                    <!-- Periodo -->
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
+                        <TextBlock Text="Periodo" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox Width="80" Height="25" Background="#D6D6F5" BorderThickness="0" Margin="0,0,5,0"/>
+                        <TextBlock Text="al" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox Width="80" Height="25" Background="#D6D6F5" BorderThickness="0"/>
+                    </StackPanel>
+
+                    <!-- Semana -->
+                    <Button Grid.Column="1"
+                            Content="Semana 1"
+                            Width="90" Height="30"
+                            Background="#6666FF"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            BorderThickness="0"
+                            HorizontalAlignment="Left" Margin="376,42,0,38" Grid.RowSpan="2"/>
                 </Grid>
-            </Border>
-            
-            <!-- Footer page-->
+
+                <!-- Contenido Central DATA GRID -->
+                <Border Background="#E5E5E5" Margin="64,177,54,102" CornerRadius="20">
+                    <Grid Margin="7">
+                        <DataGrid x:Name="dataGridNomina"
+                                  AutoGenerateColumns="False"
+                                  HeadersVisibility="Column"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  IsReadOnly="True"
+                                  Margin="0"
+                                  VerticalAlignment="Stretch"
+                                  HorizontalAlignment="Stretch">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="#" Binding="{Binding ID}" />
+                                <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
+                                <DataGridTextColumn Header="Categoria" Binding="{Binding Categoria}" />
+                                <DataGridTextColumn Header="Dias Trabajados" Binding="{Binding DiasTrabajados}" />
+                                <DataGridTextColumn Header="Dias" Binding="{Binding Dias}" />
+                                <DataGridTextColumn Header="Sueldo por Jornada" Binding="{Binding SueldoJornada}" />
+                                <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal}" />
+                                <DataGridTextColumn Header="Horas Extra" Binding="{Binding HorasExtra}" />
+                                <DataGridTextColumn Header="Precio por Hora Extra" Binding="{Binding PHoraExtra}" />
+                                <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding SuelExtra}" />
+                                <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado}" />
+                                <DataGridTextColumn Header="SUELDO TOTAL" Binding="{Binding SuelTotal}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Border>
+
+                <!-- Footer page-->
 
 
-        </Grid>
+            </Grid>
+        </Border>
+      
     </Grid>
 </Window>
