@@ -23,5 +23,21 @@ namespace CivitasERP.Views
         {
             InitializeComponent();
         }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnMin_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            NominaPage nominaPage = new NominaPage();
+            nominaPage.Show();
+        }
     }
 }

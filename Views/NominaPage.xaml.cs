@@ -38,5 +38,11 @@ namespace CivitasERP.Views
         {
             this.WindowState = WindowState.Minimized;
         }
+
+        private void btnSemanaOp_Click(object sender, RoutedEventArgs e)
+        {
+            //PRUEBA, LOGICA DEL BOTON SEMANA NO OFICIAL
+            this.WindowState = WindowState.Minimized;
+        }
     }
 }
