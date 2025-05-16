@@ -23,7 +23,12 @@ namespace CivitasERP.Views
         {
             InitializeComponent();
         }
-
+        //Poder mover la ventana con libertad
+        private void DragWindow(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
+        }
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

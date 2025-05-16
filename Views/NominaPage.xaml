@@ -22,9 +22,9 @@
         <StackPanel Grid.Column="0" Grid.Row="0" Panel.ZIndex="2" HorizontalAlignment="Left" Margin="6,43,0,800">
             <Ellipse Width="137" Height="137" Stroke="Black" StrokeThickness="2" Fill="WhiteSmoke" Margin="0,50,0,0"/>
         </StackPanel>
-        
+
         <!--Menu Lateral-->
-        <Border Background="White" Grid.Column="0" Margin="0,0,1028,-16" CornerRadius="30,0,0,30" Panel.ZIndex="1">
+        <Border Background="White" Grid.Column="0" Margin="0,0,0,-16" CornerRadius="30,0,0,30" Panel.ZIndex="1">
             <Border CornerRadius="0,30,0,30" Margin="0,154,0,0">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -33,7 +33,7 @@
                     </LinearGradientBrush>
                 </Border.Background>
 
-                <StackPanel HorizontalAlignment="Center" Width="250">
+                <StackPanel HorizontalAlignment="Center" Width="240">
 
                     <!-- Info Usuario -->
                     <TextBlock Text="ING" Foreground="White" FontSize="20" FontWeight="Bold" TextAlignment="Center" Margin="0,80,0,20" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal" Width="215"/>
@@ -42,30 +42,30 @@
                     <!-- Botones de Menú -->
                     <StackPanel VerticalAlignment="Top" Margin="0,105,0,0">
                         <!-- Botón Menu -->
-                        <Border Background="#4772E3" CornerRadius="10" Margin="20,5">
+                        <Border Background="#4772E3" CornerRadius="10" Margin="6,6">
                             <Button Height="40" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="Bold" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Image Source="/Images/home.png" Width="25" Height="25" Margin="10,0,5,0"/>
+                                    <Image Source="/Images/home.png" Width="25" Height="25" Margin="0,0,5,0"/>
                                     <TextBlock Text="Menu" FontSize="20" Foreground="White"/>
                                 </StackPanel>
                             </Button>
                         </Border>
 
                         <!-- Botón Nomina -->
-                        <Border Background="#274288" CornerRadius="10" Margin="20,5">
+                        <Border Background="#274288" CornerRadius="10" Margin="6,6">
                             <Button Height="40" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="Bold" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Image Source="/Images/money.png" Width="25" Height="25" Margin="10,0,5,0"/>
+                                    <Image Source="/Images/money.png" Width="25" Height="25" Margin="0,0,5,0"/>
                                     <TextBlock Text="Nomina" FontSize="20" Foreground="White"/>
                                 </StackPanel>
                             </Button>
                         </Border>
 
                         <!-- Botón Pase de lista -->
-                        <Border Background="#274288" CornerRadius="10" Margin="20,5">
+                        <Border Background="#274288" CornerRadius="10" Margin="6,6">
                             <Button Height="40" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="Bold" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Image Source="/Images/lista.png" Width="25" Height="25" Margin="10,0,5,0"/>
+                                    <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
                                     <TextBlock Text="Pase de lista" FontSize="20" Foreground="White"/>
                                 </StackPanel>
                             </Button>
@@ -106,63 +106,116 @@
 
 
                 <!-- 2) Datos de obra -->
-                <Grid Grid.Row="1" Margin="64,20,40,0">
+                <Grid Grid.Row="1" Grid.Column="0" Margin="64,20,40,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <!-- Título -->
-                    <TextBlock Grid.ColumnSpan="3"
-                               Text="Lista de personal y nomina"
-                               FontSize="26"
-                               FontWeight="Bold"
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
+                               Text="LISTA DE PERSONAL Y NOMINA"
+                               FontSize="26" FontWeight="Bold"
                                Margin="0,0,0,10"/>
 
                     <!-- Obra -->
-                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,-20,10,0" Grid.ColumnSpan="2">
-                        <TextBlock Text="Obra" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="16" Background="Transparent"/>
-                        <Border Background="WhiteSmoke" CornerRadius="10" BorderThickness="1" BorderBrush="#6666FF" Width="310" Height="20">
-                            <TextBox Width="310" Height="20" Padding="5"
-                                     BorderBrush="Transparent" BorderThickness="0"
-                                     Background="Transparent"/>
-                        </Border >
-                        
-                    </StackPanel>
+                    <!-- Etiqueta Obra -->
+                    <TextBlock Grid.Column="0" Grid.Row="1"
+                               Text="Obra" 
+                               VerticalAlignment="Center" 
+                               FontSize="16" 
+                               Background="Transparent"/>
+                    
+                    <!-- TextBox Obra -->
+                    <Border Grid.Row="1" Grid.Column="1"
+                            Background="WhiteSmoke" 
+                            CornerRadius="10" 
+                            BorderThickness="1" 
+                            BorderBrush="#6666FF" 
+                            Width="310" Height="20"                 
+                            HorizontalAlignment="Left">
+                        <TextBox x:Name="ObraTextBox"
+                                Width="310" Height="20" 
+                                Padding="5"
+                                BorderBrush="Transparent" 
+                                BorderThickness="0"
+                                Background="Transparent"
+                                VerticalContentAlignment="Center"/>
+                    </Border >
+                    
+                    <!-- Fila 1: Periodo -->
 
-                    <!-- Ubicación -->
-                    <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Margin="0,50,10,0">
-                        <TextBlock Text="Ubicación" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="16"/>
-                        <Border Background="WhiteSmoke" CornerRadius="10" BorderThickness="1" BorderBrush="#6666FF" Width="276" Height="20">
-                            <TextBox Width="276" Height="20" Padding="5"
-                                     BorderBrush="Transparent" BorderThickness="0"
-                                     Background="Transparent"/>
+                    <StackPanel Grid.Row="1" Grid.Column="2"
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="Periodo"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"
+                                   Margin="20,0,10,0"/>
+                        <Border Background="#6666FF" CornerRadius="5" Width="80" Height="20">
+                            <TextBlock Text="Fecha 1"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
                         </Border>
-                        
+                        <TextBlock Text="al"
+                                   VerticalAlignment="Center"
+                                   Margin="5,0"/>       
+                        <Border Background="#6666FF" CornerRadius="5" Width="80" Height="20">
+                            <TextBlock Text="Fecha 2"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
                     </StackPanel>
-
-                    <!-- Periodo -->
-                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
-                        <TextBlock Text="Periodo" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                        <TextBox Width="80" Height="25" Background="#D6D6F5" BorderThickness="0" Margin="0,0,5,0"/>
-                        <TextBlock Text="al" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                        <TextBox Width="80" Height="25" Background="#D6D6F5" BorderThickness="0"/>
-                    </StackPanel>
-
-                    <!-- Semana -->
-                    <Button Grid.Column="1"
-                            Content="Semana 1"
-                            Width="90" Height="30"
+                    <!-- Semana Boton -->
+                    <Border Grid.Row="1" Grid.Column="3"
                             Background="#6666FF"
-                            Foreground="White"
-                            FontWeight="Bold"
-                            BorderThickness="0"
-                            HorizontalAlignment="Left" Margin="376,42,0,38" Grid.RowSpan="2"/>
+                            CornerRadius="5"
+                            Width="100" Height="20"
+                            HorizontalAlignment="Left">
+                        <Button x:Name="btnSemanaOp"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                Foreground="White"
+                                FontWeight="Bold"
+                                Click="btnSemanaOp_Click">
+                            Semana
+                        </Button>
+                    </Border>
+
+
+
+                    <!-- Fila 2: Ubicación -->
+                    <!-- Ubicación -->
+                        <TextBlock Grid.Row="2" Grid.Column="0" 
+                                   Text="Ubicación" 
+                                   VerticalAlignment="Center" 
+                                   Margin="0,20,5,0" 
+                                   FontSize="16"/>
+                    <Border Grid.Row="2" Grid.Column="1" 
+                                Background="WhiteSmoke" 
+                                CornerRadius="10" 
+                                BorderThickness="1" 
+                                BorderBrush="#6666FF" 
+                                Width="310" Height="20"
+                                HorizontalAlignment="Left"
+                                Margin="0,20,0,0">
+                        <TextBox x:Name="UbicacionTextBox"
+                                Width="310" Height="20" Padding="5"
+                                BorderBrush="Transparent" BorderThickness="0"
+                                Background="Transparent"
+                                VerticalContentAlignment="Center"
+                                 HorizontalAlignment="Left"/>
+                    </Border>
                 </Grid>
 
                 <!-- Contenido Central DATA GRID -->
@@ -200,6 +253,6 @@
 
             </Grid>
         </Border>
-      
+
     </Grid>
 </Window>
