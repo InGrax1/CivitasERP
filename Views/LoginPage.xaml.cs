@@ -57,23 +57,43 @@ namespace CivitasERP.Views
             string usuario,contraseña;
             usuario = txtUsuario.Text;
             contraseña = txtPassword.Password;
-            
-
-            if (h.ObtenerSHA256(contraseña).SequenceEqual(c.ObtenerHashContraseña(usuario))) {
-                MessageBox.Show("usuario y contrasña correctos ");
-                this.Hide();
-                HomePage HomePage = new HomePage();
-                HomePage.Show();
-            }
-            else {
-                MessageBox.Show("usuario o contrasña incorrectos la contraseña correcta es " );
-
-                string base64 = Convert.ToBase64String(h.ObtenerSHA256(contraseña));
-                string a = Convert.ToBase64String(c.ObtenerHashContraseña(usuario));
-                MessageBox.Show(base64);
-                MessageBox.Show(a);
-            }
+            try
+            {
+                //validacion de campos vacios
+                if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(contraseña))
+                {
+                    throw new ArgumentException("Por favor ingresa usuario y contraseña.");
+                }
                 
+                //validacion de usuario y contraseña
+                if (h.ObtenerSHA256(contraseña).SequenceEqual(c.ObtenerHashContraseña(usuario)))
+                {
+                    this.Hide();
+                    HomePage HomePage = new HomePage();
+                    HomePage.Show();
+                }
+                else
+                {
+                    MessageBox.Show("usuario o contraseña incorrectos", "Error de autenticación", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                // ocurre cuando alguno de los campos está vacío
+                MessageBox.Show(ex.Message, "Campos vacíos", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch(Exception ex)
+            {
+                // cualquier otro error inesperado
+                MessageBox.Show($"Ocurrió un error al iniciar sesión:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+
+
+
+
+
         }
 
         private void brnResetPassword(object sender, RoutedEventArgs e)
