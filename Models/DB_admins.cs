@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 using System.Collections;
 using System.Security.Cryptography;
 
-namespace CivitasERP.Clases
+namespace CivitasERP.Models
 {
     public class Bd_admin 
     {

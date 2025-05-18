@@ -51,6 +51,7 @@
 
   <ItemGroup>
     <Folder Include="AdminViews\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
 
 </Project>

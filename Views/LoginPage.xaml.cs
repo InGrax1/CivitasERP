@@ -1,4 +1,4 @@
-﻿using CivitasERP.Clases;
+﻿using CivitasERP.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Security.Cryptography;
-using CivitasERP.Clases;
+using CivitasERP.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CivitasERP.Views

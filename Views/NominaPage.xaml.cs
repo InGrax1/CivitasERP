@@ -49,7 +49,7 @@ namespace CivitasERP.Views
     {
         public NominaView()
         {
-            InitializeComponent();
+            
         }
     }
 }

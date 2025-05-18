@@ -133,15 +133,6 @@
 
         </Grid>
 
-        <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}">
-            <ContentControl.Resources>
-                <DataTemplate DataType="{x:Type Views:ListaPage}">
-                    <views:MenuView/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type vm:RegisterPageViewModel}">
-                    <local:RegisterPage/>
-                </DataTemplate>
-        </ContentControl>
 
     </Grid>
 </Window>

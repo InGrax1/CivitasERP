@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using CivitasERP.Clases;
+using CivitasERP.Models;
 
-namespace CivitasERP.Clases
+namespace CivitasERP.Models
 {
     public class Insert_admin
     {

@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
-namespace CivitasERP.Clases
+
+
+namespace CivitasERP.Models
 {
     public class hash
     {

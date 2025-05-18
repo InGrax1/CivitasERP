@@ -7,7 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 
 
-namespace CivitasERP.Clases
+namespace CivitasERP.Models
 {
     public class Conexion
     {
