@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
+
 namespace CivitasERP.Views
 {
     /// <summary>
@@ -44,12 +46,20 @@ namespace CivitasERP.Views
             //PRUEBA, LOGICA DEL BOTON SEMANA NO OFICIAL
             this.WindowState = WindowState.Minimized;
         }
-    }
-    public partial class NominaView : UserControl
-    {
-        public NominaView()
+
+        private void btnMaximize_Click(object sender, RoutedEventArgs e)
         {
-            
+            this.WindowState = this.WindowState == WindowState.Maximized
+                       ? WindowState.Normal
+                       : WindowState.Maximized;
+        }
+
+        private void btnMenu_Click(object sender, RoutedEventArgs e)
+        {
+            HomePage homePage = new HomePage();
+            homePage.Show();
+            this.Close();
         }
     }
+    
 }

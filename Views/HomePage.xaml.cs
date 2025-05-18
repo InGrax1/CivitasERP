@@ -23,6 +23,11 @@ namespace CivitasERP.Views
         {
             InitializeComponent();
         }
+        private void DragWindow(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
+        }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
@@ -34,10 +39,19 @@ namespace CivitasERP.Views
             this.WindowState = WindowState.Minimized;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+
+        private void btnMaximize_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = this.WindowState == WindowState.Maximized
+                       ? WindowState.Normal
+                       : WindowState.Maximized;
+        }
+
+        private void btnNomina_Click(object sender, RoutedEventArgs e)
         {
             NominaPage nominaPage = new NominaPage();
             nominaPage.Show();
+            this.Close();
         }
     }
 }

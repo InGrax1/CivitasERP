@@ -1,138 +1,186 @@
 ﻿<Window x:Class="CivitasERP.Views.HomePage"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        Title="HomePage" Height="1080" Width="1920" 
-        WindowStartupLocation="CenterScreen" 
-        Background="White" WindowStyle="None" 
-        AllowsTransparency="True">
-
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="254*"/>
-            <RowDefinition Height="761*"/>
-            <RowDefinition Height="66*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="215"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="NominaPage"
+        Width="1800" Height="1000"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        WindowStyle="None"
+        Background="Transparent"
+        MouseLeftButtonDown="DragWindow">
 
 
-        <StackPanel Grid.Column="0" Grid.Row="0" Panel.ZIndex="2" HorizontalAlignment="Left" Margin="6,43,0,750" Grid.RowSpan="2">
-            <Ellipse Width="137" Height="137" Stroke="Black" StrokeThickness="2" Fill="WhiteSmoke" Margin="0,50,0,0"/>
-        </StackPanel>
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome
+        CaptionHeight="0"
+        ResizeBorderThickness="5"
+        CornerRadius="30"
+        GlassFrameThickness="0"
+        UseAeroCaptionButtons="True"/>
+    </shell:WindowChrome.WindowChrome>
 
-        <!-- Sidebar -->
-        <Border Background="Transparent" Grid.Column="0" Grid.RowSpan="3">
-            <Border CornerRadius="0,30,0,30" Margin="0,154,0,0" >
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#1C2F5F" Offset="0"/>
-                        <GradientStop Color="#4B2C7D" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-
-                <StackPanel HorizontalAlignment="Center" Width="250">
-
-                    <!-- Info Usuario -->
-                    <TextBlock Text="ING" Foreground="White" FontSize="20" FontWeight="Bold" TextAlignment="Center" Margin="0,80,0,20" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal" Width="215"/>
-                    <TextBlock Text="Name" Foreground="White" FontSize="16" TextAlignment="Center" Margin="0,-20,0,20" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal" Width="218"/>
-
-                    <!-- Botones de Menú -->
-                    <StackPanel VerticalAlignment="Top" Margin="0,105,0,0">
-                        <!-- Botón 1 -->
-                        <Border Background="#4772E3" CornerRadius="10" Margin="20,5">
-                            <Button Height="40" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="Bold" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Image Source="/Images/home.png" Width="25" Height="25" Margin="10,0,5,0"/>
-                                    <TextBlock Text="Menu" FontSize="20" Foreground="White"/>
-                                </StackPanel>
-                            </Button>
+    <Window.Resources>
+        <!--DISEÑO DE BOTON REDONDO GENERICO-->
+        <Style x:Key="RoundButton" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Width" Value="35"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="PART_Border"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="PART_Border"
+                        Property="Opacity"
+                        Value="0.8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
 
-                        <!-- Botón 2 -->
-                        <Border Background="#274288" CornerRadius="10" Margin="20,5">
-                            <Button Height="40" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="Bold" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal" Click="Button_Click">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Image Source="/Images/money.png" Width="25" Height="25" Margin="10,0,5,0"/>
-                                    <TextBlock Text="Nomina" FontSize="20" Foreground="White"/>
-                                </StackPanel>
-                            </Button>
-                        </Border>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                        <!-- Botón 3 -->
-                        <Border Background="#274288" CornerRadius="10" Margin="20,5">
-                            <Button Height="40" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="Bold" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Image Source="/Images/lista.png" Width="25" Height="25" Margin="10,0,5,0"/>
-                                    <TextBlock Text="Pase de lista" FontSize="20" Foreground="White"/>
-                                </StackPanel>
-                            </Button>
-                        </Border>
-                    </StackPanel>
-
-
-
-                    <!-- Logosut-->
-                    <StackPanel VerticalAlignment="Bottom" Margin="0,450,0,0">
-                        <Button Margin="0,20,0,0" Background="Transparent" Foreground="White" BorderBrush="Transparent" HorizontalAlignment="Center">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="/Images/home.png" Width="20" Height="20" Margin="10,0,5,0"/>
-                                <TextBlock Text="Logout" FontSize="20" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-
-                </StackPanel>
-            </Border>
-        </Border>
-        
-
-        <!-- Área de contenido principal -->
-        <Grid Grid.Column="1" Background="White" Grid.RowSpan="3">
-
-            <!-- Topbar -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0">
-
-                <Border Background="LightBlue" CornerRadius="30" Margin="0,0,5,0">
-                    <Button x:Name="btnMin"  
-                            Width="35" Height="35" 
-                            Background="Transparent" 
-                            BorderBrush="Transparent" 
-                            Content="-" FontSize="20" 
-                            FontFamily="PMNCaeciliaSans Text" 
-                            FontStyle="Normal" 
-                            Click="btnMin_Click"/>
-                </Border>
-
-
-                <Border Background="LightCoral" CornerRadius="30">
-                    <Button x:Name="btnExit"  
-                            Width="35" Height="35" 
-                            Background="Transparent" 
-                            BorderBrush="Transparent" 
-                            Content="X" 
-                            FontSize="15" 
-                            FontFamily="PMNCaeciliaSans Text" 
-                            FontStyle="Normal" 
-                            Click="btnExit_Click"/>
-                </Border>
+            <!-- FOTO DE PERFIL -->
+            <StackPanel Grid.Column="0" Panel.ZIndex="3"
+                    HorizontalAlignment="Left" Margin="6,43,0,0">
+                <Ellipse Width="137" Height="137"
+                     Stroke="Black" StrokeThickness="2"
+                     Fill="WhiteSmoke"/>
             </StackPanel>
 
-            <!-- Contenido Central -->
-            <Border Background="#E5E5E5" Margin="40,60,40,40" CornerRadius="35">
-                <Image Source="/Images/LOGO CONSORCIO CIVIL.png"
-                       Stretch="Uniform"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       Width="1148" Height="587"/>
+            <!-- MENÚ LATERAL -->
+            <Border Grid.Column="0" Panel.ZIndex="2"
+                CornerRadius="30,0,0,30" 
+                Margin="0"
+                Background="White">
+                <Border CornerRadius="0,30,0,30" Margin="0,154,0,0">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#1C2F5F" Offset="0"/>
+                            <GradientStop Color="#4B2C7D" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <StackPanel HorizontalAlignment="Center" Width="240">
+                        <!-- Info Usuario -->
+                        <TextBlock x:Name="LabelRol"
+                               Text="ROL"
+                               Foreground="White" FontSize="20" FontWeight="Bold"
+                               TextAlignment="Center"
+                               Margin="0,80,0,20"
+                               FontFamily="PMNCaeciliaSans Text"/>
+                        <TextBlock x:Name="LabelName"
+                               Text="Nombre"
+                               Foreground="White" FontSize="16"
+                               TextAlignment="Center"
+                               Margin="0,-20,0,20"
+                               FontFamily="PMNCaeciliaSans Text"/>
+
+                        <!-- Botones de Menú -->
+                        <StackPanel VerticalAlignment="Top" Margin="0,105,0,0">
+                            <!-- Menú -->
+                            <Border Background="#4772E3" CornerRadius="10" Margin="6">
+                                <Button Background="Transparent" BorderBrush="Transparent"
+                                    Foreground="White" FontWeight="Bold">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Image Source="/Images/home.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                        <TextBlock Text="Menu" FontSize="20"/>
+                                    </StackPanel>
+                                </Button>
+                            </Border>
+                            <!-- Nómina -->
+                            <Border Background="#274288" CornerRadius="10" Margin="6">
+                                <Button Background="Transparent" BorderBrush="Transparent"
+                                    Foreground="White" FontWeight="Bold" Click="btnNomina_Click">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Image Source="/Images/money.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                        <TextBlock Text="Nomina" FontSize="20"/>
+                                    </StackPanel>
+                                </Button>
+                            </Border>
+                            <!-- Pase de lista -->
+                            <Border Background="#274288" CornerRadius="10" Margin="6">
+                                <Button Background="Transparent" BorderBrush="Transparent"
+                                    Foreground="White" FontWeight="Bold">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                        <TextBlock Text="Pase de lista" FontSize="20"/>
+                                    </StackPanel>
+                                </Button>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Logout al pie -->
+                        <StackPanel VerticalAlignment="Bottom" Margin="0,400,0,20" Grid.Row="0">
+                            <Button Background="Transparent" BorderBrush="Transparent"
+                                Foreground="White" HorizontalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/home.png" Width="20" Height="20" Margin="10,0,5,0"/>
+                                    <TextBlock Text="Logout" FontSize="20"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
             </Border>
 
+            <!-- CONTENIDO CENTRAL -->
+            <Border Grid.Column="1" Panel.ZIndex="1"
+                CornerRadius="0,30,30,0" Background="White" Margin="0">
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- TOPBAR -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                        <Border Background="LightBlue" CornerRadius="30" Margin="0,0,5,0">
+                            <Button Name="btnMin" Style="{StaticResource RoundButton}"
+                                Background="LightBlue"
+                                Content="—" Click="btnMin_Click"/>
+                        </Border>
+                        <Border Background="LightGreen" CornerRadius="30" Margin="0,0,5,0">
+                            <Button Name="btnMax" Style="{StaticResource RoundButton}"
+                                Background="LightGreen"
+                                Content="[]" Click="btnMaximize_Click"/>
+                        </Border>
+                        <Border Background="LightCoral" CornerRadius="30">
+                            <Button Name="btnExit" Style="{StaticResource RoundButton}"
+                                Background="LightCoral"
+                                Content="×" Click="btnExit_Click"/>
+                        </Border>
+                    </StackPanel>
+          
+                     <!--Mensaje Bienvenida-->
+                    <StackPanel Grid.Row="1" Margin="0,20,0,0">
+                        <TextBlock Text="Bienvenido a Civitas ERP"
+                            FontSize="70" FontWeight="Bold"
+                            HorizontalAlignment="Center"/>
+                        <TextBlock Text="Sistema de gestión empresarial"
+                            FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Image Source="/Images/LOGO CONSORCIO CIVIL.png"
+                            Width="500" Height="500"
+                            HorizontalAlignment="Center"
+                            Margin="0,20,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
         </Grid>
-
-
-    </Grid>
+    </ScrollViewer>
 </Window>

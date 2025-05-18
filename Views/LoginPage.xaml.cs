@@ -107,5 +107,6 @@ namespace CivitasERP.Views
             RegisterPage registerPage = new RegisterPage();
             registerPage.Show();
         }
+
     }
 }

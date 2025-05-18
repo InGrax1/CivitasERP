@@ -1,295 +1,296 @@
 ﻿<Window x:Class="CivitasERP.Views.NominaPage"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CivitasERP.Views"
-        mc:Ignorable="d"
-        Title="NominaPage" Height="1080" Width="1920"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="NominaPage"
+        Width="1800" Height="1000"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize"
+        ResizeMode="CanResize"
         WindowStyle="None"
-        AllowsTransparency="True"
         Background="Transparent"
         MouseLeftButtonDown="DragWindow">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="141*"/>
-        </Grid.ColumnDefinitions>
+    
+    
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome
+        CaptionHeight="0"
+        ResizeBorderThickness="5"
+        CornerRadius="30"
+        GlassFrameThickness="0"
+        UseAeroCaptionButtons="True"/>
+    </shell:WindowChrome.WindowChrome>
+    
+    <Window.Resources>
+        <!--DISEÑO DE BOTON REDONDO GENERICO-->
+        <Style x:Key="RoundButton" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Width" Value="35"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="PART_Border"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="20">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="PART_Border"
+                        Property="Opacity"
+                        Value="0.8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
 
-        <!--Foto de perfil-->
-        <StackPanel Grid.Column="0" Grid.Row="0" Panel.ZIndex="2" HorizontalAlignment="Left" Margin="6,43,0,800">
-            <Ellipse Width="137" Height="137" Stroke="Black" StrokeThickness="2" Fill="WhiteSmoke" Margin="0,50,0,0"/>
-        </StackPanel>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <!--Menu Lateral-->
-        <Border Background="White" Grid.Column="0" Margin="0,0,0,-16" CornerRadius="30,0,0,30" Panel.ZIndex="1">
-            <Border CornerRadius="0,30,0,30" Margin="0,154,0,0">
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#1C2F5F" Offset="0"/>
-                        <GradientStop Color="#4B2C7D" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
+            <!-- FOTO DE PERFIL -->
+            <StackPanel Grid.Column="0" Panel.ZIndex="3"
+                    HorizontalAlignment="Left" Margin="6,43,0,0">
+                <Ellipse Width="137" Height="137"
+                     Stroke="Black" StrokeThickness="2"
+                     Fill="WhiteSmoke"/>
+            </StackPanel>
 
-                <StackPanel HorizontalAlignment="Center" Width="240">
+            <!-- MENÚ LATERAL -->
+            <Border Grid.Column="0" Panel.ZIndex="2"
+                CornerRadius="30,0,0,30" 
+                Margin="0"
+                Background="White">
+                <Border CornerRadius="0,30,0,30" Margin="0,154,0,0">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="#1C2F5F" Offset="0"/>
+                            <GradientStop Color="#4B2C7D" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <StackPanel HorizontalAlignment="Center" Width="240">
+                        <!-- Info Usuario -->
+                        <TextBlock x:Name="LabelRol"
+                               Text="ROL"
+                               Foreground="White" FontSize="20" FontWeight="Bold"
+                               TextAlignment="Center"
+                               Margin="0,80,0,20"
+                               FontFamily="PMNCaeciliaSans Text"/>
+                        <TextBlock x:Name="LabelName"
+                               Text="Nombre"
+                               Foreground="White" FontSize="16"
+                               TextAlignment="Center"
+                               Margin="0,-20,0,20"
+                               FontFamily="PMNCaeciliaSans Text"/>
 
-                    <!-- Info Usuario -->
-                    <TextBlock x:Name="LabelRol"
-                               Text="ROL" 
-                               Foreground="White" 
-                               FontSize="20" 
-                               FontWeight="Bold" 
-                               TextAlignment="Center" 
-                               Margin="0,80,0,20" 
-                               FontFamily="PMNCaeciliaSans Text" 
-                               FontStyle="Normal" 
-                               Width="215"/>
-                    <TextBlock x:Name="LabelName"
-                               Text="Nombre" 
-                               Foreground="White" 
-                               FontSize="16" 
-                               TextAlignment="Center" 
-                               Margin="0,-20,0,20" 
-                               FontFamily="PMNCaeciliaSans Text" 
-                               FontStyle="Normal" 
-                               Width="218"/>
+                        <!-- Botones de Menú -->
+                        <StackPanel VerticalAlignment="Top" Margin="0,105,0,0">
+                            <!-- Menú -->
+                            <Border Background="#274288" CornerRadius="10" Margin="6">
+                                <Button Background="Transparent" BorderBrush="Transparent"
+                                    Foreground="White" FontWeight="Bold" Click="btnMenu_Click">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Image Source="/Images/home.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                        <TextBlock Text="Menu" FontSize="20"/>
+                                    </StackPanel>
+                                </Button>
+                            </Border>
+                            <!-- Nómina -->
+                            <Border Background="#4772E3" CornerRadius="10" Margin="6">
+                                <Button Background="Transparent" BorderBrush="Transparent"
+                                    Foreground="White" FontWeight="Bold">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Image Source="/Images/money.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                        <TextBlock Text="Nomina" FontSize="20"/>
+                                    </StackPanel>
+                                </Button>
+                            </Border>
+                            <!-- Pase de lista -->
+                            <Border Background="#274288" CornerRadius="10" Margin="6">
+                                <Button Background="Transparent" BorderBrush="Transparent"
+                                    Foreground="White" FontWeight="Bold">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                        <TextBlock Text="Pase de lista" FontSize="20"/>
+                                    </StackPanel>
+                                </Button>
+                            </Border>
+                        </StackPanel>
 
-                    <!-- Botones de Menú -->
-                    <StackPanel VerticalAlignment="Top" Margin="0,105,0,0">
-                        <!-- Botón Menu -->
-                        <Border Background="#4772E3" CornerRadius="10" Margin="6,6">
-                            <Button Height="40" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="Bold" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Image Source="/Images/home.png" Width="25" Height="25" Margin="0,0,5,0"/>
-                                    <TextBlock Text="Menu" FontSize="20" Foreground="White"/>
+                        <!-- Logout al pie -->
+                        <StackPanel VerticalAlignment="Bottom" Margin="0,400,0,20" Grid.Row="0">
+                            <Button Background="Transparent" BorderBrush="Transparent"
+                                Foreground="White" HorizontalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/home.png" Width="20" Height="20" Margin="10,0,5,0"/>
+                                    <TextBlock Text="Logout" FontSize="20"/>
                                 </StackPanel>
                             </Button>
-                        </Border>
-
-                        <!-- Botón Nomina -->
-                        <Border Background="#274288" CornerRadius="10" Margin="6,6">
-                            <Button Height="40" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="Bold" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Image Source="/Images/money.png" Width="25" Height="25" Margin="0,0,5,0"/>
-                                    <TextBlock Text="Nomina" FontSize="20" Foreground="White"/>
-                                </StackPanel>
-                            </Button>
-                        </Border>
-
-                        <!-- Botón Pase de lista -->
-                        <Border Background="#274288" CornerRadius="10" Margin="6,6">
-                            <Button Height="40" Background="Transparent" BorderBrush="Transparent" Foreground="White" FontWeight="Bold" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
-                                    <TextBlock Text="Pase de lista" FontSize="20" Foreground="White"/>
-                                </StackPanel>
-                            </Button>
-                        </Border>
+                        </StackPanel>
                     </StackPanel>
-
-                    <!-- Logout-->
-                    <StackPanel VerticalAlignment="Bottom" Margin="0,450,0,0">
-                        <Button Margin="0,20,0,0" Background="Transparent" Foreground="White" BorderBrush="Transparent" HorizontalAlignment="Center">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="/Images/home.png" Width="20" Height="20" Margin="10,0,5,0"/>
-                                <TextBlock Text="Logout" FontSize="20" FontFamily="PMNCaeciliaSans Text" FontStyle="Normal"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-
-                </StackPanel>
+                </Border>
             </Border>
-        </Border>
 
-
-
-        <Border CornerRadius="30,30,30,30" Grid.ColumnSpan="2" Background="White" Panel.ZIndex="0" Margin="0,0,0,-16">
-            <Grid Background="Transparent" Grid.ColumnSpan="2" Margin="215,0,0,0" Height="1096" VerticalAlignment="Top">
-
-                <!-- Topbar -->
-                <StackPanel Orientation="Horizontal" 
-                            HorizontalAlignment="Right" 
-                            VerticalAlignment="Top" 
-                            Margin="0,10,10,0">
-
-                    <Border Background="LightBlue" CornerRadius="30" Margin="0,0,5,0">
-                        <Button Name="btnMin" 
-                                Width="35" Height="35" 
-                                Background="Transparent" 
-                                BorderBrush="Transparent" 
-                                Content="-" 
-                                FontSize="20" 
-                                FontFamily="PMNCaeciliaSans Text" 
-                                FontStyle="Normal" 
-                                Click="btnMin_Click"/>
-                    </Border>
-
-
-                    <Border Background="LightCoral" CornerRadius="30">
-                        <Button Name="btnExit" 
-                                Width="35" Height="35" 
-                                Background="Transparent" 
-                                BorderBrush="Transparent" 
-                                Content="X" FontSize="15" 
-                                FontFamily="PMNCaeciliaSans Text" 
-                                FontStyle="Normal" 
-                                Click="btnExit_Click"/>
-                    </Border>
-                </StackPanel>
-
-
-                <!-- 2) Datos de obra -->
-                <Grid Grid.Row="1" Grid.Column="0" Margin="64,20,40,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="3*"/>
-
-                    </Grid.ColumnDefinitions>
+            <!-- CONTENIDO CENTRAL -->
+            <Border Grid.Column="1" Panel.ZIndex="1"
+                CornerRadius="0,30,30,0" Background="White" Margin="0">
+                <Grid Margin="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <!-- Topbar -->
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <!-- Filtros -->
+                        <RowDefinition Height="*"/>
+                        <!-- DataGrid -->
                     </Grid.RowDefinitions>
 
-                    <!-- Título -->
-                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
-                               Text="LISTA DE PERSONAL Y NOMINA"
-                               FontSize="26" FontWeight="Bold"
-                               Margin="0,0,0,10"/>
-
-                    <!-- Obra -->
-                    <!-- Etiqueta Obra -->
-                    <TextBlock Grid.Column="0" Grid.Row="1"
-                               Text="Obra" 
-                               VerticalAlignment="Center" 
-                               FontSize="16" 
-                               Background="Transparent"/>
-                    
-                    <!-- TextBox Obra -->
-                    <Border Grid.Row="1" Grid.Column="1"
-                            Background="WhiteSmoke" 
-                            CornerRadius="10" 
-                            BorderThickness="1" 
-                            BorderBrush="#6666FF" 
-                            Width="310" Height="20"                 
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center">
-                        <TextBox x:Name="ObraTextBox"
-                                Width="310" Height="20" 
-                                Padding="5"
-                                BorderBrush="Transparent" 
-                                BorderThickness="0"
-                                Background="Transparent"
-                                VerticalContentAlignment="Center"/>
-                    </Border >
-                    
-                    <!-- Fila 1: Periodo -->
-
-                    <StackPanel Grid.Row="1" Grid.Column="2"
-                                Orientation="Horizontal"
-                                VerticalAlignment="Center">
-                        <TextBlock Text="Periodo"
-                                   FontSize="16"
-                                   VerticalAlignment="Center"
-                                   Margin="20,0,10,0"/>
-                        <Border Background="#6666FF" CornerRadius="5" Width="80" Height="20">
-                            <TextBlock Text="Fecha 1"
-                                       Foreground="White"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"/>
+                    <!-- TOPBAR -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                        <Border Background="LightBlue" CornerRadius="30" Margin="0,0,5,0">
+                            <Button Name="btnMin" Style="{StaticResource RoundButton}"
+                                Background="LightBlue"
+                                Content="—" Click="btnMin_Click"/>
                         </Border>
-                        <TextBlock Text="al"
-                                   VerticalAlignment="Center"
-                                   Margin="5,0"/>       
-                        <Border Background="#6666FF" CornerRadius="5" Width="80" Height="20">
-                            <TextBlock Text="Fecha 2"
-                                       Foreground="White"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"/>
+                        <Border Background="LightGreen" CornerRadius="30" Margin="0,0,5,0">
+                            <Button Name="btnMax" Style="{StaticResource RoundButton}"
+                                Background="LightGreen"
+                                Content="[]" Click="btnMaximize_Click"/>
+                        </Border>
+                        <Border Background="LightCoral" CornerRadius="30">
+                            <Button Name="btnExit" Style="{StaticResource RoundButton}"
+                                Background="LightCoral"
+                                Content="×" Click="btnExit_Click"/>
                         </Border>
                     </StackPanel>
-                    <!-- Semana Boton -->
-                    <Border Grid.Row="1" Grid.Column="3"
-                            Background="#6666FF"
-                            CornerRadius="5"
-                            Width="100" Height="20"
-                            HorizontalAlignment="Left">
-                        <Button x:Name="btnSemanaOp"
+
+                    <!-- FILTROS -->
+                    <Grid Grid.Row="1" Margin="0,0,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Título -->
+                        <TextBlock Grid.Column="0" Grid.ColumnSpan="5"
+                               Text="LISTA DE PERSONAL Y NÓMINA"
+                               FontSize="26" FontWeight="Bold"
+                               Margin="0,0,0,20"/>
+
+                        <!-- Obra -->
+                        <TextBlock Grid.Row="1" Grid.Column="0"
+                               Text="Obra" FontSize="16"
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,0"/>
+                        <Border Grid.Row="1" Grid.Column="1"
+                            Background="WhiteSmoke" CornerRadius="10"
+                            BorderBrush="#6666FF" BorderThickness="1"
+                            Height="30">
+                            <TextBox x:Name="ObraTextBox"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 Padding="5"
+                                 VerticalContentAlignment="Center"/>
+                        </Border>
+
+                        <!-- Periodo -->
+                        <TextBlock Grid.Row="1" Grid.Column="2"
+                               Text="Periodo" FontSize="16"
+                               VerticalAlignment="Center"
+                               Margin="20,0,10,0"/>
+                        <StackPanel Grid.Row="1" Grid.Column="3"
+                                Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border Background="#6666FF" CornerRadius="5"
+                                Width="80" Height="30" Margin="0,0,5,0">
+                                <TextBlock Text="Fecha 1"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="al" VerticalAlignment="Center" Margin="5,0"/>
+                            <Border Background="#6666FF" CornerRadius="5"
+                                Width="80" Height="30" Margin="5,0,0,0">
+                                <TextBlock Text="Fecha 2"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Semana -->
+                        <Border Grid.Row="1" Grid.Column="4"
+                            Background="#6666FF" CornerRadius="5"
+                            Width="90" Height="30">
+                            <Button x:Name="btnSemanaOp"
                                 Background="Transparent"
                                 BorderBrush="Transparent"
                                 Foreground="White"
                                 FontWeight="Bold"
                                 Click="btnSemanaOp_Click">
-                            Semana
-                        </Button>
-                    </Border>
+                                Semana
+                            </Button>
+                        </Border>
 
+                        <!-- Ubicación -->
+                        <TextBlock Grid.Row="2" Grid.Column="0"
+                               Text="Ubicación" FontSize="16"
+                               VerticalAlignment="Center"
+                               Margin="0,20,10,0"/>
+                        <Border Grid.Row="2" Grid.Column="1"
+                            Background="WhiteSmoke" CornerRadius="10"
+                            BorderBrush="#6666FF" BorderThickness="1"
+                            Height="30" Margin="0,20,0,0">
+                            <TextBox x:Name="UbicacionTextBox"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 Padding="5"
+                                 VerticalContentAlignment="Center"/>
+                        </Border>
+                    </Grid>
 
-
-                    <!-- Fila 2: Ubicación -->
-                    <!-- Ubicación -->
-                        <TextBlock Grid.Row="2" Grid.Column="0" 
-                                   Text="Ubicación" 
-                                   VerticalAlignment="Center" 
-                                   Margin="0,20,5,0" 
-                                   FontSize="16"/>
-                    <Border Grid.Row="2" Grid.Column="1" 
-                                Background="WhiteSmoke" 
-                                CornerRadius="10" 
-                                BorderThickness="1" 
-                                BorderBrush="#6666FF" 
-                                Width="310" Height="20"
-                                HorizontalAlignment="Left"
-                                Margin="0,20,0,0"
-                                VerticalAlignment="Center">
-                        <TextBox x:Name="UbicacionTextBox"
-                                Width="310" Height="20" Padding="5"
-                                BorderBrush="Transparent" BorderThickness="0"
-                                Background="Transparent"
-                                VerticalContentAlignment="Center"
-                                HorizontalAlignment="Left"/>
-                    </Border>
-                </Grid>
-
-                <!-- Contenido Central DATA GRID -->
-                <Border Background="#E5E5E5" Margin="64,177,54,102" CornerRadius="20">
-                    <Grid Margin="7">
+                    <!-- DATA GRID -->
+                    <Border Grid.Row="2" CornerRadius="20"
+                        Background="#E5E5E5" Margin="0,0,0,0">
                         <DataGrid x:Name="dataGridNomina"
-                                  AutoGenerateColumns="False"
-                                  HeadersVisibility="Column"
-                                  CanUserAddRows="False"
-                                  CanUserDeleteRows="False"
-                                  IsReadOnly="True"
-                                  Margin="0"
-                                  VerticalAlignment="Stretch"
-                                  HorizontalAlignment="Stretch">
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              IsReadOnly="True"
+                              Margin="10"
+                              HeadersVisibility="Column">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" Binding="{Binding ID}" />
                                 <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
-                                <DataGridTextColumn Header="Categoria" Binding="{Binding Categoria}" />
-                                <DataGridTextColumn Header="Dias Trabajados" Binding="{Binding DiasTrabajados}" />
-                                <DataGridTextColumn Header="Dias" Binding="{Binding Dias}" />
-                                <DataGridTextColumn Header="Sueldo por Jornada" Binding="{Binding SueldoJornada}" />
+                                <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" />
+                                <DataGridTextColumn Header="Días Trabajados" Binding="{Binding DiasTrabajados}" />
+                                <DataGridTextColumn Header="Días" Binding="{Binding Dias}" />
+                                <DataGridTextColumn Header="Sueldo Jornada" Binding="{Binding SueldoJornada}" />
                                 <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal}" />
                                 <DataGridTextColumn Header="Horas Extra" Binding="{Binding HorasExtra}" />
-                                <DataGridTextColumn Header="Precio por Hora Extra" Binding="{Binding PHoraExtra}" />
+                                <DataGridTextColumn Header="Precio Hora Extra" Binding="{Binding PHoraExtra}" />
                                 <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding SuelExtra}" />
                                 <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado}" />
-                                <DataGridTextColumn Header="SUELDO TOTAL" Binding="{Binding SuelTotal}" />
+                                <DataGridTextColumn Header="Sueldo Total" Binding="{Binding SuelTotal}" />
                             </DataGrid.Columns>
                         </DataGrid>
-                    </Grid>
-                </Border>
-
-                <!-- Footer page-->
-
-
-            </Grid>
-        </Border>
-
-    </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </ScrollViewer>
 </Window>
