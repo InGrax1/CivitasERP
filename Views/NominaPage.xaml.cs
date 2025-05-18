@@ -45,4 +45,11 @@ namespace CivitasERP.Views
             this.WindowState = WindowState.Minimized;
         }
     }
+    public partial class NominaView : UserControl
+    {
+        public NominaView()
+        {
+            InitializeComponent();
+        }
+    }
 }
