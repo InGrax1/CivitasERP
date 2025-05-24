@@ -25,10 +25,6 @@ namespace CivitasERP.Views
             InitializeComponent();
         }
 
-
-
-
-
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
             string nombre, apellidop, apellidom, usuario, correo, contraseña, categoria;
@@ -55,6 +51,17 @@ namespace CivitasERP.Views
 
             inser.InsertarAdmin();
             MessageBox.Show("diste click");
+            Application.Current.Shutdown();
+        }
+
+        private void btnMin_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }
