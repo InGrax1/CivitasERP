@@ -24,7 +24,11 @@ namespace CivitasERP.Views
         {
             InitializeComponent();
         }
-
+        private void DragWindow(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
+        }
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
             string nombre, apellidop, apellidom, usuario, correo, contraseña, categoria;
@@ -51,7 +55,7 @@ namespace CivitasERP.Views
 
             inser.InsertarAdmin();
             MessageBox.Show("diste click");
-            Application.Current.Shutdown();
+
         }
 
         private void btnMin_Click(object sender, RoutedEventArgs e)
@@ -61,7 +65,7 @@ namespace CivitasERP.Views
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            this.Close();
         }
     }
 }

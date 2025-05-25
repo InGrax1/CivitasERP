@@ -31,7 +31,7 @@ namespace CivitasERP.Views
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Application.Current.Shutdown();
         }
 
         private void btnMin_Click(object sender, RoutedEventArgs e)
@@ -51,6 +51,19 @@ namespace CivitasERP.Views
         {
             NominaPage nominaPage = new NominaPage();
             nominaPage.Show();
+            this.Close();
+        }
+
+        private void btnRegis_Click(object sender, RoutedEventArgs e)
+        {
+            RegisterPage registerPage = new RegisterPage();
+            registerPage.Show();
+        }
+
+        private void btnLista_Click(object sender, RoutedEventArgs e)
+        {
+            ListaPage listaPage = new ListaPage();
+            listaPage.Show();
             this.Close();
         }
     }

@@ -115,13 +115,15 @@
                             <!-- Pase de lista -->
                             <Border Background="#4772E3" CornerRadius="10" Margin="6">
                                 <Button Background="Transparent" BorderBrush="Transparent"
-                                    Foreground="White" FontWeight="Bold">
+                                    Foreground="White" FontWeight="Bold" Click="btnLista_Click">
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
                                         <TextBlock Text="Pase de lista" FontSize="20"/>
                                     </StackPanel>
                                 </Button>
                             </Border>
+
+                            
                         </StackPanel>
 
                         <!-- Logout al pie -->
@@ -172,7 +174,7 @@
                     </StackPanel>
 
                     <!-- FILTROS -->
-                    <Grid Grid.Row="1" Margin="0,0,0,0">
+                    <Grid Grid.Row="1" Margin="0,0,0,20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -205,7 +207,7 @@
                                  Background="Transparent"
                                  BorderThickness="0"
                                  Padding="5"
-                                 VerticalContentAlignment="Center"/>
+                                 VerticalContentAlignment="Center" TextChanged="ObraTextBox_TextChanged"/>
                         </Border>
 
                         <!-- Periodo -->
@@ -277,15 +279,18 @@
                                 <DataGridTextColumn Header="#" Binding="{Binding ID}" />
                                 <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
                                 <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" />
-                                <DataGridTextColumn Header="Días Trabajados" Binding="{Binding DiasTrabajados}" />
-                                <DataGridTextColumn Header="Días" Binding="{Binding Dias}" />
-                                <DataGridTextColumn Header="Sueldo Jornada" Binding="{Binding SueldoJornada}" />
-                                <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal}" />
-                                <DataGridTextColumn Header="Horas Extra" Binding="{Binding HorasExtra}" />
-                                <DataGridTextColumn Header="Precio Hora Extra" Binding="{Binding PHoraExtra}" />
-                                <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding SuelExtra}" />
-                                <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado}" />
-                                <DataGridTextColumn Header="Sueldo Total" Binding="{Binding SuelTotal}" />
+                                <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaL}" />
+                                <DataGridTextColumn Header="Salida" Binding="{Binding SalidaL}" />
+                                <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaM}" />
+                                <DataGridTextColumn Header="Salida" Binding="{Binding SalidaM}" />
+                                <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaMI}" />
+                                <DataGridTextColumn Header="Salida" Binding="{Binding SalidaMI}" />
+                                <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaJ}" />
+                                <DataGridTextColumn Header="Salida" Binding="{Binding SalidaJ}" />
+                                <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaV}" />
+                                <DataGridTextColumn Header="Salida" Binding="{Binding SalidaV}" />
+                                <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaS}" />
+                                <DataGridTextColumn Header="Salida" Binding="{Binding SalidaS}" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </Border>
