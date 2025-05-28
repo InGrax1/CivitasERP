@@ -153,7 +153,9 @@
               Background="Transparent" BorderThickness="0">
                 <StackPanel>
                     <TextBlock Text="Huella" Foreground="#5F5FFF" FontSize="14" HorizontalAlignment="Center"/>
-                    <Image Source="/Images/huella-dactilar.png" Width="100" Height="100"/>
+                    <Button Width="100" Height="100" Click="btnHuellaR_Click" Background="Transparent" BorderBrush="Transparent"> 
+                        <Image Source="/Images/huella-dactilar.png" Width="90" Height="90"/>
+                    </Button>
                 </StackPanel>
             </Button>
 
