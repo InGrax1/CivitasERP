@@ -12,6 +12,7 @@
         AllowsTransparency="True"
         Background="Transparent"
         MouseLeftButtonDown="DragWindow">
+    
     <Window.Resources>
         <Style x:Key="RoundButton" TargetType="Button">
             <Setter Property="Template">
@@ -32,6 +33,19 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <!-- estilo para el  hover TextBox/PasswordBox -->
+        <Style x:Key="HoverableBorder" TargetType="Border">
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#5F5FFF"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </Window.Resources>
 
@@ -134,20 +148,18 @@
                                HorizontalAlignment="Left"
                                Margin="0,-10,0,0"/>
                     <Border Grid.Row="0" Grid.Column="0"
+                            Grid.RowSpan="2"
                             CornerRadius="10"
-                            BorderBrush="White"
-                            BorderThickness="1"
-                            Margin="0,5,0,0" Grid.RowSpan="2"
-                            HorizontalAlignment="Center">
+                            HorizontalAlignment="Center"
+                            Margin="0,5,0,0"
+                            Style="{StaticResource HoverableBorder}">
                         <TextBox x:Name="txtUsuario"
-                                   Height="25"
-                                   Width="250"
-                                   Background="Transparent"
-                                   Foreground="White"
-                                   Margin="10,0,0,0"
-                                   HorizontalAlignment="Center"
-                                   BorderThickness="0"
-                                   VerticalContentAlignment="Center"/>
+                                 Width="250" Height="25"
+                                 Background="Transparent"
+                                 Foreground="White"
+                                 BorderThickness="0"
+                                 Padding="10,0"
+                                 VerticalContentAlignment="Center"/>
                     </Border>
                     <!--Contraseña-->
                     <TextBlock  Grid.Row="2" Grid.Column="0"
@@ -157,21 +169,20 @@
                                HorizontalAlignment="Left"
                                Margin="0,20,0,0"/>
                     <Border Grid.Row="2" Grid.Column="0"
+                            Grid.RowSpan="2"
                             CornerRadius="10"
-                            BorderBrush="White"
-                            BorderThickness="1"
-                            Margin="0,35,0,0" Grid.RowSpan="2"
-                            HorizontalAlignment="Center">
+                            HorizontalAlignment="Center"
+                            Margin="0,35,0,0"
+                            Style="{StaticResource HoverableBorder}">
                         <PasswordBox x:Name="txtPassword"
-                                     Height="25"
-                                     Width="250"
+                                     Width="250" Height="25"
                                      Background="Transparent"
                                      Foreground="White"
-                                     Margin="10,0,0,0"
-                                     HorizontalAlignment="Center"
                                      BorderThickness="0"
+                                     Padding="10,0"
                                      VerticalContentAlignment="Center"/>
                     </Border>
+
                 </Grid>
 
                 <!--Boton de Ingreso-->

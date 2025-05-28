@@ -86,5 +86,9 @@ namespace CivitasERP.Views
         {
 
         }
+        private void btnHuellaR_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Funcionalidad de huella no implementada aún.");
+        }
     }
 }
