@@ -99,14 +99,7 @@ namespace CivitasERP.Views
         {
             ForgotPasswordPage forgotPasswordPage = new ForgotPasswordPage();
             forgotPasswordPage.Show();
-
-            //Logica
-        }
-
-        private void btnRegister_Click(object sender, RoutedEventArgs e)
-        {
-            RegisterPage registerPage = new RegisterPage();
-            registerPage.Show();
+            this.Hide();
         }
 
     }
