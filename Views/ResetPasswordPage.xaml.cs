@@ -72,7 +72,7 @@ namespace CivitasERP.Views
             byte[] hash = pbkdf2.GetBytes(20);
 
             // 3) Combinar salt + hash
-            byte[] hashBytes = new byte[36];
+            byte[] hashBytes = new byte[36];   //<------ CANTIDAD DE BYTES ENVIADOS
             Array.Copy(salt, 0, hashBytes, 0, 16);
             Array.Copy(hash, 0, hashBytes, 16, 20);
 
