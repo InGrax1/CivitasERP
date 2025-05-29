@@ -7,7 +7,7 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize"
         WindowStyle="None"
-        AllowsTransparency="False"
+        AllowsTransparency="True"
         Background="Transparent"
         MouseLeftButtonDown="DragWindow">
 
@@ -20,32 +20,6 @@
         GlassFrameThickness="0"
         UseAeroCaptionButtons="True"/>
     </shell:WindowChrome.WindowChrome>
-
-    <Window.Resources>
-        <!-- Estilo para botones redondeados de los controles de ventana -->
-        <Style x:Key="RoundButton" TargetType="Button">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="Width" Value="35"/>
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="Bd"
-                    Background="{TemplateBinding Background}"
-                    CornerRadius="20">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Opacity" Value="0.8"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
 
     <!-- Fondo blanco redondeado -->
     <Border Background="White" CornerRadius="30" Padding="20" Margin="10" BorderThickness="3" BorderBrush="#5F5FFF">
@@ -65,14 +39,16 @@
                    HorizontalAlignment="Center"/>
                 <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right">
-                    <Border Background="LightBlue" CornerRadius="20" Margin="0,0,5,0">
-                        <Button Style="{StaticResource RoundButton}" Background="LightBlue" Content="—"
-                    Click="btnMin_Click"/>
 
-                    </Border>
+                    <Button Style="{StaticResource RoundButton}"
+                            Background="LightBlue"
+                            Content="—"
+                            Click="btnMin_Click"
+                            Margin="0,0,5,0"/>
+
                     <Border Background="LightCoral" CornerRadius="20">
                         <Button Style="{StaticResource RoundButton}" Background="LightCoral" Content="×"
-                    Click="btnExit_Click"/>
+                                Click="btnExit_Click"/>
                     </Border>
                 </StackPanel>
             </Grid>
@@ -142,7 +118,7 @@
                 <StackPanel Grid.Row="3" Grid.Column="1" Margin="10">
                     <TextBlock Text="Sueldo Semanal" Foreground="#5F5FFF" FontSize="14" Margin="0,20,0,5"/>
                     <Border Background="#5F5FFF" CornerRadius="10" Padding="5">
-                        <TextBlock x:Name="txtSueldo" Text="$0.00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBox x:Name="txtSueldo" BorderThickness="0" Background="Transparent" Foreground="White"/>
                     </Border>
                 </StackPanel>
             </Grid>

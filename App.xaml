@@ -4,7 +4,14 @@
              xmlns:local="clr-namespace:CivitasERP"
              StartupUri="Views/LoginPage.xaml">
     <Application.Resources>
-        <ResourceDictionary Source="/Styles/UIColors.xaml"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- ¡Sin la barra inicial! -->
+                <ResourceDictionary Source="Styles/ButtonStyles.xaml"/>
+                <ResourceDictionary Source="Styles/UIColors.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <!-- Aquí podrías añadir recursos globales adicionales -->
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
 
