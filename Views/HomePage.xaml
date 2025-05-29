@@ -7,48 +7,22 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize"
         WindowStyle="None"
+        AllowsTransparency="False"
         Background="Transparent"
         MouseLeftButtonDown="DragWindow">
 
 
     <shell:WindowChrome.WindowChrome>
         <shell:WindowChrome
-        CaptionHeight="0"
+        CaptionHeight="10"
         ResizeBorderThickness="5"
         CornerRadius="30"
         GlassFrameThickness="0"
         UseAeroCaptionButtons="True"/>
     </shell:WindowChrome.WindowChrome>
 
-    <Window.Resources>
-        <!--DISEÑO DE BOTON REDONDO GENERICO-->
-        <Style x:Key="RoundButton" TargetType="Button">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="Width" Value="35"/>
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="PART_Border"
-                    Background="{TemplateBinding Background}"
-                    CornerRadius="20">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="PART_Border"
-                        Property="Opacity"
-                        Value="0.8"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
-
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" shell:WindowChrome.IsHitTestVisibleInChrome="False"
+>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
@@ -115,13 +89,24 @@
                             <!-- Pase de lista -->
                             <Border Background="#274288" CornerRadius="10" Margin="6">
                                 <Button Background="Transparent" BorderBrush="Transparent"
-                                    Foreground="White" FontWeight="Bold">
+                                    Foreground="White" FontWeight="Bold" Click="btnLista_Click">
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
                                         <TextBlock Text="Pase de lista" FontSize="20"/>
                                     </StackPanel>
                                 </Button>
                             </Border>
+                            <!-- Pase de lista -->
+                            <Border Background="red" CornerRadius="10" Margin="6">
+                                <Button Background="Transparent" BorderBrush="Transparent"
+                                        Foreground="White" FontWeight="Bold" Click="btnRegis_Click">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                        <TextBlock Text="Registro Nuevo" FontSize="20"/>
+                                    </StackPanel>
+                                </Button>
+                            </Border>
+
                         </StackPanel>
 
                         <!-- Logout al pie -->
@@ -144,7 +129,11 @@
                 <Grid Margin="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <!-- Topbar -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Filtros -->
                         <RowDefinition Height="*"/>
+                        <!-- DataGrid -->
                     </Grid.RowDefinitions>
 
                     <!-- TOPBAR -->
@@ -166,8 +155,7 @@
                                 Content="×" Click="btnExit_Click"/>
                         </Border>
                     </StackPanel>
-          
-                     <!--Mensaje Bienvenida-->
+                    <!--Mensaje Bienvenida-->
                     <StackPanel Grid.Row="1" Margin="0,20,0,0">
                         <TextBlock Text="Bienvenido a Civitas ERP"
                             FontSize="70" FontWeight="Bold"

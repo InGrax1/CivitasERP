@@ -33,7 +33,7 @@ namespace CivitasERP.Views
         }
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Application.Current.Shutdown();
         }
 
         private void btnMin_Click(object sender, RoutedEventArgs e)

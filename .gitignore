@@ -16,3 +16,8 @@ publish/
 
 # Paquetes NuGet
 *.nupkg
+
+
+# Archivos Para la conexion de base de datos
+conexion.cs
+DB_admins.cs

@@ -12,15 +12,16 @@
         AllowsTransparency="True"
         Background="Transparent"
         MouseLeftButtonDown="DragWindow">
+    
     <Window.Resources>
         <Style x:Key="RoundButton" TargetType="Button">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
-                    CornerRadius="20"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}">
+                                CornerRadius="20"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">        
                             <ContentPresenter HorizontalAlignment="Center"
                                 VerticalAlignment="Center"/>
                         </Border>
@@ -32,6 +33,22 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <!-- estilo para el  hover TextBox/PasswordBox -->
+        <Style x:Key="FocusedBorder" TargetType="Border">
+            <Setter Property="BorderBrush"    Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background"      Value="Transparent"/>
+            <Style.Triggers>
+                <!-- Cuando el Border o cualquiera de sus hijos tenga el foco de teclado -->
+                <DataTrigger Binding="{Binding IsKeyboardFocusWithin, RelativeSource={RelativeSource Self}}"
+                     Value="True">
+                    <!-- Cambia a tu color y grosor de foco -->
+                    <Setter Property="BorderBrush"    Value="#5F5FFF"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
     </Window.Resources>
 
@@ -134,19 +151,17 @@
                                HorizontalAlignment="Left"
                                Margin="0,-10,0,0"/>
                     <Border Grid.Row="0" Grid.Column="0"
+                            Grid.RowSpan="2"
+                            HorizontalAlignment="Center"
                             CornerRadius="10"
-                            BorderBrush="White"
-                            BorderThickness="1"
-                            Margin="0,5,0,0" Grid.RowSpan="2"
-                            HorizontalAlignment="Center">
+                            Margin="0,5,0,0"
+                            Style="{StaticResource FocusedBorder}">
                         <TextBox x:Name="txtUsuario"
-                                   Height="25"
-                                   Width="250"
+                                   Width="250" Height="25"
                                    Background="Transparent"
                                    Foreground="White"
-                                   Margin="10,0,0,0"
-                                   HorizontalAlignment="Center"
                                    BorderThickness="0"
+                                   Padding="10,0"
                                    VerticalContentAlignment="Center"/>
                     </Border>
                     <!--Contraseña-->
@@ -157,21 +172,20 @@
                                HorizontalAlignment="Left"
                                Margin="0,20,0,0"/>
                     <Border Grid.Row="2" Grid.Column="0"
+                            Grid.RowSpan="2"
+                            HorizontalAlignment="Center"
                             CornerRadius="10"
-                            BorderBrush="White"
-                            BorderThickness="1"
-                            Margin="0,35,0,0" Grid.RowSpan="2"
-                            HorizontalAlignment="Center">
+                            Margin="0,35,0,0"
+                            Style="{StaticResource FocusedBorder}">
                         <PasswordBox x:Name="txtPassword"
-                                     Height="25"
-                                     Width="250"
+                                     Width="250" Height="25"
                                      Background="Transparent"
                                      Foreground="White"
-                                     Margin="10,0,0,0"
-                                     HorizontalAlignment="Center"
                                      BorderThickness="0"
+                                     Padding="10,0"
                                      VerticalContentAlignment="Center"/>
                     </Border>
+
                 </Grid>
 
                 <!--Boton de Ingreso-->
@@ -188,6 +202,7 @@
                                 FontWeight="Bold"
                                 Width="150"
                                 Height="25"
+                                Cursor="Hand"
                                 Click="btnLogin_Click">
                             
                             <!-- Estilo de Botón Hover -->

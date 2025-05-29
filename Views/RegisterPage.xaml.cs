@@ -24,11 +24,11 @@ namespace CivitasERP.Views
         {
             InitializeComponent();
         }
-
-
-
-
-
+        private void DragWindow(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
+        }
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
             string nombre, apellidop, apellidom, usuario, correo, contraseña, categoria;
@@ -55,6 +55,21 @@ namespace CivitasERP.Views
 
             inser.InsertarAdmin();
             MessageBox.Show("diste click");
+
+        }
+
+        private void btnMin_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+        private void btnHuellaR_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Funcionalidad de huella no implementada aún.");
         }
     }
 }

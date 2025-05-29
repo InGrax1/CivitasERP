@@ -13,7 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Security.Cryptography;
-using CivitasERP.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CivitasERP.Views
@@ -98,14 +97,9 @@ namespace CivitasERP.Views
 
         private void brnResetPassword(object sender, RoutedEventArgs e)
         {
-            //Prueba de momento NO OFICIAL
-            WindowState = WindowState.Minimized;
-        }
-
-        private void btnRegister_Click(object sender, RoutedEventArgs e)
-        {
-            RegisterPage registerPage = new RegisterPage();
-            registerPage.Show();
+            ForgotPasswordPage forgotPasswordPage = new ForgotPasswordPage();
+            forgotPasswordPage.Show();
+            this.Hide();
         }
 
     }
