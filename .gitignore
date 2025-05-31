@@ -20,4 +20,3 @@ publish/
 
 # Archivos Para la conexion de base de datos
 conexion.cs
-DB_admins.cs

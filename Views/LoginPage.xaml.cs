@@ -51,7 +51,7 @@ namespace CivitasERP.Views
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            Bd_admin c = new Bd_admin();
+            DB_admins c = new DB_admins();
             hash h = new hash();
             string usuario,contraseña;
             usuario = txtUsuario.Text;

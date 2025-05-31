@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CivitasERP.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Data;
 
 
 
@@ -21,9 +23,20 @@ namespace CivitasERP.Views
     /// </summary>
     public partial class NominaPage : Window
     {
+        private DataGridNominas repo;
         public NominaPage()
         {
             InitializeComponent();
+            Conexion Sconexion = new Conexion();
+            string connectionString;
+
+            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
+            connectionString = obtenerCadenaConexion;
+
+            repo = new DataGridNominas(connectionString);
+
+            var empleados = repo.ObtenerEmpleados();
+            dataGridNomina.ItemsSource = empleados;
         }
         //Poder mover la ventana con libertad
         private void DragWindow(object sender, MouseButtonEventArgs e)
@@ -60,6 +73,7 @@ namespace CivitasERP.Views
             homePage.Show();
             this.Close();
         }
+
     }
     
 }
