@@ -8,7 +8,6 @@
         ResizeMode="CanResize"
         WindowStyle="None"
         AllowsTransparency="False"
-        Background="Transparent"
         MouseLeftButtonDown="DragWindow">
 
 
@@ -16,14 +15,14 @@
         <shell:WindowChrome
         CaptionHeight="10"
         ResizeBorderThickness="5"
-        CornerRadius="30"
+        CornerRadius="0"
         GlassFrameThickness="0"
         UseAeroCaptionButtons="True"/>
     </shell:WindowChrome.WindowChrome>
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" shell:WindowChrome.IsHitTestVisibleInChrome="False"
 >
-        <Grid>
+        <Grid shell:WindowChrome.IsHitTestVisibleInChrome="True" MouseLeftButtonDown="DragWindow">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
@@ -39,10 +38,10 @@
 
             <!-- MENÚ LATERAL -->
             <Border Grid.Column="0" Panel.ZIndex="2"
-                CornerRadius="30,0,0,30" 
+                CornerRadius="0,0,0,0" 
                 Margin="0"
                 Background="White">
-                <Border CornerRadius="0,30,0,30" Margin="0,154,0,0">
+                <Border CornerRadius="0,30,0,0" Margin="0,154,0,0">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                             <GradientStop Color="#1C2F5F" Offset="0"/>
@@ -110,7 +109,7 @@
                         </StackPanel>
 
                         <!-- Logout al pie -->
-                        <StackPanel VerticalAlignment="Bottom" Margin="0,400,0,20" Grid.Row="0">
+                        <StackPanel VerticalAlignment="Bottom" Margin="0,300,0,20" Grid.Row="0">
                             <Button Background="Transparent" BorderBrush="Transparent"
                                 Foreground="White" HorizontalAlignment="Center">
                                 <StackPanel Orientation="Horizontal">
@@ -125,7 +124,7 @@
 
             <!-- CONTENIDO CENTRAL -->
             <Border Grid.Column="1" Panel.ZIndex="1"
-                CornerRadius="0,30,30,0" Background="White" Margin="0">
+                CornerRadius="0,0,0,0" Background="White" Margin="0">
                 <Grid Margin="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

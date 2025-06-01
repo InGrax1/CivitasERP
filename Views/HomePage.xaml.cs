@@ -1,6 +1,7 @@
 ﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Interop;
+
 
 namespace CivitasERP.Views
 {
@@ -22,6 +25,31 @@ namespace CivitasERP.Views
         public HomePage()
         {
             InitializeComponent();
+            this.Loaded += HomePage_Loaded;
+
+        }
+        private void HomePage_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Cambio de tamaño de la ventana
+            if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+            {
+                this.MinWidth = 800;
+                this.MinHeight = 600;
+                // Máximo al área útil de la pantalla:
+                this.MaxWidth = SystemParameters.WorkArea.Width;
+                this.MaxHeight = SystemParameters.WorkArea.Height;
+            }
+
+            // Verificamos si quedó fuera del área útil y la centramos:
+            var wa = SystemParameters.WorkArea;
+            if (this.Left < wa.Left ||
+                this.Top < wa.Top ||
+                this.Left + this.ActualWidth > wa.Right ||
+                this.Top + this.ActualHeight > wa.Bottom)
+            {
+                this.Left = wa.Left + (wa.Width - this.ActualWidth) / 2;
+                this.Top = wa.Top + (wa.Height - this.ActualHeight) / 2;
+            }
         }
         private void DragWindow(object sender, MouseButtonEventArgs e)
         {
