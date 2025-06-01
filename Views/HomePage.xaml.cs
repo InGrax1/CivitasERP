@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Interop;
+using Microsoft.Win32;
 
 
 namespace CivitasERP.Views
@@ -22,11 +23,18 @@ namespace CivitasERP.Views
     /// </summary>
     public partial class HomePage : Window
     {
+        private RegisterPage _registerPage;
         public HomePage()
         {
             InitializeComponent();
             this.Loaded += HomePage_Loaded;
 
+        }
+        
+        private void DragWindow(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
         }
         private void HomePage_Loaded(object sender, RoutedEventArgs e)
         {
@@ -51,10 +59,48 @@ namespace CivitasERP.Views
                 this.Top = wa.Top + (wa.Height - this.ActualHeight) / 2;
             }
         }
-        private void DragWindow(object sender, MouseButtonEventArgs e)
+
+        //CAMBIO DE FOTO DE PERFIL
+        /// Manejador que se activa cuando el usuario hace clic en el Ellipse de perfil.
+        /// Abre un OpenFileDialog para que elija una imagen, y luego la asigna como Fill del Ellipse.
+        private void EllipseProfile_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
-                DragMove();
+            // 1) Abrimos el diálogo de selección de archivo
+            var dlg = new OpenFileDialog
+            {
+                Title = "Selecciona una foto de perfil",
+                Filter = "Imágenes (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp",
+                Multiselect = false
+            };
+
+            bool? result = dlg.ShowDialog();
+            if (result == true)
+            {
+                string rutaImagen = dlg.FileName;
+                try
+                {
+                    // 2) Creamos un BitmapImage a partir de la ruta seleccionada
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(rutaImagen, UriKind.Absolute);
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.EndInit();
+
+                    // 3) Asignamos el BitmapImage como relleno (Fill) del Ellipse
+                    ImageBrush brush = new ImageBrush
+                    {
+                        ImageSource = bitmap,
+                        Stretch = Stretch.UniformToFill  // Ajusta la imagen al círculo sin deformar
+                    };
+                    EllipseProfile.Fill = brush;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"No se pudo cargar la imagen:\n{ex.Message}",
+                                    "Error al cargar imagen",
+                                    MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
@@ -81,18 +127,48 @@ namespace CivitasERP.Views
             nominaPage.Show();
             this.Close();
         }
-
-        private void btnRegis_Click(object sender, RoutedEventArgs e)
-        {
-            RegisterPage registerPage = new RegisterPage();
-            registerPage.Show();
-        }
-
         private void btnLista_Click(object sender, RoutedEventArgs e)
         {
             ListaPage listaPage = new ListaPage();
             listaPage.Show();
             this.Close();
         }
+        private void btnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            // 1) Instanciamos la ventana de Login (ajusta el nombre si tu clase se llama distinto)
+            var loginWindow = new LoginPage();
+
+            // 2) Mostramos Login en modo no modal (para que la app siga viva)
+            loginWindow.Show();
+
+            // 3) Cerramos la ventana actual (dejará viva únicamente la de Login)
+            this.Close();
+        }
+        private void btnRegis_Click(object sender, RoutedEventArgs e)
+        {
+            // ¿Ya hay una instancia abierta?
+            if (_registerPage == null)
+            {
+                // 1) Creamos la ventana (solo si no existe o ya se cerró)
+                _registerPage = new RegisterPage();
+
+                // 2) Subscribimos al evento Closed: cuando se cierre, ponemos _registerWindow = null
+                _registerPage.Closed += (s, args) =>
+                {
+                    _registerPage = null;
+                };
+
+                // 3) Mostramos la ventana (puedes usar ShowDialog() si quieres modal,
+                //    o Show() si quieres que el usuario pueda seguir interactuando con la principal)
+                _registerPage.Show();
+            }
+            else
+            {
+                // Si ya está abierta, solo la activamos (la ponemos al frente)
+                _registerPage.Activate();
+            }
+        }
+
+        
     }
 }
