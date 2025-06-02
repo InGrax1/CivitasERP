@@ -263,7 +263,7 @@
                                 <DataGridTextColumn Header="#" Binding="{Binding ID}" />
                                 <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
                                 <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" />
-                                <DataGridTextColumn Header="Entrada" Binding="{Binding s}" />
+                                <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaL}" />
                                 <DataGridTextColumn Header="Salida" Binding="{Binding SalidaL}" />
                                 <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaM}" />
                                 <DataGridTextColumn Header="Salida" Binding="{Binding SalidaM}" />

@@ -17,7 +17,7 @@ using System.Data.SqlTypes;
 
 namespace CivitasERP.Models
 {
-    internal class Datagrid_lista
+    class Datagrid_lista
     {
 
         public class Empleado_Asistencia
