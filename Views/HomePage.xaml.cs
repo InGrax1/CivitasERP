@@ -60,12 +60,17 @@ namespace CivitasERP.Views
             }
         }
 
+
         //CAMBIO DE FOTO DE PERFIL
         /// Manejador que se activa cuando el usuario hace clic en el Ellipse de perfil.
         /// Abre un OpenFileDialog para que elija una imagen, y luego la asigna como Fill del Ellipse.
+        /// 
+
         private void EllipseProfile_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            // 1) Abrimos el diálogo de selección de archivo
+            System.Diagnostics.Debug.WriteLine("¡Click en el ellipse!");
+
+            // 1) Abrir diálogo para seleccionar imagen
             var dlg = new OpenFileDialog
             {
                 Title = "Selecciona una foto de perfil",
@@ -73,32 +78,36 @@ namespace CivitasERP.Views
                 Multiselect = false
             };
 
-            bool? result = dlg.ShowDialog();
-            if (result == true)
+            bool? resultado = dlg.ShowDialog();
+            if (resultado == true)
             {
                 string rutaImagen = dlg.FileName;
                 try
                 {
-                    // 2) Creamos un BitmapImage a partir de la ruta seleccionada
+                    // 2) Cargar la imagen en un BitmapImage
                     var bitmap = new BitmapImage();
                     bitmap.BeginInit();
                     bitmap.UriSource = new Uri(rutaImagen, UriKind.Absolute);
                     bitmap.CacheOption = BitmapCacheOption.OnLoad;
                     bitmap.EndInit();
 
-                    // 3) Asignamos el BitmapImage como relleno (Fill) del Ellipse
-                    ImageBrush brush = new ImageBrush
+                    // 3) Crear un ImageBrush con esa imagen
+                    var brush = new ImageBrush
                     {
                         ImageSource = bitmap,
-                        Stretch = Stretch.UniformToFill  // Ajusta la imagen al círculo sin deformar
+                        Stretch = Stretch.UniformToFill
                     };
+
+                    // 4) Asignar el ImageBrush al Fill del Ellipse
                     EllipseProfile.Fill = brush;
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"No se pudo cargar la imagen:\n{ex.Message}",
-                                    "Error al cargar imagen",
-                                    MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(
+                        $"No se pudo cargar la imagen:\n{ex.Message}",
+                        "Error al cargar imagen",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
             }
         }

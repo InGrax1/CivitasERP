@@ -29,10 +29,12 @@
 
             <!-- FOTO DE PERFIL -->
             <StackPanel Grid.Column="0" Panel.ZIndex="3"
-                    HorizontalAlignment="Left" Margin="6,43,0,0">
-                <Ellipse Width="137" Height="137"
-                     Stroke="Black" StrokeThickness="2"
-                     Fill="WhiteSmoke"/>
+                        HorizontalAlignment="Left" Margin="6,43,0,0">
+                <Ellipse x:Name="EllipseProfile"
+                         Width="137" Height="137"
+                         Stroke="DarkBlue" 
+                         StrokeThickness="2"
+                         Fill="LightGray"/> 
             </StackPanel>
 
             <!-- MENÚ LATERAL -->
