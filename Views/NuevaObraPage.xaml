@@ -89,12 +89,12 @@
 
             <!-- Botón Guardar -->
             <Button Grid.Row="3" Content="Agregar Obra"
-              Width="150" Height="40"
-              HorizontalAlignment="Right" Margin="0,20,10,0"
-              Background="#5F5FFF" Foreground="White"
-              FontSize="16" FontWeight="Bold"
-              BorderThickness="0"
-              Click="btnAgregarObra">
+                      Width="150" Height="40"
+                      HorizontalAlignment="Right" Margin="0,20,10,0"
+                      Background="#5F5FFF" Foreground="White"
+                      FontSize="16" FontWeight="Bold"
+                      BorderThickness="0"
+                      Click="btnAgregarObra_Click">
                 <Button.Effect>
                     <DropShadowEffect Color="#5F5FFF" BlurRadius="10" ShadowDepth="0"/>
                 </Button.Effect>

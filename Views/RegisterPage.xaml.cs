@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CivitasERP.Models;
+using DPFP;
+using DPFP.Capture;
+using DPFP.Processing;
 
 namespace CivitasERP.Views
 {

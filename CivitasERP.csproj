@@ -16,9 +16,21 @@
     <None Remove="Images\LOGO CONSORCIO CIVIL.png" />
     <None Remove="Images\money.png" />
     <None Remove="Images\usuario.png" />
+
+	  <Reference Include="DPFPDevNET">
+		  <HintPath>Libs\DPFPDevNET.dll</HintPath>
+	  </Reference>
+	  <Reference Include="DPFPEngNET">
+		  <HintPath>Libs\DPFPEngNET.dll</HintPath>
+	  </Reference>
+	  <Reference Include="DPFPGuiNET">
+		  <HintPath>Libs\DPFPGuiNET.dll</HintPath>
+	  </Reference>
+	  
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="LibraryHidSDK.Standard" Version="1.1.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   </ItemGroup>
 

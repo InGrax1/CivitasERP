@@ -236,7 +236,7 @@
                                     BorderBrush="Transparent"
                                     Foreground="White"
                                     FontWeight="Bold"
-                                    Click="btnNuevoEmpleado">
+                                    Click="btnNuevoEmpleado_Click">
                                 + Agregar Nuevo Personal
                             </Button>
                         </Border>
