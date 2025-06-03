@@ -164,6 +164,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="3*"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
                         <!-- Título -->
@@ -213,7 +214,7 @@
                         </StackPanel>
 
                         <!-- Semana -->
-                        <Border Grid.Row="1" Grid.Column="4"
+                        <Border Grid.Row="1" Grid.Column="3"
                             Background="#6666FF" CornerRadius="5"
                             Width="90" Height="30">
                             <Button x:Name="btnSemanaOp"
@@ -223,6 +224,20 @@
                                 FontWeight="Bold"
                                 Click="btnSemanaOp_Click">
                                 Semana
+                            </Button>
+                        </Border>
+
+                        <!-- Semana -->
+                        <Border Grid.Row="1" Grid.Column="4"
+                                Background="#6666FF" CornerRadius="5"
+                                Width="auto" Height="30">
+                            <Button x:Name="btnNuevoEmpleado"
+                                    Background="Transparent"
+                                    BorderBrush="Transparent"
+                                    Foreground="White"
+                                    FontWeight="Bold"
+                                    Click="btnNuevoEmpleado">
+                                + Agregar Nuevo Personal
                             </Button>
                         </Border>
 
