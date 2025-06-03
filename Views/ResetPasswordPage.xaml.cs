@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Security.Cryptography;
 using System.Data.SqlClient;
 using System.Data;
+using static CivitasERP.Views.ForgotPasswordPage;
 
 
 
@@ -50,7 +51,26 @@ namespace CivitasERP.Views
 
         private void btnResetPassword_Click(object sender, RoutedEventArgs e)
         {
+            string usuario;
+            int? id_admin;
+            usuario = GlobalVariables.usuario;
+            id_admin = GlobalVariables.id_admin;
+
+            string contraseña1, contraseña2;
+            contraseña1 =txtNewPassword.Password;
+            contraseña2 = txtConfirmPassword.Password;
+
+            if (contraseña1 == contraseña2)
+            {
+                Reset_Password rp = new Reset_Password();
+                rp.CambiarContraseña(usuario, contraseña1, id_admin);
+            }
+            else {
+                MessageBox.Show("Alguna de las contraseñas no son iguales ");
             
+            }
+
+
         }
 
     }

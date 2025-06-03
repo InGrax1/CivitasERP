@@ -47,12 +47,17 @@ namespace CivitasERP.Views
             LoginPage loginPage = new LoginPage();
             loginPage.Show();
         }
-
+        public static class GlobalVariables
+        {
+            public static string usuario;
+            public static int? id_admin;
+        }
         private void btnEnviarCodigo_Click(object sender, RoutedEventArgs e)
         {
             string usuario = txtUsuario.Text.Trim();
             string correo = txtCorreo.Text.Trim();
-
+            
+            GlobalVariables.usuario = usuario;
             // 1) Comprueba existencia en dbo.admins
             int? adminId = null;
             var conexion = new Conexion();                          
@@ -71,6 +76,9 @@ namespace CivitasERP.Views
                 var result = cmd.ExecuteScalar();
                 if (result != null)
                     adminId = Convert.ToInt32(result);
+
+                //obtienes el calor del id
+                GlobalVariables.id_admin = adminId;
             }
 
             if (adminId == null)
@@ -122,6 +130,8 @@ namespace CivitasERP.Views
                 MessageBox.Show($"Error al enviar correo: {ex.Message}",
                                 "Error SMTP", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
+           
         }
     }
 }

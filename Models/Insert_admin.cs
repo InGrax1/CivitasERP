@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using CivitasERP.Models;
+using System.Windows;
 
 namespace CivitasERP.Models
 {
@@ -58,19 +59,17 @@ namespace CivitasERP.Models
                         int filasAfectadas = cmd.ExecuteNonQuery();
                         conn.Close();
 
-                        Console.WriteLine($"✅ Inserción exitosa. Filas afectadas: {filasAfectadas}");
+                         MessageBox.Show($"✅ Administrador registrado con exito.");
                     }
                 }
             }
             catch (SqlException ex)
             {
-                Console.WriteLine("❌ Error de SQL:");
-                Console.WriteLine(ex.Message);
+                MessageBox.Show("❌ Error de SQL: " + ex.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("❌ Error general:");
-                Console.WriteLine(ex.Message);
+                MessageBox.Show("❌ Error general: " + ex.Message);
             }
         }
 
@@ -85,8 +84,7 @@ namespace CivitasERP.Models
             }
             catch (Exception ex)
             {
-                Console.WriteLine("❌ Error al encriptar la contraseña:");
-                Console.WriteLine(ex.Message);
+                MessageBox.Show("❌ Error al encriptar la contraseña: " + ex.Message);
                 return new byte[32]; // Devuelve un arreglo vacío como respaldo
             }
         }
