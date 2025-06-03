@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CivitasERP.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static CivitasERP.Models.Datagrid_lista;
 
 namespace CivitasERP.Views
 {
@@ -19,9 +21,20 @@ namespace CivitasERP.Views
     /// </summary>
     public partial class ListaPage : Window
     {
+        private Datagrid_lista repo;
         public ListaPage()
         {
             InitializeComponent();
+            Conexion Sconexion = new Conexion();
+            string connectionString;
+
+            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
+            connectionString = obtenerCadenaConexion;
+
+            repo = new Datagrid_lista(connectionString);
+
+            var Empleado_Asistencia = repo.ObtenerEmpleados();
+            dataGridNomina.ItemsSource = Empleado_Asistencia;
         }
 
         private void DragWindow(object sender, MouseButtonEventArgs e)
