@@ -89,10 +89,6 @@ namespace CivitasERP.Views
             }
 
 
-
-
-
-
         }
 
         private void brnResetPassword(object sender, RoutedEventArgs e)

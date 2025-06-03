@@ -61,25 +61,13 @@ namespace CivitasERP.Views
                        : WindowState.Maximized;
         }
 
-        private void btnNomina_Click(object sender, RoutedEventArgs e)
-        {
-            NominaPage nominaPage = new NominaPage();
-            nominaPage.Show();
-            this.Close();
-        }
-
+      
         private void btnRegis_Click(object sender, RoutedEventArgs e)
         {
             RegisterPage registerPage = new RegisterPage();
             registerPage.Show();
         }
 
-        private void btnMenu_Click(object sender, RoutedEventArgs e)
-        {
-            HomePage homePage = new HomePage();
-            homePage.Show();
-            this.Close();
-        }
 
         private void btnSemanaOp_Click(object sender, RoutedEventArgs e)
         {
@@ -87,11 +75,27 @@ namespace CivitasERP.Views
             this.WindowState = WindowState.Minimized;
 
         }
-
-        private void btnLista_Click(object sender, RoutedEventArgs e)
+        private void btnMenu_Click(object sender, RoutedEventArgs e)
         {
-            ListaPage listaPage = new ListaPage();
-            listaPage.Show();
+            HomePage homePage = new HomePage();
+            homePage.Show();
+            this.Close();
+        }
+        private void btnNomina_Click(object sender, RoutedEventArgs e)
+        {
+            NominaPage nominaPage = new NominaPage();
+            nominaPage.Show();
+            this.Close();
+        }
+        private void btnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            // 1) Instanciamos la ventana de Login (ajusta el nombre si tu clase se llama distinto)
+            var loginWindow = new LoginPage();
+
+            // 2) Mostramos Login en modo no modal (para que la app siga viva)
+            loginWindow.Show();
+
+            // 3) Cerramos la ventana actual (dejará viva únicamente la de Login)
             this.Close();
         }
 

@@ -54,7 +54,7 @@ namespace CivitasERP.Views
             };
 
             inser.InsertarAdmin();
-            MessageBox.Show("diste click");
+            MessageBox.Show("Usuario Registrado Con Exito");
 
         }
 

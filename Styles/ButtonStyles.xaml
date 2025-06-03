@@ -47,7 +47,9 @@
                     <Border x:Name="PART_Border"
                   Background="{TemplateBinding Background}"
                   CornerRadius="10"
-                  SnapsToDevicePixels="True">
+                  SnapsToDevicePixels="True"
+                  Margin="5"
+                  Height="35">
                         <ContentPresenter HorizontalAlignment="Center"
                               VerticalAlignment="Center"/>
                     </Border>
