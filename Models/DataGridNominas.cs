@@ -14,6 +14,7 @@ using System.IO.Packaging;
 using CivitasERP.Views;
 using static CivitasERP.Models.DataGridNominas;
 using System.Data.SqlTypes;
+using static CivitasERP.Views.LoginPage;
 
 namespace CivitasERP.Models
 {
@@ -57,10 +58,24 @@ namespace CivitasERP.Models
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = @"SELECT id_empleado, CONCAT(empleado.emp_nombre, ' ', empleado.emp_apellidop, ' ', empleado.emp_apellidom) AS emp_nombre, emp_puesto,emp_dia, emp_semanal,emp_hora_extra  FROM empleado where id_admins=107;";
+                string usuario;
+                usuario = GlobalVariables1.usuario;
+                DB_admins dB_Admins = new DB_admins();
+                int? idAdmin;
+                idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
 
+                string query = @"SELECT id_empleado, 
+                            CONCAT(empleado.emp_nombre, ' ', empleado.emp_apellidop, ' ', empleado.emp_apellidom) AS emp_nombre, 
+                            emp_puesto, 
+                            emp_dia, 
+                            emp_semanal, 
+                            emp_hora_extra  
+                     FROM empleado 
+                     WHERE id_admins = @idAdmin";
 
                 SqlCommand cmd1 = new SqlCommand(query, connection);
+                cmd1.Parameters.AddWithValue("@idAdmin", idAdmin);
+
                 connection.Open();
 
                 SqlDataReader reader1 = cmd1.ExecuteReader();
@@ -81,13 +96,12 @@ namespace CivitasERP.Models
                         HorasExtra = ObtenerTotalHorasExtra(reader1.GetInt32(0)),
                         SuelExtra = Convert.ToDecimal(reader1.GetValue(5)) * ObtenerTotalHorasExtra(reader1.GetInt32(0)),
                         SuelTrabajado = Convert.ToDecimal(reader1.GetValue(3)) * CalcularDiasTrabajados(reader1.GetInt32(0)),
-                        SuelTotal = Convert.ToDecimal(reader1.GetValue(5)) * ObtenerTotalHorasExtra(reader1.GetInt32(0)) + Convert.ToDecimal(reader1.GetValue(3)) * CalcularDiasTrabajados(reader1.GetInt32(0))
-
-
+                        SuelTotal = (Convert.ToDecimal(reader1.GetValue(5)) * ObtenerTotalHorasExtra(reader1.GetInt32(0))) +
+                                    (Convert.ToDecimal(reader1.GetValue(3)) * CalcularDiasTrabajados(reader1.GetInt32(0)))
                     });
                 }
-                reader1.Close();
 
+                reader1.Close();
             }
 
             return empleados;

@@ -119,6 +119,15 @@ namespace CivitasERP.Views
             // 3) Cerramos la ventana actual (dejará viva únicamente la de Login)
             this.Close();
         }
+
+
+
+        private void btnNuevoEmpleado_Click(object sender, RoutedEventArgs e)
+        {
+            NuevoEmpleadoPage nuevoEmpleadoPage = new NuevoEmpleadoPage();
+            nuevoEmpleadoPage.Show();
+            this.Close();
+        }
     }
     
 }

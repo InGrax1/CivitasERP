@@ -107,7 +107,7 @@
                 <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,10,10,10">
                     <TextBlock Text="Obra" Foreground="#5F5FFF" FontSize="15" Margin="0,20,0,5"/>
                     <Border Background="#F0F0F0" CornerRadius="10" Padding="5">
-                        <ComboBox x:Name="txtObra" BorderThickness="0" Background="Transparent"/>
+                        <ComboBox x:Name="cmbObra" BorderThickness="0" Background="Transparent" DropDownOpened ="cmbObra_DropDownOpened"/>
                     </Border>
                 </StackPanel>
 
