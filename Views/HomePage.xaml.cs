@@ -142,6 +142,12 @@ namespace CivitasERP.Views
             listaPage.Show();
             this.Close();
         }
+        private void btnNueva_Obra(object sebder, RoutedEventArgs e)
+        {
+            NuevaObraPage nuevaObraPage = new NuevaObraPage();
+            nuevaObraPage.Show();
+            this.Close();
+        }
         private void btnLogout_Click(object sender, RoutedEventArgs e)
         {
             // 1) Instanciamos la ventana de Login (ajusta el nombre si tu clase se llama distinto)

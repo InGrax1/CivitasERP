@@ -232,8 +232,12 @@
                                   Background="Transparent" BorderThickness="0">
                             <StackPanel>
                                 <TextBlock Text="TOMAR ASISTENCIA" Foreground="#5F5FFF" FontSize="14" HorizontalAlignment="Center"/>
-                                <Button Width="70" Height="70" Click="btnHuellaR_Click" Background="Transparent" BorderBrush="Transparent">
-                                    <Image Source="/Images/huella-dactilar.png" Width="auto" Height="auto"/>
+                                <Button Width="70" Height="70" 
+                                        Click="btnHuellaR_Click" 
+                                        Background="Transparent" 
+                                        BorderBrush="Transparent">
+                                    <Image Source="/Images/huella-dactilar.png" 
+                                           Width="auto" Height="auto"/>
                                 </Button>
                             </StackPanel>
                         </Button>

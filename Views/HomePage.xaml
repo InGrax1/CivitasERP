@@ -104,6 +104,14 @@
                                     <TextBlock Text="Pase de lista" FontSize="20" Foreground="White"/>
                                 </StackPanel>
                             </Button>
+                            <!-- Nueva Obra-->
+                            <Button Style="{StaticResource LargeRoundButton}"
+                                    Background="#274288"
+                                    Click="btnNueva_Obra">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock Text="Nueva Obra" FontSize="20" Foreground="White"/>
+                                </StackPanel>
+                            </Button>
                             <!-- Registro Nuevo -->
                             <Button Style="{StaticResource LargeRoundButton}"
                                     Background="DarkRed"
@@ -164,7 +172,7 @@
                     </StackPanel>
                     <!--Mensaje Bienvenida-->
                     <StackPanel Grid.Row="1" Margin="0,20,0,0">
-                        <TextBlock Text="Bienvenido a Civitas ERP"
+                        <TextBlock Text="Bienvenido a CivitasERP"
                             FontSize="70" FontWeight="Bold"
                             HorizontalAlignment="Center"/>
                         <TextBlock Text="Sistema de gestión empresarial"

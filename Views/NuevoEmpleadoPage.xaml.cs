@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CivitasERP.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,6 +41,11 @@ namespace CivitasERP.Views
         private void btnHuellaR_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Funcionalidad de huella no implementada aún.");
+        }
+        private void btnRegister_Click(object sender, RoutedEventArgs e)
+        {
+            
+
         }
     }
 }
