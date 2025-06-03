@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Images\home.png" />
+    <None Remove="Images\huella-dactilar.png" />
     <None Remove="Images\Key.png" />
     <None Remove="Images\lista.png" />
     <None Remove="Images\LOGO CONSORCIO CIVIL 2.png" />
@@ -26,6 +27,9 @@
 	  <Reference Include="DPFPGuiNET">
 		  <HintPath>Libs\DPFPGuiNET.dll</HintPath>
 	  </Reference>
+	  <Reference Include="DPFPShrNET">
+		  <HintPath>Libs\DPFPShrNET.dll</HintPath>
+	  </Reference>
 	  
   </ItemGroup>
 
@@ -35,6 +39,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\huella-dactilar.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\lista.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
