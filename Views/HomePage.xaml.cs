@@ -30,7 +30,9 @@ namespace CivitasERP.Views
             this.Loaded += HomePage_Loaded;
 
         }
-        
+
+
+
         private void DragWindow(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -146,7 +148,6 @@ namespace CivitasERP.Views
         {
             NuevaObraPage nuevaObraPage = new NuevaObraPage();
             nuevaObraPage.Show();
-            this.Close();
         }
         private void btnLogout_Click(object sender, RoutedEventArgs e)
         {

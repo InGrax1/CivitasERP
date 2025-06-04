@@ -131,6 +131,7 @@ namespace CivitasERP.Views
                 txtApellidoMaterno.Clear();
                 txtCorreo.Clear();
                 pwdPassword.Clear();
+                txtSueldo.Clear();
             }
             catch (Exception ex)
             {
@@ -141,17 +142,7 @@ namespace CivitasERP.Views
 
         }
 
-        private void btnMin_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
-
-        private void btnExit_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-
+        
 
         // === Implementación de DPFP.Capture.EventHandler ===
         // Se llama cuando se completa la lectura de la huella
@@ -246,5 +237,18 @@ namespace CivitasERP.Views
         public void OnReaderConnect(object Capture, string ReaderSerialNumber) { }
         public void OnReaderDisconnect(object Capture, string ReaderSerialNumber) { }
         public void OnSampleQuality(object Capture, string ReaderSerialNumber, CaptureFeedback CaptureFeedback) { }
+
+
+        //Botones de la ventana
+        private void btnMin_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
+
 }

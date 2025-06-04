@@ -54,8 +54,11 @@ namespace CivitasERP.Views
             DB_admins c = new DB_admins();
             hash h = new hash();
             string usuario,contraseña;
+
             usuario = txtUsuario.Text;
             contraseña = txtPassword.Password;
+
+
             try
             {
                 //validacion de campos vacios
@@ -87,10 +90,16 @@ namespace CivitasERP.Views
                 // cualquier otro error inesperado
                 MessageBox.Show($"Ocurrió un error al iniciar sesión:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
+            GlobalVariables1.usuario = "";
+            GlobalVariables1.usuario = usuario;
 
         }
+        public static class GlobalVariables1
+        {
 
+            public static string usuario;
+            public static int? id_admin;
+        }
         private void brnResetPassword(object sender, RoutedEventArgs e)
         {
             ForgotPasswordPage forgotPasswordPage = new ForgotPasswordPage();

@@ -236,7 +236,7 @@
                                     BorderBrush="Transparent"
                                     Foreground="White"
                                     FontWeight="Bold"
-                                    Click="btnNuevoEmpleado_Click">
+                                    Click="btnNuevoEmpleado_Click" HorizontalAlignment="Right" Width="153">
                                 + Agregar Nuevo Personal
                             </Button>
                         </Border>

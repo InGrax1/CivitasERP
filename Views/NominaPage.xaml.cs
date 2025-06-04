@@ -119,11 +119,11 @@ namespace CivitasERP.Views
             // 3) Cerramos la ventana actual (dejará viva únicamente la de Login)
             this.Close();
         }
+
         private void btnNuevoEmpleado_Click(object sender, RoutedEventArgs e)
         {
-            // Lógica para agregar un nuevo empleado
-            // Aquí puedes abrir una nueva ventana o formulario para ingresar los datos del nuevo empleado
-            MessageBox.Show("Funcionalidad de agregar nuevo empleado aún no implementada.");
+            NuevoEmpleadoPage nuevoEmpleadoPage = new NuevoEmpleadoPage();
+            nuevoEmpleadoPage.Show();
         }
     }
     

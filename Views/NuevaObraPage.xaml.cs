@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
 using CivitasERP.ViewModels;
+using CivitasERP.Models;
+using static CivitasERP.Views.LoginPage;
 
 namespace CivitasERP.Views
 {
@@ -25,18 +27,33 @@ namespace CivitasERP.Views
         {
             InitializeComponent();
         }
-        private void btnAgregarObra_Click(object sender, EventArgs e)
-        {
-            
-        }
+
         private void DragWindow(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
+
+
+        private void btnAgregarObra_Click(object sender, RoutedEventArgs e)
+        {
+            string usuario, nombreObra, ubicacion;
+            usuario = GlobalVariables1.usuario;
+            DB_admins dB_Admins = new DB_admins();
+            int? idAdminObra;
+            idAdminObra = dB_Admins.ObtenerIdPorUsuario(usuario);
+
+            nombreObra = txtObraNombre.Text;
+            ubicacion = txtObraUbicacion.Text;
+
+            Insert_Obra insert_Obra = new Insert_Obra();
+            insert_Obra.AgregarObra(nombreObra, ubicacion, idAdminObra);  
+            
+        }
+
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            this.Close();
         }
 
         private void btnMin_Click(object sender, RoutedEventArgs e)

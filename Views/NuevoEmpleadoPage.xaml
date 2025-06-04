@@ -107,7 +107,7 @@
                 <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,10,10,10">
                     <TextBlock Text="Obra" Foreground="#5F5FFF" FontSize="15" Margin="0,20,0,5"/>
                     <Border Background="#F0F0F0" CornerRadius="10" Padding="5">
-                        <ComboBox x:Name="txtObra" BorderThickness="0" Background="Transparent"/>
+                        <ComboBox x:Name="cmbObra" BorderThickness="0" Background="Transparent" DropDownOpened ="cmbObra_DropDownOpened"/>
                     </Border>
                 </StackPanel>
 
@@ -122,13 +122,22 @@
 
             <!-- Botón Huella -->
             <Button Grid.Row="2"
-              HorizontalAlignment="Center" Margin="0,10"
-              Background="Transparent" BorderThickness="0">
+                    HorizontalAlignment="Center"
+                    Margin="0,10"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="btnHuellaR_Click">
                 <StackPanel>
-                    <TextBlock Text="Huella" Foreground="#5F5FFF" FontSize="14" HorizontalAlignment="Center"/>
-                    <Button Width="100" Height="100" Click="btnHuellaR_Click" Background="Transparent" BorderBrush="Transparent">
-                        <Image Source="/Images/huella-dactilar.png" Width="90" Height="90"/>
-                    </Button>
+                    <TextBlock x:Name="EstadoHuella"
+                               Text="Click para iniciar el escaneo"
+                               Foreground="#5F5FFF"
+                               FontSize="15"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"/>
+                    <Image Source="/Images/huella-dactilar.png"
+                           Width="90"
+                           Height="90"
+                           HorizontalAlignment="Stretch"/>
                 </StackPanel>
             </Button>
 
