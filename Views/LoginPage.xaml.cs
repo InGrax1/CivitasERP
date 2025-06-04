@@ -99,6 +99,7 @@ namespace CivitasERP.Views
 
             public static string usuario;
             public static int? id_admin;
+            public static int? id_obra;
         }
         private void brnResetPassword(object sender, RoutedEventArgs e)
         {

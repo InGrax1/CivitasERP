@@ -21,7 +21,7 @@
     </shell:WindowChrome.WindowChrome>
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <Grid shell:WindowChrome.IsHitTestVisibleInChrome="True" MouseLeftButtonDown="DragWindow"> 
+        <Grid shell:WindowChrome.IsHitTestVisibleInChrome="True" MouseLeftButtonDown="DragWindow">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
@@ -34,7 +34,7 @@
                          Width="137" Height="137"
                          Stroke="DarkBlue" 
                          StrokeThickness="2"
-                         Fill="LightGray"/> 
+                         Fill="LightGray"/>
             </StackPanel>
 
             <!-- MENÚ LATERAL -->
@@ -66,7 +66,7 @@
                                        Text="ROL"
                                        Foreground="White" FontSize="20" FontWeight="Bold"
                                        TextAlignment="Center"/>
-                                        <TextBlock x:Name="LabelName"
+                            <TextBlock x:Name="LabelName"
                                        Text="Nombre"
                                        Foreground="White" FontSize="16"
                                        TextAlignment="Center"
@@ -192,7 +192,7 @@
                                       VerticalContentAlignment="Center"
                                       Padding="10"
                                       IsEditable="True"
-                                      IsReadOnly="False"/>
+                                      IsReadOnly="False" DropDownOpened="ObraComboBox_DropDownOpened" SelectionChanged="ObraComboBox_SelectionChanged"/>
                         </Border>
 
                         <!-- Periodo -->
@@ -204,7 +204,7 @@
                                 Orientation="Horizontal" VerticalAlignment="Center">
                             <Border Background="#6666FF" CornerRadius="5"
                                 Width="80" Height="30" Margin="0,0,5,0">
-                                <TextBlock Text="Fecha 1"
+                                <TextBlock x:Name="Fecha1" Text="Fecha 1"
                                        Foreground="White"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
@@ -212,7 +212,7 @@
                             <TextBlock Text="al" VerticalAlignment="Center" Margin="5,0"/>
                             <Border Background="#6666FF" CornerRadius="5"
                                 Width="80" Height="30" Margin="5,0,0,0">
-                                <TextBlock Text="Fecha 2"
+                                <TextBlock x:Name="Fecha2" Text="Fecha 2"
                                        Foreground="White"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
@@ -230,11 +230,8 @@
                                       BorderBrush="Transparent"
                                       Foreground="Blue"
                                       FontWeight="Bold"
-                                      HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Stretch"
                                       HorizontalContentAlignment="Center"
-                                      VerticalContentAlignment="Center">
-                            </ComboBox>
+                                      VerticalContentAlignment="Center" DropDownOpened="ComBoxSemanaOp_DropDownOpened" SelectionChanged="ComBoxSemanaOp_SelectionChanged_1"/>
                         </Border>
 
                         <!-- Semana -->
