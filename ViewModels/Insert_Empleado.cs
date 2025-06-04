@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace CivitasERP.Models
         public int? id_obra { get; set; }
 
         public string categoria { get; set; }
+        public byte[] Huella { get; set; }
 
         public void InsertEmpleado()
         {
@@ -39,8 +41,8 @@ namespace CivitasERP.Models
                 {
                     string query = @"INSERT INTO empleado (emp_nombre, emp_apellidop, emp_apellidom, 
                                                      emp_dia, emp_semanal,emp_hora_extra, id_admins,
-                                                     id_obra,emp_puesto )
-                                 VALUES (@Nombre, @ApellidoP, @ApellidoM, @emp_dia, @emp_semanal,@emp_hora_extra, @id_admins, @id_obra, @Categoria)";
+                                                     id_obra,emp_puesto, emp_huella)
+                                 VALUES (@Nombre, @ApellidoP, @ApellidoM, @emp_dia, @emp_semanal,@emp_hora_extra, @id_admins, @id_obra, @Categoria, @Huella)";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -57,11 +59,16 @@ namespace CivitasERP.Models
                         cmd.Parameters.AddWithValue("@id_obra", id_obra);
                         cmd.Parameters.AddWithValue("@Categoria", categoria);
 
+                        // Parámetro para la huella (byte[])
+                        var pHuella = new SqlParameter("@Huella", SqlDbType.VarBinary, -1);
+                        pHuella.Value = (Huella != null) ? (object)Huella : DBNull.Value;
+                        cmd.Parameters.Add(pHuella);
+
                         conn.Open();
                         int filasAfectadas = cmd.ExecuteNonQuery();
                         conn.Close();
 
-                        MessageBox.Show($"✅ Empleado registrado con exito.");
+                        MessageBox.Show($"✅ Empleado registrado con exito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
             }

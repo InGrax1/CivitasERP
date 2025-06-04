@@ -10,19 +10,24 @@
 
   <ItemGroup>
     <None Remove="Images\home.png" />
+    <None Remove="Images\huella-dactilar.png" />
     <None Remove="Images\Key.png" />
     <None Remove="Images\lista.png" />
     <None Remove="Images\LOGO CONSORCIO CIVIL 2.png" />
     <None Remove="Images\LOGO CONSORCIO CIVIL.png" />
     <None Remove="Images\money.png" />
-    <None Remove="Images\usuario.png" />
+    <None Remove="Images\usuario.png" />	  
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="LibraryHidSDK.Standard" Version="1.1.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\huella-dactilar.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\lista.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -51,6 +56,10 @@
 
   <ItemGroup>
     <Folder Include="AdminViews\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BiometriaDP\BiometriaDP.csproj" />
   </ItemGroup>
 
 </Project>

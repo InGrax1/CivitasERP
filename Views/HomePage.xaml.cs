@@ -148,7 +148,6 @@ namespace CivitasERP.Views
         {
             NuevaObraPage nuevaObraPage = new NuevaObraPage();
             nuevaObraPage.Show();
-            this.Close();
         }
         private void btnLogout_Click(object sender, RoutedEventArgs e)
         {

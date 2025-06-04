@@ -120,13 +120,10 @@ namespace CivitasERP.Views
             this.Close();
         }
 
-
-
         private void btnNuevoEmpleado_Click(object sender, RoutedEventArgs e)
         {
             NuevoEmpleadoPage nuevoEmpleadoPage = new NuevoEmpleadoPage();
             nuevoEmpleadoPage.Show();
-            this.Close();
         }
     }
     

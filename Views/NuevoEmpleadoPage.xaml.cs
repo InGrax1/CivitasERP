@@ -1,23 +1,12 @@
 ﻿using CivitasERP.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using CivitasERP.Models;
-using CivitasERP.Views;
-using CivitasERP.ViewModels;
 using static CivitasERP.Views.LoginPage;
-using System.Data.SqlClient;
-using System.Reflection;
+using BiometriaDP.Services;
 
 namespace CivitasERP.Views
 {
@@ -26,52 +15,107 @@ namespace CivitasERP.Views
     /// </summary>
     public partial class NuevoEmpleadoPage : Window
     {
+        private readonly string _connectionString;
+        private FingerprintService _fingerService;
+        private byte[] _templateHuella;
 
         public NuevoEmpleadoPage()
         {
             InitializeComponent();
-          
+
+            // 1) Cadena de conexión:
+            _connectionString = new Conexion().ObtenerCadenaConexion();
+
+            // 2) Inicializar el servicio de huella:
+            _fingerService = new FingerprintService(_connectionString);
+            _fingerService.OnEnrollmentComplete += FingerService_OnEnrollmentComplete;
+            _fingerService.OnError += FingerService_OnError;
+
+            _templateHuella = null;
         }
+
         private void DragWindow(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
-        private void btnMin_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
 
-        private void btnExit_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+        // --- Evento para iniciar la lectura de huella ---
         private void btnHuellaR_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Funcionalidad de huella no implementada aún.");
+            try
+            {
+                _fingerService.StartEnrollment();
+                EstadoHuella.Text = "⏳ Coloca tu dedo varias veces…";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"No se pudo iniciar la captura de huella.\n\nDetalle:\n{ex.Message}",
+                    "Error al iniciar huella",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
         }
+
+        private void FingerService_OnEnrollmentComplete(object sender, FingerprintCapturedEventArgs e)
+        {
+            _templateHuella = e.TemplateBytes;
+
+            Dispatcher.Invoke(() =>
+            {
+                EstadoHuella.Text = "✔ Huella capturada correctamente.";
+                MessageBox.Show("La huella fue capturada con éxito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            });
+        }
+
+        private void FingerService_OnError(object sender, string mensaje)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                EstadoHuella.Text = $"{mensaje}";
+            });
+        }
+
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
+            if (_templateHuella == null)
+            {
+                MessageBox.Show(
+                    "Primero debes capturar la huella con el botón “Capturar Huella”.",
+                    "Atención",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
 
-            string Nombre="", apellidop = "", apellidom = "", categoria = "", usuario = "", obra = "";
-            int? Id_admin=0 ,id_obra=0;
-            decimal sueldo=0;
-            bool exito;
-            Nombre = txtNombre.Text;
-            apellidop = txtApellidoPaterno.Text;
-            apellidom = txtApellidoMaterno.Text;
-            categoria = txtCategoria.Text;
-            exito = decimal.TryParse(txtSueldo.Text, out sueldo);
+            // 1) Obtener datos de los campos de texto
+            string Nombre = txtNombre.Text;
+            string apellidop = txtApellidoPaterno.Text;
+            string apellidom = txtApellidoMaterno.Text;
+            string categoria = txtCategoria.Text;
+            decimal sueldo = 0;
+            bool exito = decimal.TryParse(txtSueldo.Text, out sueldo);
 
-            
+            if (!exito)
+            {
+                MessageBox.Show(
+                    "El campo sueldo no es un número válido.",
+                    "Error de validación",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
 
-            DB_admins id_ADMIN = new DB_admins();
-            usuario = GlobalVariables1.usuario;
-            Id_admin = id_ADMIN.ObtenerIdPorUsuario(usuario);
-            obra = cmbObra.Text;
-            id_obra = ObtenerID_obra(Id_admin, obra);
+            // 2) Obtener ID de admin y ID de obra
+            string usuario = GlobalVariables1.usuario;
+            var idDB = new DB_admins();
+            int? Id_admin = idDB.ObtenerIdPorUsuario(usuario);
+            string obra = cmbObra.Text;
+            int? id_obra = ObtenerID_obra(Id_admin, obra);
 
-            Insert_Empleado insert_Empleado = new Insert_Empleado()
+            // 3) Crear el objeto Insert_Empleado incluyendo la huella
+            var insert_Empleado = new Insert_Empleado
             {
                 Nombre = Nombre,
                 ApellidoP = apellidop,
@@ -82,50 +126,67 @@ namespace CivitasERP.Views
                 Obra = obra,
                 id_admin = Id_admin,
                 id_obra = id_obra,
-                categoria = categoria
+                categoria = categoria,
+                Huella = _templateHuella
             };
-            insert_Empleado.InsertEmpleado();
-            MessageBox.Show("Empleado Registrado Con Exito");
+
+            try
+            {
+                insert_Empleado.InsertEmpleado();
+
+                // Limpiar campos y variable de huella
+                _templateHuella = null;
+                txtApellidoPaterno.Clear();
+                txtApellidoMaterno.Clear();
+                txtCategoria.Clear();
+                txtNombre.Clear();
+                txtSueldo.Clear();
+                EstadoHuella.Text = "Click para capturar huella";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error al guardar el empleado: {ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
         }
 
+        // Al abrir el ComboBox, cargamos las obras asociadas al admin
         private void cmbObra_DropDownOpened(object sender, EventArgs e)
         {
             CargarDatosComboBox();
         }
+
         private void CargarDatosComboBox()
         {
-            string usuario;
-            usuario =GlobalVariables1.usuario;
-            DB_admins dB_Admins = new DB_admins();
-            int? idAdminObra;
-            idAdminObra = dB_Admins.ObtenerIdPorUsuario(usuario);
+            string usuario = GlobalVariables1.usuario;
+            var dB_Admins = new DB_admins();
+            int? idAdminObra = dB_Admins.ObtenerIdPorUsuario(usuario);
 
             try
             {
-                Conexion Sconexion = new Conexion();
-                string connectionString;
+                var conexion = new Conexion();
+                string connectionString = conexion.ObtenerCadenaConexion();
 
-                string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
-                connectionString = obtenerCadenaConexion;
-
-
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (var conn = new SqlConnection(connectionString))
                 {
                     string query = "SELECT obra_nombre FROM obra WHERE id_admin_obra = @idAdminObra";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@idAdminObra", idAdminObra);
-
-                    conn.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    cmbObra.Items.Clear();
-
-                    while (reader.Read())
+                    using (var cmd = new SqlCommand(query, conn))
                     {
-                        cmbObra.Items.Add(reader["obra_nombre"].ToString());
-                    }
+                        cmd.Parameters.AddWithValue("@idAdminObra", idAdminObra);
+                        conn.Open();
 
-                    reader.Close();
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            cmbObra.Items.Clear();
+                            while (reader.Read())
+                            {
+                                cmbObra.Items.Add(reader["obra_nombre"].ToString());
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -134,32 +195,40 @@ namespace CivitasERP.Views
             }
         }
 
-
         private int? ObtenerID_obra(int? idAdminObra, string obraNombre)
         {
             if (idAdminObra == null || string.IsNullOrWhiteSpace(obraNombre))
                 return null;
 
-            Conexion Sconexion = new Conexion();
-            string connectionString = Sconexion.ObtenerCadenaConexion();
+            var conexion = new Conexion();
+            string connectionString = conexion.ObtenerCadenaConexion();
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (var conn = new SqlConnection(connectionString))
             {
                 string query = "SELECT id_obra FROM obra WHERE id_admin_obra = @idAdminObra AND obra_nombre = @obraNombre";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@idAdminObra", idAdminObra);
-                cmd.Parameters.AddWithValue("@obraNombre", obraNombre);
-
-                conn.Open();
-                object resultado = cmd.ExecuteScalar();
-
-                if (resultado != null && int.TryParse(resultado.ToString(), out int idObra))
+                using (var cmd = new SqlCommand(query, conn))
                 {
-                    return idObra;
-                }
+                    cmd.Parameters.AddWithValue("@idAdminObra", idAdminObra);
+                    cmd.Parameters.AddWithValue("@obraNombre", obraNombre);
+                    conn.Open();
 
-                return null; // No se encontró coincidencia
+                    object resultado = cmd.ExecuteScalar();
+                    if (resultado != null && int.TryParse(resultado.ToString(), out int idObra))
+                        return idObra;
+
+                    return null;
+                }
             }
+        }
+
+        private void btnMin_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

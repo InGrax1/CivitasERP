@@ -27,17 +27,15 @@ namespace CivitasERP.Views
         {
             InitializeComponent();
         }
+
         private void DragWindow(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
-        private void btnAgregarObra_Click(object sender, EventArgs e)
-        {
-            
-        }
 
-        private void btnAgregarObra(object sender, RoutedEventArgs e)
+
+        private void btnAgregarObra_Click(object sender, RoutedEventArgs e)
         {
             string usuario, nombreObra, ubicacion;
             usuario = GlobalVariables1.usuario;
@@ -55,7 +53,7 @@ namespace CivitasERP.Views
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            this.Close();
         }
 
         private void btnMin_Click(object sender, RoutedEventArgs e)

@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using CivitasERP.Models;
 using System.Windows;
+using System.Data;
 
 namespace CivitasERP.Models
 {
@@ -22,7 +23,7 @@ namespace CivitasERP.Models
         public decimal Semanal { get; set; }
         public string Categoria { get; set; }
 
-
+        public byte[] Huella { get; set; }
 
 
         public void InsertarAdmin()
@@ -41,8 +42,8 @@ namespace CivitasERP.Models
                 {
                     string query = @"INSERT INTO admins (admins_nombre, admins_apellidop, admins_apellidom, 
                                                      admins_correo, admins_contra, admins_usuario, 
-                                                     admins_semanal, admin_categoria)
-                                 VALUES (@Nombre, @ApellidoP, @ApellidoM, @Correo, @Contra, @Usuario, @Semanal, @Categoria)";
+                                                     admins_semanal, admin_categoria, admin_huella)
+                                 VALUES (@Nombre, @ApellidoP, @ApellidoM, @Correo, @Contra, @Usuario, @Semanal, @Categoria, @Huella)";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -55,11 +56,16 @@ namespace CivitasERP.Models
                         cmd.Parameters.AddWithValue("@Semanal", Semanal);
                         cmd.Parameters.AddWithValue("@Categoria", Categoria);
 
+                        // Parámetro para la huella (byte[])
+                        var pHuella = new SqlParameter("@Huella", SqlDbType.VarBinary, -1);
+                        pHuella.Value = (Huella != null) ? (object)Huella : DBNull.Value;
+                        cmd.Parameters.Add(pHuella);
+
                         conn.Open();
                         int filasAfectadas = cmd.ExecuteNonQuery();
                         conn.Close();
 
-                         MessageBox.Show($"✅ Administrador registrado con exito.");
+                         MessageBox.Show($"✅ Administrador registrado con exito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
             }
