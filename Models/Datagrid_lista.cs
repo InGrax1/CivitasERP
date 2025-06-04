@@ -200,24 +200,24 @@ namespace CivitasERP.Models
         /// 
         public void MarcarAsistencia(int idEmpleado)
         {
-            // 1) Obtener la cadena de conexión
-            Conexion Sconexion = new Conexion();
-            string connectionString = Sconexion.ObtenerCadenaConexion();
+            // 1) Obtener la cadena de conexión (no uses “asis_id” aquí, solo id_asistencia cuando lo leas)
+            string connectionString = new Conexion().ObtenerCadenaConexion();
 
             // 2) Fecha de hoy (solo la parte DATE)
             DateTime fechaHoy = DateTime.Today;
+            TimeSpan horaAhora = DateTime.Now.TimeOfDay;
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
-                // 3) Verificamos si ya existe un registro para este empleado y la fecha de hoy
+                // 3) Intentamos leer el registro de asistencia para este empleado Y esta fecha
+                //    Nota que aquí CORREGIMOS “asis_id” por “id_asistencia”
                 string sqlSelect = @"
-                    SELECT asis_id, asis_hora, asis_salida
-                    FROM asistencia
-                    WHERE id_empleado = @idEmpleado
-                      AND CAST(asis_dia AS DATE) = @fechaHoy
-                ";
+            SELECT id_asistencia, asis_hora, asis_salida
+              FROM asistencia
+             WHERE id_empleado = @idEmpleado
+               AND CAST(asis_dia AS DATE) = @fechaHoy";
 
                 using (SqlCommand cmdSelect = new SqlCommand(sqlSelect, conn))
                 {
@@ -228,23 +228,21 @@ namespace CivitasERP.Models
                     {
                         if (reader.Read())
                         {
-                            // YA HAY un registro para hoy
-                            int idAsistencia = reader.GetInt32(reader.GetOrdinal("asis_id"));
+                            // Ya existe fila de asistencia para “hoy” y este empleado
+                            int idAsistencia = reader.GetInt32(reader.GetOrdinal("id_asistencia"));
                             bool tieneSalida = !reader.IsDBNull(reader.GetOrdinal("asis_salida"));
                             reader.Close();
 
                             if (!tieneSalida)
                             {
-                                // *** Marcar hora de salida ***
+                                // Aún no ha marcado la salida: hacemos UPDATE para poner “asis_salida”
                                 string sqlUpdate = @"
-                                    UPDATE asistencia
-                                    SET asis_salida = @horaAhora
-                                    WHERE asis_id = @idAsistencia
-                                ";
+                            UPDATE asistencia
+                               SET asis_salida = @horaAhora
+                             WHERE id_asistencia = @idAsistencia
+                        ";
                                 using (SqlCommand cmdUpdate = new SqlCommand(sqlUpdate, conn))
                                 {
-                                    // Hora actual (solo TIME)
-                                    TimeSpan horaAhora = DateTime.Now.TimeOfDay;
                                     cmdUpdate.Parameters.AddWithValue("@horaAhora", horaAhora);
                                     cmdUpdate.Parameters.AddWithValue("@idAsistencia", idAsistencia);
                                     cmdUpdate.ExecuteNonQuery();
@@ -252,10 +250,10 @@ namespace CivitasERP.Models
                             }
                             else
                             {
-                                // Ya tenía hora de salida registrada: no hacemos nada o mostramos mensaje
-                                // Por ejemplo:
+                                // Si detectas que ya tenía asis_salida (tercera pasada), 
+                                // tal vez quieras mostrar un mensaje informando que no puede volver a marcar:
                                 MessageBox.Show(
-                                    "Ya registraste tu salida para hoy.",
+                                    "Ya registraste tu salida para hoy. No se puede volver a marcar.",
                                     "Atención",
                                     MessageBoxButton.OK,
                                     MessageBoxImage.Information);
@@ -263,18 +261,22 @@ namespace CivitasERP.Models
                         }
                         else
                         {
+                            // reader.Read() = false -> no hay fila para hoy: INSERT para marcar la hora de entrada
                             reader.Close();
-                            // *** No hay registro para hoy: insertar hora de entrada ***
+
                             string sqlInsert = @"
-                                INSERT INTO asistencia (id_empleado, asis_dia, asis_hora)
-                                VALUES (@idEmpleado, @fechaHoy, @horaAhora)
-                            ";
+                        INSERT INTO asistencia 
+                            (id_empleado, asis_dia, asis_hora, asis_salida, asis_hora_extra, admins_id_asistencia) 
+                        VALUES 
+                            (@idEmpleado, @fechaHoy, @horaAhora, NULL, '00:00:00', NULL)
+                    ";
                             using (SqlCommand cmdInsert = new SqlCommand(sqlInsert, conn))
                             {
                                 cmdInsert.Parameters.AddWithValue("@idEmpleado", idEmpleado);
                                 cmdInsert.Parameters.AddWithValue("@fechaHoy", fechaHoy.Date);
-                                TimeSpan horaAhora = DateTime.Now.TimeOfDay;
                                 cmdInsert.Parameters.AddWithValue("@horaAhora", horaAhora);
+                                // En este ejemplo no asignamos admins_id_asistencia; si quieres grabar qué admin marcó,
+                                // reemplaza el NULL por tu propio parámetro: e.g.  @idAdminQueMarca
                                 cmdInsert.ExecuteNonQuery();
                             }
                         }
@@ -284,6 +286,7 @@ namespace CivitasERP.Models
                 conn.Close();
             }
         }
+
     }
 
 }
