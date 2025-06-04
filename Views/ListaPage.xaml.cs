@@ -13,6 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using static CivitasERP.Models.Datagrid_lista;
+using System.Windows.Threading;
+using System.Data.SqlClient;
+using System.Data;
+
 
 namespace CivitasERP.Views
 {
@@ -25,6 +29,7 @@ namespace CivitasERP.Views
         public ListaPage()
         {
             InitializeComponent();
+
             Conexion Sconexion = new Conexion();
             string connectionString;
 
@@ -34,7 +39,7 @@ namespace CivitasERP.Views
             repo = new Datagrid_lista(connectionString);
 
             var Empleado_Asistencia = repo.ObtenerEmpleados();
-            dataGridNomina.ItemsSource = Empleado_Asistencia;
+            dataGridAsistencia.ItemsSource = Empleado_Asistencia;
         }
 
         private void DragWindow(object sender, MouseButtonEventArgs e)
@@ -103,9 +108,72 @@ namespace CivitasERP.Views
         {
 
         }
+
         private void btnHuellaR_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Funcionalidad de huella no implementada aún.");
+
         }
+
+
+        #region Funciones de BD utilizadas
+
+        /// <summary>
+        /// Devuelve una lista de tuplas (idEmpleado, byte[] template) leídas desde la tabla 'admins'.
+        /// </summary>
+        private List<Tuple<int, byte[]>> ObtenerTemplatesDesdeBD()
+        {
+            var lista = new List<Tuple<int, byte[]>>();
+            string connectionString = new Conexion().ObtenerCadenaConexion();
+
+            using (var conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string sql = @"SELECT admins_id, admin_huella 
+                               FROM admins 
+                               WHERE admin_huella IS NOT NULL";
+
+                using (var cmd = new SqlCommand(sql, conn))
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int id = reader.GetInt32(0);
+                        byte[] huellaBytes = reader["admin_huella"] as byte[];
+                        lista.Add(new Tuple<int, byte[]>(id, huellaBytes));
+                    }
+                }
+                conn.Close();
+            }
+            return lista;
+        }
+
+        /// <summary>
+        /// Dado un ID de usuario, busca su nombre en la tabla 'admins' para mostrarlo.
+        /// </summary>
+        private string ObtenerUsernamePorId(int userId)
+        {
+            string nombreUsuario = string.Empty;
+            string connectionString = new Conexion().ObtenerCadenaConexion();
+
+            using (var conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string sql = @"SELECT admins_usuario 
+                               FROM admins 
+                               WHERE admins_id = @Id";
+
+                using (var cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", userId);
+                    var result = cmd.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                        nombreUsuario = result.ToString();
+                }
+                conn.Close();
+            }
+            return nombreUsuario;
+        }
+
+        #endregion
     }
 }

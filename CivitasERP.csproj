@@ -16,21 +16,7 @@
     <None Remove="Images\LOGO CONSORCIO CIVIL 2.png" />
     <None Remove="Images\LOGO CONSORCIO CIVIL.png" />
     <None Remove="Images\money.png" />
-    <None Remove="Images\usuario.png" />
-
-	  <Reference Include="DPFPDevNET">
-		  <HintPath>Libs\DPFPDevNET.dll</HintPath>
-	  </Reference>
-	  <Reference Include="DPFPEngNET">
-		  <HintPath>Libs\DPFPEngNET.dll</HintPath>
-	  </Reference>
-	  <Reference Include="DPFPGuiNET">
-		  <HintPath>Libs\DPFPGuiNET.dll</HintPath>
-	  </Reference>
-	  <Reference Include="DPFPShrNET">
-		  <HintPath>Libs\DPFPShrNET.dll</HintPath>
-	  </Reference>
-	  
+    <None Remove="Images\usuario.png" />	  
   </ItemGroup>
 
   <ItemGroup>

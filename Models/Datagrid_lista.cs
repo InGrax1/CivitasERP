@@ -7,8 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CivitasERP.Models;
-using System.Data.SqlClient;
-using System.Data;
 using System.Windows;
 using System.IO.Packaging;
 using CivitasERP.Views;
@@ -70,7 +68,7 @@ namespace CivitasERP.Models
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = @"SELECT id_empleado, CONCAT(empleado.emp_nombre, ' ', empleado.emp_apellidop, ' ', empleado.emp_apellidom) AS emp_nombre, emp_puesto,emp_dia, emp_semanal,emp_hora_extra  FROM empleado where id_admins=107;";
+                string query = @"SELECT id_empleado, CONCAT(empleado.emp_nombre, ' ', empleado.emp_apellidop, ' ', empleado.emp_apellidom) AS emp_nombre, emp_puesto,emp_dia, emp_semanal,emp_hora_extra  FROM empleado where id_admins=100;";
 
 
                 SqlCommand cmd1 = new SqlCommand(query, connection);
@@ -194,9 +192,98 @@ namespace CivitasERP.Models
             }
             return (horaSalida);
         }
+        /// <summary>
+        /// Marca la asistencia de un empleado:
+        /// - Si no existe registro para hoy, inserta asis_hora (hora de entrada).
+        /// - Si existe pero asis_salida es NULL, actualiza asis_salida (hora de salida).
+        /// </summary>
+        /// 
+        public void MarcarAsistencia(int idEmpleado)
+        {
+            // 1) Obtener la cadena de conexión
+            Conexion Sconexion = new Conexion();
+            string connectionString = Sconexion.ObtenerCadenaConexion();
+
+            // 2) Fecha de hoy (solo la parte DATE)
+            DateTime fechaHoy = DateTime.Today;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                // 3) Verificamos si ya existe un registro para este empleado y la fecha de hoy
+                string sqlSelect = @"
+                    SELECT asis_id, asis_hora, asis_salida
+                    FROM asistencia
+                    WHERE id_empleado = @idEmpleado
+                      AND CAST(asis_dia AS DATE) = @fechaHoy
+                ";
+
+                using (SqlCommand cmdSelect = new SqlCommand(sqlSelect, conn))
+                {
+                    cmdSelect.Parameters.AddWithValue("@idEmpleado", idEmpleado);
+                    cmdSelect.Parameters.AddWithValue("@fechaHoy", fechaHoy.Date);
+
+                    using (SqlDataReader reader = cmdSelect.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            // YA HAY un registro para hoy
+                            int idAsistencia = reader.GetInt32(reader.GetOrdinal("asis_id"));
+                            bool tieneSalida = !reader.IsDBNull(reader.GetOrdinal("asis_salida"));
+                            reader.Close();
+
+                            if (!tieneSalida)
+                            {
+                                // *** Marcar hora de salida ***
+                                string sqlUpdate = @"
+                                    UPDATE asistencia
+                                    SET asis_salida = @horaAhora
+                                    WHERE asis_id = @idAsistencia
+                                ";
+                                using (SqlCommand cmdUpdate = new SqlCommand(sqlUpdate, conn))
+                                {
+                                    // Hora actual (solo TIME)
+                                    TimeSpan horaAhora = DateTime.Now.TimeOfDay;
+                                    cmdUpdate.Parameters.AddWithValue("@horaAhora", horaAhora);
+                                    cmdUpdate.Parameters.AddWithValue("@idAsistencia", idAsistencia);
+                                    cmdUpdate.ExecuteNonQuery();
+                                }
+                            }
+                            else
+                            {
+                                // Ya tenía hora de salida registrada: no hacemos nada o mostramos mensaje
+                                // Por ejemplo:
+                                MessageBox.Show(
+                                    "Ya registraste tu salida para hoy.",
+                                    "Atención",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Information);
+                            }
+                        }
+                        else
+                        {
+                            reader.Close();
+                            // *** No hay registro para hoy: insertar hora de entrada ***
+                            string sqlInsert = @"
+                                INSERT INTO asistencia (id_empleado, asis_dia, asis_hora)
+                                VALUES (@idEmpleado, @fechaHoy, @horaAhora)
+                            ";
+                            using (SqlCommand cmdInsert = new SqlCommand(sqlInsert, conn))
+                            {
+                                cmdInsert.Parameters.AddWithValue("@idEmpleado", idEmpleado);
+                                cmdInsert.Parameters.AddWithValue("@fechaHoy", fechaHoy.Date);
+                                TimeSpan horaAhora = DateTime.Now.TimeOfDay;
+                                cmdInsert.Parameters.AddWithValue("@horaAhora", horaAhora);
+                                cmdInsert.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                }
+
+                conn.Close();
+            }
+        }
     }
 
 }
-
-
-
