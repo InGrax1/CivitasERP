@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using static CivitasERP.Views.LoginPage;
+using BiometriaDP.Services;
 
 namespace CivitasERP.Views
 {
@@ -14,15 +15,23 @@ namespace CivitasERP.Views
     /// </summary>
     public partial class NuevoEmpleadoPage : Window
     {
-        private byte[] _templateHuella; // aquí almacenaremos el template serializado desde el wrapper
+        private readonly string _connectionString;
+        private FingerprintService _fingerService;
+        private byte[] _templateHuella;
 
         public NuevoEmpleadoPage()
         {
             InitializeComponent();
-            // Inicializar el wrapper de huella más adelante:
-            // _fingerService = new FingerprintService();
-            // _fingerService.OnEnrollmentComplete += FingerService_OnEnrollmentComplete;
-            // _fingerService.OnError             += FingerService_OnError;
+
+            // 1) Cadena de conexión:
+            _connectionString = new Conexion().ObtenerCadenaConexion();
+
+            // 2) Inicializar el servicio de huella:
+            _fingerService = new FingerprintService(_connectionString);
+            _fingerService.OnEnrollmentComplete += FingerService_OnEnrollmentComplete;
+            _fingerService.OnError += FingerService_OnError;
+
+            _templateHuella = null;
         }
 
         private void DragWindow(object sender, MouseButtonEventArgs e)
@@ -36,39 +45,37 @@ namespace CivitasERP.Views
         {
             try
             {
-                // En lugar de DPFP, llamamos al wrapper:
-                // _fingerService.StartEnrollment();
-                EstadoHuella.Text = "⏳ Enroll: coloca tu dedo varias veces…";
+                _fingerService.StartEnrollment();
+                EstadoHuella.Text = "⏳ Coloca tu dedo varias veces…";
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
                     $"No se pudo iniciar la captura de huella.\n\nDetalle:\n{ex.Message}",
-                    "Error al inicializar huella",
+                    "Error al iniciar huella",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
         }
 
-        // Este método lo llamará el wrapper cuando el template esté listo
-        // private void FingerService_OnEnrollmentComplete(object s, FingerprintCapturedEventArgs e)
-        // {
-        //     _templateHuella = e.TemplateBytes;
-        //     Dispatcher.Invoke(() =>
-        //     {
-        //         EstadoHuella.Text = "✔ Huella capturada correctamente.";
-        //     });
-        // }
+        private void FingerService_OnEnrollmentComplete(object sender, FingerprintCapturedEventArgs e)
+        {
+            _templateHuella = e.TemplateBytes;
 
-        // Este método lo llamará el wrapper en caso de error
-        // private void FingerService_OnError(object s, string mensaje)
-        // {
-        //     Dispatcher.Invoke(() =>
-        //     {
-        //         EstadoHuella.Text = $"❌ {mensaje}";
-        //         MessageBox.Show(mensaje, "Error huella", MessageBoxButton.OK, MessageBoxImage.Error);
-        //     });
-        // }
+            Dispatcher.Invoke(() =>
+            {
+                EstadoHuella.Text = "✔ Huella capturada correctamente.";
+                MessageBox.Show("La huella fue capturada con éxito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            });
+        }
+
+        private void FingerService_OnError(object sender, string mensaje)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                EstadoHuella.Text = $"{mensaje}";
+            });
+        }
 
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
@@ -126,11 +133,6 @@ namespace CivitasERP.Views
             try
             {
                 insert_Empleado.InsertEmpleado();
-                MessageBox.Show(
-                    "Empleado registrado con éxito.",
-                    "Éxito",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
 
                 // Limpiar campos y variable de huella
                 _templateHuella = null;

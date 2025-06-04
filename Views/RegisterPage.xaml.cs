@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using CivitasERP.Models;
+using BiometriaDP.Services;
 
 namespace CivitasERP.Views
 {
@@ -11,19 +12,24 @@ namespace CivitasERP.Views
     /// </summary>
     public partial class RegisterPage : Window
     {
-        // Aquí irá la instancia de tu wrapper/servicio de huella.
-        // private FingerprintService _fingerService;
-
-        private byte[] _templateHuella; // contendrá el template serializado
+        private readonly string _connectionString;
+        private FingerprintService _fingerService;
+        private byte[] _templateHuella;   // contendrá el template serializado
 
         public RegisterPage()
         {
             InitializeComponent();
 
-            // Inicializar el servicio de huella (wrapper)
-            // _fingerService = new FingerprintService();
-            // _fingerService.OnEnrollmentComplete += Wrapper_OnEnrollmentComplete;
-            // _fingerService.OnError             += Wrapper_OnError;
+            // 1) Obtener la cadena de conexión:
+            _connectionString = new Conexion().ObtenerCadenaConexion();
+
+            // 2) Crear e inicializar el servicio de huella:
+            _fingerService = new FingerprintService(_connectionString);
+            _fingerService.OnEnrollmentComplete += FingerService_OnEnrollmentComplete;
+            _fingerService.OnError += FingerService_OnError;
+
+            // 3) Inicializamos el template en null (aún no capturado):
+            _templateHuella = null;
         }
 
         private void DragWindow(object sender, MouseButtonEventArgs e)
@@ -35,41 +41,42 @@ namespace CivitasERP.Views
         // --- Evento para iniciar la lectura de huella ---
         private void btnHuellaR_Click(object sender, RoutedEventArgs e)
         {
-            // Iniciar el proceso de enrollment en el wrapper
             try
             {
-                // _fingerService.StartEnrollment();
-                EstadoHuella.Text = "⏳ Enroll: coloca tu dedo varias veces…";
+                // Iniciar Enrollment (varias pasadas) con el wrapper
+                _fingerService.StartEnrollment();
+                EstadoHuella.Text = "⏳ Coloca tu dedo para el escaneo…";
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
                     $"No se pudo iniciar el registro de huella.\n\nDetalle:\n{ex.Message}",
-                    "Error huella",
+                    "Error al capturar huella",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
         }
 
-        // Este método se llamará desde el wrapper cuando el template esté listo
-        // private void Wrapper_OnEnrollmentComplete(object sender, FingerprintCapturedEventArgs e)
-        // {
-        //     _templateHuella = e.TemplateBytes;
-        //     Dispatcher.Invoke(() =>
-        //     {
-        //         EstadoHuella.Text = "✔ Huella capturada correctamente.";
-        //     });
-        // }
+        // Se dispara cuando el wrapper completa el Enrollment y envía el template (byte[])
+        private void FingerService_OnEnrollmentComplete(object sender, FingerprintCapturedEventArgs e)
+        {
+            _templateHuella = e.TemplateBytes;
 
-        // Este método se llamará desde el wrapper en caso de error
-        // private void Wrapper_OnError(object sender, string mensaje)
-        // {
-        //     Dispatcher.Invoke(() =>
-        //     {
-        //         EstadoHuella.Text = $"❌ {mensaje}";
-        //         MessageBox.Show(mensaje, "Error huella", MessageBoxButton.OK, MessageBoxImage.Error);
-        //     });
-        // }
+            // Actualizar UI en el hilo de la interfaz:
+            Dispatcher.Invoke(() =>
+            {
+                EstadoHuella.Text = "✔ Huella capturada correctamente.";
+            });
+        }
+
+        // Se dispara si ocurre algún error durante el Enrollment (calidad baja, falta lector, etc.)
+        private void FingerService_OnError(object sender, string mensaje)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                EstadoHuella.Text = $"{mensaje}";
+            });
+        }
 
         // --- Evento para registrar el usuario y guardar la huella ---
         private void btnRegister_Click(object sender, RoutedEventArgs e)
@@ -111,9 +118,6 @@ namespace CivitasERP.Views
             try
             {
                 inser.InsertarAdmin();
-                MessageBox.Show(
-                    "Usuario registrado con éxito.",
-                    "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 // Limpiar formularios y variable de huella
                 _templateHuella = null;

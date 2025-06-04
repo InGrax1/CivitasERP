@@ -185,7 +185,7 @@
                                  Background="Transparent"
                                  BorderThickness="0"
                                  Padding="5"
-                                 VerticalContentAlignment="Center" TextChanged="ObraTextBox_TextChanged"/>
+                                 VerticalContentAlignment="Center"/>
                         </Border>
 
                         <!-- Periodo -->

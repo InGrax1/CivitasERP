@@ -58,4 +58,8 @@
     <Folder Include="AdminViews\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BiometriaDP\BiometriaDP.csproj" />
+  </ItemGroup>
+
 </Project>

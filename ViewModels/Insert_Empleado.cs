@@ -68,7 +68,7 @@ namespace CivitasERP.Models
                         int filasAfectadas = cmd.ExecuteNonQuery();
                         conn.Close();
 
-                        MessageBox.Show($"✅ Empleado registrado con exito.");
+                        MessageBox.Show($"✅ Empleado registrado con exito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
             }
