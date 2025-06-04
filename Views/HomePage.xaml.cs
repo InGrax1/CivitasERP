@@ -30,7 +30,9 @@ namespace CivitasERP.Views
             this.Loaded += HomePage_Loaded;
 
         }
-        
+
+
+
         private void DragWindow(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
