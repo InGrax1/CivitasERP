@@ -175,18 +175,24 @@
 
                         <!-- Obra -->
                         <TextBlock Grid.Row="1" Grid.Column="0"
-                               Text="Obra" FontSize="16"
-                               VerticalAlignment="Center"
-                               Margin="0,0,10,0"/>
+                                   Text="Obra" FontSize="16"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,10,0"/>
+
                         <Border Grid.Row="1" Grid.Column="1"
-                            Background="WhiteSmoke" CornerRadius="10"
-                            BorderBrush="#6666FF" BorderThickness="1"
-                            Height="30">
-                            <TextBox x:Name="ObraTextBox"
-                                 Background="Transparent"
-                                 BorderThickness="0"
-                                 Padding="5"
-                                 VerticalContentAlignment="Center"/>
+                                Background="WhiteSmoke" 
+                                CornerRadius="10"
+                                BorderBrush="#6666FF" 
+                                BorderThickness="1"
+                                Height="30">
+                            <ComboBox x:Name="ObraComboBox"
+                                      Background="Transparent"
+                                      BorderBrush="Transparent"
+                                      FontSize="14"
+                                      VerticalContentAlignment="Center"
+                                      Padding="10"
+                                      IsEditable="True"
+                                      IsReadOnly="False"/>
                         </Border>
 
                         <!-- Periodo -->
@@ -215,16 +221,20 @@
 
                         <!-- Semana -->
                         <Border Grid.Row="1" Grid.Column="3"
-                            Background="#6666FF" CornerRadius="5"
-                            Width="90" Height="30">
-                            <Button x:Name="btnSemanaOp"
-                                Background="Transparent"
-                                BorderBrush="Transparent"
-                                Foreground="White"
-                                FontWeight="Bold"
-                                Click="btnSemanaOp_Click">
-                                Semana
-                            </Button>
+                                Background="#6666FF"
+                                CornerRadius="5"
+                                Width="90"
+                                Height="30">
+                            <ComboBox x:Name="ComBoxSemanaOp"
+                                      Background="Transparent"
+                                      BorderBrush="Transparent"
+                                      Foreground="Blue"
+                                      FontWeight="Bold"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      HorizontalContentAlignment="Center"
+                                      VerticalContentAlignment="Center">
+                            </ComboBox>
                         </Border>
 
                         <!-- Semana -->
@@ -243,19 +253,26 @@
 
                         <!-- Ubicación -->
                         <TextBlock Grid.Row="2" Grid.Column="0"
-                               Text="Ubicación" FontSize="16"
-                               VerticalAlignment="Center"
-                               Margin="0,20,10,0"/>
+           Text="Ubicación"
+           FontSize="16"
+           VerticalAlignment="Center"
+           Margin="0,20,10,0"/>
+
                         <Border Grid.Row="2" Grid.Column="1"
-                            Background="WhiteSmoke" CornerRadius="10"
-                            BorderBrush="#6666FF" BorderThickness="1"
-                            Height="30" Margin="0,20,0,0">
-                            <TextBox x:Name="UbicacionTextBox"
-                                 Background="Transparent"
-                                 BorderThickness="0"
-                                 Padding="5"
-                                 VerticalContentAlignment="Center"/>
+                                Background="WhiteSmoke"
+                                CornerRadius="10"
+                                BorderBrush="#6666FF"
+                                BorderThickness="1"
+                                Height="30"
+                                Margin="0,20,0,0">
+                            <Label x:Name="UbicacionLabel"
+                                   Content="Aquí va la ubicación"
+                                   Background="Transparent"
+                                   Padding="5"
+                                   Foreground="Black"
+                                   VerticalContentAlignment="Center"/>
                         </Border>
+
                     </Grid>
 
                     <!-- DATA GRID -->
