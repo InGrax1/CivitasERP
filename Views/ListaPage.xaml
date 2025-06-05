@@ -218,23 +218,63 @@
                             </Border>
                         </StackPanel>
 
-                        <!-- Semana -->
-                        <Border Grid.Row="1" Grid.Column="3"
-                                Background="#6666FF"
-                                CornerRadius="5"
-                                Width="90"
-                                Height="30">
-                            <ComboBox x:Name="ComBoxSemanaOp"
-                                      Background="Transparent"
-                                      BorderBrush="Transparent"
-                                      Foreground="Blue"
-                                      FontWeight="Bold"
-                                      HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Stretch"
-                                      HorizontalContentAlignment="Center"
-                                      VerticalContentAlignment="Center">
-                            </ComboBox>
-                        </Border>
+                        <!-- Combos Mes + Año (ambos dentro de un StackPanel) -->
+                        <StackPanel Grid.Row="1" Grid.Column="4"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,10,0">
+                            <!-- Combo Mes -->
+                            <TextBlock Text="Mes"
+                                       FontSize="16"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,10,0"/>
+                            <Border Background="White"
+                                    CornerRadius="5"
+                                    BorderBrush="#6666FF"
+                                    Width="150"
+                                    Height="30"
+                                    BorderThickness="2"
+                                    Padding="1"
+                                    Margin="0,0,15,0">
+                                <ComboBox x:Name="ComBoxMes"
+                                          Background="White"
+                                          BorderBrush="Transparent"
+                                          BorderThickness="0"
+                                          FontSize="14"                             
+                                          Foreground="DarkBlue"
+                                          FontWeight="Normal"
+                                          HorizontalContentAlignment="Center"
+                                          VerticalContentAlignment="Center"
+                                          DropDownOpened="ComBoxMes_DropDownOpened"
+                                          SelectionChanged="ComBoxMes_SelectionChanged"/>
+                            </Border>
+
+                            <!-- Combo Año -->
+                            <TextBlock Text="Año"
+                                       FontSize="16"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,10,0"/>
+                            <Border Background="White"
+                                    CornerRadius="5"
+                                    BorderBrush="#6666FF"
+                                    Width="150"
+                                    Height="30"
+                                    BorderThickness="2"
+                                    Padding="1"
+                                    Margin="0,0,15,0">
+                                <ComboBox x:Name="ComBoxAnio"
+                                          Background="White"
+                                          BorderBrush="Transparent"
+                                          BorderThickness="0"
+                                          FontSize="14"
+                                          Foreground="DarkBlue"
+                                          FontWeight="Normal"
+                                          HorizontalContentAlignment="Center"
+                                          VerticalContentAlignment="Center"
+                                          DropDownOpened="ComBoxAnio_DropDownOpened"
+                                          SelectionChanged="ComBoxAnio_SelectionChanged"/>
+                            </Border>
+                        </StackPanel>
 
 
                         <!-- Botón Huella -->
