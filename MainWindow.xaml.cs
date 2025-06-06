@@ -18,10 +18,22 @@ namespace CivitasERP
     /// </summary>
     public partial class MainWindow : Window
     {
+        // 1) Campos privados para cada ventana flotante
+        private RegisterPage _registerPage = null;
+        private NuevaObraPage _nuevaObraWindow = null;
+
+
         public MainWindow()
         {
             InitializeComponent();
             MainFrame.Navigate(new HomePage());
+        }
+
+        //Poder mover la ventana con libertad
+        private void DragWindow(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
         }
 
         //CAMBIO DE FOTO DE PERFIL
@@ -117,7 +129,46 @@ namespace CivitasERP
         }
         private void btnRegis_Click(object sender, RoutedEventArgs e)
         {
-            
+            // Si no existe o ya se cerró (_registerPage == null), creamos la ventana:
+            if (_registerPage == null)
+            {
+                _registerPage = new RegisterPage();
+
+                // Cuando se cierre por completo, dejamos la referencia en null:
+                _registerPage.Closed += (s, args) =>
+                {
+                    _registerPage = null;
+                };
+
+                // Mostramos la ventana. Usa ShowDialog() si quieres que sea modal:
+                _registerPage.Show();
+            }
+            else
+            {
+                // Si ya está abierta, la traemos al frente:
+                _registerPage.Activate();
+            }
+        }
+
+        private void btnNuevaObra_Click(object sender, RoutedEventArgs e)
+        {
+            // Si no existe o ya se cerró (_nuevaObraWindow == null), creamos la ventana:
+            if (_nuevaObraWindow == null)
+            {
+                _nuevaObraWindow = new NuevaObraPage();
+                // Cuando se cierre por completo, dejamos la referencia en null:
+                _nuevaObraWindow.Closed += (s, args) =>
+                {
+                    _nuevaObraWindow = null;
+                };
+                // Mostramos la ventana. Usa ShowDialog() si quieres que sea modal:
+                _nuevaObraWindow.Show();
+            }
+            else
+            {
+                // Si ya está abierta, la traemos al frente:
+                _nuevaObraWindow.Activate();
+            }
         }
     }
 }

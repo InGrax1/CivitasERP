@@ -5,7 +5,7 @@
         Title="NominaPage"
         Width="1800" Height="1000">
 
-        <Grid Margin="20">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>

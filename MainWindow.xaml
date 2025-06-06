@@ -5,7 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CivitasERP"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1000" Width="1800">
+        Title="NominaPage"
+        Width="1800" Height="1000"
+        MinHeight="600" MinWidth="800"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        WindowStyle="None"
+        MouseLeftButtonDown="DragWindow">
+
     
     <Grid>
         <Grid.ColumnDefinitions>
@@ -28,7 +35,7 @@
         <Border Grid.Column="0" Panel.ZIndex="2"
                 CornerRadius="0,0,0,0"
                 Background="White"> 
-            <Border CornerRadius="0,30,0,0" Margin="0,154,0,0">
+            <Border CornerRadius="0,30,0,0" Margin="0,150,0,0">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                         <GradientStop Color="#1C2F5F" Offset="0"/>
@@ -70,10 +77,11 @@
                                 <TextBlock Text="Menu" FontSize="20" Foreground="White"/>
                             </StackPanel>
                         </Button>
+                        
                         <!-- Nómina -->
                         <Button Style="{StaticResource LargeRoundButton}"
-                        Background="#274288"
-                        Click="btnNomina_Click">
+                                Background="#274288"
+                                Click="btnNomina_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Images/money.png" Width="25" Height="25" Margin="0,0,5,0"/>
                                 <TextBlock Text="Nomina" FontSize="20" Foreground="White"/>
@@ -82,8 +90,8 @@
 
                         <!-- Pase de lista -->
                         <Button Style="{StaticResource LargeRoundButton}"
-                        Background="#274288"
-                        Click="btnLista_Click">
+                                Background="#274288"
+                                Click="btnLista_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
                                 <TextBlock Text="Pase de lista" FontSize="20" Foreground="White"/>
@@ -91,16 +99,17 @@
                         </Button>
                         <!-- Nueva Obra-->
                         <Button Style="{StaticResource LargeRoundButton}"
-                        Background="#274288"
-                        Click="btnNueva_Obra">
+                                Background="#274288"
+                                Click="btnNueva_Obra">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock Text="Nueva Obra" FontSize="20" Foreground="White"/>
                             </StackPanel>
                         </Button>
+                        
                         <!-- Registro Nuevo -->
                         <Button Style="{StaticResource LargeRoundButton}"
-                        Background="DarkRed"
-                        Click="btnRegis_Click">
+                                Background="DarkRed"
+                                Click="btnRegis_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
                                 <TextBlock Text="Registro Nuevo" FontSize="20" Foreground="White"/>
@@ -111,8 +120,8 @@
                     <!-- 3) Logout al pie (fila 2) -->
                     <StackPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="0,0,0,20">
                         <Button Style="{StaticResource LargeRoundButton}"
-                        Background="DarkRed"
-                        Click="btnLogout_Click">
+                                Background="DarkRed"
+                                Click="btnLogout_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Images/home.png" Width="20" Height="20" Margin="0,0,5,0"/>
                                 <TextBlock Text="Logout" FontSize="20" Foreground="White"/>
@@ -135,21 +144,21 @@
                 
                 <!-- 1) TOPBAR -->
                 <StackPanel Grid.Row="0" Orientation="Horizontal"
-                HorizontalAlignment="Right">
+                            HorizontalAlignment="Right">
                     <Border Background="LightBlue" CornerRadius="30" Margin="0,0,5,0">
                         <Button Name="btnMin" Style="{StaticResource RoundButton}"
-                    Background="LightBlue"
-                    Content="—" Click="btnMin_Click"/>
+                                Background="LightBlue"
+                                Content="—" Click="btnMin_Click"/>
                     </Border>
                     <Border Background="LightGreen" CornerRadius="30" Margin="0,0,5,0">
                         <Button Name="btnMax" Style="{StaticResource RoundButton}"
-                    Background="LightGreen"
-                    Content="[]" Click="btnMaximize_Click"/>
+                                Background="LightGreen"
+                                Content="[]" Click="btnMaximize_Click"/>
                     </Border>
                     <Border Background="LightCoral" CornerRadius="30">
                         <Button Name="btnExit" Style="{StaticResource RoundButton}"
-                    Background="LightCoral"
-                    Content="×" Click="btnExit_Click"/>
+                                Background="LightCoral"
+                                Content="×" Click="btnExit_Click"/>
                     </Border>
                 </StackPanel>
                 
@@ -157,6 +166,8 @@
                 <Frame x:Name="MainFrame"
                        Grid.Row="1"
                        NavigationUIVisibility="Hidden"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"
                        Margin="0"/>
             </Grid>
         </Border>

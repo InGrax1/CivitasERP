@@ -6,9 +6,8 @@
         Width="1800" Height="1000">
 
 
-        <Grid Margin="20">
+        <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -34,7 +33,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
