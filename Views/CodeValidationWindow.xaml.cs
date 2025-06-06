@@ -33,7 +33,7 @@ namespace CivitasERP.Views
         {
             this.Hide();
             LoginPage loginPage = new LoginPage();
-            loginPage.Show();
+            loginPage.ShowDialog();
 
         }
         private void btnValidar_Click(object sender, RoutedEventArgs e)

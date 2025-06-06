@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         Title="Registro de Nuevo Personal"
-        Width="670" Height="330"
+        Width="650" Height="500"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize"
         WindowStyle="None"
@@ -74,16 +74,28 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
 
 
                 <!-- Codigo -->
-                <StackPanel Grid.Row="0" Grid.Column="1" Margin="10">
-                    <TextBlock Text="Código de Verificación " Foreground="#5F5FFF" FontSize="15" Margin="0,20,0,5"/>
-                    <Border Background="#F0F0F0" CornerRadius="10" Padding="5" BorderThickness="0.3" BorderBrush="Black">
-                        <TextBox x:Name="txtCodigo" BorderThickness="0" Background="Transparent"/>
+                <StackPanel Grid.Row="0" 
+                            Grid.Column="1" 
+                            Margin="10">
+                    <TextBlock Text="Código de Verificación" 
+                               Foreground="#5F5FFF" 
+                               FontSize="15" 
+                               Margin="0,20,0,5"/>
+                    <Border Background="#F0F0F0" 
+                            CornerRadius="10" 
+                            Padding="5" 
+                            BorderThickness="0.3" 
+                            BorderBrush="Black">
+                        <TextBox x:Name="txtCodigo" 
+                                 BorderThickness="0" 
+                                 Background="Transparent"/>
                     </Border>
                 </StackPanel>
 
@@ -93,11 +105,37 @@
                         HorizontalAlignment="Center"
                         Background="#5F5FFF"
                         Foreground="White"
-                        Width="200" Height="40"
+                        Width="200" Height="45"
                         Margin="0,20,0,0"
                         Content="Continuar"
                         FontSize="16"
                         Click="btnValidar_Click"/>
+
+                <!-- Reenviar código -->
+                <StackPanel Grid.Row="4" 
+                            HorizontalAlignment="Center"
+                            Margin="0,10,0,0">
+                    <TextBlock Text="¿No recibiste el código?"
+                               FontSize="14"
+                               FontWeight="Light"
+                               HorizontalAlignment="Center"
+                               Foreground="DarkBlue"/>
+                    <Button Content="Reenviar Código"
+                            Style="{StaticResource LargeRoundButton}"
+                            Width="150" Height="45"
+                            Background="#ACACFF"
+                            Foreground="#5F5FFF"
+                            Click="btnReenviarCodigo_Click"/>
+                </StackPanel>
+                
+                <!-- Mensaje de cancelación -->
+                    <TextBlock Grid.Row="5"
+                           Text="Para cancelar el proceso cierra esta ventana con el boton ❌ "
+                           FontSize="12"
+                           FontWeight="Light"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Bottom"
+                           Foreground="DarkGray"/>
             </Grid>
         </Grid>
     </Border>

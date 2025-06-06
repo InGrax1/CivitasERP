@@ -100,7 +100,7 @@
                         <!-- Nueva Obra-->
                         <Button Style="{StaticResource LargeRoundButton}"
                                 Background="#274288"
-                                Click="btnNueva_Obra">
+                                Click="btnNuevaObra_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock Text="Nueva Obra" FontSize="20" Foreground="White"/>
                             </StackPanel>

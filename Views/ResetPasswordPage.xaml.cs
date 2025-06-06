@@ -44,9 +44,7 @@ namespace CivitasERP.Views
         {
             this.Hide();
             LoginPage loginPage = new LoginPage();
-            loginPage.Show();
-
-
+            loginPage.ShowDialog();
         }
 
         private void btnResetPassword_Click(object sender, RoutedEventArgs e)
@@ -69,8 +67,6 @@ namespace CivitasERP.Views
                 MessageBox.Show("Alguna de las contraseñas no son iguales ");
             
             }
-
-
         }
 
     }

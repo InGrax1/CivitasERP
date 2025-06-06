@@ -20,7 +20,7 @@ namespace CivitasERP
     {
         // 1) Campos privados para cada ventana flotante
         private RegisterPage _registerPage = null;
-        private NuevaObraPage _nuevaObraWindow = null;
+        private NuevaObraPage _nuevaObraPage = null;
 
 
         public MainWindow()
@@ -72,7 +72,7 @@ namespace CivitasERP
                     };
 
                     // 4) Asignar el ImageBrush al Fill del Ellipse
-                    //EllipseProfile.Fill = brush;
+                    EllipseProfile.Fill = brush;
                 }
                 catch (Exception ex)
                 {
@@ -140,12 +140,10 @@ namespace CivitasERP
                     _registerPage = null;
                 };
 
-                // Mostramos la ventana. Usa ShowDialog() si quieres que sea modal:
-                _registerPage.Show();
+                _registerPage.ShowDialog();
             }
             else
             {
-                // Si ya está abierta, la traemos al frente:
                 _registerPage.Activate();
             }
         }
@@ -153,21 +151,19 @@ namespace CivitasERP
         private void btnNuevaObra_Click(object sender, RoutedEventArgs e)
         {
             // Si no existe o ya se cerró (_nuevaObraWindow == null), creamos la ventana:
-            if (_nuevaObraWindow == null)
+            if (_nuevaObraPage == null)
             {
-                _nuevaObraWindow = new NuevaObraPage();
+                _nuevaObraPage = new NuevaObraPage();
                 // Cuando se cierre por completo, dejamos la referencia en null:
-                _nuevaObraWindow.Closed += (s, args) =>
+                _nuevaObraPage.Closed += (s, args) =>
                 {
-                    _nuevaObraWindow = null;
+                    _nuevaObraPage = null;
                 };
-                // Mostramos la ventana. Usa ShowDialog() si quieres que sea modal:
-                _nuevaObraWindow.Show();
+                _nuevaObraPage.ShowDialog();
             }
             else
             {
-                // Si ya está abierta, la traemos al frente:
-                _nuevaObraWindow.Activate();
+                _nuevaObraPage.Activate();
             }
         }
     }

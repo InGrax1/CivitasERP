@@ -37,9 +37,9 @@ namespace CivitasERP.Views
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
+            this.Close();
             LoginPage loginPage = new LoginPage();
-            loginPage.Show();
+            loginPage.ShowDialog();
         }
         private void brnBackLogin_Click(object sender, RoutedEventArgs e)
         {

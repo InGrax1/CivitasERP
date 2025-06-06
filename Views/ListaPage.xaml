@@ -3,24 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         Title="NominaPage"
-        Width="1800" Height="1000">
+        MinHeight="800" MinWidth="600">
 
-        <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
+    <Grid>
         <!-- CONTENIDO CENTRAL -->
-            <Border Grid.Column="1" Panel.ZIndex="1"
-                CornerRadius="0,30,30,0" Background="White" Margin="0">
-                <Grid Margin="20">
+            <Border Grid.Column="1" 
+                    Panel.ZIndex="1"
+                    Background="White" 
+                    Margin="0">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-
+                <ScrollViewer Grid.Row="1"
+                              HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Disabled"
+                              Margin="0,0,0,20">
                     <!-- FILTROS -->
                     <Grid Grid.Row="1" Margin="0,0,0,20">
                         <Grid.RowDefinitions>
@@ -30,66 +30,80 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
 
                         <!-- Título -->
-                        <TextBlock Grid.Column="0" Grid.ColumnSpan="5"
-                               Text="LISTA DE PERSONAL Y PASE DE LISTA"
-                               FontSize="26" FontWeight="Bold"
-                               Margin="0,0,0,20"/>
-
+                        <TextBlock Grid.Column="0" 
+                                   Grid.ColumnSpan="5"
+                                   Text="LISTA DE PERSONAL Y PASE DE LISTA"
+                                   FontSize="26" 
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,20"/>
                         <!-- Obra -->
                         <TextBlock Grid.Row="1" Grid.Column="0"
                                    Text="Obra" FontSize="16"
                                    VerticalAlignment="Center"
                                    Margin="0,0,10,0"/>
-
                         <Border Grid.Row="1" Grid.Column="1"
                                 Background="WhiteSmoke" 
                                 CornerRadius="10"
                                 BorderBrush="#6666FF" 
-                                BorderThickness="1"
-                                Height="30">
+                                BorderThickness="1" 
+                                MinHeight="30"
+                                MinWidth="80"
+                                Padding="3">
                             <ComboBox x:Name="ObraComboBox"
                                       Background="Transparent"
                                       BorderBrush="Transparent"
+                                      BorderThickness="0"
                                       FontSize="14"
-                                      VerticalContentAlignment="Center"
-                                      Padding="10"
-                                      IsEditable="True"
+                                      VerticalContentAlignment="Stretch"
+                                      Padding="5"
+                                      IsEditable="False"
                                       IsReadOnly="False"/>
                         </Border>
-
                         <!-- Periodo -->
-                        <TextBlock Grid.Row="1" Grid.Column="2"
-                               Text="Periodo" FontSize="16"
-                               VerticalAlignment="Center"
-                               Margin="20,0,10,0"/>
-                        <StackPanel Grid.Row="1" Grid.Column="3"
-                                Orientation="Horizontal" VerticalAlignment="Center">
-                            <Border Background="#6666FF" CornerRadius="5"
-                                Width="80" Height="30" Margin="0,0,5,0">
+                        <StackPanel Grid.Row="1" 
+                                    Grid.Column="2"
+                                    Orientation="Horizontal" 
+                                    VerticalAlignment="Center">
+                            <TextBlock Grid.Row="1" 
+                                       Grid.Column="2"
+                                       Text="Periodo" 
+                                       FontSize="16"
+                                       VerticalAlignment="Center"
+                                       Margin="20,0,10,0"/>
+                            <Border Background="#6666FF" 
+                                    CornerRadius="5"
+                                    MinWidth="80" 
+                                    MinHeight="30" 
+                                    Margin="0,0,5,0">
                                 <TextBlock Text="Fecha 1"
-                                       Foreground="White"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"/>
+                                           Foreground="White"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
                             </Border>
-                            <TextBlock Text="al" VerticalAlignment="Center" Margin="5,0"/>
-                            <Border Background="#6666FF" CornerRadius="5"
-                                Width="80" Height="30" Margin="5,0,0,0">
+
+                            <TextBlock Text="al" 
+                                       VerticalAlignment="Center" 
+                                       Margin="5,0"/>
+                            <Border Background="#6666FF" 
+                                    CornerRadius="5"
+                                    MinWidth="80" 
+                                    MinHeight="30" 
+                                    Margin="5,0,0,0">
                                 <TextBlock Text="Fecha 2"
-                                       Foreground="White"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"/>
+                                           Foreground="White"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
                             </Border>
                         </StackPanel>
 
                         <!-- Combos Mes + Año (ambos dentro de un StackPanel) -->
-                        <StackPanel Grid.Row="1" Grid.Column="4"
+                        <StackPanel Grid.Row="1" Grid.Column="3"
                                     Orientation="Horizontal"
                                     VerticalAlignment="Center"
                                     Margin="0,0,10,0">
@@ -97,12 +111,13 @@
                             <TextBlock Text="Mes"
                                        FontSize="16"
                                        VerticalAlignment="Center"
+                                       HorizontalAlignment="Stretch"
                                        Margin="0,0,10,0"/>
                             <Border Background="White"
                                     CornerRadius="5"
                                     BorderBrush="#6666FF"
-                                    Width="150"
-                                    Height="30"
+                                    MinWidth="80"
+                                    MinHeight="30"
                                     BorderThickness="2"
                                     Padding="1"
                                     Margin="0,0,15,0">
@@ -123,12 +138,13 @@
                             <TextBlock Text="Año"
                                        FontSize="16"
                                        VerticalAlignment="Center"
+                                       HorizontalAlignment="Stretch"
                                        Margin="0,0,10,0"/>
                             <Border Background="White"
                                     CornerRadius="5"
                                     BorderBrush="#6666FF"
-                                    Width="150"
-                                    Height="30"
+                                    MinHeight="30"
+                                    MinWidth="80"
                                     BorderThickness="2"
                                     Padding="1"
                                     Margin="0,0,15,0">
@@ -149,7 +165,7 @@
 
                         <!-- Botón Huella -->
                         <Button Grid.Row="2"
-                                Grid.Column="4"
+                                Grid.Column="3"
                                 HorizontalAlignment="Center"
                                 Margin="0,20,0,0"
                                 Background="Transparent"
@@ -177,32 +193,36 @@
                                    Margin="0,20,10,0"/>
 
                         <Border Grid.Row="2" Grid.Column="1"
-                     Background="WhiteSmoke"
-                     CornerRadius="10"
-                     BorderBrush="#6666FF"
-                     BorderThickness="1"
-                     Height="30"
-                     Margin="0,20,0,0">
+                                Background="White"
+                                CornerRadius="10"
+                                BorderBrush="#6666FF"
+                                BorderThickness="1"
+                                Height="30"
+                                Margin="0,20,0,0">
                             <Label x:Name="UbicacionLabel"
-                        Content="Aquí va la ubicación"
-                        Background="Transparent"
-                        Padding="5"
-                        Foreground="Black"
-                        VerticalContentAlignment="Center"/>
+                                   Content="Ubicación . . ."
+                                   Background="Transparent"
+                                   Padding="5"
+                                   Foreground="Black"
+                                   VerticalContentAlignment="Center"/>
                         </Border>
-                        
                     </Grid>
+                </ScrollViewer>
 
-                    <!-- DATA GRID -->
-                    <Border Grid.Row="2" CornerRadius="20"
-                        Background="#E5E5E5" Margin="0,0,0,0">
+                <!-- DATA GRID -->
+                    <Border Grid.Row="2" 
+                            CornerRadius="20"
+                            Background="#E5E5E5" 
+                            Margin="0,0,0,0">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Auto">
                         <DataGrid x:Name="dataGridAsistencia"
-                              AutoGenerateColumns="False"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="False"
-                              IsReadOnly="True"
-                              Margin="10"
-                              HeadersVisibility="Column">
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  IsReadOnly="True"
+                                  Margin="10"
+                                  HeadersVisibility="Column">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" Binding="{Binding ID}" />
                                 <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
@@ -221,6 +241,7 @@
                                 <DataGridTextColumn Header="Salida" Binding="{Binding SalidaS}" />
                             </DataGrid.Columns>
                         </DataGrid>
+                    </ScrollViewer>
                     </Border>
                 </Grid>
             </Border>
