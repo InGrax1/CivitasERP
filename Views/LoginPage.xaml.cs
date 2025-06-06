@@ -44,10 +44,6 @@ namespace CivitasERP.Views
             Application.Current.Shutdown();
         }
 
-        private void txtUser_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
@@ -70,9 +66,15 @@ namespace CivitasERP.Views
                 //validacion de usuario y contraseña
                 if (h.ObtenerSHA256(contraseña).SequenceEqual(c.ObtenerHashContraseña(usuario)))
                 {
-                    this.Hide();
-                    HomePage HomePage = new HomePage();
-                    HomePage.Show();
+                    // 1) Crear instancia de MainWindow
+                    MainWindow ventanaPrincipal = new MainWindow();
+
+                    // 2) Mostrar MainWindow
+                    ventanaPrincipal.Show();
+
+                    // 3) Cerrar (o Hide) la ventana de login actual:
+                    this.Close();
+
                 }
                 else
                 {
