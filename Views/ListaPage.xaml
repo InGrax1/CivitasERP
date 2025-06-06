@@ -1,155 +1,25 @@
-﻿<Window x:Class="CivitasERP.Views.ListaPage"
+﻿<Page x:Class="CivitasERP.Views.ListaPage"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         Title="NominaPage"
-        Width="1800" Height="1000"
-        WindowStartupLocation="CenterScreen"
-        ResizeMode="CanResize"
-        WindowStyle="None"
-        MouseLeftButtonDown="DragWindow">
+        Width="1800" Height="1000">
 
+        <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-    <shell:WindowChrome.WindowChrome>
-        <shell:WindowChrome
-        CaptionHeight="10"
-        ResizeBorderThickness="5"
-        CornerRadius="0"
-        GlassFrameThickness="0"
-        UseAeroCaptionButtons="True"/>
-    </shell:WindowChrome.WindowChrome>
-
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <Grid shell:WindowChrome.IsHitTestVisibleInChrome="True" MouseLeftButtonDown="DragWindow">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- FOTO DE PERFIL -->
-            <StackPanel Grid.Column="0" Panel.ZIndex="3"
-                    HorizontalAlignment="Left" Margin="6,43,0,0">
-                <Ellipse x:Name="EllipseProfile"
-                         Width="137" Height="137"
-                         Stroke="DarkBlue" 
-                         StrokeThickness="2"
-                         Fill="LightGray"/>
-            </StackPanel>
-
-            <!-- MENÚ LATERAL -->
-            <Border Grid.Column="0" Panel.ZIndex="2"
-        CornerRadius="0,0,0,0"
-        Background="White">
-                <Border CornerRadius="0,30,0,0" Margin="0,154,0,0">
-                    <Border.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                            <GradientStop Color="#1C2F5F" Offset="0"/>
-                            <GradientStop Color="#4B2C7D" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
-
-                    <!-- Aquí usamos Grid en lugar de StackPanel -->
-                    <Grid HorizontalAlignment="Center" Width="240">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <!-- Foto/Usuario -->
-                            <RowDefinition Height="*"/>
-                            <!-- Botones de menú -->
-                            <RowDefinition Height="Auto"/>
-                            <!-- Logout al pie -->
-                        </Grid.RowDefinitions>
-
-                        <!-- 1) Info de Usuario (fila 0) -->
-                        <StackPanel Grid.Row="0" Margin="0,80,0,20">
-                            <TextBlock x:Name="LabelRol"
-                           Text="ROL"
-                           Foreground="White" FontSize="20" FontWeight="Bold"
-                           TextAlignment="Center"/>
-                            <TextBlock x:Name="LabelName"
-                           Text="Nombre"
-                           Foreground="White" FontSize="16"
-                           TextAlignment="Center"
-                           Margin="0,5,0,0"/>
-                        </StackPanel>
-
-                        <!-- 2) Botones de Menú (fila 1) -->
-                        <StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="0,20,0,0">
-                            <!-- Menú -->
-                            <Button Style="{StaticResource LargeRoundButton}" 
-                                    Background="#274288"
-                                    Click="btnMenu_Click">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Image Source="/Images/home.png" Width="25" Height="25" Margin="0,0,5,0"/>
-                                    <TextBlock Text="Menu" FontSize="20" Foreground="White"/>
-                                </StackPanel>
-                            </Button>
-                            <!-- Nómina -->
-                            <Button Style="{StaticResource LargeRoundButton}"
-                                    Background="#274288"
-                                    Click="btnNomina_Click">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Image Source="/Images/money.png" Width="25" Height="25" Margin="0,0,5,0"/>
-                                    <TextBlock Text="Nomina" FontSize="20" Foreground="White"/>
-                                </StackPanel>
-                            </Button>
-
-                            <!-- Pase de lista -->
-                            <Button Style="{StaticResource LargeRoundButton}"
-                                    Background="#4772E3">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
-                                    <TextBlock Text="Pase de lista" FontSize="20" Foreground="White"/>
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-
-                        <!-- 3) Logout al pie (fila 2) -->
-                        <StackPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="0,0,0,20">
-                            <Button Style="{StaticResource LargeRoundButton}"
-                                    Background="DarkRed"
-                                    Click="btnLogout_Click">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Image Source="/Images/home.png" Width="20" Height="20" Margin="0,0,5,0"/>
-                                    <TextBlock Text="Logout" FontSize="20" Foreground="White"/>
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-            </Border>
-
-            <!-- CONTENIDO CENTRAL -->
+        <!-- CONTENIDO CENTRAL -->
             <Border Grid.Column="1" Panel.ZIndex="1"
                 CornerRadius="0,30,30,0" Background="White" Margin="0">
                 <Grid Margin="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <!-- Topbar -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Filtros -->
                         <RowDefinition Height="*"/>
-                        <!-- DataGrid -->
                     </Grid.RowDefinitions>
-
-                    <!-- TOPBAR -->
-                    <StackPanel Grid.Row="0" Orientation="Horizontal"
-                            HorizontalAlignment="Right">
-                        <Border Background="LightBlue" CornerRadius="30" Margin="0,0,5,0">
-                            <Button Name="btnMin" Style="{StaticResource RoundButton}"
-                                Background="LightBlue"
-                                Content="—" Click="btnMin_Click"/>
-                        </Border>
-                        <Border Background="LightGreen" CornerRadius="30" Margin="0,0,5,0">
-                            <Button Name="btnMax" Style="{StaticResource RoundButton}"
-                                Background="LightGreen"
-                                Content="[]" Click="btnMaximize_Click"/>
-                        </Border>
-                        <Border Background="LightCoral" CornerRadius="30">
-                            <Button Name="btnExit" Style="{StaticResource RoundButton}"
-                                Background="LightCoral"
-                                Content="×" Click="btnExit_Click"/>
-                        </Border>
-                    </StackPanel>
 
                     <!-- FILTROS -->
                     <Grid Grid.Row="1" Margin="0,0,0,20">
@@ -281,21 +151,21 @@
                         <Button Grid.Row="2"
                                 Grid.Column="4"
                                 HorizontalAlignment="Center"
-                                Margin="0,10"
+                                Margin="0,20,0,0"
                                 Background="Transparent"
                                 BorderThickness="0"
                                 Click="btnHuellaR_Click">
                             <StackPanel>
+                                <Image Source="/Images/huella-dactilar.png"
+                                       Width="70"
+                                       Height="70"
+                                       HorizontalAlignment="Stretch"/>
                                 <TextBlock x:Name="lblEstadoHuella"
                                            Text="Click para iniciar el escaneo"
                                            Foreground="#5F5FFF"
                                            FontSize="13"
                                            FontWeight="Bold"
                                            HorizontalAlignment="Center"/>
-                                <Image Source="/Images/huella-dactilar.png"
-                                       Width="70"
-                                       Height="70"
-                                       HorizontalAlignment="Stretch"/>
                             </StackPanel>
                         </Button>
 
@@ -355,5 +225,4 @@
                 </Grid>
             </Border>
         </Grid>
-    </ScrollViewer>
-</Window>
+</Page>

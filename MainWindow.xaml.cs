@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using CivitasERP.Views;
+using Microsoft.Win32;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,6 +21,103 @@ namespace CivitasERP
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.Navigate(new HomePage());
+        }
+
+        //CAMBIO DE FOTO DE PERFIL
+        /// Manejador que se activa cuando el usuario hace clic en el Ellipse de perfil.
+        /// Abre un OpenFileDialog para que elija una imagen, y luego la asigna como Fill del Ellipse.
+        private void EllipseProfile_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("¡Click en el ellipse!");
+
+            // 1) Abrir diálogo para seleccionar imagen
+            var dlg = new OpenFileDialog
+            {
+                Title = "Selecciona una foto de perfil",
+                Filter = "Imágenes (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp",
+                Multiselect = false
+            };
+
+            bool? resultado = dlg.ShowDialog();
+            if (resultado == true)
+            {
+                string rutaImagen = dlg.FileName;
+                try
+                {
+                    // 2) Cargar la imagen en un BitmapImage
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(rutaImagen, UriKind.Absolute);
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.EndInit();
+
+                    // 3) Crear un ImageBrush con esa imagen
+                    var brush = new ImageBrush
+                    {
+                        ImageSource = bitmap,
+                        Stretch = Stretch.UniformToFill
+                    };
+
+                    // 4) Asignar el ImageBrush al Fill del Ellipse
+                    //EllipseProfile.Fill = brush;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        $"No se pudo cargar la imagen:\n{ex.Message}",
+                        "Error al cargar imagen",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+            }
+        }
+        //BOTONES DE NAVEGACIÓN
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void btnMin_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+
+        private void btnMaximize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = (WindowState == WindowState.Normal)
+                ? WindowState.Maximized
+                : WindowState.Normal;
+        }
+
+        private void btnNomina_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new NominaPage());
+        }
+        private void btnLista_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new ListaPage());
+        }
+        private void btnNueva_Obra(object sebder, RoutedEventArgs e)
+        {
+            NuevaObraPage nuevaObraPage = new NuevaObraPage();
+            nuevaObraPage.Show();
+        }
+        private void btnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            // 1) Instanciamos la ventana de Login (ajusta el nombre si tu clase se llama distinto)
+            var loginWindow = new LoginPage();
+
+            // 2) Mostramos Login en modo no modal (para que la app siga viva)
+            loginWindow.Show();
+
+            // 3) Cerramos la ventana actual (dejará viva únicamente la de Login)
+            this.Close();
+        }
+        private void btnRegis_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

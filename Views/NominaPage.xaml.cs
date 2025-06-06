@@ -24,91 +24,15 @@ namespace CivitasERP.Views
     /// <summary>
     /// Lógica de interacción para NominaPage.xaml
     /// </summary>
-    public partial class NominaPage : Window
+    public partial class NominaPage : Page
     {
         private DataGridNominas repo;
         public NominaPage()
         {
             InitializeComponent();
         }
-        //Poder mover la ventana con libertad
-        private void DragWindow(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-                DragMove();
-        }
-        private void HomePage_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Cambio de tamaño de la ventana
-            if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
-            {
-                this.MinWidth = 800;
-                this.MinHeight = 600;
-                // Máximo al área útil de la pantalla:
-                this.MaxWidth = SystemParameters.WorkArea.Width;
-                this.MaxHeight = SystemParameters.WorkArea.Height;
-            }
 
-            // Verificamos si quedó fuera del área útil y la centramos:
-            var wa = SystemParameters.WorkArea;
-            if (this.Left < wa.Left ||
-                this.Top < wa.Top ||
-                this.Left + this.ActualWidth > wa.Right ||
-                this.Top + this.ActualHeight > wa.Bottom)
-            {
-                this.Left = wa.Left + (wa.Width - this.ActualWidth) / 2;
-                this.Top = wa.Top + (wa.Height - this.ActualHeight) / 2;
-            }
-        }
 
-        
-
-        private void btnExit_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-        private void btnMin_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
-
-        private void btnSemanaOp_Click(object sender, RoutedEventArgs e)
-        {
-            //PRUEBA, LOGICA DEL BOTON SEMANA NO OFICIAL
-            this.WindowState = WindowState.Minimized;
-        }
-
-        private void btnMaximize_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = this.WindowState == WindowState.Maximized
-                       ? WindowState.Normal
-                       : WindowState.Maximized;
-        }
-
-        private void btnMenu_Click(object sender, RoutedEventArgs e)
-        {
-            HomePage homePage = new HomePage();
-            homePage.Show();
-            this.Close();
-        }
-        private void btnLista_Click(object sender, RoutedEventArgs e)
-        {
-            ListaPage listaPage = new ListaPage();
-            listaPage.Show();
-            this.Close();
-        }
-        private void btnLogout_Click(object sender, RoutedEventArgs e)
-        {
-            // 1) Instanciamos la ventana de Login (ajusta el nombre si tu clase se llama distinto)
-            var loginWindow = new LoginPage();
-
-            // 2) Mostramos Login en modo no modal (para que la app siga viva)
-            loginWindow.Show();
-
-            // 3) Cerramos la ventana actual (dejará viva únicamente la de Login)
-            this.Close();
-        }
 
         private void btnNuevoEmpleado_Click(object sender, RoutedEventArgs e)
         {
@@ -149,7 +73,7 @@ namespace CivitasERP.Views
                 var empleados = repo.ObtenerEmpleados();
                 dataGridNomina.ItemsSource = empleados;
 
-                this.Loaded += HomePage_Loaded;
+                //this.Loaded += HomePage_Loaded;
 
             }
             else
@@ -220,13 +144,14 @@ namespace CivitasERP.Views
             }
         }
 
-        private void ComBoxSemanaOp_DropDownOpened(object sender, EventArgs e)
+        private void ComBoxMes_DropDownOpened(object sender, EventArgs e)
         {
-            LlenarComboSemanasMesActual(ComBoxSemanaOp);
+           // LlenarComboSemanasMesActual(ComBoxSemanaOp);
         }
 
-        private void ComBoxSemanaOp_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        private void ComBoxMes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            /*
             if (ComBoxSemanaOp.SelectedItem != null)
             {
                 string seleccion = ComBoxSemanaOp.SelectedItem.ToString();
@@ -242,10 +167,10 @@ namespace CivitasERP.Views
                     Fecha2.Text = fechaFin;
                     
                 }
-            }
+            }*/
         }
         private void LlenarComboSemanasMesActual(ComboBox comboBox)
-        {
+        {/*
             comboBox.Items.Clear();
 
             int mes = DateTime.Now.Month;
@@ -270,7 +195,16 @@ namespace CivitasERP.Views
 
             // Selecciona la primera semana si quieres
             if (comboBox.Items.Count > 0)
-                comboBox.SelectedIndex = 0;
+                comboBox.SelectedIndex = 0;*/
+        }
+
+        private void ComBoxAnio_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+        private void ComBoxAnio_DropDownOpened(object sender, EventArgs e)
+        {
+            // LlenarComboAnios(ComBoxAnio);
         }
     }
     
