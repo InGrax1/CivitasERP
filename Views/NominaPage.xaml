@@ -111,6 +111,35 @@
                                     Orientation="Horizontal"
                                     VerticalAlignment="Center"
                                     Margin="0,0,10,0">
+
+
+                            <!-- Combo Semana -->
+                            <TextBlock Text="Semana"
+            FontSize="16"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Stretch"
+            Margin="0,00,10,0"/>
+                            <Border Background="White"
+         CornerRadius="5"
+         BorderBrush="#6666FF"
+         MinHeight="30"
+         MinWidth="80"
+         BorderThickness="2"
+         Padding="1"
+         Margin="0,0,15,0">
+                                <ComboBox x:Name="ComBoxSemana"
+               Background="White"
+               BorderBrush="Transparent"
+               BorderThickness="0"
+               FontSize="14"                             
+               Foreground="DarkBlue"
+               FontWeight="Normal"
+               HorizontalContentAlignment="Stretch"
+               VerticalContentAlignment="Center"
+               DropDownOpened="ComBoxSemana_DropDownOpened"
+               SelectionChanged="ComBoxSemana_SelectionChanged"/>
+                            </Border>
+
                             <!-- Combo Mes -->
                             <TextBlock Text="Mes"
                                        FontSize="16"

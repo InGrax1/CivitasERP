@@ -16,6 +16,7 @@ using static CivitasERP.Models.DataGridNominas;
 using System.Data.SqlTypes;
 using static CivitasERP.Views.LoginPage;
 using static CivitasERP.Views.HomePage;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CivitasERP.Models
 {
@@ -128,20 +129,31 @@ namespace CivitasERP.Models
                     id_obra = 0; // cuidado: esto convierte el null a 0, podría ser ambiguo si 0 no es válido
                 }
 
+                string fechaInicio="",fechaFin="";
 
-                string query = @"SELECT id_empleado, 
-                            CONCAT(empleado.emp_nombre, ' ', empleado.emp_apellidop, ' ', empleado.emp_apellidom) AS emp_nombre, 
-                            emp_puesto, 
-                            emp_dia, 
-                            emp_semanal, 
-                            emp_hora_extra  
-                     FROM empleado 
-                     WHERE id_admins = @idAdmin AND id_obra = @id_obra";
+                fechaInicio = GlobalVariables1.fecha_inicio;
+                fechaFin = GlobalVariables1.fecha_fin;
+
+                MessageBox.Show(fechaInicio);
+                MessageBox.Show(fechaFin);
+                string query = @"
+                                SELECT DISTINCT e.id_empleado, 
+                                    CONCAT(e.emp_nombre, ' ', e.emp_apellidop, ' ', e.emp_apellidom) AS emp_nombre, 
+                                    e.emp_puesto, 
+                                    e.emp_dia, 
+                                    e.emp_semanal, 
+                                    e.emp_hora_extra  
+                                    FROM empleado e
+                                    INNER JOIN asistencia a ON e.id_empleado = a.id_empleado
+                                    WHERE e.id_admins = @idAdmin 
+                                      AND e.id_obra = @id_obra 
+                                      AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
 
                 SqlCommand cmd1 = new SqlCommand(query, connection);
                 cmd1.Parameters.AddWithValue("@idAdmin", idAdmin);
                 cmd1.Parameters.AddWithValue("@id_obra", id_obra);
-
+                cmd1.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                cmd1.Parameters.AddWithValue("@fechaFin", fechaFin);
                 connection.Open();
 
                 SqlDataReader reader1 = cmd1.ExecuteReader();
@@ -150,6 +162,8 @@ namespace CivitasERP.Models
 
                 while (reader1.Read())
                 {
+
+                    
                     empleados.Add(new Empleado
                     {
                         ID = reader1.GetInt32(0),
@@ -165,6 +179,7 @@ namespace CivitasERP.Models
                         SuelTotal = (Convert.ToDecimal(reader1.GetValue(5)) * ObtenerTotalHorasExtra(reader1.GetInt32(0))) +
                                     (Convert.ToDecimal(reader1.GetValue(3)) * CalcularDiasTrabajados(reader1.GetInt32(0)))
                     });
+
                 }
 
                 reader1.Close();
@@ -177,30 +192,38 @@ namespace CivitasERP.Models
 
 
         // EMPLEADOS
-
         public int CalcularDiasTrabajados(int idEmpleado)
         {
             var fechasUnicas = new HashSet<DateTime>();
 
             Conexion Sconexion = new Conexion();
-            string connectionString;
+            string connectionString = Sconexion.ObtenerCadenaConexion();
 
-            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
-            connectionString = obtenerCadenaConexion;
+            string fechaInicio="", fechaFin="";
+
+
+            fechaInicio = GlobalVariables1.fecha_inicio;
+            fechaFin = GlobalVariables1.fecha_fin;
+
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
                 conexion.Open();
 
                 string query = @"
-                SELECT CAST(asis_dia AS DATE) AS DiaAsistido
-                FROM asistencia
-                WHERE id_empleado = @id_empleado
-            ";
+            SELECT CAST(asis_dia AS DATE) AS DiaAsistido
+            FROM asistencia
+            WHERE id_empleado = @id_empleado
+              AND asis_dia BETWEEN @fechaInicio AND @fechaFin
+        ";
 
                 using (SqlCommand comando = new SqlCommand(query, conexion))
                 {
-                    comando.Parameters.Add("@id_empleado", SqlDbType.Int).Value = idEmpleado;
+
+                    comando.Parameters.AddWithValue("@id_empleado", idEmpleado);
+                    comando.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    comando.Parameters.AddWithValue("@fechaFin", fechaFin);
+
 
                     using (SqlDataReader lector = comando.ExecuteReader())
                     {
@@ -212,16 +235,21 @@ namespace CivitasERP.Models
                     }
                 }
             }
-
             return fechasUnicas.Count;
-
         }
-        public decimal ObtenerTotalHorasExtra(int idEmpleado)
+
+
+            public decimal ObtenerTotalHorasExtra(int idEmpleado)
         {
             decimal totalHoras = 0;
 
             Conexion Sconexion = new Conexion();
             string connectionString = new Conexion().ObtenerCadenaConexion();
+
+            string fechaInicio = "", fechaFin = "";
+
+            fechaInicio = GlobalVariables1.fecha_inicio;
+            fechaFin = GlobalVariables1.fecha_fin;
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
@@ -230,12 +258,15 @@ namespace CivitasERP.Models
                 string query = @"
                                 SELECT asis_hora_extra
                                 FROM asistencia
-                                WHERE id_empleado = @id_empleado AND asis_hora_extra IS NOT NULL";
+                                WHERE id_empleado = @id_empleado AND asis_hora_extra IS NOT NULL
+              AND asis_dia BETWEEN @fechaInicio AND @fechaFin
+        ";
 
                 using (SqlCommand comando = new SqlCommand(query, conexion))
                 {
-                    comando.Parameters.Add("@id_empleado", SqlDbType.Int).Value = idEmpleado;
-
+                    comando.Parameters.AddWithValue("@id_empleado", idEmpleado);
+                    comando.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    comando.Parameters.AddWithValue("@fechaFin", fechaFin);
                     using (SqlDataReader lector = comando.ExecuteReader())
                     {
                         while (lector.Read())
@@ -264,6 +295,12 @@ namespace CivitasERP.Models
             string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
             connectionString = obtenerCadenaConexion;
 
+            string fechaInicio = "", fechaFin = "";
+
+
+            fechaInicio = GlobalVariables1.fecha_inicio;
+            fechaFin = GlobalVariables1.fecha_fin;
+
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
                 conexion.Open();
@@ -272,11 +309,15 @@ namespace CivitasERP.Models
                 SELECT CAST(asis_dia AS DATE) AS DiaAsistido
                 FROM asistencia
                 WHERE admins_id_asistencia = @id_admin
-            ";
+              AND asis_dia BETWEEN @fechaInicio AND @fechaFin
+";
+
 
                 using (SqlCommand comando = new SqlCommand(query, conexion))
                 {
                     comando.Parameters.Add("@id_admin", SqlDbType.Int).Value = idAdmin;
+                    comando.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    comando.Parameters.AddWithValue("@fechaFin", fechaFin);
 
                     using (SqlDataReader lector = comando.ExecuteReader())
                     {
@@ -300,6 +341,11 @@ namespace CivitasERP.Models
             Conexion Sconexion = new Conexion();
             string connectionString = new Conexion().ObtenerCadenaConexion();
 
+            string fechaInicio = "", fechaFin = "";
+
+            fechaInicio = GlobalVariables1.fecha_inicio;
+            fechaFin = GlobalVariables1.fecha_fin;
+
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
                 conexion.Open();
@@ -307,12 +353,15 @@ namespace CivitasERP.Models
                 string query = @"
                                 SELECT asis_hora_extra
                                 FROM asistencia
-                                WHERE admins_id_asistencia = @id_admin AND asis_hora_extra IS NOT NULL";
+                                WHERE admins_id_asistencia = @id_admin AND asis_hora_extra IS NOT NULL
+              AND asis_dia BETWEEN @fechaInicio AND @fechaFin
+        ";
 
                 using (SqlCommand comando = new SqlCommand(query, conexion))
                 {
                     comando.Parameters.Add("@id_admin", SqlDbType.Int).Value = idAdmin;
-
+                    comando.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                    comando.Parameters.AddWithValue("@fechaFin", fechaFin);
                     using (SqlDataReader lector = comando.ExecuteReader())
                     {
                         while (lector.Read())
@@ -325,6 +374,24 @@ namespace CivitasERP.Models
             }
 
             return totalHoras;
+        }
+        public (bool exito, DateTime fechaInicio, DateTime fechaFin) ObtenerFechasDesdeGlobal()
+        {
+            string texto = GlobalVariables1.fecha;
+
+            if (string.IsNullOrWhiteSpace(texto))
+                return (false, DateTime.MinValue, DateTime.MinValue);
+
+            string[] partes = texto.Split(" - ");
+
+            if (partes.Length == 2 &&
+                DateTime.TryParseExact(partes[0], "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime inicio) &&
+                DateTime.TryParseExact(partes[1], "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime fin))
+            {
+                return (true, inicio, fin);
+            }
+
+            return (false, DateTime.MinValue, DateTime.MinValue);
         }
     }
 }

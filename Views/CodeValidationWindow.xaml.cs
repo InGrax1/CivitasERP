@@ -69,6 +69,11 @@ namespace CivitasERP.Views
             reset.ShowDialog();
             
         }
+
+        private void btnReenviarCodigo_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 
