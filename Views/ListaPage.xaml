@@ -30,9 +30,9 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <!-- Título -->
@@ -65,48 +65,37 @@
                                       IsEditable="False"
                                       IsReadOnly="False"/>
                         </Border>
-                        <!-- Periodo -->
-                        <StackPanel Grid.Row="1" 
-                                    Grid.Column="2"
-                                    Orientation="Horizontal" 
-                                    VerticalAlignment="Center">
-                            <TextBlock Grid.Row="1" 
-                                       Grid.Column="2"
-                                       Text="Periodo" 
-                                       FontSize="16"
-                                       VerticalAlignment="Center"
-                                       Margin="20,0,10,0"/>
-                            <Border Background="#6666FF" 
-                                    CornerRadius="5"
-                                    MinWidth="80" 
-                                    MinHeight="30" 
-                                    Margin="0,0,5,0">
-                                <TextBlock Text="Fecha 1"
-                                           Foreground="White"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"/>
-                            </Border>
-
-                            <TextBlock Text="al" 
-                                       VerticalAlignment="Center" 
-                                       Margin="5,0"/>
-                            <Border Background="#6666FF" 
-                                    CornerRadius="5"
-                                    MinWidth="80" 
-                                    MinHeight="30" 
-                                    Margin="5,0,0,0">
-                                <TextBlock Text="Fecha 2"
-                                           Foreground="White"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"/>
-                            </Border>
-                        </StackPanel>
 
                         <!-- Combos Mes + Año (ambos dentro de un StackPanel) -->
-                        <StackPanel Grid.Row="1" Grid.Column="3"
+                        <StackPanel Grid.Row="1" Grid.Column="2"
                                     Orientation="Horizontal"
                                     VerticalAlignment="Center"
-                                    Margin="0,0,10,0">
+                                    Margin="10,0,10,0">
+                            <!-- Combo Semana -->
+                            <TextBlock Text="Semana"
+                                       FontSize="16"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Stretch"
+                                       Margin="10,0,10,0"/>
+                            <Border Background="White"
+                                    CornerRadius="5"
+                                    BorderBrush="#6666FF"
+                                    MinHeight="30"
+                                    MinWidth="80"
+                                    BorderThickness="2"
+                                    Padding="1"
+                                    Margin="0,0,15,0">
+                                <ComboBox x:Name="ComBoxSemana"
+                                          Background="White"
+                                          BorderBrush="Transparent"
+                                          BorderThickness="0"
+                                          FontSize="14"                             
+                                          Foreground="DarkBlue"
+                                          FontWeight="Normal"
+                                          HorizontalContentAlignment="Stretch"
+                                          VerticalContentAlignment="Center"/>
+                            </Border>
+
                             <!-- Combo Mes -->
                             <TextBlock Text="Mes"
                                        FontSize="16"
@@ -165,7 +154,7 @@
 
                         <!-- Botón Huella -->
                         <Button Grid.Row="2"
-                                Grid.Column="3"
+                                Grid.Column="4"
                                 HorizontalAlignment="Center"
                                 Margin="0,20,0,0"
                                 Background="Transparent"
