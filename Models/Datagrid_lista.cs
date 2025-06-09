@@ -56,6 +56,9 @@ namespace CivitasERP.Models
             this.connectionString = connectionString;
         }
 
+
+
+
         public List<Empleado_Asistencia> ObtenerEmpleados()
         {
             List<Empleado_Asistencia> empleados = new List<Empleado_Asistencia>();
@@ -66,6 +69,9 @@ namespace CivitasERP.Models
 
             string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
             connectionString = obtenerCadenaConexion;
+
+
+
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
