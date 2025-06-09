@@ -57,8 +57,6 @@ namespace CivitasERP.Models
         }
 
 
-
-
         public List<Empleado_Asistencia> ObtenerEmpleados()
         {
             List<Empleado_Asistencia> empleados = new List<Empleado_Asistencia>();
@@ -71,10 +69,96 @@ namespace CivitasERP.Models
             connectionString = obtenerCadenaConexion;
 
 
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string usuario = GlobalVariables1.usuario;
+                DB_admins dB_Admins = new DB_admins();
+                int? idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
 
+                // Aquí estás verificando si se ha guardado un id_obra globalmente
+                int? id_obra;
+
+                if (GlobalVariables1.id_obra != null)
+                {
+                    id_obra = GlobalVariables1.id_obra;
+                }
+                else
+                {
+                    id_obra = 0; // cuidado: esto convierte el null a 0, podría ser ambiguo si 0 no es válido
+                }
+
+                string fechaInicio = "", fechaFin = "";
+
+                fechaInicio = GlobalVariables1.fecha_inicio;
+                fechaFin = GlobalVariables1.fecha_fin;
+
+                MessageBox.Show(fechaInicio);
+                MessageBox.Show(fechaFin);
+                string query = @"SELECT id_admins, 
+                            CONCAT(admins.admins_nombre, ' ', admins.admins_apellidop, ' ', admins.admins_apellidom) AS admin_nombre, 
+                            admin_categoria, 
+                            admins_semanal
+                     FROM admins 
+                     WHERE id_admins = @idAdmin";
+
+
+
+                SqlCommand cmd1 = new SqlCommand(query, connection);
+                cmd1.Parameters.AddWithValue("@idAdmin", idAdmin);
+                connection.Open();
+
+                SqlDataReader reader1 = cmd1.ExecuteReader();
+
+                Dictionary<int, Empleado_Asistencia> empleadosDict = new Dictionary<int, Empleado_Asistencia>();
+
+                string fechas;
+                fechas = GlobalVariables1.fecha_inicio;
+
+                DateTime fecha = DateTime.Parse(fechas);
+
+
+
+                while (reader1.Read())
+                {
+
+                    empleados.Add(new Empleado_Asistencia
+                    {
+                        ID = reader1.GetInt32(0),
+                        Nombre = reader1.GetString(1),
+                        Categoria = reader1.GetString(2),
+
+
+
+                        EntradaL = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha),
+                        SalidaL = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha),
+
+                        EntradaM = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(1)),
+                        SalidaM = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(1)),
+
+                        EntradaMI = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(2)),
+                        SalidaMI = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(2)),
+
+                        EntradaJ = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(3)),
+                        SalidaJ = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(3)),
+
+                        EntradaV = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(4)),
+                        SalidaV = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(4)),
+
+                        EntradaS = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(5)),
+                        SalidaS = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(5)),
+                    });
+                }
+                reader1.Close();
+
+            }
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
+                
+                
+                
+                
+                
                 string usuario = GlobalVariables1.usuario;
                 DB_admins dB_Admins = new DB_admins();
                 int? idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);

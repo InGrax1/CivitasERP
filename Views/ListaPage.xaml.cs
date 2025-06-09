@@ -38,16 +38,7 @@ namespace CivitasERP.Views
 
             CargarEmpleadosEnGrilla();
 
-            Conexion Sconexion = new Conexion();
-            string connectionString;
-
-            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
-            connectionString = obtenerCadenaConexion;
-
-            repo = new Datagrid_lista(connectionString);
-
-            var Empleado_Asistencia = repo.ObtenerEmpleados();
-            dataGridAsistencia.ItemsSource = Empleado_Asistencia;
+           
 
             // 1) Obtener cadena de conexión y crear el servicio
             _connectionString = new Conexion().ObtenerCadenaConexion();
