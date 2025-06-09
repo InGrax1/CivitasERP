@@ -97,7 +97,6 @@ namespace CivitasERP.Models
                 string query = @"SELECT id_admins, 
                             CONCAT(admins.admins_nombre, ' ', admins.admins_apellidop, ' ', admins.admins_apellidom) AS admin_nombre, 
                             admin_categoria, 
-                            admins_semanal
                      FROM admins 
                      WHERE id_admins = @idAdmin";
 
@@ -129,23 +128,23 @@ namespace CivitasERP.Models
 
 
 
-                        EntradaL = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha),
-                        SalidaL = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha),
+                        EntradaL = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha),
+                        SalidaL = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha),
 
-                        EntradaM = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(1)),
-                        SalidaM = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(1)),
+                        EntradaM = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha.AddDays(1)),
+                        SalidaM = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha.AddDays(1)),
 
-                        EntradaMI = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(2)),
-                        SalidaMI = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(2)),
+                        EntradaMI = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha.AddDays(2)),
+                        SalidaMI = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha.AddDays(2)),
 
-                        EntradaJ = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(3)),
-                        SalidaJ = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(3)),
+                        EntradaJ = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha.AddDays(3)),
+                        SalidaJ = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha.AddDays(3)),
 
-                        EntradaV = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(4)),
-                        SalidaV = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(4)),
+                        EntradaV = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha.AddDays(4)),
+                        SalidaV = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha.AddDays(4)),
 
-                        EntradaS = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(5)),
-                        SalidaS = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(5)),
+                        EntradaS = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha.AddDays(5)),
+                        SalidaS = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha.AddDays(5)),
                     });
                 }
                 reader1.Close();
@@ -309,6 +308,83 @@ namespace CivitasERP.Models
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
                 cmd.Parameters.AddWithValue("@id_empleado", idEmpleado);
+                cmd.Parameters.AddWithValue("@asis_dia", fecha.Date);
+
+                conn.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        if (!reader.IsDBNull(1))
+                            horaSalida = reader.GetTimeSpan(reader.GetOrdinal("asis_salida"));
+                    }
+                }
+            }
+            return (horaSalida);
+        }
+
+
+
+
+
+        public TimeSpan? ObtenerHorarioDeEntrada_Admin(int idEmpleado, DateTime fecha)
+        {
+            Conexion Sconexion = new Conexion();
+            string connectionString;
+
+            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
+            connectionString = obtenerCadenaConexion;
+
+
+            TimeSpan? horaEntrada = null;
+
+
+            string query = @"
+            SELECT asis_hora, asis_salida
+            FROM asistencia
+           WHERE admins_id_asistencia = @admins_id_asistencia AND CAST(asis_dia AS DATE) = @asis_dia";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@admins_id_asistencia", idEmpleado);
+                cmd.Parameters.AddWithValue("@asis_dia", fecha.Date);
+
+                conn.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        if (!reader.IsDBNull(0))
+                            horaEntrada = reader.GetTimeSpan(reader.GetOrdinal("asis_hora"));
+
+
+                    }
+                }
+            }
+            return (horaEntrada);
+        }
+
+        public TimeSpan? ObtenerHorarioDeSalida_Admin(int idEmpleado, DateTime fecha)
+        {
+            Conexion Sconexion = new Conexion();
+            string connectionString;
+
+            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
+            connectionString = obtenerCadenaConexion;
+
+
+            TimeSpan? horaSalida = null;
+
+            string query = @"
+            SELECT asis_hora, asis_salida
+            FROM admins_id_asistencia
+           WHERE admins_id_asistencia = @admins_id_asistencia AND CAST(asis_dia AS DATE) = @asis_dia";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@admins_id_asistencia", idEmpleado);
                 cmd.Parameters.AddWithValue("@asis_dia", fecha.Date);
 
                 conn.Open();
