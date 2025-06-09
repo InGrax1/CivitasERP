@@ -96,7 +96,7 @@ namespace CivitasERP.Models
                 MessageBox.Show(fechaFin);
                 string query = @"SELECT id_admins, 
                             CONCAT(admins.admins_nombre, ' ', admins.admins_apellidop, ' ', admins.admins_apellidom) AS admin_nombre, 
-                            admin_categoria, 
+                            admin_categoria 
                      FROM admins 
                      WHERE id_admins = @idAdmin";
 
@@ -325,8 +325,6 @@ namespace CivitasERP.Models
 
 
 
-
-
         public TimeSpan? ObtenerHorarioDeEntrada_Admin(int idEmpleado, DateTime fecha)
         {
             Conexion Sconexion = new Conexion();
@@ -378,7 +376,7 @@ namespace CivitasERP.Models
 
             string query = @"
             SELECT asis_hora, asis_salida
-            FROM admins_id_asistencia
+            FROM asistencia
            WHERE admins_id_asistencia = @admins_id_asistencia AND CAST(asis_dia AS DATE) = @asis_dia";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
