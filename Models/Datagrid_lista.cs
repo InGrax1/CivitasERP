@@ -12,6 +12,7 @@ using System.IO.Packaging;
 using CivitasERP.Views;
 using static CivitasERP.Models.DataGridNominas;
 using System.Data.SqlTypes;
+using static CivitasERP.Views.LoginPage;
 
 namespace CivitasERP.Models
 {
@@ -68,21 +69,61 @@ namespace CivitasERP.Models
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = @"SELECT id_empleado, CONCAT(empleado.emp_nombre, ' ', empleado.emp_apellidop, ' ', empleado.emp_apellidom) AS emp_nombre, emp_puesto,emp_dia, emp_semanal,emp_hora_extra  FROM empleado where id_admins=100;";
+                string usuario = GlobalVariables1.usuario;
+                DB_admins dB_Admins = new DB_admins();
+                int? idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
+
+                // Aquí estás verificando si se ha guardado un id_obra globalmente
+                int? id_obra;
+
+                if (GlobalVariables1.id_obra != null)
+                {
+                    id_obra = GlobalVariables1.id_obra;
+                }
+                else
+                {
+                    id_obra = 0; // cuidado: esto convierte el null a 0, podría ser ambiguo si 0 no es válido
+                }
+
+                string fechaInicio = "", fechaFin = "";
+
+                fechaInicio = GlobalVariables1.fecha_inicio;
+                fechaFin = GlobalVariables1.fecha_fin;
+
+                MessageBox.Show(fechaInicio);
+                MessageBox.Show(fechaFin);
+                string query = @"
+                                SELECT DISTINCT e.id_empleado, 
+                                    CONCAT(e.emp_nombre, ' ', e.emp_apellidop, ' ', e.emp_apellidom) AS emp_nombre, 
+                                    e.emp_puesto, 
+                                    e.emp_dia, 
+                                    e.emp_semanal, 
+                                    e.emp_hora_extra  
+                                    FROM empleado e
+                                    INNER JOIN asistencia a ON e.id_empleado = a.id_empleado
+                                    WHERE e.id_admins = @idAdmin 
+                                      AND e.id_obra = @id_obra 
+                                      AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
 
 
                 SqlCommand cmd1 = new SqlCommand(query, connection);
+                cmd1.Parameters.AddWithValue("@idAdmin", idAdmin);
+                cmd1.Parameters.AddWithValue("@id_obra", id_obra);
+                cmd1.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                cmd1.Parameters.AddWithValue("@fechaFin", fechaFin);
                 connection.Open();
 
                 SqlDataReader reader1 = cmd1.ExecuteReader();
 
                 Dictionary<int, Empleado_Asistencia> empleadosDict = new Dictionary<int, Empleado_Asistencia>();
 
+                string fechas;
+                fechas =GlobalVariables1.fecha_inicio;
 
+                DateTime fecha = DateTime.Parse(fechas);
 
-
-                DateTime hoy = DateTime.Today;
                 
+
                 while (reader1.Read())
                 {
 
@@ -94,23 +135,23 @@ namespace CivitasERP.Models
 
 
 
-                        EntradaL = ObtenerHorarioDeEntrada(reader1.GetInt32(0),hoy),
-                        SalidaL = ObtenerHorarioDeSalida(reader1.GetInt32(0), hoy),
+                        EntradaL = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha),
+                        SalidaL = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha),
 
-                        EntradaM = ObtenerHorarioDeEntrada(reader1.GetInt32(0), hoy.AddDays(1)),
-                        SalidaM = ObtenerHorarioDeSalida(reader1.GetInt32(0), hoy.AddDays(1)),
+                        EntradaM = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(1)),
+                        SalidaM = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(1)),
 
-                        EntradaMI = ObtenerHorarioDeEntrada(reader1.GetInt32(0), hoy.AddDays(2)),
-                        SalidaMI = ObtenerHorarioDeSalida(reader1.GetInt32(0), hoy.AddDays(2)),
+                        EntradaMI = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(2)),
+                        SalidaMI = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(2)),
 
-                        EntradaJ = ObtenerHorarioDeEntrada(reader1.GetInt32(0), hoy.AddDays(3)),
-                        SalidaJ = ObtenerHorarioDeSalida(reader1.GetInt32(0), hoy.AddDays(3)),
+                        EntradaJ = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(3)),
+                        SalidaJ = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(3)),
 
-                        EntradaV = ObtenerHorarioDeEntrada(reader1.GetInt32(0), hoy.AddDays(4)),
-                        SalidaV = ObtenerHorarioDeSalida(reader1.GetInt32(0), hoy.AddDays(4)),
+                        EntradaV = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(4)),
+                        SalidaV = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(4)),
 
-                        EntradaS = ObtenerHorarioDeEntrada(reader1.GetInt32(0), hoy.AddDays(5)),
-                        SalidaS = ObtenerHorarioDeSalida(reader1.GetInt32(0), hoy.AddDays(5)),
+                        EntradaS = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(5)),
+                        SalidaS = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(5)),
                     });
                 }
                 reader1.Close();

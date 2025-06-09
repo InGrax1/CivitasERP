@@ -93,7 +93,7 @@
                                           Foreground="DarkBlue"
                                           FontWeight="Normal"
                                           HorizontalContentAlignment="Stretch"
-                                          VerticalContentAlignment="Center"/>
+                                          VerticalContentAlignment="Center" SelectionChanged="ComBoxSemana_SelectionChanged"/>
                             </Border>
 
                             <!-- Combo Mes -->
