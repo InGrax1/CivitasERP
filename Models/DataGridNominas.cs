@@ -105,11 +105,6 @@ namespace CivitasERP.Models
             }
 
 
-
-
-
-
-
             //empleados
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

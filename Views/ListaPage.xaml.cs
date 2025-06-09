@@ -35,9 +35,7 @@ namespace CivitasERP.Views
         public ListaPage()
         {
             InitializeComponent();
-
-            CargarEmpleadosEnGrilla();
-
+            
            
 
             // 1) Obtener cadena de conexión y crear el servicio

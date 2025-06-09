@@ -156,9 +156,6 @@ namespace CivitasERP.Models
             {
                 
                 
-                
-                
-                
                 string usuario = GlobalVariables1.usuario;
                 DB_admins dB_Admins = new DB_admins();
                 int? idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
