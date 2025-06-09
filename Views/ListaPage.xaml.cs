@@ -337,6 +337,104 @@ namespace CivitasERP.Views
             return (false, DateTime.MinValue, DateTime.MinValue);
         }
 
+        private void ObraComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string usuario = GlobalVariables1.usuario;
+            DB_admins dB_Admins = new DB_admins();
+            int? idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
+
+            if (ObraComboBox.SelectedItem != null)
+            {
+                string nombre_obra = ObraComboBox.SelectedItem.ToString();
+                MessageBox.Show("Seleccionaste: " + nombre_obra);
+
+                int? id_obra = ObtenerID_obra(idAdmin, nombre_obra);
+                GlobalVariables1.id_obra = id_obra;
+
+
+
+                Conexion Sconexion = new Conexion();
+                string connectionString;
+
+                string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
+                connectionString = obtenerCadenaConexion;
+
+                repo = new Datagrid_lista(connectionString);
+
+                var empleados = repo.ObtenerEmpleados();
+                dataGridAsistencia.ItemsSource = empleados;
+
+                //this.Loaded += HomePage_Loaded;
+
+            }
+            else
+            {
+            }
+        }
+        private int? ObtenerID_obra(int? idAdminObra, string obraNombre)
+        {
+            if (idAdminObra == null || string.IsNullOrWhiteSpace(obraNombre))
+                return null;
+
+            var conexion = new Conexion();
+            string connectionString = conexion.ObtenerCadenaConexion();
+
+            using (var conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT id_obra FROM obra WHERE id_admin_obra = @idAdminObra AND obra_nombre = @obraNombre";
+                using (var cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@idAdminObra", idAdminObra);
+                    cmd.Parameters.AddWithValue("@obraNombre", obraNombre);
+                    conn.Open();
+
+                    object resultado = cmd.ExecuteScalar();
+                    if (resultado != null && int.TryParse(resultado.ToString(), out int idObra))
+                        return idObra;
+
+                    return null;
+                }
+            }
+        }
+        private void ObraComboBox_DropDownOpened(object sender, EventArgs e)
+        {
+            CargarDatosComboBox();
+        }
+        private void CargarDatosComboBox()
+        {
+            string usuario = GlobalVariables1.usuario;
+            var dB_Admins = new DB_admins();
+            int? idAdminObra = dB_Admins.ObtenerIdPorUsuario(usuario);
+
+            try
+            {
+                var conexion = new Conexion();
+                string connectionString = conexion.ObtenerCadenaConexion();
+
+                using (var conn = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT obra_nombre FROM obra WHERE id_admin_obra = @idAdminObra";
+                    using (var cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@idAdminObra", idAdminObra);
+                        conn.Open();
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            ObraComboBox.Items.Clear();
+                            while (reader.Read())
+                            {
+                                ObraComboBox.Items.Add(reader["obra_nombre"].ToString());
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar datos: " + ex.Message);
+            }
+        }
 
     }
 }
