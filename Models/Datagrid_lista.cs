@@ -69,9 +69,12 @@ namespace CivitasERP.Models
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string usuario = GlobalVariables1.usuario;
+                string usuario;
+                usuario = GlobalVariables1.usuario;
                 DB_admins dB_Admins = new DB_admins();
-                int? idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
+                int? idAdmin;
+                idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
+
 
                 // Aquí estás verificando si se ha guardado un id_obra globalmente
                 int? id_obra;
@@ -101,7 +104,7 @@ namespace CivitasERP.Models
                                     e.emp_hora_extra  
                                     FROM empleado e
                                     INNER JOIN asistencia a ON e.id_empleado = a.id_empleado
-                                    WHERE e.id_admins = @idAdmin 
+                                    WHERE e.id_empleado = @idAdmin 
                                       AND e.id_obra = @id_obra 
                                       AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
 
