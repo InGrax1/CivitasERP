@@ -36,8 +36,6 @@ namespace CivitasERP.Views
         {
             InitializeComponent();
 
-    
-
             // 1) Obtener cadena de conexión y crear el servicio
             _connectionString = new Conexion().ObtenerCadenaConexion();
             _fingerService = new FingerprintService(_connectionString);

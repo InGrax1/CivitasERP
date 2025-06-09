@@ -153,9 +153,10 @@ namespace CivitasERP.Models
             }
 
             using (SqlConnection connection = new SqlConnection(connectionString))
+
             {   
-                
-                
+
+
                 string usuario = GlobalVariables1.usuario;
                 DB_admins dB_Admins = new DB_admins();
                 int? idAdmin;
