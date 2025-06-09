@@ -210,10 +210,7 @@ namespace CivitasERP.Views
         }
 
 
-        private void LlenarComboSemanasMesActual(ComboBox comboBox)
-        {
-            CargarMeses();
-        }
+
 
         private void ComBoxAnio_DropDownOpened(object sender, EventArgs e)
         {

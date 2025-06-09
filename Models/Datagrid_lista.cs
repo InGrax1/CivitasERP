@@ -12,6 +12,7 @@ using System.IO.Packaging;
 using CivitasERP.Views;
 using static CivitasERP.Models.DataGridNominas;
 using System.Data.SqlTypes;
+using static CivitasERP.Views.LoginPage;
 
 namespace CivitasERP.Models
 {
@@ -55,6 +56,7 @@ namespace CivitasERP.Models
             this.connectionString = connectionString;
         }
 
+
         public List<Empleado_Asistencia> ObtenerEmpleados()
         {
             List<Empleado_Asistencia> empleados = new List<Empleado_Asistencia>();
@@ -66,23 +68,55 @@ namespace CivitasERP.Models
             string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
             connectionString = obtenerCadenaConexion;
 
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = @"SELECT id_empleado, CONCAT(empleado.emp_nombre, ' ', empleado.emp_apellidop, ' ', empleado.emp_apellidom) AS emp_nombre, emp_puesto,emp_dia, emp_semanal,emp_hora_extra  FROM empleado where id_admins=100;";
+                string usuario = GlobalVariables1.usuario;
+                DB_admins dB_Admins = new DB_admins();
+                int? idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
+
+                // Aquí estás verificando si se ha guardado un id_obra globalmente
+                int? id_obra;
+
+                if (GlobalVariables1.id_obra != null)
+                {
+                    id_obra = GlobalVariables1.id_obra;
+                }
+                else
+                {
+                    id_obra = 0; // cuidado: esto convierte el null a 0, podría ser ambiguo si 0 no es válido
+                }
+
+                string fechaInicio = "", fechaFin = "";
+
+                fechaInicio = GlobalVariables1.fecha_inicio;
+                fechaFin = GlobalVariables1.fecha_fin;
+
+                MessageBox.Show(fechaInicio);
+                MessageBox.Show(fechaFin);
+                string query = @"SELECT id_admins, 
+                            CONCAT(admins.admins_nombre, ' ', admins.admins_apellidop, ' ', admins.admins_apellidom) AS admin_nombre, 
+                            admin_categoria 
+                     FROM admins 
+                     WHERE id_admins = @idAdmin";
+
 
 
                 SqlCommand cmd1 = new SqlCommand(query, connection);
+                cmd1.Parameters.AddWithValue("@idAdmin", idAdmin);
                 connection.Open();
 
                 SqlDataReader reader1 = cmd1.ExecuteReader();
 
                 Dictionary<int, Empleado_Asistencia> empleadosDict = new Dictionary<int, Empleado_Asistencia>();
 
+                string fechas;
+                fechas = GlobalVariables1.fecha_inicio;
+
+                DateTime fecha = DateTime.Parse(fechas);
 
 
 
-                DateTime hoy = DateTime.Today;
-                
                 while (reader1.Read())
                 {
 
@@ -94,23 +128,119 @@ namespace CivitasERP.Models
 
 
 
-                        EntradaL = ObtenerHorarioDeEntrada(reader1.GetInt32(0),hoy),
-                        SalidaL = ObtenerHorarioDeSalida(reader1.GetInt32(0), hoy),
+                        EntradaL = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha),
+                        SalidaL = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha),
 
-                        EntradaM = ObtenerHorarioDeEntrada(reader1.GetInt32(0), hoy.AddDays(1)),
-                        SalidaM = ObtenerHorarioDeSalida(reader1.GetInt32(0), hoy.AddDays(1)),
+                        EntradaM = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha.AddDays(1)),
+                        SalidaM = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha.AddDays(1)),
 
-                        EntradaMI = ObtenerHorarioDeEntrada(reader1.GetInt32(0), hoy.AddDays(2)),
-                        SalidaMI = ObtenerHorarioDeSalida(reader1.GetInt32(0), hoy.AddDays(2)),
+                        EntradaMI = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha.AddDays(2)),
+                        SalidaMI = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha.AddDays(2)),
 
-                        EntradaJ = ObtenerHorarioDeEntrada(reader1.GetInt32(0), hoy.AddDays(3)),
-                        SalidaJ = ObtenerHorarioDeSalida(reader1.GetInt32(0), hoy.AddDays(3)),
+                        EntradaJ = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha.AddDays(3)),
+                        SalidaJ = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha.AddDays(3)),
 
-                        EntradaV = ObtenerHorarioDeEntrada(reader1.GetInt32(0), hoy.AddDays(4)),
-                        SalidaV = ObtenerHorarioDeSalida(reader1.GetInt32(0), hoy.AddDays(4)),
+                        EntradaV = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha.AddDays(4)),
+                        SalidaV = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha.AddDays(4)),
 
-                        EntradaS = ObtenerHorarioDeEntrada(reader1.GetInt32(0), hoy.AddDays(5)),
-                        SalidaS = ObtenerHorarioDeSalida(reader1.GetInt32(0), hoy.AddDays(5)),
+                        EntradaS = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha.AddDays(5)),
+                        SalidaS = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha.AddDays(5)),
+                    });
+                }
+                reader1.Close();
+
+            }
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+
+            {   
+
+
+                string usuario = GlobalVariables1.usuario;
+                DB_admins dB_Admins = new DB_admins();
+                int? idAdmin;
+                idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
+
+
+                // Aquí estás verificando si se ha guardado un id_obra globalmente
+                int? id_obra;
+
+                if (GlobalVariables1.id_obra != null)
+                {
+                    id_obra = GlobalVariables1.id_obra;
+                }
+                else
+                {
+                    id_obra = 0; // cuidado: esto convierte el null a 0, podría ser ambiguo si 0 no es válido
+                }
+
+                string fechaInicio = "", fechaFin = "";
+
+                fechaInicio = GlobalVariables1.fecha_inicio;
+                fechaFin = GlobalVariables1.fecha_fin;
+
+                MessageBox.Show(fechaInicio);
+                MessageBox.Show(fechaFin);
+                string query = @"
+                                SELECT DISTINCT e.id_empleado, 
+                                    CONCAT(e.emp_nombre, ' ', e.emp_apellidop, ' ', e.emp_apellidom) AS emp_nombre, 
+                                    e.emp_puesto, 
+                                    e.emp_dia, 
+                                    e.emp_semanal, 
+                                    e.emp_hora_extra  
+                                    FROM empleado e
+                                    INNER JOIN asistencia a ON e.id_empleado = a.id_empleado
+                                    WHERE e.id_empleado = @idAdmin 
+                                      AND e.id_obra = @id_obra 
+                                      AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
+
+
+                SqlCommand cmd1 = new SqlCommand(query, connection);
+                cmd1.Parameters.AddWithValue("@idAdmin", idAdmin);
+                cmd1.Parameters.AddWithValue("@id_obra", id_obra);
+                cmd1.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                cmd1.Parameters.AddWithValue("@fechaFin", fechaFin);
+                connection.Open();
+
+                SqlDataReader reader1 = cmd1.ExecuteReader();
+
+                Dictionary<int, Empleado_Asistencia> empleadosDict = new Dictionary<int, Empleado_Asistencia>();
+
+                string fechas;
+                fechas =GlobalVariables1.fecha_inicio;
+
+                DateTime fecha = DateTime.Parse(fechas);
+
+                
+
+                while (reader1.Read())
+                {
+
+                    empleados.Add(new Empleado_Asistencia
+                    {
+                        ID = reader1.GetInt32(0),
+                        Nombre = reader1.GetString(1),
+                        Categoria = reader1.GetString(2),
+
+
+
+                        EntradaL = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha),
+                        SalidaL = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha),
+
+                        EntradaM = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(1)),
+                        SalidaM = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(1)),
+
+                        EntradaMI = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(2)),
+                        SalidaMI = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(2)),
+
+                        EntradaJ = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(3)),
+                        SalidaJ = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(3)),
+
+                        EntradaV = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(4)),
+                        SalidaV = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(4)),
+
+                        EntradaS = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(5)),
+                        SalidaS = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(5)),
                     });
                 }
                 reader1.Close();
@@ -178,6 +308,81 @@ namespace CivitasERP.Models
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
                 cmd.Parameters.AddWithValue("@id_empleado", idEmpleado);
+                cmd.Parameters.AddWithValue("@asis_dia", fecha.Date);
+
+                conn.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        if (!reader.IsDBNull(1))
+                            horaSalida = reader.GetTimeSpan(reader.GetOrdinal("asis_salida"));
+                    }
+                }
+            }
+            return (horaSalida);
+        }
+
+
+
+        public TimeSpan? ObtenerHorarioDeEntrada_Admin(int idEmpleado, DateTime fecha)
+        {
+            Conexion Sconexion = new Conexion();
+            string connectionString;
+
+            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
+            connectionString = obtenerCadenaConexion;
+
+
+            TimeSpan? horaEntrada = null;
+
+
+            string query = @"
+            SELECT asis_hora, asis_salida
+            FROM asistencia
+           WHERE admins_id_asistencia = @admins_id_asistencia AND CAST(asis_dia AS DATE) = @asis_dia";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@admins_id_asistencia", idEmpleado);
+                cmd.Parameters.AddWithValue("@asis_dia", fecha.Date);
+
+                conn.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        if (!reader.IsDBNull(0))
+                            horaEntrada = reader.GetTimeSpan(reader.GetOrdinal("asis_hora"));
+
+
+                    }
+                }
+            }
+            return (horaEntrada);
+        }
+
+        public TimeSpan? ObtenerHorarioDeSalida_Admin(int idEmpleado, DateTime fecha)
+        {
+            Conexion Sconexion = new Conexion();
+            string connectionString;
+
+            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
+            connectionString = obtenerCadenaConexion;
+
+
+            TimeSpan? horaSalida = null;
+
+            string query = @"
+            SELECT asis_hora, asis_salida
+            FROM asistencia
+           WHERE admins_id_asistencia = @admins_id_asistencia AND CAST(asis_dia AS DATE) = @asis_dia";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@admins_id_asistencia", idEmpleado);
                 cmd.Parameters.AddWithValue("@asis_dia", fecha.Date);
 
                 conn.Open();

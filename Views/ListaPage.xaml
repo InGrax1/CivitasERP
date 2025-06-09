@@ -63,7 +63,7 @@
                                       VerticalContentAlignment="Stretch"
                                       Padding="5"
                                       IsEditable="False"
-                                      IsReadOnly="False"/>
+                                      IsReadOnly="False" Height="29" VerticalAlignment="Top" SelectionChanged="ObraComboBox_SelectionChanged" DropDownOpened="ObraComboBox_DropDownOpened"/>
                         </Border>
 
                         <!-- Combos Mes + Año (ambos dentro de un StackPanel) -->
@@ -93,7 +93,7 @@
                                           Foreground="DarkBlue"
                                           FontWeight="Normal"
                                           HorizontalContentAlignment="Stretch"
-                                          VerticalContentAlignment="Center"/>
+                                          VerticalContentAlignment="Center" SelectionChanged="ComBoxSemana_SelectionChanged"/>
                             </Border>
 
                             <!-- Combo Mes -->
