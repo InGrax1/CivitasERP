@@ -57,6 +57,10 @@ namespace CivitasERP.Models
 
             string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
             connectionString = obtenerCadenaConexion;
+            
+            
+            
+            
             //admins
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
