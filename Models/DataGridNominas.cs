@@ -58,7 +58,7 @@ namespace CivitasERP.Models
             string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
             connectionString = obtenerCadenaConexion;
             //admins
-           /* using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string usuario;
                 usuario = GlobalVariables1.usuario;
@@ -102,7 +102,7 @@ namespace CivitasERP.Models
                 }
 
                 reader1.Close();
-            }*/
+            }
 
 
 
