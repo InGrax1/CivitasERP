@@ -190,9 +190,9 @@ namespace CivitasERP.Models
                                     e.emp_hora_extra  
                                     FROM empleado e
                                     INNER JOIN asistencia a ON e.id_empleado = a.id_empleado
-                                    WHERE e.id_empleado = @idAdmin 
+                                    WHERE e.id_admins = @idAdmin 
                                       AND e.id_obra = @id_obra 
-                                      AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
+                                      ";
 
 
                 SqlCommand cmd1 = new SqlCommand(query, connection);
