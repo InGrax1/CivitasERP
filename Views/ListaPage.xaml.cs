@@ -19,6 +19,8 @@ using System.Data;
 using BiometriaDP.Services;
 using static CivitasERP.Views.LoginPage;
 using System.Globalization;
+using System.Text.RegularExpressions;
+using CivitasERP.ViewModels;
 
 
 namespace CivitasERP.Views
@@ -29,118 +31,21 @@ namespace CivitasERP.Views
     public partial class ListaPage : Page
     {
         private Datagrid_lista repo;
-
-        private readonly string _connectionString;
-        private FingerprintService _fingerService;
         public ListaPage()
         {
             InitializeComponent();
-
-            if (GlobalVariables1.obra_nom != null) {
-                CargarDatosComboBox();
-                ObraComboBox.SelectedItem = GlobalVariables1.obra_nom;
-                CargarEmpleadosEnGrilla();
-
-            }
-            /*
-            // 1) Obtener cadena de conexión y crear el servicio
-            _connectionString = new Conexion().ObtenerCadenaConexion();
-            _fingerService = new FingerprintService(_connectionString);
-            // 2) Suscribirse a eventos de verificación
-            _fingerService.OnVerificationComplete += FingerService_OnVerificationComplete;
-            _fingerService.OnError += FingerService_OnError;*/
+            DataContext = new ListaViewModel();
         }
 
-
+        // FUNCIONES PARA ESCANEO DE HUELLAS
         private void btnHuellaR_Click(object sender, RoutedEventArgs e)
         {
-
-            /*
-            try
+            // Obtén tu ViewModel
+            if (DataContext is ListaViewModel vm)
             {
-                _fingerService.StartVerification();
-                lblEstadoHuella.Text = "⏳ Coloca tu dedo para validar...";
+                // Ejecuta el comando (o llama al método público que hayas expuesto)
+                vm.ScanCommand.Execute(null);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al iniciar verificación: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            */
-        }
-        /*
-        private void FingerService_OnVerificationComplete(object sender, FingerprintVerifiedEventArgs e)
-        {
-            int idEmpleadoMatch = e.IdEmpleado;
-            if (idEmpleadoMatch > 0)
-            {
-                // Marcar hora de entrada/salida en la base de datos
-                var repo = new Datagrid_lista(new Conexion().ObtenerCadenaConexion());
-                repo.MarcarAsistencia(idEmpleadoMatch);
-
-                Dispatcher.Invoke(() =>
-                {
-                    lblEstadoHuella.Text = $"✔ Huella reconocida. Empleado #{idEmpleadoMatch}.";
-                    MessageBox.Show($"Asistencia registrada para empleado #{idEmpleadoMatch}", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                    CargarEmpleadosEnGrilla();
-                });
-            }
-            else
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    lblEstadoHuella.Text = "❌ Huella no reconocida.";
-                    MessageBox.Show("Huella no coincide con ningún empleado.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                });
-            }
-        }
-
-        private void FingerService_OnError(object sender, string mensaje)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                lblEstadoHuella.Text = $"❌ {mensaje}";
-                MessageBox.Show(mensaje, "Error huella", MessageBoxButton.OK, MessageBoxImage.Error);
-            });
-        }*/
-        public void CargarEmpleadosEnGrilla()
-        {
-            // Crea un repositorio con la cadena de conexión y obtiene la lista de empleados/asistencias
-            var repo = new Datagrid_lista(new Conexion().ObtenerCadenaConexion());
-            var listaEmpleados = repo.ObtenerEmpleados();
-
-            // Asigna esa lista al DataGrid de la UI
-            dataGridAsistencia.ItemsSource = listaEmpleados;
-        }
-
-        /// <summary>
-        /// Devuelve una lista de tuplas (idEmpleado, byte[] template) leídas desde la tabla 'admins'.
-        /// </summary>
-        private List<Tuple<int, byte[]>> ObtenerTemplatesDesdeBD()
-        {
-            var lista = new List<Tuple<int, byte[]>>();
-            string connectionString = new Conexion().ObtenerCadenaConexion();
-
-            using (var conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                string sql = @"SELECT admins_id, admin_huella 
-                               FROM admins 
-                               WHERE admin_huella IS NOT NULL";
-
-                using (var cmd = new SqlCommand(sql, conn))
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        int id = reader.GetInt32(0);
-                        byte[] huellaBytes = reader["admin_huella"] as byte[];
-                        lista.Add(new Tuple<int, byte[]>(id, huellaBytes));
-                    }
-                }
-                conn.Close();
-            }
-            return lista;
         }
 
         /// <summary>
@@ -169,7 +74,7 @@ namespace CivitasERP.Views
             }
             return nombreUsuario;
         }
-
+        
 
         private void ComBoxSemana_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
