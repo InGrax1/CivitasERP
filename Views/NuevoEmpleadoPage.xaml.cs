@@ -7,7 +7,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using static CivitasERP.Views.LoginPage;
 using BiometriaDP.Services;
-
 namespace CivitasERP.Views
 {
     /// <summary>
@@ -23,41 +22,43 @@ namespace CivitasERP.Views
         {
             InitializeComponent();
 
-            // 1) Cadena de conexión:
+            // 1) Obtener la cadena de conexión
             _connectionString = new Conexion().ObtenerCadenaConexion();
 
-            // 2) Inicializar el servicio de huella:
-            _fingerService = new FingerprintService(_connectionString);
+            // 2) Inicializar el servicio de huella (sólo Enrollment)
+            int loggedAdmin = GlobalVariables1.id_admin
+                ?? throw new InvalidOperationException("No hay admin logueado");
+            _fingerService = new FingerprintService(_connectionString, loggedAdmin);
+
             _fingerService.OnEnrollmentComplete += FingerService_OnEnrollmentComplete;
             _fingerService.OnError += FingerService_OnError;
 
+            // 3) Estado inicial
             _templateHuella = null;
+            EstadoHuella.Text = "Click para capturar huella";
         }
 
-        private void DragWindow(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-                DragMove();
-        }
 
         // --- Evento para iniciar la lectura de huella ---
         private void btnHuellaR_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                // Iniciar Enrollment (varias pasadas) con el wrapper
                 _fingerService.StartEnrollment();
-                EstadoHuella.Text = "⏳ Coloca tu dedo varias veces…";
+                EstadoHuella.Text = "⏳ Coloca tu dedo para el escaneo…";
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    $"No se pudo iniciar la captura de huella.\n\nDetalle:\n{ex.Message}",
-                    "Error al iniciar huella",
+                    $"No se pudo iniciar el registro de huella.\n\nDetalle:\n{ex.Message}",
+                    "Error al capturar huella",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
         }
 
+        // Se dispara cuando el Enrollment genera el template final
         private void FingerService_OnEnrollmentComplete(object sender, FingerprintCapturedEventArgs e)
         {
             _templateHuella = e.TemplateBytes;
@@ -69,6 +70,7 @@ namespace CivitasERP.Views
             });
         }
 
+        // Se dispara si ocurre algún error durante el Enrollment (calidad baja, falta lector, etc.)
         private void FingerService_OnError(object sender, string mensaje)
         {
             Dispatcher.Invoke(() =>
@@ -77,15 +79,14 @@ namespace CivitasERP.Views
             });
         }
 
+        // --- Guarda el admin en BD junto con la huella ---
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
             if (_templateHuella == null)
             {
                 MessageBox.Show(
                     "Primero debes capturar la huella con el botón “Capturar Huella”.",
-                    "Atención",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
+                    "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -94,16 +95,14 @@ namespace CivitasERP.Views
             string apellidop = txtApellidoPaterno.Text;
             string apellidom = txtApellidoMaterno.Text;
             string categoria = txtCategoria.Text;
-            decimal sueldo = 0;
+            decimal sueldo = 0.00m;
             bool exito = decimal.TryParse(txtSueldo.Text, out sueldo);
 
             if (!exito)
             {
                 MessageBox.Show(
                     "El campo sueldo no es un número válido.",
-                    "Error de validación",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
+                    "Error de validación", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -152,6 +151,11 @@ namespace CivitasERP.Views
                     MessageBoxImage.Error);
             }
         }
+
+
+
+
+
 
         // Al abrir el ComboBox, cargamos las obras asociadas al admin
         private void cmbObra_DropDownOpened(object sender, EventArgs e)
@@ -230,5 +234,12 @@ namespace CivitasERP.Views
         {
             this.Close();
         }
+
+        private void DragWindow(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
+        }
+
     }
 }

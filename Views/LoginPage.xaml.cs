@@ -66,6 +66,20 @@ namespace CivitasERP.Views
                 //validacion de usuario y contraseña
                 if (h.ObtenerSHA256(contraseña).SequenceEqual(c.ObtenerHashContraseña(usuario)))
                 {
+                    // Después de validar usuario/contraseña correctamente:
+                    int? idAdminLogueado = c.ObtenerIdPorUsuario(usuario);
+                    if (!idAdminLogueado.HasValue)
+                    {
+                        MessageBox.Show("No se encontró el ID de admin para ese usuario.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    // Lo guardas en tu global (que ya es int?):
+                    GlobalVariables1.id_admin = idAdminLogueado;
+                    GlobalVariables1.usuario = usuario;
+
+
+
                     // 1) Crear instancia de MainWindow
                     MainWindow ventanaPrincipal = new MainWindow();
 
@@ -92,8 +106,6 @@ namespace CivitasERP.Views
                 // cualquier otro error inesperado
                 MessageBox.Show($"Ocurrió un error al iniciar sesión:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            GlobalVariables1.usuario = "";
-            GlobalVariables1.usuario = usuario;
 
         }
         public static class GlobalVariables1

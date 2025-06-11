@@ -2,8 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        xmlns:vm = "clr-namespace:CivitasERP.ViewModels"
         Title="NominaPage"
         MinHeight="800" MinWidth="600">
+
 
     <Grid>
         <!-- CONTENIDO CENTRAL -->
@@ -166,7 +168,7 @@
                                        Height="70"
                                        HorizontalAlignment="Stretch"/>
                                 <TextBlock x:Name="lblEstadoHuella"
-                                           Text="Click para iniciar el escaneo"
+                                           Text="{Binding EstadoHuella}" 
                                            Foreground="#5F5FFF"
                                            FontSize="13"
                                            FontWeight="Bold"
@@ -211,7 +213,8 @@
                                   CanUserDeleteRows="False"
                                   IsReadOnly="True"
                                   Margin="10"
-                                  HeadersVisibility="Column">
+                                  HeadersVisibility="Column"
+                                  ItemsSource="{Binding Empleados}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" Binding="{Binding ID}" />
                                 <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />

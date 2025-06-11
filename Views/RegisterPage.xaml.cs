@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using CivitasERP.Models;
 using BiometriaDP.Services;
+using static CivitasERP.Views.LoginPage;
 
 namespace CivitasERP.Views
 {
@@ -13,30 +14,30 @@ namespace CivitasERP.Views
     public partial class RegisterPage : Window
     {
         private readonly string _connectionString;
-        private FingerprintService _fingerService;
+        private readonly FingerprintService _fingerService;
         private byte[] _templateHuella;   // contendrá el template serializado
 
         public RegisterPage()
         {
             InitializeComponent();
 
-            // 1) Obtener la cadena de conexión:
+            // 1) Obtener la cadena de conexión
             _connectionString = new Conexion().ObtenerCadenaConexion();
 
-            // 2) Crear e inicializar el servicio de huella:
-            _fingerService = new FingerprintService(_connectionString);
+            // 2) Inicializar el servicio de huella (sólo Enrollment)
+            int loggedAdmin = GlobalVariables1.id_admin
+                ?? throw new InvalidOperationException("No hay admin logueado");
+            _fingerService = new FingerprintService(_connectionString, loggedAdmin);
+
+
             _fingerService.OnEnrollmentComplete += FingerService_OnEnrollmentComplete;
             _fingerService.OnError += FingerService_OnError;
 
-            // 3) Inicializamos el template en null (aún no capturado):
+            // 3) Estado inicial
             _templateHuella = null;
+            EstadoHuella.Text = "Click para capturar huella";
         }
 
-        private void DragWindow(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-                DragMove();
-        }
 
         // --- Evento para iniciar la lectura de huella ---
         private void btnHuellaR_Click(object sender, RoutedEventArgs e)
@@ -57,7 +58,7 @@ namespace CivitasERP.Views
             }
         }
 
-        // Se dispara cuando el wrapper completa el Enrollment y envía el template (byte[])
+        // Se dispara cuando el Enrollment genera el template final
         private void FingerService_OnEnrollmentComplete(object sender, FingerprintCapturedEventArgs e)
         {
             _templateHuella = e.TemplateBytes;
@@ -66,6 +67,8 @@ namespace CivitasERP.Views
             Dispatcher.Invoke(() =>
             {
                 EstadoHuella.Text = "✔ Huella capturada correctamente.";
+                MessageBox.Show("La huella fue capturada con éxito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+
             });
         }
 
@@ -78,7 +81,7 @@ namespace CivitasERP.Views
             });
         }
 
-        // --- Evento para registrar el usuario y guardar la huella ---
+        // --- Guarda el admin en BD junto con la huella ---
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
             // 1) Asegurarnos de que ya se haya capturado la huella
@@ -98,7 +101,15 @@ namespace CivitasERP.Views
             string correo = txtCorreo.Text;
             string contraseña = pwdPassword.Password;
             string categoria = "admin";
-            decimal semanal = 1500.00m;
+            decimal semanal = 0.00m;
+            bool exito = decimal.TryParse(txtSueldo.Text, out semanal);
+            if (!exito)
+            {
+                MessageBox.Show(
+                    "El campo sueldo no es un número válido.",
+                    "Error de validación", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             // 3) Crear el objeto Insert_admin incluyendo la huella
             Insert_admin inser = new Insert_admin
@@ -146,6 +157,12 @@ namespace CivitasERP.Views
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void DragWindow(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
         }
     }
 }

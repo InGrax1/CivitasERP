@@ -16,7 +16,7 @@ using static CivitasERP.Views.LoginPage;
 
 namespace CivitasERP.Models
 {
-    class Datagrid_lista
+    public class Datagrid_lista
     {
 
         public class Empleado_Asistencia
@@ -190,7 +190,7 @@ namespace CivitasERP.Models
                                     e.emp_hora_extra  
                                     FROM empleado e
                                     INNER JOIN asistencia a ON e.id_empleado = a.id_empleado
-                                    WHERE e.id_empleado = @idAdmin 
+                                    WHERE e.id_admins = @idAdmin 
                                       AND e.id_obra = @id_obra 
                                       AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
 
@@ -397,6 +397,9 @@ namespace CivitasERP.Models
             }
             return (horaSalida);
         }
+
+
+
         /// <summary>
         /// Marca la asistencia de un empleado:
         /// - Si no existe registro para hoy, inserta asis_hora (hora de entrada).
@@ -491,6 +494,80 @@ namespace CivitasERP.Models
                 conn.Close();
             }
         }
+
+        /// <summary>
+        /// Igual que MarcarAsistencia pero para admins:
+        /// - INSERT si no hay registro hoy.
+        /// - UPDATE salida si ya hay entrada sin salida.
+        /// </summary>
+        public void MarcarAsistenciaAdmin(int idAdmin)
+        {
+            string cs = new Conexion().ObtenerCadenaConexion();
+            DateTime hoy = DateTime.Today;
+            TimeSpan ahora = DateTime.Now.TimeOfDay;
+
+            using (var conn = new SqlConnection(cs))
+            {
+                conn.Open();
+                // 1) Buscamos registro de hoy para este admin
+                string sel = @"
+          SELECT id_asistencia, asis_hora, asis_salida
+            FROM asistencia
+           WHERE admins_id_asistencia = @idAdmin
+             AND CAST(asis_dia AS DATE) = @hoy";
+                using (var cmd = new SqlCommand(sel, conn))
+                {
+                    cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
+                    cmd.Parameters.AddWithValue("@hoy", hoy);
+                    using (var rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            int asisId = rdr.GetInt32(rdr.GetOrdinal("id_asistencia"));
+                            bool tieneSalida = !rdr.IsDBNull(rdr.GetOrdinal("asis_salida"));
+                            rdr.Close();
+                            if (!tieneSalida)
+                            {
+                                // 2) UPDATE salida
+                                string upd = @"UPDATE asistencia
+                                         SET asis_salida = @ahora
+                                       WHERE id_asistencia = @asisId";
+                                using (var u = new SqlCommand(upd, conn))
+                                {
+                                    u.Parameters.AddWithValue("@ahora", ahora);
+                                    u.Parameters.AddWithValue("@asisId", asisId);
+                                    u.ExecuteNonQuery();
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Ya marcaste tu salida hoy (admin).", "Atención",
+                                                MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                        }
+                        else
+                        {
+                            // 3) INSERT entrada
+                            rdr.Close();
+                            string ins = @"
+                      INSERT INTO asistencia
+                        (admins_id_asistencia, asis_dia, asis_hora, asis_salida, asis_hora_extra, id_empleado)
+                      VALUES
+                        (@idAdmin, @hoy, @ahora, NULL, '00:00:00', NULL)";
+                            using (var i = new SqlCommand(ins, conn))
+                            {
+                                i.Parameters.AddWithValue("@idAdmin", idAdmin);
+                                i.Parameters.AddWithValue("@hoy", hoy);
+                                i.Parameters.AddWithValue("@ahora", ahora);
+                                i.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
 
     }
 
