@@ -192,7 +192,7 @@ namespace CivitasERP.Models
                                     INNER JOIN asistencia a ON e.id_empleado = a.id_empleado
                                     WHERE e.id_admins = @idAdmin 
                                       AND e.id_obra = @id_obra 
-                                      AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
+                                      ";
 
 
                 SqlCommand cmd1 = new SqlCommand(query, connection);

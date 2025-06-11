@@ -114,6 +114,7 @@ namespace CivitasERP.Views
             public static string usuario;
             public static int? id_admin;
             public static int? id_obra;
+            public static string obra_nom;
             public static string fecha;
             public static string fecha_inicio;
             public static string fecha_fin;
