@@ -13,7 +13,8 @@
         WindowStyle="None"
         MouseLeftButtonDown="DragWindow">
 
-    
+
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -71,7 +72,9 @@
                     <StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="0,20,0,0">
                         <!-- Menú -->
                         <Button Style="{StaticResource LargeRoundButton}" 
-                        Background="#4772E3">
+                                x:Name="btnMenu"
+                                Background="{StaticResource buttonColor1}"
+                                Click="Nav_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Images/home.png" Width="25" Height="25" Margin="0,0,5,0"/>
                                 <TextBlock Text="Menu" FontSize="20" Foreground="White"/>
@@ -80,8 +83,9 @@
                         
                         <!-- Nómina -->
                         <Button Style="{StaticResource LargeRoundButton}"
-                                Background="#274288"
-                                Click="btnNomina_Click">
+                                Background="{StaticResource buttonColor1}"
+                                Click="Nav_Click"
+                                x:Name="btnNomina">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Images/money.png" Width="25" Height="25" Margin="0,0,5,0"/>
                                 <TextBlock Text="Nomina" FontSize="20" Foreground="White"/>
@@ -90,8 +94,9 @@
 
                         <!-- Pase de lista -->
                         <Button Style="{StaticResource LargeRoundButton}"
-                                Background="#274288"
-                                Click="btnLista_Click">
+                                Background="{StaticResource buttonColor1}"
+                                x:Name="btnLista"
+                                Click="Nav_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
                                 <TextBlock Text="Pase de lista" FontSize="20" Foreground="White"/>
@@ -99,8 +104,9 @@
                         </Button>
                         <!-- Nueva Obra-->
                         <Button Style="{StaticResource LargeRoundButton}"
-                                Background="#274288"
-                                Click="btnNuevaObra_Click">
+                                Background="{StaticResource buttonColor1}"
+                                x:Name="btnNuevaObra"
+                                Click="Nav_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock Text="Nueva Obra" FontSize="20" Foreground="White"/>
                             </StackPanel>
@@ -109,7 +115,8 @@
                         <!-- Registro Nuevo -->
                         <Button Style="{StaticResource LargeRoundButton}"
                                 Background="DarkRed"
-                                Click="btnRegis_Click">
+                                x:Name="btnRegis"
+                                Click="Nav_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
                                 <TextBlock Text="Registro Nuevo" FontSize="20" Foreground="White"/>
@@ -121,7 +128,7 @@
                     <StackPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="0,0,0,20">
                         <Button Style="{StaticResource LargeRoundButton}"
                                 Background="DarkRed"
-                                Click="btnLogout_Click">
+                                Click="Nav_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Images/home.png" Width="20" Height="20" Margin="0,0,5,0"/>
                                 <TextBlock Text="Logout" FontSize="20" Foreground="White"/>
@@ -148,17 +155,17 @@
                     <Border Background="LightBlue" CornerRadius="30" Margin="0,0,5,0">
                         <Button Name="btnMin" Style="{StaticResource RoundButton}"
                                 Background="LightBlue"
-                                Content="—" Click="btnMin_Click"/>
+                                Content="—" Click="Nav_Click"/>
                     </Border>
                     <Border Background="LightGreen" CornerRadius="30" Margin="0,0,5,0">
                         <Button Name="btnMax" Style="{StaticResource RoundButton}"
                                 Background="LightGreen"
-                                Content="[]" Click="btnMaximize_Click"/>
+                                Content="[]" Click="Nav_Click"/>
                     </Border>
                     <Border Background="LightCoral" CornerRadius="30">
                         <Button Name="btnExit" Style="{StaticResource RoundButton}"
                                 Background="LightCoral"
-                                Content="×" Click="btnExit_Click"/>
+                                Content="×" Click="Nav_Click"/>
                     </Border>
                 </StackPanel>
                 

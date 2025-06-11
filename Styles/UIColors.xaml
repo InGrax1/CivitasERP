@@ -41,8 +41,8 @@
     <SolidColorBrush x:Key="panelActiveColor" Color="#2B1372"/>
     
     <!--Button Colors-->
-    <SolidColorBrush x:Key="buttonColor1" Color="#FF38B2C1"/>
-    <SolidColorBrush x:Key="buttonColor2" Color="#FFDC134A"/>
+    <SolidColorBrush x:Key="buttonColor1" Color="#274288"/>
+    <SolidColorBrush x:Key="buttonColor2" Color="#4772E3"/>
     <SolidColorBrush x:Key="buttonSecondaryColor1" Color="#FF2174C7"/>
     <SolidColorBrush x:Key="buttonSecondaryColor2" Color="#FF801B71"/>
     <SolidColorBrush x:Key="buttonLoginColor" Color="#FFA51110"/>

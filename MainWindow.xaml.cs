@@ -22,6 +22,9 @@ namespace CivitasERP
         private RegisterPage _registerPage = null;
         private NuevaObraPage _nuevaObraPage = null;
 
+        // Field para llevar la cuenta del botón activo
+        private Button _activeNavButton;
+
 
         public MainWindow()
         {
@@ -35,6 +38,8 @@ namespace CivitasERP
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
+
+
 
         //CAMBIO DE FOTO DE PERFIL
         /// Manejador que se activa cuando el usuario hace clic en el Ellipse de perfil.
@@ -84,87 +89,112 @@ namespace CivitasERP
                 }
             }
         }
+
+        
         //BOTONES DE NAVEGACIÓN
-        private void btnExit_Click(object sender, RoutedEventArgs e)
+        private void Nav_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
-        }
+            var btn = sender as Button;
+            if (btn == null);
 
-        private void btnMin_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
-
-
-        private void btnMaximize_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = (WindowState == WindowState.Normal)
-                ? WindowState.Maximized
-                : WindowState.Normal;
-        }
-
-        private void btnNomina_Click(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new NominaPage());
-        }
-        private void btnLista_Click(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new ListaPage());
-        }
-        private void btnNueva_Obra(object sebder, RoutedEventArgs e)
-        {
-            NuevaObraPage nuevaObraPage = new NuevaObraPage();
-            nuevaObraPage.Show();
-        }
-        private void btnLogout_Click(object sender, RoutedEventArgs e)
-        {
-            // 1) Instanciamos la ventana de Login (ajusta el nombre si tu clase se llama distinto)
-            var loginWindow = new LoginPage();
-
-            // 2) Mostramos Login en modo no modal (para que la app siga viva)
-            loginWindow.Show();
-
-            // 3) Cerramos la ventana actual (dejará viva únicamente la de Login)
-            this.Close();
-        }
-        private void btnRegis_Click(object sender, RoutedEventArgs e)
-        {
-            // Si no existe o ya se cerró (_registerPage == null), creamos la ventana:
-            if (_registerPage == null)
+            // Navegacion de botones Generales
+            switch (btn.Name)
             {
-                _registerPage = new RegisterPage();
+                //Botones de navegación del menú lateral
+                case "btnHome":
+                    MainFrame.Navigate(new HomePage());
+                    break;
+                case "btnNomina":
+                    MainFrame.Navigate(new NominaPage());
+                    break;
+                case "btnLista":
+                    MainFrame.Navigate(new ListaPage());
+                    break;
+                case "btnNuevaObra":
+                    /// ventana flotante
+                    /// Si no existe o ya se cerró (_nuevaObraWindow == null), creamos la ventana:
+                    if (_nuevaObraPage == null)
+                    {
+                        _nuevaObraPage = new NuevaObraPage();
+                        // Cuando se cierre por completo, dejamos la referencia en null:
+                        _nuevaObraPage.Closed += (s, args) =>
+                        {
+                            _nuevaObraPage = null;
+                        };
+                        _nuevaObraPage.ShowDialog();
+                    }
+                    else
+                    {
+                        _nuevaObraPage.Activate();
+                    }
+                    break;
+                case "btnRegis":
+                    /// ventana flotante
+                    /// Si no existe o ya se cerró (_registerPage == null), creamos la ventana:
+                    if (_registerPage == null)
+                    {
+                        _registerPage = new RegisterPage();
 
-                // Cuando se cierre por completo, dejamos la referencia en null:
-                _registerPage.Closed += (s, args) =>
-                {
-                    _registerPage = null;
-                };
+                        // Cuando se cierre por completo, dejamos la referencia en null:
+                        _registerPage.Closed += (s, args) =>
+                        {
+                            _registerPage = null;
+                        };
 
-                _registerPage.ShowDialog();
+                        _registerPage.ShowDialog();
+                    }
+                    else
+                    {
+                        _registerPage.Activate();
+                    }
+                    break;
+                case "btnLogout":
+                    /// 1) Instanciamos la ventana de Login
+                    var loginWindow = new LoginPage();
+
+                    /// 2) Mostramos Login en modo no modal (para que la app siga viva)
+                    loginWindow.Show();
+
+                    /// 3) Cerramos la ventana actual (dejará viva únicamente la de Login)
+                    this.Close();
+                    break;
+
+
+                //Botones de la barra superior 
+                case "btnexit":
+                    Application.Current.Shutdown();
+                    break;
+                case "btnMin":
+                    WindowState = WindowState.Minimized;
+                    break;
+                case "btnMaximize":
+                    WindowState = (WindowState == WindowState.Normal)
+                        ? WindowState.Maximized: WindowState.Normal;
+                    break;
             }
-            else
-            {
-                _registerPage.Activate();
-            }
+            // Resaltar el botón activo
+            HighlightNavButton(btn);
         }
 
-        private void btnNuevaObra_Click(object sender, RoutedEventArgs e)
+        //Resaltar el botón activo
+        private void HighlightNavButton(Button btnToActivate)
         {
-            // Si no existe o ya se cerró (_nuevaObraWindow == null), creamos la ventana:
-            if (_nuevaObraPage == null)
-            {
-                _nuevaObraPage = new NuevaObraPage();
-                // Cuando se cierre por completo, dejamos la referencia en null:
-                _nuevaObraPage.Closed += (s, args) =>
-                {
-                    _nuevaObraPage = null;
-                };
-                _nuevaObraPage.ShowDialog();
-            }
-            else
-            {
-                _nuevaObraPage.Activate();
-            }
+            // Lista de todos los botones de menú
+            var navButtons = new[] { btnMenu, btnNomina, btnLista, btnNuevaObra };
+
+            // Rescata los brushes de los recursos
+            var defaultBrush = (Brush)FindResource("buttonColor2"); // #4772E3
+            var activeBrush = (Brush)FindResource("buttonColor1"); // #274288
+
+            // Reset a todos
+            foreach (var b in navButtons)
+                b.Background = defaultBrush;
+
+            // Activa el que tocamos
+            btnToActivate.Background = activeBrush;
+
+            // Guarda la referencia
+            _activeNavButton = btnToActivate;
         }
     }
 }

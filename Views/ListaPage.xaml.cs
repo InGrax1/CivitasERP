@@ -100,8 +100,6 @@ namespace CivitasERP.Views
                 MessageBox.Show("El formato de la semana seleccionada no es válido.");
             }
 
-
-            CargarEmpleadosEnGrilla();
         }
 
         private void ComBoxMes_DropDownOpened(object sender, EventArgs e)
