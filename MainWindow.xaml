@@ -73,7 +73,7 @@
                         <!-- Menú -->
                         <Button Style="{StaticResource LargeRoundButton}" 
                                 x:Name="btnMenu"
-                                Background="{StaticResource buttonColor1}"
+                                Background="{StaticResource buttonColor2}"
                                 Click="Nav_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Images/home.png" Width="25" Height="25" Margin="0,0,5,0"/>
@@ -106,7 +106,7 @@
                         <Button Style="{StaticResource LargeRoundButton}"
                                 Background="{StaticResource buttonColor1}"
                                 x:Name="btnNuevaObra"
-                                Click="Nav_Click">
+                                Click="btnNuevaObra_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock Text="Nueva Obra" FontSize="20" Foreground="White"/>
                             </StackPanel>
@@ -116,7 +116,7 @@
                         <Button Style="{StaticResource LargeRoundButton}"
                                 Background="DarkRed"
                                 x:Name="btnRegis"
-                                Click="Nav_Click">
+                                Click="btnRegister_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
                                 <TextBlock Text="Registro Nuevo" FontSize="20" Foreground="White"/>
@@ -153,19 +153,25 @@
                 <StackPanel Grid.Row="0" Orientation="Horizontal"
                             HorizontalAlignment="Right">
                     <Border Background="LightBlue" CornerRadius="30" Margin="0,0,5,0">
-                        <Button Name="btnMin" Style="{StaticResource RoundButton}"
+                        <Button Name="btnMin" 
+                                Style="{StaticResource RoundButton}"
                                 Background="LightBlue"
-                                Content="—" Click="Nav_Click"/>
+                                Content="—" 
+                                Click="TopBar_Click"/>
                     </Border>
                     <Border Background="LightGreen" CornerRadius="30" Margin="0,0,5,0">
-                        <Button Name="btnMax" Style="{StaticResource RoundButton}"
+                        <Button Name="btnMax" 
+                                Style="{StaticResource RoundButton}"
                                 Background="LightGreen"
-                                Content="[]" Click="Nav_Click"/>
+                                Content="[]" 
+                                Click="TopBar_Click"/>
                     </Border>
                     <Border Background="LightCoral" CornerRadius="30">
-                        <Button Name="btnExit" Style="{StaticResource RoundButton}"
+                        <Button Name="btnExit" 
+                                Style="{StaticResource RoundButton}"
                                 Background="LightCoral"
-                                Content="×" Click="Nav_Click"/>
+                                Content="×" 
+                                Click="TopBar_Click"/>
                     </Border>
                 </StackPanel>
                 

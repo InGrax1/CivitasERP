@@ -110,44 +110,6 @@ namespace CivitasERP
                 case "btnLista":
                     MainFrame.Navigate(new ListaPage());
                     break;
-                case "btnNuevaObra":
-                    /// ventana flotante
-                    /// Si no existe o ya se cerró (_nuevaObraWindow == null), creamos la ventana:
-                    if (_nuevaObraPage == null)
-                    {
-                        _nuevaObraPage = new NuevaObraPage();
-                        // Cuando se cierre por completo, dejamos la referencia en null:
-                        _nuevaObraPage.Closed += (s, args) =>
-                        {
-                            _nuevaObraPage = null;
-                        };
-                        _nuevaObraPage.ShowDialog();
-                    }
-                    else
-                    {
-                        _nuevaObraPage.Activate();
-                    }
-                    break;
-                case "btnRegis":
-                    /// ventana flotante
-                    /// Si no existe o ya se cerró (_registerPage == null), creamos la ventana:
-                    if (_registerPage == null)
-                    {
-                        _registerPage = new RegisterPage();
-
-                        // Cuando se cierre por completo, dejamos la referencia en null:
-                        _registerPage.Closed += (s, args) =>
-                        {
-                            _registerPage = null;
-                        };
-
-                        _registerPage.ShowDialog();
-                    }
-                    else
-                    {
-                        _registerPage.Activate();
-                    }
-                    break;
                 case "btnLogout":
                     /// 1) Instanciamos la ventana de Login
                     var loginWindow = new LoginPage();
@@ -158,19 +120,6 @@ namespace CivitasERP
                     /// 3) Cerramos la ventana actual (dejará viva únicamente la de Login)
                     this.Close();
                     break;
-
-
-                //Botones de la barra superior 
-                case "btnexit":
-                    Application.Current.Shutdown();
-                    break;
-                case "btnMin":
-                    WindowState = WindowState.Minimized;
-                    break;
-                case "btnMaximize":
-                    WindowState = (WindowState == WindowState.Normal)
-                        ? WindowState.Maximized: WindowState.Normal;
-                    break;
             }
             // Resaltar el botón activo
             HighlightNavButton(btn);
@@ -180,11 +129,11 @@ namespace CivitasERP
         private void HighlightNavButton(Button btnToActivate)
         {
             // Lista de todos los botones de menú
-            var navButtons = new[] { btnMenu, btnNomina, btnLista, btnNuevaObra };
+            var navButtons = new[] { btnMenu, btnNomina, btnLista };
 
             // Rescata los brushes de los recursos
-            var defaultBrush = (Brush)FindResource("buttonColor2"); // #4772E3
-            var activeBrush = (Brush)FindResource("buttonColor1"); // #274288
+            var defaultBrush = (Brush)FindResource("buttonColor1"); // #4772E3
+            var activeBrush = (Brush)FindResource("buttonColor2"); // #274288
 
             // Reset a todos
             foreach (var b in navButtons)
@@ -196,5 +145,64 @@ namespace CivitasERP
             // Guarda la referencia
             _activeNavButton = btnToActivate;
         }
+
+        private void btnRegister_Click(object sender, RoutedEventArgs e)
+        {
+            /// ventana flotante
+            /// Si no existe o ya se cerró (_registerPage == null), creamos la ventana:
+            if (_registerPage == null)
+            {
+                _registerPage = new RegisterPage();
+                // Cuando se cierre por completo, dejamos la referencia en null:
+                _registerPage.Closed += (s, args) =>
+                {
+                    _registerPage = null;
+                };
+                _registerPage.ShowDialog();
+            }
+            else
+            {
+                _registerPage.Activate();
+            }
+        }
+        private void btnNuevaObra_Click(object sender, RoutedEventArgs e)
+        {
+            /// ventana flotante
+            /// Si no existe o ya se cerró (_nuevaObraWindow == null), creamos la ventana:
+            if (_nuevaObraPage == null)
+            {
+                _nuevaObraPage = new NuevaObraPage();
+                // Cuando se cierre por completo, dejamos la referencia en null:
+                _nuevaObraPage.Closed += (s, args) =>
+                {
+                    _nuevaObraPage = null;
+                };
+                _nuevaObraPage.ShowDialog();
+            }
+            else
+            {
+                _nuevaObraPage.Activate();
+            }
+        }
+        private void TopBar_Click(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            switch(btn.Name)
+            {
+                //Botones de la barra superior
+                case "btnExit":
+                    Application.Current.Shutdown();
+                    break;
+                case "btnMin":
+                    WindowState = WindowState.Minimized;
+                    break;
+                case "btnMax":
+                    WindowState = (WindowState == WindowState.Normal)
+                        ? WindowState.Maximized : WindowState.Normal;
+                    break;
+            }
+
+        }
+        
     }
 }
