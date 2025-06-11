@@ -32,6 +32,22 @@ namespace CivitasERP.Views
         public NominaPage()
         {
             InitializeComponent();
+            if (GlobalVariables1.obra_nom != null)
+            {
+                CargarDatosComboBox();
+                ObraComboBox.SelectedItem = GlobalVariables1.obra_nom;
+                Conexion Sconexion = new Conexion();
+                string connectionString;
+
+                string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
+                connectionString = obtenerCadenaConexion;
+
+                repo = new DataGridNominas(connectionString);
+
+                var empleados = repo.ObtenerEmpleados();
+                dataGridNomina.ItemsSource = empleados;
+
+            }
         }
 
 
@@ -49,6 +65,51 @@ namespace CivitasERP.Views
 
         private void ObraComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (GlobalVariables1.fecha_fin == null || GlobalVariables1.fecha_inicio == null)
+            {
+                DateTime hoy = DateTime.Now;
+
+                int diferenciaConLunes = (int)hoy.DayOfWeek - (int)DayOfWeek.Monday;
+                if (diferenciaConLunes < 0)
+                    diferenciaConLunes += 7;
+
+                DateTime lunes = hoy.AddDays(-diferenciaConLunes);
+                DateTime domingo = lunes.AddDays(6);
+
+                string formato = "yyyy-MM-dd";
+
+                GlobalVariables1.fecha_inicio = lunes.ToString(formato);
+                GlobalVariables1.fecha_fin = domingo.ToString(formato);
+
+
+
+                // Obtener cultura invariable con reglas ISO 8601
+                CultureInfo cultura = CultureInfo.InvariantCulture;
+                System.Globalization.Calendar calendario = cultura.Calendar;
+
+                // Calcular número de semana según regla ISO 8601
+
+
+
+
+
+                // Obtener nombre del mes y número
+                int numeroMes = hoy.Month;
+
+                // Obtener año
+                string año = hoy.Year.ToString();
+
+
+                int numeroSemana = calendario.GetWeekOfYear(hoy, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+                CargarAnios();
+                CargarMeses();
+
+                ComBoxSemana.SelectedIndex = numeroSemana;
+                ComBoxMes.SelectedIndex = --numeroMes;
+                ComBoxAnio.SelectedItem = año;
+
+            }
 
             string usuario = GlobalVariables1.usuario;
             DB_admins dB_Admins = new DB_admins();
@@ -56,8 +117,11 @@ namespace CivitasERP.Views
 
             if (ObraComboBox.SelectedItem != null)
             {
+
                 string nombre_obra = ObraComboBox.SelectedItem.ToString();
                 MessageBox.Show("Seleccionaste: " + nombre_obra);
+
+                GlobalVariables1.obra_nom = nombre_obra;
 
                 int? id_obra = ObtenerID_obra(idAdmin, nombre_obra);
                 GlobalVariables1.id_obra = id_obra;
@@ -69,12 +133,10 @@ namespace CivitasERP.Views
 
                 string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
                 connectionString = obtenerCadenaConexion;
-
                 repo = new DataGridNominas(connectionString);
 
                 var empleados = repo.ObtenerEmpleados();
                 dataGridNomina.ItemsSource = empleados;
-
                 //this.Loaded += HomePage_Loaded;
 
             }
@@ -203,6 +265,16 @@ namespace CivitasERP.Views
             {
                 MessageBox.Show("El formato de la semana seleccionada no es válido.");
             }
+
+            Conexion Sconexion = new Conexion();
+            string connectionString;
+
+            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
+            connectionString = obtenerCadenaConexion;
+            repo = new DataGridNominas(connectionString);
+
+            var empleados = repo.ObtenerEmpleados();
+            dataGridNomina.ItemsSource = empleados;
         }
         private void ComBoxMes_DropDownOpened(object sender, EventArgs e)
         {
