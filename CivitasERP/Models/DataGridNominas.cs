@@ -65,7 +65,7 @@ namespace CivitasERP.Models
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string usuario;
-                usuario = GlobalVariables1.usuario;
+                usuario = Variables.Usuario;
                 DB_admins dB_Admins = new DB_admins();
                 int? idAdmin;
                 idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
@@ -112,16 +112,16 @@ namespace CivitasERP.Models
             //empleados
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string usuario = GlobalVariables1.usuario;
+                string usuario = Variables.Usuario;
                 DB_admins dB_Admins = new DB_admins();
                 int? idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
 
                 // Aquí estás verificando si se ha guardado un id_obra globalmente
                 int? id_obra;
 
-                if (GlobalVariables1.id_obra != null)
+                if (Variables.IdObra != null)
                 {
-                    id_obra = GlobalVariables1.id_obra;
+                    id_obra = Variables.IdObra;
                 }
                 else
                 {
@@ -130,11 +130,10 @@ namespace CivitasERP.Models
 
                 string fechaInicio="",fechaFin="";
 
-                fechaInicio = GlobalVariables1.fecha_inicio;
-                fechaFin = GlobalVariables1.fecha_fin;
+                fechaInicio = Variables.FechaInicio;
+                fechaFin = Variables.FechaFin;
 
-                MessageBox.Show(fechaInicio);
-                MessageBox.Show(fechaFin);
+
                 string query = @"
                                 SELECT DISTINCT e.id_empleado, 
                                     CONCAT(e.emp_nombre, ' ', e.emp_apellidop, ' ', e.emp_apellidom) AS emp_nombre, 
@@ -201,8 +200,6 @@ namespace CivitasERP.Models
             string fechaInicio="", fechaFin="";
 
 
-            fechaInicio = GlobalVariables1.fecha_inicio;
-            fechaFin = GlobalVariables1.fecha_fin;
 
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
@@ -247,8 +244,8 @@ namespace CivitasERP.Models
 
             string fechaInicio = "", fechaFin = "";
 
-            fechaInicio = GlobalVariables1.fecha_inicio;
-            fechaFin = GlobalVariables1.fecha_fin;
+            fechaInicio = Variables.FechaInicio;
+            fechaFin = Variables.FechaFin;
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
@@ -297,8 +294,8 @@ namespace CivitasERP.Models
             string fechaInicio = "", fechaFin = "";
 
 
-            fechaInicio = GlobalVariables1.fecha_inicio;
-            fechaFin = GlobalVariables1.fecha_fin;
+            fechaInicio = Variables.FechaInicio;
+            fechaFin = Variables.FechaFin;
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
@@ -342,8 +339,8 @@ namespace CivitasERP.Models
 
             string fechaInicio = "", fechaFin = "";
 
-            fechaInicio = GlobalVariables1.fecha_inicio;
-            fechaFin = GlobalVariables1.fecha_fin;
+            fechaInicio = Variables.FechaInicio;
+            fechaFin = Variables.FechaFin;
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
@@ -376,7 +373,7 @@ namespace CivitasERP.Models
         }
         public (bool exito, DateTime fechaInicio, DateTime fechaFin) ObtenerFechasDesdeGlobal()
         {
-            string texto = GlobalVariables1.fecha;
+            string texto = Variables.Fecha;
 
             if (string.IsNullOrWhiteSpace(texto))
                 return (false, DateTime.MinValue, DateTime.MinValue);

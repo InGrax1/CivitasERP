@@ -25,7 +25,7 @@ namespace CivitasERP.Views
             _connectionString = new Conexion().ObtenerCadenaConexion();
 
             // 2) Inicializar el servicio de huella (sólo Enrollment)
-            int loggedAdmin = GlobalVariables1.id_admin
+            int loggedAdmin = Variables.IdAdmin
                 ?? throw new InvalidOperationException("No hay admin logueado");
             _fingerService = new FingerprintService(_connectionString, loggedAdmin);
 

@@ -26,7 +26,7 @@ namespace CivitasERP.Views
             _connectionString = new Conexion().ObtenerCadenaConexion();
 
             // 2) Inicializar el servicio de huella (sólo Enrollment)
-            int loggedAdmin = GlobalVariables1.id_admin
+            int loggedAdmin = Variables.IdAdmin
                 ?? throw new InvalidOperationException("No hay admin logueado");
             _fingerService = new FingerprintService(_connectionString, loggedAdmin);
 
@@ -107,7 +107,7 @@ namespace CivitasERP.Views
             }
 
             // 2) Obtener ID de admin y ID de obra
-            string usuario = GlobalVariables1.usuario;
+            string usuario = Variables.Usuario;
             var idDB = new DB_admins();
             int? Id_admin = idDB.ObtenerIdPorUsuario(usuario);
             string obra = cmbObra.Text;
@@ -165,7 +165,7 @@ namespace CivitasERP.Views
 
         private void CargarDatosComboBox()
         {
-            string usuario = GlobalVariables1.usuario;
+            string usuario = Variables.Usuario;
             var dB_Admins = new DB_admins();
             int? idAdminObra = dB_Admins.ObtenerIdPorUsuario(usuario);
 

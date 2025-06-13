@@ -54,14 +54,14 @@ namespace CivitasERP.ViewModels
             _cs = new Conexion().ObtenerCadenaConexion();
             _repo = new Datagrid_lista(_cs);
 
-            int loggedAdmin = GlobalVariables1.id_admin
+            int loggedAdmin = Variables.IdAdmin
                 ?? throw new InvalidOperationException("No hay admin logueado");
             _fingerService = new FingerprintService(_cs, loggedAdmin); _fingerService.OnVerificationComplete += OnVerified;
 
             _fingerService.OnError += OnError;
 
             ScanCommand = new RelayCommand(_ => StartScan());
-            if (GlobalVariables1.fecha_inicio == null || GlobalVariables1.fecha_fin == null)
+            if (Variables.FechaInicio == null || Variables.FechaFin == null)
             {
                 
             }else

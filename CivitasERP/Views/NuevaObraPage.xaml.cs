@@ -38,7 +38,7 @@ namespace CivitasERP.Views
         private void btnAgregarObra_Click(object sender, RoutedEventArgs e)
         {
             string usuario, nombreObra, ubicacion;
-            usuario = GlobalVariables1.usuario;
+            usuario = Variables.Usuario;
             DB_admins dB_Admins = new DB_admins();
             int? idAdminObra;
             idAdminObra = dB_Admins.ObtenerIdPorUsuario(usuario);

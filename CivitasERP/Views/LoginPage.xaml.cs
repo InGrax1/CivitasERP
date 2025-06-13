@@ -75,8 +75,8 @@ namespace CivitasERP.Views
                     }
 
                     // Lo guardas en tu global (que ya es int?):
-                    GlobalVariables1.id_admin = idAdminLogueado;
-                    GlobalVariables1.usuario = usuario;
+                    Variables.IdAdmin = idAdminLogueado;
+                    Variables.Usuario = usuario;
 
 
 
@@ -108,18 +108,7 @@ namespace CivitasERP.Views
             }
 
         }
-        public static class GlobalVariables1
-        {
 
-            public static string usuario;
-            public static int? id_admin;
-            public static int? id_obra;
-            public static string obra_nom;
-            public static string fecha;
-            public static string fecha_inicio;
-            public static string fecha_fin;
-
-        }
         private void brnResetPassword(object sender, RoutedEventArgs e)
         {
             ForgotPasswordPage forgotPasswordPage = new ForgotPasswordPage();
