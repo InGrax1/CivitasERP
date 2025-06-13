@@ -199,7 +199,8 @@ namespace CivitasERP.Models
 
             string fechaInicio="", fechaFin="";
 
-
+            fechaInicio = Variables.FechaInicio;
+            fechaFin = Variables.FechaFin;
 
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
