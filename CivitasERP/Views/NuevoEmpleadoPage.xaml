@@ -22,7 +22,12 @@
     </shell:WindowChrome.WindowChrome>
 
     <!-- Fondo blanco redondeado -->
-    <Border Background="White" CornerRadius="30" Padding="20" Margin="10" BorderThickness="3" BorderBrush="#5F5FFF">
+    <Border Background="{StaticResource BackgroudColor}" 
+            CornerRadius="30" 
+            Padding="20" 
+            Margin="10" 
+            BorderThickness="3" 
+            BorderBrush="{StaticResource primaryColor1}">
         <Grid>
             <!-- Defino filas: 0=Header,1=Formulario,2=Huella,3=Guardar,4=espacio -->
             <Grid.RowDefinitions>
@@ -35,20 +40,23 @@
             <!-- Header -->
             <Grid Grid.Row="0">
                 <TextBlock Text="REGISTRO DE NUEVO PERSONAL"
-                   FontSize="24" FontWeight="Bold"
-                   HorizontalAlignment="Center"
-                   Foreground="#6370FF"/>
+                           FontSize="24" 
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           Foreground="{StaticResource titleColorA}"/>
                 <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right">
 
                     <Button Style="{StaticResource RoundButton}"
-                            Background="LightBlue"
+                            Background="{StaticResource buttonMin}"
                             Content="—"
                             Click="btnMin_Click"
                             Margin="0,0,5,0"/>
 
                     <Border Background="LightCoral" CornerRadius="20">
-                        <Button Style="{StaticResource RoundButton}" Background="LightCoral" Content="×"
+                        <Button Style="{StaticResource RoundButton}" 
+                                Background="{StaticResource buttonExit}" 
+                                Content="×"
                                 Click="btnExit_Click"/>
                     </Border>
                 </StackPanel>
@@ -70,19 +78,41 @@
                 </Grid.RowDefinitions>
 
                 <!-- Nombre-->
-                <StackPanel Grid.Row="0" Grid.Column="0" Margin="10,10,10,10">
-                    <TextBlock Text="Nombre" Foreground="#5F5FFF" FontSize="15" Margin="0,0,0,5"/>
-                    <Border Background="#F0F0F0" CornerRadius="10" Padding="5">
-                        <TextBox x:Name="txtNombre" BorderThickness="0" Background="Transparent"/>
+                <StackPanel Grid.Row="0" 
+                            Grid.Column="0" 
+                            Margin="10,10,10,10">
+                    <TextBlock Text="Nombre" 
+                               Foreground="{StaticResource titleColorB}" 
+                               FontSize="15" 
+                               Margin="0,0,0,5"/>
+                    <Border Background="{StaticResource primaryColor2}" 
+                            CornerRadius="10" 
+                            Padding="5"
+                            BorderThickness="1"
+                            BorderBrush="{StaticResource BoxColor1}">
+                        <TextBox x:Name="txtNombre" 
+                                 BorderThickness="0" 
+                                 Background="Transparent"/>
                     </Border>
                 </StackPanel>
 
 
                 <!-- Apellido Paterno-->
-                <StackPanel Grid.Row="0" Grid.Column="1" Margin="10,10,10,10">
-                    <TextBlock Text="Apellido Paterno" Foreground="#5F5FFF" FontSize="15" Margin="0,0,0,5"/>
-                    <Border Background="#F0F0F0" CornerRadius="10" Padding="5">
-                        <TextBox x:Name="txtApellidoPaterno" BorderThickness="0" Background="Transparent"/>
+                <StackPanel Grid.Row="0" 
+                            Grid.Column="1" 
+                            Margin="10,10,10,10">
+                    <TextBlock Text="Apellido Paterno" 
+                               Foreground="{StaticResource titleColorB}" 
+                               FontSize="15" 
+                               Margin="0,0,0,5"/>
+                    <Border Background="{StaticResource primaryColor2}" 
+                            CornerRadius="10" 
+                            Padding="5"
+                            BorderBrush="{StaticResource primaryColor1}"
+                            BorderThickness="1">
+                        <TextBox x:Name="txtApellidoPaterno" 
+                                 BorderThickness="0" 
+                                 Background="Transparent"/>
                     </Border>
                 </StackPanel>
 

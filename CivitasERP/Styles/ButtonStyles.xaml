@@ -26,7 +26,7 @@
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="PART_Border"
                                     Property="Opacity"
-                                    Value="0.6"/>
+                                    Value="0.8"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -45,11 +45,11 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="PART_Border"
-                  Background="{TemplateBinding Background}"
-                  CornerRadius="10"
-                  SnapsToDevicePixels="True"
-                  Margin="5"
-                  Height="35">
+                          Background="{TemplateBinding Background}"
+                          CornerRadius="10"
+                          SnapsToDevicePixels="True"
+                          Margin="5"
+                          Height="35">
                         <ContentPresenter HorizontalAlignment="Center"
                               VerticalAlignment="Center"/>
                     </Border>

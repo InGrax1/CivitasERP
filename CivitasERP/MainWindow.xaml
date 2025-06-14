@@ -11,7 +11,8 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize"
         WindowStyle="None"
-        MouseLeftButtonDown="DragWindow">
+        MouseLeftButtonDown="DragWindow"
+        Background= "{StaticResource BackgroudColor}">
 
 
 
@@ -22,20 +23,23 @@
         </Grid.ColumnDefinitions>
 
         <!-- FOTO DE PERFIL -->
-        <StackPanel Grid.Column="0" Panel.ZIndex="3"
-        HorizontalAlignment="Left" Margin="6,43,0,0">
+        <StackPanel Grid.Column="0" 
+                    Panel.ZIndex="3"
+                    HorizontalAlignment="Left" 
+                    Margin="6,43,0,0">
             <Ellipse x:Name="EllipseProfile"
-               Width="137" Height="137"
-               Stroke="DarkBlue" StrokeThickness="2"
-               Fill="LightGray"
-               Cursor="Hand"
-               MouseLeftButtonDown="EllipseProfile_MouseLeftButtonUp"/>
+                     Width="137" Height="137"
+                     Stroke="DarkBlue" 
+                     StrokeThickness="2"
+                     Fill="{StaticResource BackgroudColor}"
+                     Cursor="Hand"
+                     MouseLeftButtonDown="EllipseProfile_MouseLeftButtonUp"/>
         </StackPanel>
 
         <!-- MENÚ LATERAL -->
         <Border Grid.Column="0" Panel.ZIndex="2"
                 CornerRadius="0,0,0,0"
-                Background="White"> 
+                Background="{StaticResource BackgroudColor}"> 
             <Border CornerRadius="0,30,0,0" Margin="0,150,0,0">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -73,7 +77,7 @@
                         <!-- Menú -->
                         <Button Style="{StaticResource LargeRoundButton}" 
                                 x:Name="btnMenu"
-                                Background="{StaticResource buttonColor2}"
+                                Background="{StaticResource buttonColor1}"
                                 Click="Nav_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Images/home.png" Width="25" Height="25" Margin="0,0,5,0"/>
@@ -83,7 +87,7 @@
                         
                         <!-- Nómina -->
                         <Button Style="{StaticResource LargeRoundButton}"
-                                Background="{StaticResource buttonColor1}"
+                                Background="{StaticResource buttonColor2}"
                                 Click="Nav_Click"
                                 x:Name="btnNomina">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -94,7 +98,7 @@
 
                         <!-- Pase de lista -->
                         <Button Style="{StaticResource LargeRoundButton}"
-                                Background="{StaticResource buttonColor1}"
+                                Background="{StaticResource buttonColor2}"
                                 x:Name="btnLista"
                                 Click="Nav_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -104,7 +108,7 @@
                         </Button>
                         <!-- Nueva Obra-->
                         <Button Style="{StaticResource LargeRoundButton}"
-                                Background="{StaticResource buttonColor1}"
+                                Background="{StaticResource buttonColor2}"
                                 x:Name="btnNuevaObra"
                                 Click="btnNuevaObra_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -152,24 +156,32 @@
                 <!-- 1) TOPBAR -->
                 <StackPanel Grid.Row="0" Orientation="Horizontal"
                             HorizontalAlignment="Right">
-                    <Border Background="LightBlue" CornerRadius="30" Margin="0,0,5,0">
+                    <!--Minimizar-->
+                    <Border Background="{StaticResource buttonMin}"
+                            CornerRadius="30" 
+                            Margin="0,0,5,0">
                         <Button Name="btnMin" 
                                 Style="{StaticResource RoundButton}"
-                                Background="LightBlue"
+                                Background="{StaticResource buttonMin}"
                                 Content="—" 
                                 Click="TopBar_Click"/>
                     </Border>
-                    <Border Background="LightGreen" CornerRadius="30" Margin="0,0,5,0">
+                    <!--Maximizar-->
+                    <Border Background="{StaticResource buttonMax}"
+                            CornerRadius="30" 
+                            Margin="0,0,5,0">
                         <Button Name="btnMax" 
                                 Style="{StaticResource RoundButton}"
-                                Background="LightGreen"
+                                Background="{StaticResource buttonMax}"
                                 Content="[]" 
                                 Click="TopBar_Click"/>
                     </Border>
-                    <Border Background="LightCoral" CornerRadius="30">
+                    <!--Cerrar-->
+                    <Border Background="{StaticResource buttonExit}"
+                            CornerRadius="30">
                         <Button Name="btnExit" 
                                 Style="{StaticResource RoundButton}"
-                                Background="LightCoral"
+                                Background="{StaticResource buttonExit}"
                                 Content="×" 
                                 Click="TopBar_Click"/>
                     </Border>
