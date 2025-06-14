@@ -118,34 +118,79 @@
 
 
                 <!-- Apellido Materno -->
-                <StackPanel Grid.Row="0" Grid.Column="3" Margin="10,10,10,10">
-                    <TextBlock Text="Apellido Materno" Foreground="#5F5FFF" FontSize="15" Margin="0,0,0,5"/>
-                    <Border Background="#F0F0F0" CornerRadius="10" Padding="5">
-                        <TextBox x:Name="txtApellidoMaterno" BorderThickness="0" Background="Transparent"/>
+                <StackPanel Grid.Row="0" 
+                            Grid.Column="3" 
+                            Margin="10,10,10,10">
+                    <TextBlock Text="Apellido Materno" 
+                               Foreground="{StaticResource titleColorB}" 
+                               FontSize="15" 
+                               Margin="0,0,0,5"/>
+                    <Border Background="{StaticResource primaryColor2}" 
+                            CornerRadius="10" 
+                            Padding="5"
+                            BorderBrush="{StaticResource primaryColor1}"
+                            BorderThickness="1">
+                        <TextBox x:Name="txtApellidoMaterno" 
+                                 BorderThickness="0" 
+                                 Background="Transparent"/>
                     </Border>
                 </StackPanel>
 
                 <!--Categoria-->
-                <StackPanel Grid.Row="2" Grid.Column="0" Margin="10,10,10,10">
-                    <TextBlock Text="Categoria" Foreground="#5F5FFF" FontSize="15" Margin="0,20,0,5"/>
-                    <Border Background="#F0F0F0" CornerRadius="10" Padding="5">
-                        <TextBox x:Name="txtCategoria" BorderThickness="0" Background="Transparent"/>
+                <StackPanel Grid.Row="2" 
+                            Grid.Column="0" 
+                            Margin="10,10,10,10">
+                    <TextBlock Text="Categoria" 
+                               Foreground="{StaticResource titleColorB}" 
+                               FontSize="15" 
+                               Margin="0,20,0,5"/>
+                    <Border Background="{StaticResource primaryColor2}" 
+                            CornerRadius="10" 
+                            Padding="5"
+                            BorderBrush="{StaticResource primaryColor1}"
+                            BorderThickness="1">
+                        <TextBox x:Name="txtCategoria" 
+                                 BorderThickness="0" 
+                                 Background="Transparent"/>
                     </Border>
                 </StackPanel>
                 
                 <!--Obra-->
-                <StackPanel Grid.Row="2" Grid.Column="1" Margin="10,10,10,10">
-                    <TextBlock Text="Obra" Foreground="#5F5FFF" FontSize="15" Margin="0,20,0,5"/>
-                    <Border Background="#F0F0F0" CornerRadius="10" Padding="5">
-                        <ComboBox x:Name="cmbObra" BorderThickness="0" Background="Transparent" DropDownOpened ="cmbObra_DropDownOpened"/>
+                <StackPanel Grid.Row="2" 
+                            Grid.Column="1" 
+                            Margin="10,10,10,10">
+                    <TextBlock Text="Obra" 
+                               Foreground="{StaticResource titleColorB}" 
+                               FontSize="15" 
+                               Margin="0,20,0,5"/>
+                    <Border Background="{StaticResource primaryColor2}" 
+                            CornerRadius="10" 
+                            Padding="5"
+                            BorderBrush="{StaticResource primaryColor1}"
+                            BorderThickness="1">
+                        <ComboBox x:Name="cmbObra" 
+                                  BorderThickness="0" 
+                                  Background="Transparent" 
+                                  DropDownOpened ="cmbObra_DropDownOpened"/>
                     </Border>
                 </StackPanel>
 
                 <!-- Sueldo Semanal -->
-                <StackPanel Grid.Row="2" Grid.Column="2" Margin="10,10,10,10" Grid.ColumnSpan="2">
-                    <TextBlock Text="Sueldo Semanal" Foreground="#5F5FFF" FontSize="14" Margin="0,20,0,5"/>
-                    <Border Background="#5F5FFF" CornerRadius="10" Padding="5">
-                        <TextBox x:Name="txtSueldo" BorderThickness="0" Background="Transparent" Foreground="White"/>
+                <StackPanel Grid.Row="2" 
+                            Grid.Column="2" 
+                            Margin="10,10,10,10" 
+                            Grid.ColumnSpan="2">
+                    <TextBlock Text="Sueldo Semanal" 
+                               Foreground="#5F5FFF" 
+                               FontSize="15" 
+                               Margin="0,20,0,5"/>
+                    <Border Background="#5F5FFF" 
+                            CornerRadius="10" 
+                            Padding="5">
+                        <TextBox x:Name="txtSueldo" 
+                                 BorderThickness="0" 
+                                 Background="Transparent" 
+                                 Foreground="White"/>
                     </Border>
                 </StackPanel>
             </Grid>
@@ -160,7 +205,7 @@
                 <StackPanel>
                     <TextBlock x:Name="EstadoHuella"
                                Text="Click para iniciar el escaneo"
-                               Foreground="#5F5FFF"
+                               Foreground="{StaticResource titleColorA}"
                                FontSize="15"
                                FontWeight="Bold"
                                HorizontalAlignment="Center"/>
@@ -173,12 +218,16 @@
 
             <!-- Botón Guardar -->
             <Button Grid.Row="3" Content="Guardar"
-              Width="150" Height="40"
-              HorizontalAlignment="Right" Margin="0,20,10,0"
-              Background="#5F5FFF" Foreground="White"
-              FontSize="16" FontWeight="Bold"
-              BorderThickness="0"
-              Click="btnRegister_Click">
+                    Width="150" 
+                    Height="40"
+                    HorizontalAlignment="Right" 
+                    Margin="0,20,10,0"
+                    Background="{StaticResource buttonColor2}" 
+                    Foreground="{StaticResource titleColor4}"
+                    FontSize="16" 
+                    FontWeight="Bold"
+                    BorderThickness="0"
+                    Click="btnRegister_Click">
                 <Button.Effect>
                     <DropShadowEffect Color="#5F5FFF" BlurRadius="10" ShadowDepth="0"/>
                 </Button.Effect>
