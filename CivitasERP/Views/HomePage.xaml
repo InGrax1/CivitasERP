@@ -13,7 +13,9 @@
 
             <!-- CONTENIDO CENTRAL -->
             <Border Grid.Column="1" Panel.ZIndex="1"
-                    CornerRadius="0,0,0,0" Background="WhiteSmoke" Margin="0">
+                    CornerRadius="0,0,0,0" 
+                    Background="{StaticResource BackgroudColor}" 
+                    Margin="0">
                 <Grid Margin="20">
                     
                     <Grid.RowDefinitions>
@@ -35,15 +37,18 @@
                         <TextBlock Text="Bienvenido a CivitasERP" 
                                    FontSize="70" 
                                    FontWeight="Bold"
-                                   HorizontalAlignment="Center"/>
+                                   HorizontalAlignment="Center"
+                                   Foreground="{StaticResource titleColorA}"/>
                         <TextBlock Text="Sistema de gestión empresarial"
                                    FontSize="30" 
                                    HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center"/> 
+                                   VerticalAlignment="Center"
+                                   Foreground="{StaticResource titleColorB}"/> 
                         <Image Source="/Images/LOGO CONSORCIO CIVIL.png"
-                                MaxWidth="500" MaxHeight="500"
-                                HorizontalAlignment="Center"
-                                Margin="0,20,0,0"/>
+                               MaxWidth="500" 
+                               MaxHeight="500"
+                               HorizontalAlignment="Center"
+                               Margin="0,20,0,0"/>
                     </StackPanel>
                 </Grid>
             </Grid>

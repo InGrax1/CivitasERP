@@ -101,7 +101,7 @@ namespace CivitasERP
             switch (btn.Name)
             {
                 //Botones de navegación del menú lateral
-                case "btnHome":
+                case "btnMenu":
                     MainFrame.Navigate(new HomePage());
                     break;
                 case "btnNomina":
@@ -132,8 +132,8 @@ namespace CivitasERP
             var navButtons = new[] { btnMenu, btnNomina, btnLista };
 
             // Rescata los brushes de los recursos
-            var defaultBrush = (Brush)FindResource("buttonColor1"); // #4772E3
-            var activeBrush = (Brush)FindResource("buttonColor2"); // #274288
+            var defaultBrush = (Brush)FindResource("buttonColor2"); // #4772E3
+            var activeBrush = (Brush)FindResource("buttonColor1"); // #274288
 
             // Reset a todos
             foreach (var b in navButtons)

@@ -11,7 +11,7 @@
         <!-- CONTENIDO CENTRAL -->
             <Border Grid.Column="1" 
                     Panel.ZIndex="1"
-                    Background="White" 
+                    Background="{StaticResource BackgroudColor}" 
                     Margin="0">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -43,14 +43,15 @@
                                    Text="LISTA DE PERSONAL Y PASE DE LISTA"
                                    FontSize="26" 
                                    FontWeight="Bold"
-                                   Margin="0,0,0,20"/>
+                                   Margin="0,0,0,20"
+                                   Foreground="{StaticResource titleColorA}"/>
                         <!-- Obra -->
                         <TextBlock Grid.Row="1" Grid.Column="0"
                                    Text="Obra" FontSize="16"
                                    VerticalAlignment="Center"
-                                   Margin="0,0,10,0"/>
+                                   Margin="0,0,10,0"
+                                   Foreground="{StaticResource titleColorB}"/>
                         <Border Grid.Row="1" Grid.Column="1"
-                                Background="WhiteSmoke" 
                                 CornerRadius="10"
                                 BorderBrush="#6666FF" 
                                 BorderThickness="1" 
@@ -168,7 +169,7 @@
                                        Height="70"
                                        HorizontalAlignment="Stretch"/>
                                 <TextBlock x:Name="lblEstadoHuella"
-                                           Text="{Binding EstadoHuella}" 
+                                           Text= "{Binding EstadoHuella}" 
                                            Foreground="#5F5FFF"
                                            FontSize="13"
                                            FontWeight="Bold"

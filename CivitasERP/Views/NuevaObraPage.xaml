@@ -22,7 +22,12 @@
     </shell:WindowChrome.WindowChrome>
 
     <!-- Fondo blanco redondeado -->
-    <Border Background="White" CornerRadius="30" Padding="20" Margin="10" BorderThickness="3" BorderBrush="#5F5FFF">
+    <Border Background="{StaticResource BackgroudColor}" 
+            CornerRadius="30" 
+            Padding="20" 
+            Margin="10" 
+            BorderThickness="3" 
+            BorderBrush="{StaticResource primaryColor1}">
         <Grid>
             <!-- Defino filas: 0=Header,1=Formulario,2=Huella,3=Guardar,4=espacio -->
             <Grid.RowDefinitions>
@@ -38,13 +43,15 @@
                     HorizontalAlignment="Right">
 
                     <Button Style="{StaticResource RoundButton}"
-                            Background="LightBlue"
+                            Background="{StaticResource buttonMin}"
                             Content="—"
                             Click="btnMin_Click"
                             Margin="0,0,5,0"/>
 
                     <Border Background="LightCoral" CornerRadius="20">
-                        <Button Style="{StaticResource RoundButton}" Background="LightCoral" Content="×"
+                        <Button Style="{StaticResource RoundButton}" 
+                                Background="{StaticResource buttonExit}" 
+                                Content="×"
                                 Click="btnExit_Click"/>
                     </Border>
                 </StackPanel>
@@ -53,7 +60,7 @@
                 <TextBlock Text="REGISTRO DE NUEVA OBRA"
                            FontSize="24" FontWeight="Bold"
                            HorizontalAlignment="Center"
-                           Foreground="#6370FF"/>
+                           Foreground="{StaticResource titleColorA}"/>
             </Grid>
 
             <!-- Formulario de campos -->
@@ -71,30 +78,53 @@
                 </Grid.RowDefinitions>
 
                 <!-- Nombre de la obra-->
-                <StackPanel Grid.Row="0" Grid.Column="0" Margin="10,10,10,10">
-                    <TextBlock Text="Nombre de la obra" Foreground="#5F5FFF" FontSize="15" Margin="0,0,0,5"/>
-                    <Border Background="#F0F0F0" CornerRadius="10" Padding="5">
-                        <TextBox x:Name="txtObraNombre" BorderThickness="0" Background="Transparent"/>
+                <StackPanel Grid.Row="0" 
+                            Grid.Column="0" 
+                            Margin="10,10,10,10">
+                    <TextBlock Text="Nombre de la obra" 
+                               Foreground="{StaticResource titleColorB}" 
+                               FontSize="15" 
+                               Margin="0,0,0,5"/>
+                    <Border Background="#F0F0F0" 
+                            CornerRadius="10" 
+                            Padding="5"
+                            BorderBrush="{StaticResource BoxColor1}"
+                            BorderThickness="1">
+                        <TextBox x:Name="txtObraNombre" 
+                                 BorderThickness="0" 
+                                 Background="Transparent"/>
                     </Border>
                 </StackPanel>
 
                 <!--Ubicacion-->
-                <StackPanel Grid.Row="2" Grid.Column="0" Margin="10,10,10,10">
-                    <TextBlock Text="Ubicacion" Foreground="#5F5FFF" FontSize="15" Margin="0,20,0,5"/>
-                    <Border Background="#F0F0F0" CornerRadius="10" Padding="5">
+                <StackPanel Grid.Row="2" 
+                            Grid.Column="0" 
+                            Margin="10,10,10,10">
+                    <TextBlock Text="Ubicacion" 
+                               Foreground="{StaticResource titleColorB}" 
+                               FontSize="15" 
+                               Margin="0,20,0,5"/>
+                    <Border CornerRadius="10" 
+                            Padding="5"
+                            BorderThickness="1"
+                            BorderBrush="{StaticResource BoxColor1}">
                         <TextBox x:Name="txtObraUbicacion" BorderThickness="0" Background="Transparent"/>
                     </Border>
                 </StackPanel>
             </Grid>
 
             <!-- Botón Guardar -->
-            <Button Grid.Row="3" Content="Agregar Obra"
-                      Width="150" Height="40"
-                      HorizontalAlignment="Right" Margin="0,20,10,0"
-                      Background="#5F5FFF" Foreground="White"
-                      FontSize="16" FontWeight="Bold"
-                      BorderThickness="0"
-                      Click="btnAgregarObra_Click">
+            <Button Grid.Row="3" 
+                    Content="Agregar Obra"
+                    Width="150" 
+                    Height="40"                 
+                    HorizontalAlignment="Right" 
+                    Margin="0,20,10,0"
+                    Background="{StaticResource buttonColor1}" 
+                    Foreground="{StaticResource titleColor4}"
+                    FontSize="16" FontWeight="Bold"
+                    BorderThickness="0"
+                    Click="btnAgregarObra_Click">
                 <Button.Effect>
                     <DropShadowEffect Color="#5F5FFF" BlurRadius="10" ShadowDepth="0"/>
                 </Button.Effect>
