@@ -93,19 +93,19 @@ namespace CivitasERP.Views
             }
 
 
-            //DataContext = new ListaViewModel();
+            DataContext = new ListaViewModel();
         }
 
         // FUNCIONES PARA ESCANEO DE HUELLAS
         private void btnHuellaR_Click(object sender, RoutedEventArgs e)
         {
-            /*
+
             // Obtén tu ViewModel
             if (DataContext is ListaViewModel vm)
             {
                 // Ejecuta el comando (o llama al método público que hayas expuesto)
                 vm.ScanCommand.Execute(null);
-            }*/
+            }
         }
 
         /// <summary>

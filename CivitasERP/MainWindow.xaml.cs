@@ -1,4 +1,5 @@
-﻿using CivitasERP.Views;
+﻿using CivitasERP.AdminViews;
+using CivitasERP.Views;
 using Microsoft.Win32;
 using System.Text;
 using System.Windows;
@@ -125,6 +126,11 @@ namespace CivitasERP
             HighlightNavButton(btn);
         }
 
+        private void btnpruea_Click(object sender, RoutedEventArgs e)
+        {
+            prueba prueba = new prueba();
+            prueba.ShowDialog();
+        }
         //Resaltar el botón activo
         private void HighlightNavButton(Button btnToActivate)
         {
