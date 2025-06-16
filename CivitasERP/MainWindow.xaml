@@ -126,6 +126,17 @@
                                 <TextBlock Text="Registro Nuevo" FontSize="20" Foreground="White"/>
                             </StackPanel>
                         </Button>
+                        <!-- Registro Nuevo -->
+                        <Button Style="{StaticResource LargeRoundButton}"
+        Background="Gray"
+        x:Name="btnprueba"
+        Click="btnpruea_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <TextBlock Text="Registro Nuevo" FontSize="20" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+
                     </StackPanel>
 
                     <!-- 3) Logout al pie (fila 2) -->
