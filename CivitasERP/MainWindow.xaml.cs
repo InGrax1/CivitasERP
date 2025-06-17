@@ -1,6 +1,9 @@
 ﻿using CivitasERP.AdminViews;
 using CivitasERP.Views;
 using Microsoft.Win32;
+using System.Data.SqlClient;
+using System.Data;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static CivitasERP.Views.ForgotPasswordPage;
+using CivitasERP.Models;
 
 namespace CivitasERP
 {
@@ -31,6 +36,10 @@ namespace CivitasERP
         {
             InitializeComponent();
             MainFrame.Navigate(new HomePage());
+
+            if (Variables.IdAdmin.HasValue)
+                CargarFotoPerfil(Variables.IdAdmin.Value);
+
         }
 
         //Poder mover la ventana con libertad
@@ -45,53 +54,104 @@ namespace CivitasERP
         //CAMBIO DE FOTO DE PERFIL
         /// Manejador que se activa cuando el usuario hace clic en el Ellipse de perfil.
         /// Abre un OpenFileDialog para que elija una imagen, y luego la asigna como Fill del Ellipse.
-        private void EllipseProfile_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// Carga la foto de perfil desde la BD y la pinta en el Ellipse.
+        /// </summary>
+        public void CargarFotoPerfil(int idAdmin)
         {
-            System.Diagnostics.Debug.WriteLine("¡Click en el ellipse!");
-
-            // 1) Abrir diálogo para seleccionar imagen
-            var dlg = new OpenFileDialog
+            var conexion = new Conexion();
+            string connectionString = conexion.ObtenerCadenaConexion();
+            const string sql = @"
+            SELECT FotoPerfil 
+              FROM admins 
+             WHERE id_admins = @id";
+            using (var cn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(sql, cn))
             {
-                Title = "Selecciona una foto de perfil",
-                Filter = "Imágenes (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp",
-                Multiselect = false
-            };
-
-            bool? resultado = dlg.ShowDialog();
-            if (resultado == true)
-            {
-                string rutaImagen = dlg.FileName;
-                try
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = idAdmin;
+                cn.Open();
+                var result = cmd.ExecuteScalar();
+                if (result is byte[] fotoBytes && fotoBytes.Length > 0)
                 {
-                    // 2) Cargar la imagen en un BitmapImage
                     var bitmap = new BitmapImage();
                     bitmap.BeginInit();
-                    bitmap.UriSource = new Uri(rutaImagen, UriKind.Absolute);
+                    bitmap.StreamSource = new MemoryStream(fotoBytes);
                     bitmap.CacheOption = BitmapCacheOption.OnLoad;
                     bitmap.EndInit();
 
-                    // 3) Crear un ImageBrush con esa imagen
-                    var brush = new ImageBrush
+                    EllipseProfile.Fill = new ImageBrush(bitmap)
                     {
-                        ImageSource = bitmap,
                         Stretch = Stretch.UniformToFill
                     };
-
-                    // 4) Asignar el ImageBrush al Fill del Ellipse
-                    EllipseProfile.Fill = brush;
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(
-                        $"No se pudo cargar la imagen:\n{ex.Message}",
-                        "Error al cargar imagen",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error);
+                    // Opcional: pinta un placeholder si no hay foto
+                    EllipseProfile.Fill = Brushes.LightGray;
                 }
             }
         }
 
-        
+        /// <summary>
+        /// Guarda el array de bytes en la BD para el id de admin actual.
+        /// </summary>
+        public void GuardarFotoPerfil(byte[] fotoBytes, int idAdmin)
+        {
+            var conexion = new Conexion();
+            string connectionString = conexion.ObtenerCadenaConexion();
+            const string sql = @"
+            UPDATE admins
+               SET FotoPerfil = @foto
+             WHERE id_admins = @id";
+            using (var cn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(sql, cn))
+            {
+                cmd.Parameters.Add("@foto", SqlDbType.VarBinary, fotoBytes.Length).Value = fotoBytes;
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = idAdmin;
+                cn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+        private void EllipseProfile_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var conexion = new Conexion();
+            string connectionString = conexion.ObtenerCadenaConexion(); 
+            var dlg = new OpenFileDialog
+            {
+                Title = "Selecciona una foto de perfil",
+                Filter = "Imágenes (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp",
+            };
+            if (dlg.ShowDialog() != true) return;
+
+            var ruta = dlg.FileName;
+            byte[] imagenBytes = File.ReadAllBytes(ruta);
+
+            // 1) Mostrarla inmediatamente
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.StreamSource = new MemoryStream(imagenBytes);
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+            EllipseProfile.Fill = new ImageBrush(bitmap) { Stretch = Stretch.UniformToFill };
+
+            // 2) Guardarla en la BD
+            const string sql = @"
+                              UPDATE admins 
+                                 SET FotoPerfil = @foto 
+                               WHERE id_admins = @id";
+            using (var cn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(sql, cn))
+            {
+                cmd.Parameters.Add("@foto", SqlDbType.VarBinary, imagenBytes.Length)
+                   .Value = imagenBytes;
+                cmd.Parameters.Add("@id", SqlDbType.Int)
+                   .Value = Variables.IdAdmin;
+                cn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+
         //BOTONES DE NAVEGACIÓN
         private void Nav_Click(object sender, RoutedEventArgs e)
         {

@@ -9,13 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\AdminPanel.png" />
     <None Remove="Images\home.png" />
     <None Remove="Images\huella-dactilar.png" />
     <None Remove="Images\Key.png" />
     <None Remove="Images\lista.png" />
     <None Remove="Images\LOGO CONSORCIO CIVIL 2.png" />
     <None Remove="Images\LOGO CONSORCIO CIVIL.png" />
-    <None Remove="Images\money.png" />
+    <None Remove="Images\Logout.png" />
+    <None Remove="Images\NewRegister.png" />
+    <None Remove="Images\Nomina.png" />
+    <None Remove="Images\Obra.png" />
     <None Remove="Images\usuario.png" />	  
   </ItemGroup>
 
@@ -25,6 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\AdminPanel.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\huella-dactilar.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -46,7 +53,16 @@
     <Resource Include="Images\LOGO CONSORCIO CIVIL.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Images\money.png">
+    <Resource Include="Images\Logout.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\NewRegister.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Nomina.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Obra.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\usuario.png">
