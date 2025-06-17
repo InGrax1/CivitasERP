@@ -8,9 +8,9 @@
         Title="NominaPage"
         Width="1800" Height="1000"
         MinHeight="600" MinWidth="800"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
-        WindowStyle="ThreeDBorderWindow"
+        WindowStyle="None"
         MouseLeftButtonDown="DragWindow"
         Background= "{StaticResource BackgroudColor}">
 
@@ -127,14 +127,37 @@
                                 <TextBlock Text="Registro Nuevo" FontSize="20" Foreground="White"/>
                             </StackPanel>
                         </Button>
-                        <!-- Registro Nuevo -->
+                        
+                        <!-- Justificaciones -->
                         <Button Style="{StaticResource LargeRoundButton}"
                                 Background="Gray"
-                                x:Name="btnprueba"
-                                Click="btnpruea_Click">
+                                x:Name="btnJustificaciones"
+                                Click="Nav_Click" Cursor="Hand">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image Source="/Images/Justification.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <TextBlock Text="Justificaciones" FontSize="20" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Datos Empleados -->
+                        <Button Style="{StaticResource LargeRoundButton}"
+                                Background="Gray"
+                                x:Name="btnEmpleados"
+                                Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image Source="/Images/Empleados.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <TextBlock Text="Datos Empleados" FontSize="20" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Datos Administradores -->
+                        <Button Style="{StaticResource LargeRoundButton}"
+                                Background="Gray"
+                                x:Name="btnAdmins"
+                                Click="Nav_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Images/AdminPanel.png" Width="25" Height="25" Margin="0,0,5,0"/>
-                                <TextBlock Text="Panel Administrador" FontSize="20" Foreground="White"/>
+                                <TextBlock Text="Datos Administradores" FontSize="20" Foreground="White"/>
                             </StackPanel>
                         </Button>
 

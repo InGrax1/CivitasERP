@@ -10,8 +10,10 @@
 
   <ItemGroup>
     <None Remove="Images\AdminPanel.png" />
+    <None Remove="Images\Empleados.png" />
     <None Remove="Images\home.png" />
     <None Remove="Images\huella-dactilar.png" />
+    <None Remove="Images\Justification.png" />
     <None Remove="Images\Key.png" />
     <None Remove="Images\lista.png" />
     <None Remove="Images\LOGO CONSORCIO CIVIL 2.png" />
@@ -32,7 +34,13 @@
     <Resource Include="Images\AdminPanel.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\Empleados.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\huella-dactilar.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Justification.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\lista.png">
@@ -68,10 +76,6 @@
     <Resource Include="Images\usuario.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="AdminViews\" />
   </ItemGroup>
 
   <ItemGroup>

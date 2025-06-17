@@ -181,6 +181,16 @@ namespace CivitasERP
                     /// 3) Cerramos la ventana actual (dejará viva únicamente la de Login)
                     this.Close();
                     break;
+                case "btnJustificaciones":
+                    MainFrame.Navigate(new JustificacionesPage());
+                    break;
+                case "btnEmpleados":
+                    MainFrame.Navigate(new EditEmpleadoPage());
+                    break;
+                case "btnAdmins":
+                    MainFrame.Navigate(new EditAdminPage());
+                    break;
+             
             }
             // Resaltar el botón activo
             HighlightNavButton(btn);
