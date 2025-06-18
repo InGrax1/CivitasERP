@@ -5,9 +5,14 @@
     <SolidColorBrush x:Key="primaryColor1" Color="#5F5FFF"/><!--Azul-->
     <SolidColorBrush x:Key="primaryColor2" Color="#E8EEF2"/><!--Blanco/Azul-->
     <SolidColorBrush x:Key="primaryColor3" Color="#2F2F36"/><!--Negro/Azul-->
+    <SolidColorBrush x:Key="primaryColor4" Color="DarkBlue"/>
 
     <SolidColorBrush x:Key="BackgroudColor" Color="#FFEDEDED"/><!--Blanco-->
-    
+
+
+    <SolidColorBrush x:Key="Color1" Color="#E5E5E5"/>
+
+
     <!--Colores de texto-->
     <SolidColorBrush x:Key="titleColorA" Color="#5F5FFF"/>
     <SolidColorBrush x:Key="titleColorB" Color="DarkBlue"/>
