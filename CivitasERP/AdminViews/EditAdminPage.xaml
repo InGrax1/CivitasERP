@@ -13,7 +13,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <!-- Título -->
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
                 <!-- Formulario -->
                 <RowDefinition Height="Auto"/>
                 <!-- Botones -->
@@ -69,20 +69,13 @@
             <!-- 2) Formulario -->
             <Grid Grid.Row="1" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
 
                 <!--INFORMACION PERSONAL-->
-                <StackPanel Grid.Column="1" Grid.Row="1" Margin="20,0,0,0">
+                <StackPanel Grid.Column="1" Margin="20,0,0,0">
                     <!--Banner Titulo-->
                     <StackPanel Grid.Column="1" Grid.Row="0" Panel.ZIndex="1">
                         <Border Background="{StaticResource primaryColor1}" 
@@ -148,7 +141,7 @@
                 </StackPanel>
 
                 <!--INFORMACION DE CONTACTO-->
-                <StackPanel Grid.Column="3" Grid.Row="1" Margin="20,0,0,0">
+                <StackPanel Grid.Column="3" Margin="20,0,0,0">
                     <!--Banner Titulo-->
                     <StackPanel Grid.Column="1" Grid.Row="0" Panel.ZIndex="1">
                         <Border Background="{StaticResource primaryColor1}" 
@@ -188,7 +181,7 @@
                 </StackPanel>
 
                 <!--INFORMACION DE USUARIO-->
-                <StackPanel Grid.Column="0" Grid.Row="1" Margin="20,0,0,0">
+                <StackPanel Grid.Column="0" Margin="20,0,0,0">
                     <!--Banner Titulo-->
                     <StackPanel Grid.Column="1" Grid.Row="0" Panel.ZIndex="1">
                         <Border Background="{StaticResource primaryColor1}" 
@@ -208,7 +201,7 @@
                     <!--CARD USUARIO-->
                     <Border Background="{StaticResource Color1}" 
                         CornerRadius="30" Margin="0,0,0,0" 
-                        Width="300" Height="500" 
+                        Width="300" Height="300" 
                         Panel.ZIndex="0">
                         <StackPanel Margin="10" HorizontalAlignment="Stretch">
                             <!-- Categoria -->
@@ -237,40 +230,8 @@
                                 <TextBox x:Name="TxtSueldoSemanal" BorderThickness="0"/>
                             </Border>
 
-                            <!--Horas extra-->
-                            <TextBlock Text="Horas Extra" 
-                                   Margin="0,35,0,0" 
-                                   VerticalAlignment="Center" 
-                                   Foreground="{StaticResource titleColorA}"/>
-                            <Border Background="#F0F0F0" 
-                                CornerRadius="10" 
-                                Padding="5" 
-                                BorderThickness="1" 
-                                BorderBrush="{StaticResource primaryColor4}">
-                                <TextBox x:Name="TxtHorasExtra" BorderThickness="0"/>
-                            </Border>
-
-                            <!--Multiplocador de Horas extra-->
-                            <TextBlock Text="Multiplocador de Horas Extra" 
-                                   Margin="0,35,0,0" 
-                                   VerticalAlignment="Center" 
-                                   Foreground="{StaticResource titleColorA}"/>
-                            <Border Background="#F0F0F0" 
-                                CornerRadius="10" 
-                                Padding="5" 
-                                BorderThickness="1" 
-                                BorderBrush="{StaticResource primaryColor4}">
-                                <ComboBox x:Name="CbxMultiplicador" BorderThickness="0">
-                                    <ComboBoxItem Content="1"/>
-                                    <ComboBoxItem Content="1.5"/>
-                                    <ComboBoxItem Content="2"/>
-                                    <ComboBoxItem Content="2.5"/>
-                                    <ComboBoxItem Content="3"/>
-                                </ComboBox>
-                            </Border>
-
                             <!--Obra Asignada-->
-                            <TextBlock Text="Obra Asignada" 
+                            <TextBlock Text="Obras Asignada" 
                                    Margin="0,35,0,0" 
                                    VerticalAlignment="Center" 
                                    Foreground="{StaticResource titleColorA}"/>
@@ -287,15 +248,24 @@
             </Grid>
 
             <!-- 3) Botones Guardar / Cancelar -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
-                <Button Content="Cancelar"
-                    Padding="10,5"
-                    Click="BtnCancelar_Click"/>
-                <Button Content="Guardar"
-                    Background="#6666FF"
-                    Foreground="White"
-                    Padding="10,5"
-                    Click="BtnGuardar_Click"/>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <Button Style="{StaticResource LargeRoundButton}"
+                        Background="{StaticResource titleColor3}"
+                        x:Name="BtnCancelar"
+                        Grid.Row="3"
+                        Width="250"
+                        Click="BtnCancelar_Click">
+                    <TextBlock Text="Cancelar" FontSize="20" Foreground="White"/>
+                </Button>
+
+                <Button Style="{StaticResource LargeRoundButton}"
+                        Background="{StaticResource buttonColor2}"
+                        x:Name="BtnGuardar"
+                        Grid.Row="3"
+                        Width="250"
+                        Click="BtnGuardar_Click">
+                    <TextBlock Text="Guarrdar" FontSize="20" Foreground="White"/>
+                </Button>
             </StackPanel>
 
             <!--FONDO-->

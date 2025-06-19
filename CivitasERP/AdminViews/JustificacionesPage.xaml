@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CivitasERP.AdminViews"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="1000" d:DesignWidth="1800"
       Title="JustificacionesPage"
       Background="{StaticResource BackgroudColor}">
 
@@ -13,25 +13,69 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- Título -->
-            <RowDefinition Height="*"/>
-            <!-- Formulario -->
             <RowDefinition Height="Auto"/>
-            <!-- Botón Guardar -->
+            <!-- obra -->
+            <RowDefinition Height="Auto"/>
+            <!-- formulario -->
+            <RowDefinition Height="Auto"/>
+            <!-- footer -->
         </Grid.RowDefinitions>
 
         <!-- 1) Título -->
-        <TextBlock Grid.Row="0"
-               Text="Asignar Justificación"
-               FontSize="24"
-               FontWeight="Bold"
-               Foreground="#6666FF"
-               HorizontalAlignment="Center"
-               Margin="0,0,0,20"/>
-        <!--HEAD-->
-        <Grid Grid.Row="1" HorizontalAlignment="Center">
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Asignar Justificaciones"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="#6666FF"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,10"/>
+            <TextBlock Text="Sección para poder justificar las faltas de los empleados en general"
+                       Foreground="{StaticResource titleColor3}"
+                       HorizontalAlignment="Center"
+                       FontWeight="Light"
+                       FontSize="15"/>
+            <TextBlock Foreground="{StaticResource titleColor3}"
+                       HorizontalAlignment="Center"
+                       FontWeight="Light"
+                       FontSize="15"
+                       Margin="0,10,0,0"
+                       TextWrapping="Wrap"
+                       Text="
+                       1.- Selecciona la Obra donde se encuentre el empleado &#x0a;
+                       2.- Selecciona si es un administrador o un empleado común &#x0a;
+                       3.- Coloca la justificación adecuada (pueden ser ambas)"/>
+        </StackPanel>
+
+        <!--SELECTOR DE OBRA-->
+        <StackPanel Grid.Row="1" Grid.Column="1" Width="300" Margin="0,20,0,0">
+            <TextBlock Text="Elegir Obra" 
+                       Margin="0,0,0,0" 
+                       VerticalAlignment="Center" 
+                       Foreground="{StaticResource titleColorA}"/>
+            <Border Background="#F0F0F0" 
+                    CornerRadius="10" 
+                    Padding="3"
+                    Margin="0,0,0,0"
+                    BorderThickness="1" 
+                    BorderBrush="{StaticResource primaryColor4}">
+                <!--DockPanel para foto con comobo box-->
+                <DockPanel LastChildFill="True" VerticalAlignment="Center">
+                    <Image Source="/Images/FrontLoaderBlue.png"
+                   Width="24" Height="24"
+                   Margin="5,0"
+                   VerticalAlignment="Center"
+                   DockPanel.Dock="Left">
+                    </Image>
+                    <ComboBox x:Name="ObraComboBox" 
+                      BorderThickness="0">
+                    </ComboBox>
+                </DockPanel>
+            </Border>
+        </StackPanel>
+
+        <!--Fomulario-->
+        <Grid Grid.Row="2" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
@@ -44,7 +88,7 @@
             </Grid.RowDefinitions>
 
             <!--SELECTOR DE Admin-->
-            <StackPanel Grid.Row="2" Grid.Column="0">
+            <StackPanel Grid.Row="0" Grid.Column="0" Width="300" Margin="0,20,50,0">
                 <TextBlock Text="Elegir Admin" 
                            Margin="0,0,0,0" 
                            VerticalAlignment="Center" 
@@ -69,34 +113,9 @@
                     </DockPanel>
                 </Border>
             </StackPanel>
-            <!--SELECTOR DE OBRA-->
-            <StackPanel Grid.Row="2" Grid.Column="1">
-                <TextBlock Text="Elegir Obra" 
-                           Margin="0,0,0,0" 
-                           VerticalAlignment="Center" 
-                           Foreground="{StaticResource titleColorA}"/>
-                <Border Background="#F0F0F0" 
-                        CornerRadius="10" 
-                        Padding="3"
-                        Margin="0,0,0,0"
-                        BorderThickness="1" 
-                        BorderBrush="{StaticResource primaryColor4}">
-                    <!--DockPanel para foto con comobo box-->
-                    <DockPanel LastChildFill="True" VerticalAlignment="Center">
-                        <Image Source="/Images/FrontLoaderBlue.png"
-                               Width="24" Height="24"
-                               Margin="5,0"
-                               VerticalAlignment="Center"
-                               DockPanel.Dock="Left">
-                        </Image>
-                        <ComboBox x:Name="ObraComboBox" 
-                                  BorderThickness="0">
-                        </ComboBox>
-                    </DockPanel>
-                </Border>
-            </StackPanel>
+            
             <!--SELECTOR DE EMPLEADO-->
-            <StackPanel Grid.Row="2" Grid.Column="2">
+            <StackPanel Grid.Row="0" Grid.Column="1" Width="300" Margin="50,20,0,0">
                 <TextBlock Text="Elegir Empleado" 
                            Margin="0,0,0,0" 
                            VerticalAlignment="Center" 
@@ -121,91 +140,205 @@
                     </DockPanel>
                 </Border>
             </StackPanel>
+
+            <!-- 1) Formulario de INASISTENCIA -->    
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,50,0,0">
+                <TextBlock Text="Justificación de Inasistencia"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource titleColorA}"
+                           HorizontalAlignment="Center"
+                           Margin="0,20,0,10"/>
+                <TextBlock Text="Selecciona la fecha de inasistencia de la persona"
+                           FontSize="15"
+                           FontWeight="Light"
+                           Foreground="{StaticResource titleColor3}"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,0"/>
+            </StackPanel>
+            <!--Card Datos-->
+            <StackPanel Grid.Row="2" Grid.Column="0" Margin="30">
+                <!--Banner Titulo-->
+                <StackPanel Panel.ZIndex="1">
+                    <Border Background="{StaticResource primaryColor1}" 
+                            CornerRadius="10" 
+                            Padding="5" 
+                            Width="185"
+                            Height="35"
+                            Margin="0,0,0,-20">
+                        <TextBlock Text="Fecha de Justificación" 
+                                   FontSize="12" 
+                                   FontWeight="Bold" 
+                                   Foreground="White" 
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+
+                <Border Grid.Row="3" 
+                        Grid.Column="0" 
+                        Background="{StaticResource Color1}"
+                        CornerRadius="30">
+                    <WrapPanel Orientation="Horizontal"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Top"
+                               ItemHeight="Auto"
+                               ItemWidth="Auto"
+                               Margin="25">
+                        <!-- Año -->
+                        <StackPanel Orientation="Vertical" MinWidth="120" Margin="0,0,10,0">
+                            <TextBlock Text="Año" FontSize="15" Foreground="{StaticResource titleColorA}"/>
+                            <Border Background="#F5F5F5"
+                                    CornerRadius="5"
+                                    BorderBrush="#6666FF"
+                                    BorderThickness="1"
+                                    MinHeight="30"
+                                    Padding="2">
+                                <ComboBox x:Name="CbxAnio"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          VerticalContentAlignment="Center"/>
+                            </Border>
+                        </StackPanel>
+                        <!-- Mes -->
+                        <StackPanel Orientation="Vertical" MinWidth="120" Margin="0,0,10,0">
+                            <TextBlock Text="Mes" FontSize="15" Foreground="{StaticResource titleColorA}"/>
+                            <Border Background="#F5F5F5"
+                                    CornerRadius="5"
+                                    BorderBrush="#6666FF"
+                                    BorderThickness="1"
+                                    MinHeight="30"
+                                    Padding="2">
+                                <ComboBox x:Name="CbxMes"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          VerticalContentAlignment="Center"/>
+                            </Border>
+                        </StackPanel>
+                        <!-- Semana -->
+                        <StackPanel Orientation="Vertical" MinWidth="120" Margin="0,0,10,0">
+                            <TextBlock Text="Semana" FontSize="15" Foreground="{StaticResource titleColorA}"/>
+                            <Border Background="#F5F5F5"
+                                    CornerRadius="5"
+                                    BorderBrush="#6666FF"
+                                    BorderThickness="1"
+                                    MinHeight="30"
+                                    Padding="2">
+                                <ComboBox x:Name="CbxSemana"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          VerticalContentAlignment="Center"/>
+                            </Border>
+                        </StackPanel>
+                        <!-- Día -->
+                        <StackPanel Orientation="Vertical" MinWidth="120" Margin="0,0,10,0">
+                            <TextBlock Text="Día" FontSize="15" Foreground="{StaticResource titleColorA}"/>
+                            <Border Background="#F5F5F5"
+                                    CornerRadius="5"
+                                    BorderBrush="#6666FF"
+                                    BorderThickness="1"
+                                    MinHeight="30"
+                                    Padding="2">
+                                <ComboBox x:Name="CbxDia"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          VerticalContentAlignment="Center"/>
+                            </Border>
+                        </StackPanel>
+                    </WrapPanel>
+                </Border>
+            </StackPanel>
+            <!-- 2) Formulario de HORA EXTRA -->
+            <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,50,0,0">
+                <TextBlock Text="Justificación de Inasistencia"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Foreground="{StaticResource titleColorA}"
+                           HorizontalAlignment="Center"
+                           Margin="0,20,0,10"/>
+                <TextBlock Text="Selecciona la fecha de inasistencia de la persona"
+                           FontSize="15"
+                           FontWeight="Light"
+                           Foreground="{StaticResource titleColor3}"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,0"/>
+            </StackPanel>
+            <!--Card Datos-->
+            <StackPanel Grid.Row="2" Grid.Column="1" Margin="30">
+                <!--Banner Titulo-->
+                <StackPanel Panel.ZIndex="1">
+                    <Border Background="{StaticResource primaryColor1}" 
+                            CornerRadius="10" 
+                            Padding="5" 
+                            Width="185"
+                            Height="35"
+                            Margin="0,0,0,-20">
+                        <TextBlock Text="Asignar horas extra" 
+                                   FontSize="12" 
+                                   FontWeight="Bold" 
+                                   Foreground="White" 
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+                <Border Grid.Row="3" 
+                        Grid.Column="0" 
+                        Background="{StaticResource Color1}"
+                        CornerRadius="30">
+                    <WrapPanel Orientation="Horizontal"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Top"
+                               ItemHeight="Auto"
+                               ItemWidth="Auto"
+                               Margin="25">
+                        <!-- Hora Extra -->
+                        <StackPanel Orientation="Vertical" MinWidth="120" Margin="0,0,10,0">
+                            <TextBlock Text="Hora Extra" FontSize="15" Foreground="{StaticResource titleColorA}"/>
+                            <Border Background="#F5F5F5"
+                                    CornerRadius="5"
+                                    BorderBrush="#6666FF"
+                                    BorderThickness="1"
+                                    MinHeight="30"
+                                    Padding="2">
+                                <TextBox x:Name="TxtHorasExtra"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          VerticalContentAlignment="Center"/>
+                            </Border>
+                        </StackPanel>
+                        <!-- Multiplocador -->
+                        <StackPanel Orientation="Vertical" MinWidth="120" Margin="0,0,10,0">
+                            <TextBlock Text="Multiplicador de Horas Extra" FontSize="15" Foreground="{StaticResource titleColorA}"/>
+                            <Border Background="#F5F5F5"
+                                    CornerRadius="5"
+                                    BorderBrush="#6666FF"
+                                    BorderThickness="1"
+                                    MinHeight="30"
+                                    Padding="2">
+                                <ComboBox x:Name="CbxMultiplicador" BorderThickness="0">
+                                    <ComboBoxItem Content="1"/>
+                                    <ComboBoxItem Content="1.5"/>
+                                    <ComboBoxItem Content="2"/>
+                                    <ComboBoxItem Content="2.5"/>
+                                    <ComboBoxItem Content="3"/>
+                                </ComboBox>
+                            </Border>
+                        </StackPanel>
+                    </WrapPanel>
+                </Border>
+            </StackPanel>
         </Grid>
 
-        <!-- 2) Formulario de selección -->
-        <WrapPanel Grid.Row="2"
-               Orientation="Horizontal"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Top"
-               ItemHeight="Auto"
-               ItemWidth="Auto"
-               Margin="0,0,0,20">
-            <!-- Año -->
-            <StackPanel Orientation="Vertical" MinWidth="120">
-                <TextBlock Text="Año" FontSize="16" Margin="0,0,0,5"/>
-                <Border Background="#F5F5F5"
-                CornerRadius="5"
-                BorderBrush="#6666FF"
-                BorderThickness="1"
-                MinHeight="30">
-                    <ComboBox x:Name="CbxAnio"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    VerticalContentAlignment="Center"
-                    Padding="5"/>
-                </Border>
-            </StackPanel>
-
-            <!-- Mes -->
-            <StackPanel Orientation="Vertical" MinWidth="120">
-                <TextBlock Text="Mes" FontSize="16" Margin="0,0,0,5"/>
-                <Border Background="#F5F5F5"
-                CornerRadius="5"
-                BorderBrush="#6666FF"
-                BorderThickness="1"
-                MinHeight="30">
-                    <ComboBox x:Name="CbxMes"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    VerticalContentAlignment="Center"
-                    Padding="5"/>
-                </Border>
-            </StackPanel>
-
-            <!-- Semana -->
-            <StackPanel Orientation="Vertical" MinWidth="120">
-                <TextBlock Text="Semana" FontSize="16" Margin="0,0,0,5"/>
-                <Border Background="#F5F5F5"
-                CornerRadius="5"
-                BorderBrush="#6666FF"
-                BorderThickness="1"
-                MinHeight="30">
-                    <ComboBox x:Name="CbxSemana"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    VerticalContentAlignment="Center"
-                    Padding="5"/>
-                </Border>
-            </StackPanel>
-
-            <!-- Día -->
-            <StackPanel Orientation="Vertical" MinWidth="120">
-                <TextBlock Text="Día" FontSize="16" Margin="0,0,0,5"/>
-                <Border Background="#F5F5F5"
-                CornerRadius="5"
-                BorderBrush="#6666FF"
-                BorderThickness="1"
-                MinHeight="30">
-                    <ComboBox x:Name="CbxDia"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    VerticalContentAlignment="Center"
-                    Padding="5"/>
-                </Border>
-            </StackPanel>
-        </WrapPanel>
-
         <!-- 3) Botón Guardar -->
-        <Button Grid.Row="3"
-            x:Name="BtnGuardarJustificacion"
-            Content="Guardar"
-            Background="#6666FF"
-            Foreground="White"
-            FontWeight="Bold"
-            Padding="10,5"
-            HorizontalAlignment="Right"
-            Width="120"
-            Click="BtnGuardarJustificacion_Click"/>
+        <Button Style="{StaticResource LargeRoundButton}"
+                Background="{StaticResource buttonColor2}"
+                x:Name="btnLista"
+                Grid.Row="3"
+                Width="250"
+                Click="BtnGuardarJustificacion_Click">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Guardar Justificacion" FontSize="20" Foreground="White"/>
+            </StackPanel>
+        </Button>
     </Grid>
 </Page>
