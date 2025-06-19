@@ -8,7 +8,7 @@
         Title="NominaPage"
         Width="1800" Height="1000"
         MinHeight="600" MinWidth="800"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterOwner"
         ResizeMode="CanResize"
         WindowStyle="None"
         MouseLeftButtonDown="DragWindow"
@@ -91,7 +91,7 @@
                                 Click="Nav_Click"
                                 x:Name="btnNomina">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Image Source="/Images/money.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <Image Source="/Images/Nomina.png" Width="25" Height="25" Margin="0,0,5,0"/>
                                 <TextBlock Text="Nomina" FontSize="20" Foreground="White"/>
                             </StackPanel>
                         </Button>
@@ -112,6 +112,7 @@
                                 x:Name="btnNuevaObra"
                                 Click="btnNuevaObra_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image Source="/Images/Obra.png" Width="25" Height="25" Margin="0,0,5,0"/>
                                 <TextBlock Text="Nueva Obra" FontSize="20" Foreground="White"/>
                             </StackPanel>
                         </Button>
@@ -122,18 +123,41 @@
                                 x:Name="btnRegis"
                                 Click="btnRegister_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <Image Source="/Images/NewRegister.png" Width="25" Height="25" Margin="0,0,5,0"/>
                                 <TextBlock Text="Registro Nuevo" FontSize="20" Foreground="White"/>
                             </StackPanel>
                         </Button>
-                        <!-- Registro Nuevo -->
+                        
+                        <!-- Justificaciones -->
                         <Button Style="{StaticResource LargeRoundButton}"
-        Background="Gray"
-        x:Name="btnprueba"
-        Click="btnpruea_Click">
+                                Background="Gray"
+                                x:Name="btnJustificaciones"
+                                Click="Nav_Click" Cursor="Hand">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
-                                <TextBlock Text="Registro Nuevo" FontSize="20" Foreground="White"/>
+                                <Image Source="/Images/Justification.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <TextBlock Text="Justificaciones" FontSize="20" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Datos Empleados -->
+                        <Button Style="{StaticResource LargeRoundButton}"
+                                Background="Gray"
+                                x:Name="btnEmpleados"
+                                Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image Source="/Images/Empleados.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <TextBlock Text="Datos Empleados" FontSize="20" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Datos Administradores -->
+                        <Button Style="{StaticResource LargeRoundButton}"
+                                Background="Gray"
+                                x:Name="btnAdmins"
+                                Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image Source="/Images/AdminPanel.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <TextBlock Text="Datos Administradores" FontSize="20" Foreground="White"/>
                             </StackPanel>
                         </Button>
 
@@ -143,9 +167,10 @@
                     <StackPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="0,0,0,20">
                         <Button Style="{StaticResource LargeRoundButton}"
                                 Background="DarkRed"
-                                Click="Nav_Click">
+                                x:Name="btnLogout"
+                                Click="Nav_Click" Cursor="Hand">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Image Source="/Images/home.png" Width="20" Height="20" Margin="0,0,5,0"/>
+                                <Image Source="/Images/Logout.png" Width="20" Height="20" Margin="0,0,5,0"/>
                                 <TextBlock Text="Logout" FontSize="20" Foreground="White"/>
                             </StackPanel>
                         </Button>

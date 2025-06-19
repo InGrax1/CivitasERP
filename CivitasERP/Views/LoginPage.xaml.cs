@@ -74,20 +74,26 @@ namespace CivitasERP.Views
                         return;
                     }
 
+<<<<<<< HEAD
                     // Lo guardas en tu global (que ya es int?):
                    
+=======
+                    // Lo guardas en global:
+>>>>>>> main
                     Variables.IdAdmin = idAdminLogueado;
                     Variables.Usuario = usuario;
 
 
 
-                    // 1) Crear instancia de MainWindow
-                    MainWindow ventanaPrincipal = new MainWindow();
-
-                    // 2) Mostrar MainWindow
+                    // 3) Crear y mostrar MainWindow
+                    var ventanaPrincipal = new MainWindow();
                     ventanaPrincipal.Show();
 
-                    // 3) Cerrar (o Hide) la ventana de login actual:
+
+                    // 4) Cargar la foto de perfil en MainWindow
+                    ventanaPrincipal.CargarFotoPerfil(Variables.IdAdmin.Value);
+
+                    // 5) Cerrar
                     this.Close();
 
                 }
