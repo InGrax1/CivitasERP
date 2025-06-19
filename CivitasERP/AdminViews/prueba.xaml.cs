@@ -26,7 +26,7 @@ namespace CivitasERP.AdminViews
         private SqlDataAdapter adaptador;
         private DataTable tablaAdmins;
 
-        private string connectionString = "Server=INGRAX;Database=CivitasERP;Integrated Security=True;";
+        private string connectionString = "Server=JESUSNEGRETE;Database=Proyecto;Integrated Security=True;";
         public prueba()
         {
             InitializeComponent();
@@ -158,32 +158,38 @@ namespace CivitasERP.AdminViews
             int diferencia = (int)hoy.DayOfWeek == 0 ? 6 : ((int)hoy.DayOfWeek - 1);
             DateTime fechaInicio = hoy.AddDays(-diferencia); // Lunes
             DateTime fechaFin = fechaInicio.AddDays(6);      // Domingo
-
+            string nombreObra;
+            nombreObra=Variables.ObraNom;
             // 2. Consulta de todos los empleados del admin con hora extra más reciente
             string query = @"
                         SELECT 
-                            emp.id_empleado,
-                            emp.emp_nombre,
-                            emp.emp_apellidop,
-                            emp.emp_apellidom,
-                            emp.emp_dia,
-                            emp.emp_semanal,
-                            emp.emp_hora_extra,
-                            asi.asis_hora_extra AS HorasExtra
-                        FROM empleado AS emp
-                        LEFT JOIN (
-                            SELECT a.*
-                            FROM asistencia a
-                            INNER JOIN (
-                                SELECT id_empleado, MAX(asis_dia) AS UltimaFecha
-                                FROM asistencia
-                                WHERE asis_dia BETWEEN @fechaInicio AND @fechaFin
-                                GROUP BY id_empleado
-                            ) ult ON a.id_empleado = ult.id_empleado AND a.asis_dia = ult.UltimaFecha
-                            WHERE a.asis_hora_extra IS NOT NULL
-                        ) AS asi
-                            ON asi.id_empleado = emp.id_empleado
-                        WHERE emp.id_admins = @idAdmin
+                                emp.id_empleado,
+                                emp.emp_nombre,
+                                emp.emp_apellidop,
+                                emp.emp_apellidom,
+                                emp.emp_dia,
+                                emp.emp_semanal,
+                                emp.emp_hora_extra,
+                                asi.asis_hora_extra AS HorasExtra
+                            FROM empleado AS emp
+                            -- LEFT JOIN con subconsulta de asistencia
+                            LEFT JOIN (
+                                SELECT a.*
+                                FROM asistencia a
+                                INNER JOIN (
+                                    SELECT id_empleado, MAX(asis_dia) AS UltimaFecha
+                                    FROM asistencia
+                                    WHERE asis_dia BETWEEN @fechaInicio AND @fechaFin
+                                    GROUP BY id_empleado
+                                ) ult ON a.id_empleado = ult.id_empleado AND a.asis_dia = ult.UltimaFecha
+                                WHERE a.asis_hora_extra IS NOT NULL
+                            ) AS asi
+                                ON asi.id_empleado = emp.id_empleado
+                            -- INNER JOIN con la tabla obra
+                            INNER JOIN obra AS o ON emp.id_obra = o.id_obra
+                            -- Filtros
+                            WHERE emp.id_admins = @idAdmin
+                              AND o.obra_nombre = @nombreObra;
                     ";
 
             tablaAdmins = new DataTable();
@@ -194,6 +200,7 @@ namespace CivitasERP.AdminViews
                 da.SelectCommand.Parameters.AddWithValue("@fechaInicio", fechaInicio);
                 da.SelectCommand.Parameters.AddWithValue("@fechaFin", fechaFin);
                 da.SelectCommand.Parameters.AddWithValue("@idAdmin", idAdmin);
+                da.SelectCommand.Parameters.AddWithValue("@nombreObra", nombreObra);
 
                 da.Fill(tablaAdmins);
                 adaptador = da;
@@ -305,9 +312,9 @@ namespace CivitasERP.AdminViews
         private void ObraComboBox_DropDownOpened(object sender, EventArgs e)
         {
             var dB_Admins = new DB_admins();
-            Variables.IdAdmin = dB_Admins.ObtenerIdPorUsuario(Variables.Usuario);
+
             int? idAdminObra = Variables.IdAdmin;
-            MessageBox.Show("ID Admin Obra: " + idAdminObra);
+
             try
             {
                 var conexion = new Conexion();
@@ -353,7 +360,18 @@ namespace CivitasERP.AdminViews
 
         private void ObraComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            string usuario = ObraComboBox.SelectedItem?.ToString();
 
+            if (!string.IsNullOrEmpty(usuario))
+            {
+                /*var dB_Admins = new DB_admins();
+                int? id = dB_Admins.ObtenerIdPorUsuario(usuario);
+                Variables.IdAdmin = id;*/
+                MessageBox.Show("Obra seleccionada: " + usuario);
+                Variables.ObraNom = usuario;
+
+
+            }
         }
 
 
@@ -365,27 +383,30 @@ namespace CivitasERP.AdminViews
                 return;
             }
 
-            string connectionString = "Server=INGRAX;Database=CivitasERP;Integrated Security=True;";
-
             using (var conexion = new SqlConnection(connectionString))
             {
                 try
                 {
                     conexion.Open();
 
-                    // Asignar la conexión al adaptador
-                    adaptador.SelectCommand.Connection = conexion;
+                    // Asegúrate de que el SelectCommand tenga conexión y consulta válida
+                    if (adaptador.SelectCommand == null)
+                    {
+                        adaptador.SelectCommand = new SqlCommand("SELECT id_admins,admins_nombre,admins_apellidop,admins_apellidom,admin_categoria FROM admins", conexion);
+                    }
+                    else
+                    {
+                        adaptador.SelectCommand.Connection = conexion;
+                    }
 
-                    // Generar comandos para INSERT, UPDATE y DELETE si es necesario
                     var builder = new SqlCommandBuilder(adaptador);
                     adaptador.UpdateCommand = builder.GetUpdateCommand();
                     adaptador.InsertCommand = builder.GetInsertCommand();
                     adaptador.DeleteCommand = builder.GetDeleteCommand();
 
-                    // Guardar los cambios del DataTable en la base de datos
-                    adaptador.Update(tablaAdmins);
+                    int filasAfectadas = adaptador.Update(tablaAdmins);
 
-                    MessageBox.Show("Cambios guardados en la base de datos.");
+                    MessageBox.Show($"{filasAfectadas} cambios guardados en la base de datos.");
                 }
                 catch (Exception ex)
                 {

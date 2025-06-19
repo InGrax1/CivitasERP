@@ -75,6 +75,7 @@ namespace CivitasERP.Views
                     }
 
                     // Lo guardas en tu global (que ya es int?):
+                   
                     Variables.IdAdmin = idAdminLogueado;
                     Variables.Usuario = usuario;
 
