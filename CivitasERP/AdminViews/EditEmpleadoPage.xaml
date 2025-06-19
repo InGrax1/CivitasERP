@@ -28,6 +28,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <!-- 1) Título -->
             <TextBlock Grid.Row="0"
@@ -37,8 +38,35 @@
                        Foreground="#6666FF"
                        HorizontalAlignment="Center"
                        Margin="0,0,0,20"/>
-            <!--SELECTOR DE OBRA-->
+            <!--SELECTOR DE Admin-->
             <StackPanel Grid.Row="1">
+                <TextBlock Text="Elegir Admin" 
+                           Margin="0,0,0,0" 
+                           VerticalAlignment="Center" 
+                           Foreground="{StaticResource titleColorA}"/>
+                <Border Background="#F0F0F0" 
+                        CornerRadius="10" 
+                        Padding="3"
+                        Margin="0,0,0,30"
+                        BorderThickness="1" 
+                        BorderBrush="{StaticResource primaryColor4}">
+                    <!--DockPanel para foto con comobo box-->
+                    <DockPanel LastChildFill="True" VerticalAlignment="Center">
+                        <Image Source="/Images/SearchPersonBlue.png"
+                               Width="24" Height="24"
+                               Margin="5,0"
+                               VerticalAlignment="Center"
+                               DockPanel.Dock="Left">
+                        </Image>
+                        <ComboBox x:Name="Admin2ComboBox" 
+                                  BorderThickness="0"
+                                  >
+                        </ComboBox>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+            <!--SELECTOR DE OBRA-->
+            <StackPanel Grid.Row="2">
                 <TextBlock Text="Elegir Obra" 
                            Margin="0,0,0,0" 
                            VerticalAlignment="Center" 
@@ -59,14 +87,13 @@
                         </Image>
                         <ComboBox x:Name="ObraComboBox" 
                                   BorderThickness="0"
-                                  DropDownOpened="ObraComboBox_DropDownOpened" 
-                                  SelectionChanged="ObraComboBox_SelectionChanged">
+                                  >
                         </ComboBox>
                     </DockPanel>
                 </Border>
             </StackPanel>
             <!--SELECTOR DE ADMIN-->
-            <StackPanel Grid.Row="2">
+            <StackPanel Grid.Row="3">
                 <TextBlock Text="Elegir Empleado" 
                            Margin="0,0,0,0" 
                            VerticalAlignment="Center" 
@@ -85,10 +112,9 @@
                                VerticalAlignment="Center"
                                DockPanel.Dock="Left">
                         </Image>
-                        <ComboBox x:Name="AdminComboBox" 
+                        <ComboBox x:Name="EmpleadoComboBox" 
                                   BorderThickness="0"
-                                  DropDownOpened="AdminComboBox_DropDownOpened" 
-                                  SelectionChanged="AdminComboBox_SelectionChanged">
+                                  >
                         </ComboBox>
                     </DockPanel>
                 </Border>

@@ -27,9 +27,104 @@
                Foreground="#6666FF"
                HorizontalAlignment="Center"
                Margin="0,0,0,20"/>
+        <!--HEAD-->
+        <Grid Grid.Row="1" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!--SELECTOR DE Admin-->
+            <StackPanel Grid.Row="2" Grid.Column="0">
+                <TextBlock Text="Elegir Admin" 
+                           Margin="0,0,0,0" 
+                           VerticalAlignment="Center" 
+                           Foreground="{StaticResource titleColorA}"/>
+                <Border Background="#F0F0F0" 
+                        CornerRadius="10" 
+                        Padding="3"
+                        Margin="0,0,0,0"
+                        BorderThickness="1" 
+                        BorderBrush="{StaticResource primaryColor4}">
+                    <!--DockPanel para foto con comobo box-->
+                    <DockPanel LastChildFill="True" VerticalAlignment="Center">
+                        <Image Source="/Images/SearchPersonBlue.png"
+                               Width="24" Height="24"
+                               Margin="5,0"
+                               VerticalAlignment="Center"
+                               DockPanel.Dock="Left">
+                        </Image>
+                        <ComboBox x:Name="Admin2ComboBox" 
+                                    BorderThickness="0">
+                        </ComboBox>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+            <!--SELECTOR DE OBRA-->
+            <StackPanel Grid.Row="2" Grid.Column="1">
+                <TextBlock Text="Elegir Obra" 
+                           Margin="0,0,0,0" 
+                           VerticalAlignment="Center" 
+                           Foreground="{StaticResource titleColorA}"/>
+                <Border Background="#F0F0F0" 
+                        CornerRadius="10" 
+                        Padding="3"
+                        Margin="0,0,0,0"
+                        BorderThickness="1" 
+                        BorderBrush="{StaticResource primaryColor4}">
+                    <!--DockPanel para foto con comobo box-->
+                    <DockPanel LastChildFill="True" VerticalAlignment="Center">
+                        <Image Source="/Images/FrontLoaderBlue.png"
+                               Width="24" Height="24"
+                               Margin="5,0"
+                               VerticalAlignment="Center"
+                               DockPanel.Dock="Left">
+                        </Image>
+                        <ComboBox x:Name="ObraComboBox" 
+                                  BorderThickness="0">
+                        </ComboBox>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+            <!--SELECTOR DE EMPLEADO-->
+            <StackPanel Grid.Row="2" Grid.Column="2">
+                <TextBlock Text="Elegir Empleado" 
+                           Margin="0,0,0,0" 
+                           VerticalAlignment="Center" 
+                           Foreground="{StaticResource titleColorA}"/>
+                <Border Background="#F0F0F0" 
+                        CornerRadius="10" 
+                        Padding="3"
+                        Margin="0,0,0,0"
+                        BorderThickness="1" 
+                        BorderBrush="{StaticResource primaryColor4}">
+                    <!--DockPanel para foto con comobo box-->
+                    <DockPanel LastChildFill="True" VerticalAlignment="Center">
+                        <Image Source="/Images/SearchPersonBlue.png"
+                               Width="24" Height="24"
+                               Margin="5,0"
+                               VerticalAlignment="Center"
+                               DockPanel.Dock="Left">
+                        </Image>
+                        <ComboBox x:Name="EmpleadoComboBox" 
+                                  BorderThickness="0">
+                        </ComboBox>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
 
         <!-- 2) Formulario de selección -->
-        <WrapPanel Grid.Row="1"
+        <WrapPanel Grid.Row="2"
                Orientation="Horizontal"
                HorizontalAlignment="Center"
                VerticalAlignment="Top"
@@ -102,7 +197,7 @@
         </WrapPanel>
 
         <!-- 3) Botón Guardar -->
-        <Button Grid.Row="2"
+        <Button Grid.Row="3"
             x:Name="BtnGuardarJustificacion"
             Content="Guardar"
             Background="#6666FF"

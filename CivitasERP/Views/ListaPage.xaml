@@ -207,10 +207,9 @@
                 <!-- DATA GRID -->
                     <Border Grid.Row="2" 
                             CornerRadius="20"
-                            Background="#E5E5E5" 
-                            Margin="0,0,0,0">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto"
-                                      HorizontalScrollBarVisibility="Auto">
+                            Background="#E5E5E5"
+                            SnapsToDevicePixels="True">
+
                         <DataGrid x:Name="dataGridAsistencia"
                                   AutoGenerateColumns="False"
                                   CanUserAddRows="False"
@@ -218,7 +217,15 @@
                                   IsReadOnly="True"
                                   Margin="10"
                                   HeadersVisibility="Column"
-                                  ItemsSource="{Binding Empleados}">
+                                  GridLinesVisibility="None"
+                                  ColumnWidth="*"
+                                  RowHeight="20"
+                                  AlternationCount="2">
+                            <!-- Aplica tu estilo -->
+                            <DataGrid.ColumnHeaderStyle>
+                                <StaticResource ResourceKey="ColumnHeaderRound"/>
+                            </DataGrid.ColumnHeaderStyle>
+                            
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" Binding="{Binding ID}" />
                                 <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
@@ -237,7 +244,6 @@
                                 <DataGridTextColumn Header="Salida" Binding="{Binding SalidaS}" />
                             </DataGrid.Columns>
                         </DataGrid>
-                    </ScrollViewer>
                     </Border>
 
                 <!-- FOOTER: Total de Personal + Totales -->

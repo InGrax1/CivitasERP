@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         Title="NominaPage"
-        MinHeight="1000" MinWidth="1800">
+        MinHeight="800" MinWidth="600">
     
     <Grid>
-        <!-- CONTENIDO CENTRAL -->
+        <!-- HEAD -->
         <Border Grid.Column="1" 
                     Panel.ZIndex="1"
                     Background="White" 
@@ -224,9 +224,7 @@
                         CornerRadius="20"
                         Background="#E5E5E5"
                         SnapsToDevicePixels="True">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto"
-                                  HorizontalScrollBarVisibility="Auto">
-                        <DataGrid x:Name="dataGridNomina"
+                    <DataGrid x:Name="dataGridNomina"
                                   AutoGenerateColumns="False"
                                   CanUserAddRows="False"
                                   CanUserDeleteRows="False"
@@ -235,7 +233,7 @@
                                   HeadersVisibility="Column"
                                   GridLinesVisibility="None"
                                   ColumnWidth="*"
-                                  RowHeight="40"
+                                  RowHeight="20"
                                   AlternationCount="2">
                             <!-- Aplica tu estilo -->
                             <DataGrid.ColumnHeaderStyle>
@@ -256,7 +254,6 @@
                                 <DataGridTextColumn Header="Sueldo Total" Binding="{Binding SuelTotal}" />
                             </DataGrid.Columns>
                         </DataGrid>
-                    </ScrollViewer>
                 </Border>
     
                 <!-- FOOTER: Total de Personal + Totales -->

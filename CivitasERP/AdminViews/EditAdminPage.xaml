@@ -59,8 +59,7 @@
                         </Image>
                         <ComboBox x:Name="AdminComboBox" 
                               BorderThickness="0"
-                              DropDownOpened="AdminComboBox_DropDownOpened" 
-                              SelectionChanged="AdminComboBox_SelectionChanged">
+                              >
                         </ComboBox>
                     </DockPanel>
 
