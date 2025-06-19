@@ -41,10 +41,9 @@ namespace CivitasERP.Models
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     string query = @"INSERT INTO admins (admins_nombre, admins_apellidop, admins_apellidom, 
-                                                     admins_correo, admins_contra, admins_usuario, 
-                                                     admins_semanal, admin_categoria, admin_huella)
-                                 VALUES (@Nombre, @ApellidoP, @ApellidoM, @Correo, @Contra, @Usuario, @Semanal, @Categoria, @Huella)";
-
+                                 admins_correo, admins_contra, admins_usuario, 
+                                 admins_semanal, admin_categoria, admin_huella)
+             VALUES (@Nombre, @ApellidoP, @ApellidoM, @Correo, @Contra, @Usuario, @Semanal, @Categoria, @Huella)";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@Nombre", Nombre);

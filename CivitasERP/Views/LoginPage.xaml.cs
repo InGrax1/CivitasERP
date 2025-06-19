@@ -49,73 +49,75 @@ namespace CivitasERP.Views
         {
             DB_admins c = new DB_admins();
             hash h = new hash();
-            string usuario,contraseña;
-
-            usuario = txtUsuario.Text;
-            contraseña = txtPassword.Password;
-
+            string usuario = txtUsuario.Text;
+            string contraseña = txtPassword.Password;
 
             try
             {
-                //validacion de campos vacios
                 if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(contraseña))
                 {
                     throw new ArgumentException("Por favor ingresa usuario y contraseña.");
                 }
-                
-                //validacion de usuario y contraseña
-                if (h.ObtenerSHA256(contraseña).SequenceEqual(c.ObtenerHashContraseña(usuario)))
+
+                byte[] hashIngresado = h.ObtenerSHA256(contraseña);
+
+                // Primero validamos como admin
+                byte[] hashAdmin = c.ObtenerHashContraseña(usuario);
+                if (hashAdmin != null && hashIngresado.SequenceEqual(hashAdmin))
                 {
-                    // Después de validar usuario/contraseña correctamente:
-                    int? idAdminLogueado = c.ObtenerIdPorUsuario(usuario);
-                    if (!idAdminLogueado.HasValue)
+                    int? idAdmin = c.ObtenerIdPorUsuario(usuario);
+                    if (!idAdmin.HasValue)
                     {
-                        MessageBox.Show("No se encontró el ID de admin para ese usuario.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("No se encontró el ID del admin.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
 
-<<<<<<< HEAD
-                    // Lo guardas en tu global (que ya es int?):
-                   
-=======
-                    // Lo guardas en global:
->>>>>>> main
-                    Variables.IdAdmin = idAdminLogueado;
+                    Variables.IdAdmin = idAdmin;
                     Variables.Usuario = usuario;
+                    Variables.Jefe = false;
 
-
-
-                    // 3) Crear y mostrar MainWindow
-                    var ventanaPrincipal = new MainWindow();
+                    MainWindow ventanaPrincipal = new MainWindow();
                     ventanaPrincipal.Show();
-
-
-                    // 4) Cargar la foto de perfil en MainWindow
-                    ventanaPrincipal.CargarFotoPerfil(Variables.IdAdmin.Value);
-
-                    // 5) Cerrar
+                    ventanaPrincipal.CargarFotoPerfil(idAdmin.Value);
                     this.Close();
+                    return;
+                }
 
-                }
-                else
+                // Si no es admin, intentamos validar como jefe
+                byte[] hashJefe = c.ObtenerHashContraseñaJefe(usuario);
+                if (hashJefe != null && hashIngresado.SequenceEqual(hashJefe))
                 {
-                    MessageBox.Show("usuario o contraseña incorrectos", "Error de autenticación", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    
+                    int? idJefe = c.ObtenerIdPorUsuarioJefe(usuario);
+                    if (!idJefe.HasValue)
+                    {
+                        MessageBox.Show("No se encontró el ID del jefe.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    Variables.IdAdmin = idJefe;
+                    Variables.Usuario = usuario;
+                    Variables.Jefe = true;
+
+                    MainWindow ventanaPrincipal = new MainWindow();
+                    ventanaPrincipal.Show();
+                    ventanaPrincipal.CargarFotoPerfilJefe(idJefe.Value);
+                    this.Close();
+                    return;
                 }
+
+                // Si no se valida como admin ni como jefe
+                MessageBox.Show("Usuario o contraseña incorrectos", "Error de autenticación", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             catch (ArgumentException ex)
             {
-                // ocurre cuando alguno de los campos está vacío
                 MessageBox.Show(ex.Message, "Campos vacíos", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                // cualquier otro error inesperado
                 MessageBox.Show($"Ocurrió un error al iniciar sesión:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
         }
-
+    
         private void brnResetPassword(object sender, RoutedEventArgs e)
         {
             ForgotPasswordPage forgotPasswordPage = new ForgotPasswordPage();

@@ -364,9 +364,9 @@ namespace CivitasERP.AdminViews
 
             if (!string.IsNullOrEmpty(usuario))
             {
-                /*var dB_Admins = new DB_admins();
+                var dB_Admins = new DB_admins();
                 int? id = dB_Admins.ObtenerIdPorUsuario(usuario);
-                Variables.IdAdmin = id;*/
+                Variables.IdAdmin = id;
                 MessageBox.Show("Obra seleccionada: " + usuario);
                 Variables.ObraNom = usuario;
 
