@@ -130,7 +130,7 @@
                         
                         <!-- Justificaciones -->
                         <Button Style="{StaticResource LargeRoundButton}"
-                                Background="Gray"
+                                Background="{StaticResource buttonColor2}"
                                 x:Name="btnJustificaciones"
                                 Click="Nav_Click" Cursor="Hand">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -141,7 +141,7 @@
 
                         <!-- Datos Empleados -->
                         <Button Style="{StaticResource LargeRoundButton}"
-                                Background="Gray"
+                                Background="{StaticResource buttonColor2}"
                                 x:Name="btnEmpleados"
                                 Click="Nav_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -152,7 +152,7 @@
 
                         <!-- Datos Administradores -->
                         <Button Style="{StaticResource LargeRoundButton}"
-                                Background="Gray"
+                                Background="{StaticResource buttonColor2}"
                                 x:Name="btnAdmins"
                                 Click="Nav_Click">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
