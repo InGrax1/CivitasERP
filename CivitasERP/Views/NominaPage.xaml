@@ -4,19 +4,20 @@
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         Title="NominaPage"
         MinHeight="800" MinWidth="600">
-
+    
     <Grid>
-        <!-- CONTENIDO CENTRAL -->
-            <Border Grid.Column="1" 
+        <!-- HEAD -->
+        <Border Grid.Column="1" 
                     Panel.ZIndex="1"
                     Background="White" 
                     Margin="0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
 
                 <ScrollViewer Grid.Row="1"
                               HorizontalScrollBarVisibility="Auto"
@@ -76,7 +77,7 @@
                         <StackPanel Grid.Row="1" Grid.Column="2"
                                     Orientation="Horizontal" 
                                     VerticalAlignment="Center">
-                            
+
                         </StackPanel>
 
                         <!-- Combos Mes + Año (ambos dentro de un StackPanel) -->
@@ -217,38 +218,120 @@
                         </Border>
                     </Grid>
                 </ScrollViewer>
-                    
+
                 <!-- DATA GRID -->
                 <Border Grid.Row="2" 
-                            CornerRadius="20"
-                            Background="#E5E5E5">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto"
-                                  HorizontalScrollBarVisibility="Auto">
-                        <DataGrid x:Name="dataGridNomina"
+                        CornerRadius="20"
+                        Background="#E5E5E5"
+                        SnapsToDevicePixels="True">
+                    <DataGrid x:Name="dataGridNomina"
                                   AutoGenerateColumns="False"
                                   CanUserAddRows="False"
                                   CanUserDeleteRows="False"
                                   IsReadOnly="True"
                                   Margin="10"
-                                  HeadersVisibility="Column">
+                                  HeadersVisibility="Column"
+                                  GridLinesVisibility="None"
+                                  ColumnWidth="*"
+                                  RowHeight="20"
+                                  AlternationCount="2">
+                            <!-- Aplica tu estilo -->
+                            <DataGrid.ColumnHeaderStyle>
+                                <StaticResource ResourceKey="ColumnHeaderRound"/>
+                            </DataGrid.ColumnHeaderStyle>
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" Binding="{Binding ID}" />
                                 <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
                                 <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" />
                                 <DataGridTextColumn Header="Días Trabajados" Binding="{Binding DiasTrabajados}" />
-                                <DataGridTextColumn Header="Días" Binding="{Binding Dias}" />
-                                <DataGridTextColumn Header="Sueldo Jornada" Binding="{Binding SueldoJornada}" />
+                                <DataGridTextColumn Header="Días" Binding="{Binding Dias}"  />
+                                <DataGridTextColumn Header="Sueldo Jornada" Binding="{Binding SueldoJornada}"  />
                                 <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal}" />
                                 <DataGridTextColumn Header="Horas Extra" Binding="{Binding HorasExtra}" />
-                                <DataGridTextColumn Header="Precio Hora Extra" Binding="{Binding PHoraExtra}" />
+                                <DataGridTextColumn Header="Precio Hora Extra" Binding="{Binding PHoraExtra}"  />
                                 <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding SuelExtra}" />
                                 <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado}" />
                                 <DataGridTextColumn Header="Sueldo Total" Binding="{Binding SuelTotal}" />
                             </DataGrid.Columns>
                         </DataGrid>
-                    </ScrollViewer>
                 </Border>
-                </Grid>
-            </Border>
-        </Grid>
+    
+                <!-- FOOTER: Total de Personal + Totales -->
+                <Border Grid.Row="3"
+                        Background="{StaticResource Color1}"
+                        CornerRadius="10"
+                        Padding="10"
+                        Margin="10,10,10,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- 1) Total de Personal label + contador -->
+                        <TextBlock Text="Total de Personal"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,5,0"
+                                   FontSize="20"/>
+                        <!--Circulo-->
+                        <Border Grid.Column="1"
+                                Background="{StaticResource primaryColor4}"
+                                CornerRadius="5"
+                                Padding="5"
+                                VerticalAlignment="Center"
+                                Margin="0,0,20,0">
+                            <TextBlock Text="5"
+                                       Foreground="{StaticResource titleColor4}"
+                                       FontWeight="Bold"
+                                       FontSize="20"/>
+                        </Border>
+                        <!-- 2) Valores finales -->
+                        <StackPanel Grid.Column="3"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Margin="5">
+                            <!--TOTAL -->
+                            <TextBlock Grid.Column="2"
+                                       Text="TOTAL"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Foreground="#5C5CFF"
+                                       Margin="0,0,20,0"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            <!-- ejemplo de valores; reemplaza por tus bindings -->
+                            <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
+                                <TextBlock Text="$383.33" FontSize="20"/>
+                            </Border>
+                            <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
+                                <TextBlock Text="$2,300" FontSize="20"/>
+                            </Border>
+                            <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
+                                <TextBlock Text="$95.83" FontSize="20"/>
+                            </Border>
+                            <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
+                                <TextBlock Text="$95.83" FontSize="20"/>
+                            </Border>
+                            <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
+                                <TextBlock Text="$100.00" FontSize="20"/>
+                            </Border>
+                            <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
+                                <TextBlock Text="$2,300.00" FontSize="20"/>
+                            </Border>
+                            <!-- valor final resaltado -->
+                            <Border Background="{StaticResource primaryColor1}" CornerRadius="5" Padding="5" Margin="0,0,10,0">
+                                <TextBlock Text="$2,295.83"
+                                           Foreground="White"
+                                           FontWeight="Bold"
+                                           FontSize="20"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
 </Page>

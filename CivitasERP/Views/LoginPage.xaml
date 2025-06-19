@@ -156,13 +156,22 @@
                             CornerRadius="10"
                             Margin="0,5,0,0"
                             Style="{StaticResource FocusedBorder}">
-                        <TextBox x:Name="txtUsuario"
+                        <!--DockPanel-->
+                        <DockPanel LastChildFill="True" VerticalAlignment="Center">
+                            <Image Source="/Images/usuario.png"
+                                   Width="24" Height="24"
+                                   Margin="5,0"
+                                   VerticalAlignment="Center"
+                                   DockPanel.Dock="Left">
+                            </Image>
+                            <TextBox x:Name="txtUsuario"
                                    Width="250" Height="25"
                                    Background="Transparent"
                                    Foreground="White"
                                    BorderThickness="0"
                                    Padding="10,0"
                                    VerticalContentAlignment="Center"/>
+                        </DockPanel>
                     </Border>
                     <!--Contraseña-->
                     <TextBlock  Grid.Row="2" Grid.Column="0"
@@ -177,13 +186,24 @@
                             CornerRadius="10"
                             Margin="0,35,0,0"
                             Style="{StaticResource FocusedBorder}">
-                        <PasswordBox x:Name="txtPassword"
+                        <!--DockPanel-->
+                        <DockPanel LastChildFill="True" VerticalAlignment="Center">
+                            <Image Source="/Images/Key.png"
+                                   Width="24" Height="24"
+                                   Margin="5,0"
+                                   VerticalAlignment="Center"
+                                   DockPanel.Dock="Left">
+                            </Image>
+                            <PasswordBox x:Name="txtPassword"
                                      Width="250" Height="25"
                                      Background="Transparent"
                                      Foreground="White"
                                      BorderThickness="0"
                                      Padding="10,0"
                                      VerticalContentAlignment="Center"/>
+
+                        </DockPanel>
+
                     </Border>
 
                 </Grid>

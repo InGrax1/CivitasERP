@@ -6,7 +6,6 @@
         Title="NominaPage"
         MinHeight="800" MinWidth="600">
 
-
     <Grid>
         <!-- CONTENIDO CENTRAL -->
             <Border Grid.Column="1" 
@@ -18,7 +17,8 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
                 <ScrollViewer Grid.Row="1"
                               HorizontalScrollBarVisibility="Auto"
                               VerticalScrollBarVisibility="Disabled"
@@ -29,6 +29,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -206,10 +207,9 @@
                 <!-- DATA GRID -->
                     <Border Grid.Row="2" 
                             CornerRadius="20"
-                            Background="#E5E5E5" 
-                            Margin="0,0,0,0">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto"
-                                      HorizontalScrollBarVisibility="Auto">
+                            Background="#E5E5E5"
+                            SnapsToDevicePixels="True">
+
                         <DataGrid x:Name="dataGridAsistencia"
                                   AutoGenerateColumns="False"
                                   CanUserAddRows="False"
@@ -217,7 +217,15 @@
                                   IsReadOnly="True"
                                   Margin="10"
                                   HeadersVisibility="Column"
-                                  ItemsSource="{Binding Empleados}">
+                                  GridLinesVisibility="None"
+                                  ColumnWidth="*"
+                                  RowHeight="20"
+                                  AlternationCount="2">
+                            <!-- Aplica tu estilo -->
+                            <DataGrid.ColumnHeaderStyle>
+                                <StaticResource ResourceKey="ColumnHeaderRound"/>
+                            </DataGrid.ColumnHeaderStyle>
+                            
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" Binding="{Binding ID}" />
                                 <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
@@ -236,9 +244,42 @@
                                 <DataGridTextColumn Header="Salida" Binding="{Binding SalidaS}" />
                             </DataGrid.Columns>
                         </DataGrid>
-                    </ScrollViewer>
                     </Border>
-                </Grid>
+
+                <!-- FOOTER: Total de Personal + Totales -->
+                <Border Grid.Row="3"
+                        Background="{StaticResource Color1}"
+                        CornerRadius="10"
+                        Padding="10"
+                        Margin="10,10,10,10"
+                        Width="200"
+                        HorizontalAlignment="Left">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- 1) Total de Personal label + contador -->
+                        <TextBlock Text="Total de Personal"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,5,0"
+                                   FontSize="20"/>
+                        <!--Circulo-->
+                        <Border Grid.Column="1"
+                                Background="{StaticResource primaryColor4}"
+                                CornerRadius="5"
+                                Padding="5"
+                                VerticalAlignment="Center"
+                                Margin="0,0,20,0">
+                            <TextBlock Text="5"
+                                       Foreground="{StaticResource titleColor4}"
+                                       FontWeight="Bold"
+                                       FontSize="20"/>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
             </Border>
         </Grid>
 </Page>
