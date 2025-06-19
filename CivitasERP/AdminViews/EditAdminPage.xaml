@@ -18,15 +18,55 @@
             <RowDefinition Height="Auto"/>
             <!-- Botones -->
         </Grid.RowDefinitions>
+        
+        <!--HEAD-->
+        <Grid Grid.Row="0" Margin="0,0,0,20" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="AUTO"/>
+            </Grid.RowDefinitions>
+            <!-- 1) Título -->
+            <TextBlock Grid.Row="0"
+                       Text="Modificar datos de Administrador"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="#6666FF"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,20"/>
 
-        <!-- 1) Título -->
-        <TextBlock Grid.Row="0"
-           Text="Modificar datos de Administrador"
-           FontSize="24"
-           FontWeight="Bold"
-           Foreground="#6666FF"
-           HorizontalAlignment="Center"
-           Margin="0,0,0,20"/>
+            <!--SELECTOR DE ADMIN-->
+            <StackPanel Grid.Row="1">
+                <TextBlock Text="Elegir Administrador" 
+                           Margin="0,0,0,0" 
+                           VerticalAlignment="Center" 
+                           Foreground="{StaticResource titleColorA}"/>
+                <Border Background="#F0F0F0" 
+                        CornerRadius="10" 
+                        Padding="3"
+                        Margin="0,0,0,50"
+                        BorderThickness="1" 
+                        BorderBrush="{StaticResource primaryColor4}">
+                    <!--DockPanel para foto con comobo box-->
+                    <DockPanel LastChildFill="True" VerticalAlignment="Center">
+                        <Image Source="/Images/SearchPersonBlue.png"
+                               Width="24" Height="24"
+                               Margin="5,0"
+                               VerticalAlignment="Center"
+                               DockPanel.Dock="Left">
+                        </Image>
+                        <ComboBox x:Name="AdminComboBox" 
+                              BorderThickness="0"
+                              DropDownOpened="AdminComboBox_DropDownOpened" 
+                              SelectionChanged="AdminComboBox_SelectionChanged">
+                        </ComboBox>
+                    </DockPanel>
+
+                </Border>
+            </StackPanel>
+        </Grid>
 
         <!-- 2) Formulario -->
         <Grid Grid.Row="1">
@@ -48,7 +88,7 @@
             </Grid.RowDefinitions>
 
             <!--INFORMACION PERSONAL-->
-            <StackPanel Grid.Column="1" Grid.Row="0">
+            <StackPanel Grid.Column="1" Grid.Row="1">
                 <!--Banner Titulo-->
                 <StackPanel Grid.Column="1" Grid.Row="0" Panel.ZIndex="1">
                     <Border Background="{StaticResource primaryColor1}" 
@@ -114,7 +154,7 @@
             </StackPanel>
 
             <!--INFORMACION DE CONTACTO-->
-            <StackPanel Grid.Column="5" Grid.Row="0">
+            <StackPanel Grid.Column="5" Grid.Row="1">
                 <!--Banner Titulo-->
                 <StackPanel Grid.Column="1" Grid.Row="0" Panel.ZIndex="1">
                     <Border Background="{StaticResource primaryColor1}" 
@@ -155,7 +195,7 @@
             </StackPanel>
 
             <!--INFORMACION DE USUARIO-->
-            <StackPanel Grid.Column="3" Grid.Row="0">
+            <StackPanel Grid.Column="3" Grid.Row="1">
                 <!--Banner Titulo-->
                 <StackPanel Grid.Column="1" Grid.Row="0" Panel.ZIndex="1">
                     <Border Background="{StaticResource primaryColor1}" 

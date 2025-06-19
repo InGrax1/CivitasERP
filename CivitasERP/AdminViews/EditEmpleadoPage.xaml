@@ -1,7 +1,12 @@
 ﻿<Page x:Class="CivitasERP.AdminViews.EditEmpleadoPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Title="Editar Empleado"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CivitasERP.AdminViews"
+      mc:Ignorable="d" 
+      d:DesignHeight="1000" d:DesignWidth="1800"
+      Title="EditAdminPage"  
       Background="{StaticResource BackgroudColor}">
 
     <Grid Margin="20">
@@ -14,20 +19,88 @@
             <!-- Botones -->
         </Grid.RowDefinitions>
 
-        <!-- 1) Título -->
-        <TextBlock Grid.Row="0"
-               Text="Modificar datos de empleado"
-               FontSize="24"
-               FontWeight="Bold"
-               Foreground="#6666FF"
-               HorizontalAlignment="Center"
-               Margin="0,0,0,20"/>
+        <!--HEAD-->
+        <Grid Grid.Row="0" Margin="0,0,0,20" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <!-- 1) Título -->
+            <TextBlock Grid.Row="0"
+                       Text="Modificar datos de Empleado"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="#6666FF"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,20"/>
+            <!--SELECTOR DE OBRA-->
+            <StackPanel Grid.Row="1">
+                <TextBlock Text="Elegir Obra" 
+                           Margin="0,0,0,0" 
+                           VerticalAlignment="Center" 
+                           Foreground="{StaticResource titleColorA}"/>
+                <Border Background="#F0F0F0" 
+                        CornerRadius="10" 
+                        Padding="3"
+                        Margin="0,0,0,30"
+                        BorderThickness="1" 
+                        BorderBrush="{StaticResource primaryColor4}">
+                    <!--DockPanel para foto con comobo box-->
+                    <DockPanel LastChildFill="True" VerticalAlignment="Center">
+                        <Image Source="/Images/FrontLoaderBlue.png"
+                               Width="24" Height="24"
+                               Margin="5,0"
+                               VerticalAlignment="Center"
+                               DockPanel.Dock="Left">
+                        </Image>
+                        <ComboBox x:Name="ObraComboBox" 
+                                  BorderThickness="0"
+                                  DropDownOpened="ObraComboBox_DropDownOpened" 
+                                  SelectionChanged="ObraComboBox_SelectionChanged">
+                        </ComboBox>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+            <!--SELECTOR DE ADMIN-->
+            <StackPanel Grid.Row="2">
+                <TextBlock Text="Elegir Empleado" 
+                           Margin="0,0,0,0" 
+                           VerticalAlignment="Center" 
+                           Foreground="{StaticResource titleColorA}"/>
+                <Border Background="#F0F0F0" 
+                        CornerRadius="10" 
+                        Padding="3"
+                        Margin="0,0,0,30"
+                        BorderThickness="1" 
+                        BorderBrush="{StaticResource primaryColor4}">
+                    <!--DockPanel para foto con comobo box-->
+                    <DockPanel LastChildFill="True" VerticalAlignment="Center">
+                        <Image Source="/Images/SearchPersonBlue.png"
+                               Width="24" Height="24"
+                               Margin="5,0"
+                               VerticalAlignment="Center"
+                               DockPanel.Dock="Left">
+                        </Image>
+                        <ComboBox x:Name="AdminComboBox" 
+                                  BorderThickness="0"
+                                  DropDownOpened="AdminComboBox_DropDownOpened" 
+                                  SelectionChanged="AdminComboBox_SelectionChanged">
+                        </ComboBox>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
 
         <!-- 2) Formulario -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
@@ -39,53 +112,245 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- Nombre -->
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Nombre:" Margin="0,0,5,10" VerticalAlignment="Center"/>
-            <TextBox    Grid.Row="0" Grid.Column="1" x:Name="TxtNombre" Margin="0,0,20,10" Height="30"/>
+            <!--INFORMACION PERSONAL-->
+            <StackPanel Grid.Column="1" Grid.Row="1">
+                <!--Banner Titulo-->
+                <StackPanel Grid.Column="1" Grid.Row="0" Panel.ZIndex="1">
+                    <Border Background="{StaticResource primaryColor1}" 
+                            CornerRadius="10" 
+                            Padding="5" 
+                            Width="185"
+                            Height="35"
+                            Margin="0,0,0,-20">
+                        <TextBlock Text="INFORMACIÓN PERSONAL" 
+                                   FontSize="12" 
+                                   FontWeight="Bold" 
+                                   Foreground="White" 
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+                <!--CARD DATOS-->
+                <Border Background="{StaticResource Color1}" 
+                        CornerRadius="30" Margin="0,0,0,0" 
+                        Width="300" Height="300" 
+                        Panel.ZIndex="0">
+                    <StackPanel Margin="10" HorizontalAlignment="Stretch">
+                        <!-- Nombre -->
+                        <TextBlock Text="Nombre" 
+                                   Margin="0,35,0,0" 
+                                   VerticalAlignment="Center" 
+                                   Foreground="{StaticResource titleColorA}"/>
+                        <Border Background="#F0F0F0" 
+                                CornerRadius="10" 
+                                Padding="5" 
+                                BorderThickness="1" 
+                                BorderBrush="{StaticResource primaryColor4}">
+                            <TextBox x:Name="TxtNombre" BorderThickness="0"/>
+                        </Border>
 
-            <!-- Apellido P -->
-            <TextBlock Grid.Row="0" Grid.Column="2" Text="Apellido P:" Margin="0,0,5,10" VerticalAlignment="Center"/>
-            <TextBox    Grid.Row="0" Grid.Column="3" x:Name="TxtApellidoP" Height="30"/>
+                        <!-- Apellido P -->
+                        <TextBlock Text="Apellido Paterno" 
+                                   Margin="0,35,0,0" 
+                                   VerticalAlignment="Center" 
+                                   Foreground="{StaticResource titleColorA}"/>
+                        <Border Background="{StaticResource BackgroudColor}" 
+                                CornerRadius="10" 
+                                Padding="5" 
+                                BorderThickness="1" 
+                                BorderBrush="{StaticResource primaryColor4}">
+                            <TextBox x:Name="TxtApellidoP" BorderThickness="0"/>
+                        </Border>
 
-            <!-- Apellido M -->
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Apellido M:" Margin="0,0,5,10" VerticalAlignment="Center"/>
-            <TextBox    Grid.Row="1" Grid.Column="1" x:Name="TxtApellidoM" Margin="0,0,20,10" Height="30"/>
+                        <!-- Apellido M -->
+                        <TextBlock Text="Apellido Materno" 
+                                   Margin="0,35,0,0" 
+                                   VerticalAlignment="Center" 
+                                   Foreground="{StaticResource titleColorA}"/>
+                        <Border Background="{StaticResource BackgroudColor}" 
+                                CornerRadius="10" 
+                                Padding="5" 
+                                BorderThickness="1" 
+                                BorderBrush="{StaticResource primaryColor4}">
+                            <TextBox x:Name="TxtApellidoM" BorderThickness="0"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
 
-            <!-- Sueldo Semanal -->
-            <TextBlock Grid.Row="1" Grid.Column="2" Text="Sueldo Semanal:" Margin="0,0,5,10" VerticalAlignment="Center"/>
-            <TextBox    Grid.Row="1" Grid.Column="3" x:Name="TxtSueldoSemanal" Height="30"/>
+            <!--INFORMACION DE USUARIO-->
+            <StackPanel Grid.Column="3" Grid.Row="1">
+                <!--Banner Titulo-->
+                <StackPanel Grid.Column="1" Grid.Row="0" Panel.ZIndex="1">
+                    <Border Background="{StaticResource primaryColor1}" 
+                            CornerRadius="10" 
+                            Padding="5" 
+                            Width="185"
+                            Height="35"
+                            Margin="0,0,0,-20">
+                        <TextBlock Text="INFORMACIÓN DE USUARIO" 
+                                   FontSize="12" 
+                                   FontWeight="Bold" 
+                                   Foreground="White" 
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+                <!--CARD USUARIO-->
+                <Border Background="{StaticResource Color1}" 
+                        CornerRadius="30" Margin="0,0,0,0" 
+                        Width="300" Height="500" 
+                        Panel.ZIndex="0">
+                    <StackPanel Margin="10" HorizontalAlignment="Stretch">
+                        <!-- Categoria -->
+                        <TextBlock Text="Categoría" 
+                                   Margin="0,35,0,0" 
+                                   VerticalAlignment="Center" 
+                                   Foreground="{StaticResource titleColorA}"/>
+                        <Border Background="#F0F0F0" 
+                                CornerRadius="10" 
+                                Padding="5" 
+                                BorderThickness="1" 
+                                BorderBrush="{StaticResource primaryColor4}">
+                            <ComboBox x:Name="CbxCategoria" BorderThickness="0"/>
+                        </Border>
 
-            <!-- Horas Extra -->
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Horas Extra:" Margin="0,0,5,10" VerticalAlignment="Center"/>
-            <TextBox    Grid.Row="2" Grid.Column="1" x:Name="TxtHorasExtra" Margin="0,0,20,10" Height="30"/>
+                        <!--Sueldo Semanal-->
+                        <TextBlock Text="Sueldo Semanal" 
+                                   Margin="0,35,0,0" 
+                                   VerticalAlignment="Center" 
+                                   Foreground="{StaticResource titleColorA}"/>
+                        <Border Background="#F0F0F0" 
+                                CornerRadius="10" 
+                                Padding="5" 
+                                BorderThickness="1" 
+                                BorderBrush="{StaticResource primaryColor4}">
+                            <TextBox x:Name="TxtSueldoSemanal" BorderThickness="0"/>
+                        </Border>
 
-            <!-- Multiplicador -->
-            <TextBlock Grid.Row="2" Grid.Column="2" Text="Multiplicador:" Margin="0,0,5,10" VerticalAlignment="Center"/>
-            <ComboBox  Grid.Row="2" Grid.Column="3" x:Name="CbxMultiplicador" Height="30">
-                <ComboBoxItem Content="1.25"/>
-                <ComboBoxItem Content="1.5"/>
-                <ComboBoxItem Content="2"/>
-            </ComboBox>
+                        <!--Horas extra-->
+                        <TextBlock Text="Horas Extra" 
+                                   Margin="0,35,0,0" 
+                                   VerticalAlignment="Center" 
+                                   Foreground="{StaticResource titleColorA}"/>
+                        <Border Background="#F0F0F0" 
+                                CornerRadius="10" 
+                                Padding="5" 
+                                BorderThickness="1" 
+                                BorderBrush="{StaticResource primaryColor4}">
+                            <TextBox x:Name="TxtHorasExtra" BorderThickness="0"/>
+                        </Border>
 
-            <!-- Categoría -->
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="Categoría:" Margin="0,0,5,10" VerticalAlignment="Center"/>
-            <ComboBox  Grid.Row="3" Grid.Column="1" x:Name="CbxCategoria" Margin="0,0,20,10" Height="30"/>
+                        <!--Multiplocador de Horas extra-->
+                        <TextBlock Text="Multiplocador de Horas Extra" 
+                                   Margin="0,35,0,0" 
+                                   VerticalAlignment="Center" 
+                                   Foreground="{StaticResource titleColorA}"/>
+                        <Border Background="#F0F0F0" 
+                                CornerRadius="10" 
+                                Padding="5" 
+                                BorderThickness="1" 
+                                BorderBrush="{StaticResource primaryColor4}">
+                            <ComboBox x:Name="CbxMultiplicador" BorderThickness="0">
+                                <ComboBoxItem Content="1"/>
+                                <ComboBoxItem Content="1.5"/>
+                                <ComboBoxItem Content="2"/>
+                                <ComboBoxItem Content="2.5"/>
+                                <ComboBoxItem Content="3"/>
+                            </ComboBox>
+                        </Border>
 
-            <!-- Obra -->
-            <TextBlock Grid.Row="3" Grid.Column="2" Text="Obra:" Margin="0,0,5,10" VerticalAlignment="Center"/>
-            <ComboBox  Grid.Row="3" Grid.Column="3" x:Name="CbxObra" Height="30"/>
+                        <!--Obra Asignada-->
+                        <TextBlock Text="Obra Asignada" 
+                                   Margin="0,35,0,0" 
+                                   VerticalAlignment="Center" 
+                                   Foreground="{StaticResource titleColorA}"/>
+                        <Border Background="#F0F0F0" 
+                                CornerRadius="10" 
+                                Padding="5" 
+                                BorderThickness="1" 
+                                BorderBrush="{StaticResource primaryColor4}">
+                            <ComboBox x:Name="CbxObra" BorderThickness="0"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
         </Grid>
 
         <!-- 3) Botones Guardar / Cancelar -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
             <Button Content="Cancelar"
-              Padding="10,5"
-              Click="BtnCancelar_Click"/>
+                    Padding="10,5"
+                    Click="BtnCancelar_Click"/>
             <Button Content="Guardar"
-              Background="#6666FF"
-              Foreground="White"
-              Padding="10,5"
-              Click="BtnGuardar_Click"/>
+                    Background="#6666FF"
+                    Foreground="White"
+                    Padding="10,5"
+                    Click="BtnGuardar_Click"/>
         </StackPanel>
+
+        <!--FONDO-->
+        <!-- 2) franjas diagonales -->
+        <Canvas Panel.ZIndex="-1">
+            <!-- franja 1 -->
+            <Rectangle Width="638" Height="60"
+                       RadiusX="20" RadiusY="20"
+                       Fill="#5C7CFF" Opacity="0.2"
+                       Canvas.Left="54" Canvas.Top="279" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Rectangle.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-43.612"/>
+                        <TranslateTransform X="15.945554337723227" Y="89.5096189432334"/>
+                    </TransformGroup>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+
+            <!-- franja 2 -->
+            <Rectangle Width="714" Height="60"
+                       RadiusX="20" RadiusY="20"
+                       Fill="#5C7CFF" Opacity="0.2"
+                       Canvas.Left="-36" Canvas.Top="864" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-43.009"/>
+                        <TranslateTransform X="13.846189432334192" Y="76.6746824526945"/>
+                    </TransformGroup>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+
+            <!-- franja 3 -->
+            <Rectangle Width="806" Height="60"
+                       RadiusX="20" RadiusY="20"
+                       Fill="#5C7CFF" Opacity="0.2"
+                       Canvas.Left="302" Canvas.Top="896" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Rectangle.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-43.423"/>
+                        <TranslateTransform X="21.794919243112258" Y="101.3397459621556"/>
+                    </TransformGroup>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+
+            <!-- 3) “blob” grande en bottom-right -->
+            <Rectangle Width="1415" Height="789"
+                        RadiusX="150" RadiusY="150"
+                        Fill="#5C7CFF" Opacity="1"
+                        Canvas.Left="715" Canvas.Top="823" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-43.423"/>
+                        <TranslateTransform X="21.794919243112258" Y="101.3397459621556"/>
+                    </TransformGroup>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+        </Canvas>
     </Grid>
 </Page>
