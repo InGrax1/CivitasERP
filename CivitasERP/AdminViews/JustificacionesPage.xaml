@@ -105,7 +105,9 @@
                                DockPanel.Dock="Left">
                         </Image>
                         <ComboBox x:Name="Admin2ComboBox" 
-                                    BorderThickness="0">
+                                  BorderThickness="0"
+                                  DropDownOpened="Admin2ComboBox_DropDownOpened"
+                                  SelectionChanged="Admin2ComboBox_SelectionChanged">
                         </ComboBox>
                     </DockPanel>
                 </Border>
@@ -132,7 +134,9 @@
                                DockPanel.Dock="Left">
                         </Image>
                         <ComboBox x:Name="ObraComboBox" 
-                                  BorderThickness="0">
+                                  BorderThickness="0"
+                                  DropDownOpened="ObraComboBox_DropDownOpened"
+                                  SelectionChanged="ObraComboBox_SelectionChanged">
                         </ComboBox>
 
                     </DockPanel>
@@ -225,9 +229,8 @@
                                           Background="Transparent"
                                           BorderThickness="0"
                                           VerticalContentAlignment="Center"
-                                          
-                              SelectionChanged="CbxAnio_SelectionChanged" 
-                                    DropDownOpened="CbxAnio_DropDownOpened"/>
+                                        SelectionChanged="CbxAnio_SelectionChanged" 
+                                        DropDownOpened="CbxAnio_DropDownOpened"/>
 
 
                             </Border>

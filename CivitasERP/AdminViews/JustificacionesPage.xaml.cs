@@ -32,8 +32,6 @@ namespace CivitasERP.AdminViews
             GuardarAsistencia();
             MessageBox.Show("Justificación guardada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
-
-
         }
 
 
@@ -230,12 +228,13 @@ namespace CivitasERP.AdminViews
 
         private void EmpleadoComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-          
-            DB_admins admins = new DB_admins();
-            int? id_obra = 0;
-            id_obra = ObtenerID_obra(ObraComboBox.SelectedItem.ToString());
-            MessageBox.Show("" + ObtenerIdEmpleado(EmpleadoComboBox.SelectedItem.ToString()));
-            
+            if (EmpleadoComboBox.SelectedItem != null)
+            {
+                DB_admins admins = new DB_admins();
+                int? id_obra = 0;
+                id_obra = ObtenerID_obra(ObraComboBox.SelectedItem.ToString());
+                Admin2ComboBox.Items.Clear();
+            }   
         }
         private void EmpleadoComboBox_DropDownOpened(object sender, EventArgs e)
         {
