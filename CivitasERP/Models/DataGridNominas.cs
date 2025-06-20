@@ -50,141 +50,119 @@ namespace CivitasERP.Models
         public List<Empleado> ObtenerEmpleados()
         {
             List<Empleado> empleados = new List<Empleado>();
-
-
             Conexion Sconexion = new Conexion();
-            string connectionString;
+            string connectionString = Sconexion.ObtenerCadenaConexion();
 
-            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
-            connectionString = obtenerCadenaConexion;
-            
-            
-            
-            
-            //admins
+            string fechaInicio = Variables.FechaInicio;
+            string fechaFin = Variables.FechaFin;
+
+            string usuario = Variables.Usuario;
+            DB_admins dB_Admins = new DB_admins();
+            int? idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
+            int? id_obra = Variables.IdObra ?? 0;
+
+            // ================== ADMIN ===================
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string usuario;
-                usuario = Variables.Usuario;
-                DB_admins dB_Admins = new DB_admins();
-                int? idAdmin;
-                idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
+                string queryAdmin = @"
+SELECT 
+    ad.id_admins AS admins_id_asistencia,
+    CONCAT(ad.admins_nombre, ' ', ad.admins_apellidop, ' ', ad.admins_apellidom) AS admin_nombre,
+    ad.admin_categoria,
+    ISNULL(SUM(a.salariofecha), 0) AS total_salario,
+    ISNULL(SUM(a.paga_horaXT), 0) AS total_horas_extra,
+    COUNT(DISTINCT a.asis_dia) AS dias_trabajados
+FROM admins ad
+LEFT JOIN asistencia a 
+    ON ad.id_admins = a.admins_id_asistencia
+    AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
+WHERE ad.id_admins = @idAdmin
+GROUP BY 
+    ad.id_admins, 
+    ad.admins_nombre, 
+    ad.admins_apellidop, 
+    ad.admins_apellidom, 
+    ad.admin_categoria";
 
-                string query = @"SELECT id_admins, 
-                            CONCAT(admins.admins_nombre, ' ', admins.admins_apellidop, ' ', admins.admins_apellidom) AS admin_nombre, 
-                            admin_categoria, 
-                            admins_semanal
-                     FROM admins 
-                     WHERE id_admins = @idAdmin";
-
-                SqlCommand cmd1 = new SqlCommand(query, connection);
-                cmd1.Parameters.AddWithValue("@idAdmin", idAdmin);
+                SqlCommand cmd = new SqlCommand(queryAdmin, connection);
+                cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
+                cmd.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                cmd.Parameters.AddWithValue("@fechaFin", fechaFin);
 
                 connection.Open();
-
-                SqlDataReader reader1 = cmd1.ExecuteReader();
-
-                Dictionary<int, Empleado> empleadosDict = new Dictionary<int, Empleado>();
-
-                while (reader1.Read())
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    empleados.Add(new Empleado
+                    while (reader.Read())
                     {
-                        ID = reader1.GetInt32(0),
-                        Nombre = reader1.GetString(1),
-                        Categoria = reader1.GetString(2),
-                        SueldoJornada = Convert.ToDecimal(reader1.GetValue(3))/6,
-                        SueldoSemanal = Convert.ToDecimal(reader1.GetValue(3)),
-                        PHoraExtra = (Convert.ToDecimal(reader1.GetValue(3)) / 6) /8,
-                        Dias = CalcularDiasTrabajados_Admin(reader1.GetInt32(0)),
-                        HorasExtra = ObtenerTotalHorasExtra_Admin(reader1.GetInt32(0)),
-                        SuelExtra = ((Convert.ToDecimal(reader1.GetValue(3)) / 6) / 8) * ObtenerTotalHorasExtra_Admin(reader1.GetInt32(0)),
-                        SuelTrabajado = (Convert.ToDecimal(reader1.GetValue(3))/6) * CalcularDiasTrabajados_Admin(reader1.GetInt32(0)),
-                        SuelTotal = ( ((Convert.ToDecimal(reader1.GetValue(3)) / 6) / 8) * ObtenerTotalHorasExtra_Admin(reader1.GetInt32(0))) +
-                                    (Convert.ToDecimal(reader1.GetValue(3)) / 6 * CalcularDiasTrabajados_Admin(reader1.GetInt32(0)))
-                    });
+                        empleados.Add(new Empleado
+                        {
+                            ID = reader.GetInt32(0),
+                            Nombre = reader.GetString(1),
+                            Categoria = reader.GetString(2),
+                            SueldoJornada = reader.GetDecimal(3) / 6, // No aplica
+                            Dias = reader.GetInt32(5),
+                            HorasExtra = ObtenerTotalHorasExtra_Admin(reader.GetInt32(0)), // No se desglosa como tiempo
+                            PHoraExtra = reader.GetDecimal(4), // No se desglosa como tiempo
+                            SueldoSemanal = reader.GetDecimal(3),
+                            SuelExtra = reader.GetDecimal(4),
+                            SuelTrabajado = (reader.GetDecimal(3) / 6) * reader.GetInt32(5),
+                            SuelTotal = (reader.GetDecimal(3) / 6) * reader.GetInt32(5) + reader.GetDecimal(4)
+                        });
+                    }
                 }
-
-                reader1.Close();
             }
 
-
-            //empleados
+            // ================== EMPLEADOS ===================
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string usuario = Variables.Usuario;
-                DB_admins dB_Admins = new DB_admins();
-                int? idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
+                string queryEmp = @"
+        SELECT 
+            e.id_empleado,
+            CONCAT(e.emp_nombre, ' ', e.emp_apellidop, ' ', e.emp_apellidom) AS emp_nombre,
+            e.emp_puesto,
+            ISNULL(SUM(a.salariofecha), 0) AS total_salario,
+            ISNULL(SUM(a.paga_horaXT), 0) AS total_horas_extra,
+            COUNT(DISTINCT a.asis_dia) AS dias_trabajados
+        FROM empleado e
+        LEFT JOIN asistencia a 
+            ON e.id_empleado = a.id_empleado 
+            AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
+        WHERE e.id_admins = @idAdmin
+          AND e.id_obra = @id_obra
+        GROUP BY e.id_empleado, e.emp_nombre, e.emp_apellidop, e.emp_apellidom, e.emp_puesto";
 
-                // Aquí estás verificando si se ha guardado un id_obra globalmente
-                int? id_obra;
-
-                if (Variables.IdObra != null)
-                {
-                    id_obra = Variables.IdObra;
-                }
-                else
-                {
-                    id_obra = 0; // cuidado: esto convierte el null a 0, podría ser ambiguo si 0 no es válido
-                }
-
-                string fechaInicio="",fechaFin="";
-
-                fechaInicio = Variables.FechaInicio;
-                fechaFin = Variables.FechaFin;
-
-
-                string query = @"
-                                SELECT DISTINCT e.id_empleado, 
-                                    CONCAT(e.emp_nombre, ' ', e.emp_apellidop, ' ', e.emp_apellidom) AS emp_nombre, 
-                                    e.emp_puesto, 
-                                    e.emp_dia, 
-                                    e.emp_semanal, 
-                                    e.emp_hora_extra  
-                                    FROM empleado e
-                                    LEFT JOIN asistencia a ON e.id_empleado = a.id_empleado
-                                    WHERE e.id_admins = @idAdmin 
-                                      AND e.id_obra = @id_obra 
-                                   ";
-
-                SqlCommand cmd1 = new SqlCommand(query, connection);
-                cmd1.Parameters.AddWithValue("@idAdmin", idAdmin);
-                cmd1.Parameters.AddWithValue("@id_obra", id_obra);
+                SqlCommand cmd = new SqlCommand(queryEmp, connection);
+                cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
+                cmd.Parameters.AddWithValue("@id_obra", id_obra);
+                cmd.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                cmd.Parameters.AddWithValue("@fechaFin", fechaFin);
 
                 connection.Open();
-
-                SqlDataReader reader1 = cmd1.ExecuteReader();
-
-                Dictionary<int, Empleado> empleadosDict = new Dictionary<int, Empleado>();
-
-                while (reader1.Read())
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-
-                    
-                    empleados.Add(new Empleado
+                    while (reader.Read())
                     {
-                        ID = reader1.GetInt32(0),
-                        Nombre = reader1.GetString(1),
-                        Categoria = reader1.GetString(2),
-                        SueldoJornada = Convert.ToDecimal(reader1.GetValue(3)),
-                        SueldoSemanal = Convert.ToDecimal(reader1.GetValue(4)),
-                        PHoraExtra = Convert.ToDecimal(reader1.GetValue(5)),
-                        Dias = CalcularDiasTrabajados(reader1.GetInt32(0)),
-                        HorasExtra = ObtenerTotalHorasExtra(reader1.GetInt32(0)),
-                        SuelExtra = Convert.ToDecimal(reader1.GetValue(5)) * ObtenerTotalHorasExtra(reader1.GetInt32(0)),
-                        SuelTrabajado = Convert.ToDecimal(reader1.GetValue(3)) * CalcularDiasTrabajados(reader1.GetInt32(0)),
-                        SuelTotal = (Convert.ToDecimal(reader1.GetValue(5)) * ObtenerTotalHorasExtra(reader1.GetInt32(0))) +
-                                    (Convert.ToDecimal(reader1.GetValue(3)) * CalcularDiasTrabajados(reader1.GetInt32(0)))
-                    });
-
+                        empleados.Add(new Empleado
+                        {
+                            ID = reader.GetInt32(0),
+                            Nombre = reader.GetString(1),
+                            Categoria = reader.GetString(2),
+                            SueldoJornada = reader.GetDecimal(3) / 6, // No aplica
+                            Dias = reader.GetInt32(5),
+                            HorasExtra = ObtenerTotalHorasExtra(reader.GetInt32(0)), // No se desglosa como tiempo
+                            PHoraExtra =reader.GetDecimal(4), // No se desglosa como tiempo
+                            SueldoSemanal = reader.GetDecimal(3),
+                            SuelExtra = reader.GetDecimal(4),
+                            SuelTrabajado = (reader.GetDecimal(3) /6)*reader.GetInt32(5),
+                            SuelTotal = (reader.GetDecimal(3)/6) * reader.GetInt32(5) + reader.GetDecimal(4)
+                        });
+                    }
                 }
-
-                reader1.Close();
             }
+
 
             return empleados;
         }
-
 
 
 
@@ -235,7 +213,7 @@ namespace CivitasERP.Models
         }
 
 
-            public decimal ObtenerTotalHorasExtra(int idEmpleado)
+        public decimal ObtenerTotalHorasExtra(int idEmpleado)
         {
             decimal totalHoras = 0;
 
@@ -252,11 +230,11 @@ namespace CivitasERP.Models
                 conexion.Open();
 
                 string query = @"
-                                SELECT asis_hora_extra
-                                FROM asistencia
-                                WHERE id_empleado = @id_empleado AND asis_hora_extra IS NOT NULL
-              AND asis_dia BETWEEN @fechaInicio AND @fechaFin
-        ";
+                        SELECT asis_hora_extra
+                        FROM asistencia
+                        WHERE id_empleado = @id_empleado AND asis_hora_extra IS NOT NULL
+      AND asis_dia BETWEEN @fechaInicio AND @fechaFin
+";
 
                 using (SqlCommand comando = new SqlCommand(query, conexion))
                 {
@@ -276,7 +254,6 @@ namespace CivitasERP.Models
 
             return totalHoras;
         }
-
 
 
         //admins
@@ -347,11 +324,11 @@ namespace CivitasERP.Models
                 conexion.Open();
 
                 string query = @"
-                                SELECT asis_hora_extra
-                                FROM asistencia
-                                WHERE admins_id_asistencia = @id_admin AND asis_hora_extra IS NOT NULL
-              AND asis_dia BETWEEN @fechaInicio AND @fechaFin
-        ";
+                        SELECT asis_hora_extra
+                        FROM asistencia
+                        WHERE admins_id_asistencia = @id_admin AND asis_hora_extra IS NOT NULL
+      AND asis_dia BETWEEN @fechaInicio AND @fechaFin
+";
 
                 using (SqlCommand comando = new SqlCommand(query, conexion))
                 {
@@ -371,6 +348,8 @@ namespace CivitasERP.Models
 
             return totalHoras;
         }
+      
+
         public (bool exito, DateTime fechaInicio, DateTime fechaFin) ObtenerFechasDesdeGlobal()
         {
             string texto = Variables.Fecha;

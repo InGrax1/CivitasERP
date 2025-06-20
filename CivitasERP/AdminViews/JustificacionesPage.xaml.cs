@@ -32,7 +32,9 @@ namespace CivitasERP.AdminViews
             GuardarAsistencia();
             MessageBox.Show("Justificación guardada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
-        }
+            }
+
+        
 
 
 
@@ -186,16 +188,18 @@ namespace CivitasERP.AdminViews
             {
                 string admin = Admin2ComboBox.SelectedItem.ToString();
                 DB_admins admins = new DB_admins();
-                
+                EmpleadoComboBox.Items.Clear();
+                ObraComboBox.Items.Clear();
             }
             else
             {
                 // Opcional: limpia los datos o muestra un mensaje
                 Console.WriteLine("No se ha seleccionado ningún administrador.");
             }
-            EmpleadoComboBox.Items.Clear();
+
 
         }
+
         private void Admin2ComboBox_DropDownOpened(object sender, EventArgs e)
         {
             cargar_admin();
@@ -212,9 +216,9 @@ namespace CivitasERP.AdminViews
                 int? id_obra = 0;
                 id_obra = ObtenerID_obra( ObraComboBox.SelectedItem.ToString());
 
-                MessageBox.Show("prueba");
-                cargar_empleados(id_obra);
 
+                cargar_empleados(id_obra);
+                Admin2ComboBox.Items.Clear();
             }
 
 
@@ -234,11 +238,22 @@ namespace CivitasERP.AdminViews
                 int? id_obra = 0;
                 id_obra = ObtenerID_obra(ObraComboBox.SelectedItem.ToString());
                 Admin2ComboBox.Items.Clear();
-            }   
+            }
+
         }
         private void EmpleadoComboBox_DropDownOpened(object sender, EventArgs e)
         {
+            if (ObraComboBox.SelectedItem != null)
+            {
 
+                DB_admins admins = new DB_admins();
+                int? id_obra = 0;
+                id_obra = ObtenerID_obra(ObraComboBox.SelectedItem.ToString());
+
+
+                cargar_empleados(id_obra);
+
+            }
         }
 
         public int? ObtenerIdEmpleado(string nombre)
@@ -560,6 +575,104 @@ namespace CivitasERP.AdminViews
         private void ObraComboBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
+        }
+
+        private void CbxMultiplicador_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+        private void añadir_hora_extra() {
+            try
+            {
+                if (CbxDia.SelectedItem == null)
+                {
+                    MessageBox.Show("Seleccione un día.");
+                    return;
+                }
+
+                // Convertir fecha
+                string fechaStr = CbxDia.SelectedItem.ToString(); // "Lunes 17/06/2025"
+                if (!DateTime.TryParse(fechaStr.Substring(fechaStr.IndexOf(' ') + 1), out DateTime fechaSeleccionada))
+                {
+                    MessageBox.Show("Fecha inválida seleccionada.");
+                    return;
+                }
+
+                // Valores fijos
+                TimeSpan horasExtra = new TimeSpan(2, 0, 0);    // 2 horas extra
+                decimal pagaHoraExtra = 120.00m;                // Pago por hora extra
+                decimal salarioDelDia = 1000.00m;               // Salario del día
+
+                Conexion conexion = new Conexion();
+                string connectionString = conexion.ObtenerCadenaConexion();
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = conn;
+
+                    if (EmpleadoComboBox.SelectedItem != null)
+                    {
+                        int? idEmpleado = ObtenerIdEmpleado(EmpleadoComboBox.SelectedItem.ToString());
+                        if (idEmpleado == null)
+                        {
+                            MessageBox.Show("No se pudo obtener el ID del empleado.");
+                            return;
+                        }
+
+                        cmd.CommandText = @"
+                    INSERT INTO asistencia (asis_dia, asis_hora_extra, id_empleado, paga_horaXT, salariofecha)
+                    VALUES (@fecha, @horasExtra, @idEmpleado, @pagaExtra, @salario)";
+
+                        cmd.Parameters.AddWithValue("@fecha", fechaSeleccionada.Date);
+                        cmd.Parameters.AddWithValue("@horasExtra", horasExtra);
+                        cmd.Parameters.AddWithValue("@idEmpleado", idEmpleado);
+                        cmd.Parameters.AddWithValue("@pagaExtra", pagaHoraExtra);
+                        cmd.Parameters.AddWithValue("@salario", salarioDelDia);
+                    }
+                    else if (Admin2ComboBox.SelectedItem != null)
+                    {
+                        DB_admins dB_Admins = new DB_admins();
+                        int? idAdmin = dB_Admins.ObtenerIdPorUsuario(Admin2ComboBox.SelectedItem.ToString());
+                        if (idAdmin == null)
+                        {
+                            MessageBox.Show("No se pudo obtener el ID del administrador.");
+                            return;
+                        }
+
+                        cmd.CommandText = @"
+                    INSERT INTO asistencia (asis_dia, asis_hora_extra, admins_id_asistencia, paga_horaXT, salariofecha)
+                    VALUES (@fecha, @horasExtra, @idAdmin, @pagaExtra, @salario)";
+
+                        cmd.Parameters.AddWithValue("@fecha", fechaSeleccionada.Date);
+                        cmd.Parameters.AddWithValue("@horasExtra", horasExtra);
+                        cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
+                        cmd.Parameters.AddWithValue("@pagaExtra", pagaHoraExtra);
+                        cmd.Parameters.AddWithValue("@salario", salarioDelDia);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Debe seleccionar un empleado o un administrador.");
+                        return;
+                    }
+
+                    conn.Open();
+                    int resultado = cmd.ExecuteNonQuery();
+
+                    if (resultado > 0)
+                    {
+                        MessageBox.Show("Horas extra registradas correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se pudo guardar la asistencia.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al guardar la asistencia: " + ex.Message);
+            }
         }
     }
 
