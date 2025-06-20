@@ -64,7 +64,11 @@
                                DockPanel.Dock="Left">
                         </Image>
                         <ComboBox x:Name="Admin2ComboBox" 
-                                    BorderThickness="0">
+                                    BorderThickness="0"
+                                    SelectionChanged="Admin2ComboBox_SelectionChanged" 
+                                    DropDownOpened="Admin2ComboBox_DropDownOpened"
+                                  >
+                            
                         </ComboBox>
                     </DockPanel>
                 </Border>
@@ -90,7 +94,9 @@
                                DockPanel.Dock="Left">
                         </Image>
                         <ComboBox x:Name="ObraComboBox" 
-                                  BorderThickness="0">
+                                  BorderThickness="0"
+                                    SelectionChanged="ObraComboBox_SelectionChanged" 
+                                    DropDownOpened="ObraComboBox_DropDownOpened">
                         </ComboBox>
                     </DockPanel>
                 </Border>
@@ -116,7 +122,10 @@
                                DockPanel.Dock="Left">
                         </Image>
                         <ComboBox x:Name="EmpleadoComboBox" 
-                                  BorderThickness="0">
+                                  BorderThickness="0"
+                                    SelectionChanged="EmpleadoComboBox_SelectionChanged" 
+                                    DropDownOpened="EmpleadoComboBox_DropDownOpened">
+                            
                         </ComboBox>
                     </DockPanel>
                 </Border>
@@ -143,7 +152,9 @@
                     Background="Transparent"
                     BorderThickness="0"
                     VerticalContentAlignment="Center"
-                    Padding="5"/>
+                    Padding="5"
+                                    SelectionChanged="CbxAnio_SelectionChanged" 
+                                    DropDownOpened="CbxAnio_DropDownOpened"/>
                 </Border>
             </StackPanel>
 
@@ -159,7 +170,9 @@
                     Background="Transparent"
                     BorderThickness="0"
                     VerticalContentAlignment="Center"
-                    Padding="5"/>
+                    Padding="5"
+                                    SelectionChanged="CbxMes_SelectionChanged" 
+                                    DropDownOpened="CbxMes_DropDownOpened"/>
                 </Border>
             </StackPanel>
 
@@ -175,7 +188,9 @@
                     Background="Transparent"
                     BorderThickness="0"
                     VerticalContentAlignment="Center"
-                    Padding="5"/>
+                    Padding="5"
+                                    SelectionChanged="CbxSemana_SelectionChanged" 
+                                    DropDownOpened="CbxSemana_DropDownOpened"/>
                 </Border>
             </StackPanel>
 
@@ -191,7 +206,9 @@
                     Background="Transparent"
                     BorderThickness="0"
                     VerticalContentAlignment="Center"
-                    Padding="5"/>
+                    Padding="5"
+                                    SelectionChanged="CbxDia_SelectionChanged" 
+                                    DropDownOpened="CbxDia_DropDownOpened"/>
                 </Border>
             </StackPanel>
         </WrapPanel>

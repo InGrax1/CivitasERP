@@ -60,6 +60,8 @@
                         </Image>
                         <ComboBox x:Name="Admin2ComboBox" 
                                   BorderThickness="0"
+                                    SelectionChanged="Admin2ComboBox_SelectionChanged" 
+                                    DropDownOpened="Admin2ComboBox_DropDownOpened"
                                   >
                         </ComboBox>
                     </DockPanel>
@@ -87,6 +89,8 @@
                         </Image>
                         <ComboBox x:Name="ObraComboBox" 
                                   BorderThickness="0"
+                                    SelectionChanged="ObraComboBox_SelectionChanged" 
+                                    DropDownOpened="ObraComboBox_DropDownOpened"
                                   >
                         </ComboBox>
                     </DockPanel>
@@ -114,6 +118,8 @@
                         </Image>
                         <ComboBox x:Name="EmpleadoComboBox" 
                                   BorderThickness="0"
+                                    SelectionChanged="EmpleadoComboBox_SelectionChanged" 
+                                    DropDownOpened="EmpleadoComboBox_DropDownOpened"
                                   >
                         </ComboBox>
                     </DockPanel>
@@ -238,7 +244,7 @@
                                 Padding="5" 
                                 BorderThickness="1" 
                                 BorderBrush="{StaticResource primaryColor4}">
-                            <ComboBox x:Name="CbxCategoria" BorderThickness="0"/>
+                            <TextBox x:Name="TxtCategoria" BorderThickness="0"/>
                         </Border>
 
                         <!--Sueldo Semanal-->

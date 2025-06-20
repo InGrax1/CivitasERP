@@ -59,6 +59,8 @@
                         </Image>
                         <ComboBox x:Name="AdminComboBox" 
                               BorderThickness="0"
+                                   SelectionChanged="AdminComboBox_SelectionChanged" 
+                                    DropDownOpened="AdminComboBox_DropDownOpened"
                               >
                         </ComboBox>
                     </DockPanel>
@@ -227,7 +229,7 @@
                                 Padding="5" 
                                 BorderThickness="1" 
                                 BorderBrush="{StaticResource primaryColor4}">
-                            <ComboBox x:Name="CbxCategoria" BorderThickness="0"/>
+                            <TextBox x:Name="TxtCategoria" BorderThickness="0"/>
                         </Border>
 
                         <!--Sueldo Semanal-->
@@ -267,11 +269,11 @@
                                 BorderThickness="1" 
                                 BorderBrush="{StaticResource primaryColor4}">
                             <ComboBox x:Name="CbxMultiplicador" BorderThickness="0">
-                                <ComboBoxItem Content="1"/>
-                                <ComboBoxItem Content="1.5"/>
-                                <ComboBoxItem Content="2"/>
-                                <ComboBoxItem Content="2.5"/>
-                                <ComboBoxItem Content="3"/>
+                                <ComboBoxItem Content="1,00"/>
+                                <ComboBoxItem Content="1.50"/>
+                                <ComboBoxItem Content="2.00"/>
+                                <ComboBoxItem Content="2.50"/>
+                                <ComboBoxItem Content="3.00"/>
                             </ComboBox>
                         </Border>
 
