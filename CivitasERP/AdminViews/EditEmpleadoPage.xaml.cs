@@ -235,18 +235,21 @@ namespace CivitasERP.AdminViews
 
         private void Admin2ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
             if (Admin2ComboBox.SelectedItem != null)
             {
                 string admin = Admin2ComboBox.SelectedItem.ToString();
                 DB_admins admins = new DB_admins();
 
+                // Limpia selección actual
+                EmpleadoComboBox.SelectedItem = null;
+                EmpleadoComboBox.Items.Clear();
+                ObraComboBox.SelectedItem = null;
+                ObraComboBox.Items.Clear();
+
                 CargarDatosComboBox(admins.ObtenerIdPorUsuario(admin));
             }
-            else
-            {
-                // Opcional: limpia los datos o muestra un mensaje
-                Console.WriteLine("No se ha seleccionado ningún administrador.");
-            }
+
         }
         private void Admin2ComboBox_DropDownOpened(object sender, EventArgs e)
         {
@@ -258,22 +261,19 @@ namespace CivitasERP.AdminViews
         private void ObraComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            
-            if (Admin2ComboBox.SelectedItem != null || ObraComboBox.SelectedItem != null)
+            if (EmpleadoComboBox.SelectedItem != null)
+            {
+                EmpleadoComboBox.SelectedItem = null;  // Deselecciona para evitar errores
+                EmpleadoComboBox.Items.Clear();
+            }
+
+            if (Admin2ComboBox.SelectedItem != null && ObraComboBox.SelectedItem != null)
             {
                 string admin = Admin2ComboBox.SelectedItem.ToString();
                 DB_admins admins = new DB_admins();
-                int? id_obra = 0;
-                id_obra=ObtenerID_obra(admins.ObtenerIdPorUsuario(admin), ObraComboBox.SelectedItem.ToString());
-               
+                int? id_obra = ObtenerID_obra(admins.ObtenerIdPorUsuario(admin), ObraComboBox.SelectedItem.ToString());
 
                 cargar_empleados(admins.ObtenerIdPorUsuario(admin), id_obra);
-
-            }
-            else
-            {
-                // Opcional: limpia los datos o muestra un mensaje
-
             }
 
         }
@@ -286,12 +286,27 @@ namespace CivitasERP.AdminViews
 
         private void EmpleadoComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string admin = Admin2ComboBox.SelectedItem.ToString();
-            DB_admins admins = new DB_admins();
-            int? id_obra = 0;
-            id_obra = ObtenerID_obra(admins.ObtenerIdPorUsuario(admin), ObraComboBox.SelectedItem.ToString());
-            MessageBox.Show(""+ObtenerIdEmpleado(EmpleadoComboBox.SelectedItem.ToString()));
-            CargarDatosEmpleado(ObtenerIdEmpleado(EmpleadoComboBox.SelectedItem.ToString()));
+            if (EmpleadoComboBox.SelectedItem == null)
+                return;
+
+            string nombreEmpleado = EmpleadoComboBox.SelectedItem.ToString();
+
+            // Validar que el item seleccionado aún exista en la lista
+            if (!EmpleadoComboBox.Items.Contains(nombreEmpleado))
+                return;
+
+            if (Admin2ComboBox.SelectedItem != null && ObraComboBox.SelectedItem != null)
+            {
+                string admin = Admin2ComboBox.SelectedItem.ToString();
+                DB_admins admins = new DB_admins();
+                int? id_obra = ObtenerID_obra(admins.ObtenerIdPorUsuario(admin), ObraComboBox.SelectedItem.ToString());
+
+                int? idEmpleado = ObtenerIdEmpleado(nombreEmpleado);
+                if (idEmpleado != null)
+                {
+                    CargarDatosEmpleado(idEmpleado);
+                }
+            }
         }
         private void EmpleadoComboBox_DropDownOpened(object sender, EventArgs e)
         {

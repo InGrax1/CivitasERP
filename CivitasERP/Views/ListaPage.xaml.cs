@@ -185,6 +185,7 @@ namespace CivitasERP.Views
 
 
 
+                UbicacionLabel.Text = ObtenerUbicacionObra(id_obra);
                 Conexion Sconexion = new Conexion();
                 string connectionString;
 
@@ -398,6 +399,39 @@ namespace CivitasERP.Views
             Agregar_tiempo tiempo = new Agregar_tiempo();
             ComBoxAnio.ItemsSource = tiempo.GetAnios();
             ComBoxAnio.SelectedItem = DateTime.Now.Year;
+        }
+        public string ObtenerUbicacionObra(int? idObra)
+        {
+            Conexion Sconexion = new Conexion();
+            string connectionString;
+
+            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
+            connectionString = obtenerCadenaConexion;
+            string ubicacion = null;
+            string query = "SELECT obra_ubicacion FROM obra WHERE id_obra = @IdObra";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@IdObra", idObra);
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        ubicacion = reader["obra_ubicacion"].ToString();
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al obtener la ubicación: " + ex.Message);
+                }
+            }
+
+            return ubicacion;
         }
     }
 }
