@@ -67,7 +67,11 @@
                    DockPanel.Dock="Left">
                     </Image>
                     <ComboBox x:Name="ObraComboBox" 
-                      BorderThickness="0">
+                      BorderThickness="0"
+                                    SelectionChanged="ObraComboBox_SelectionChanged" 
+                                    DropDownOpened="ObraComboBox_DropDownOpened"
+                                   >
+                                    
                     </ComboBox>
                 </DockPanel>
             </Border>
@@ -108,8 +112,12 @@
                                DockPanel.Dock="Left">
                         </Image>
                         <ComboBox x:Name="Admin2ComboBox" 
-                                    BorderThickness="0">
+                                    BorderThickness="0"
+                                    SelectionChanged="Admin2ComboBox_SelectionChanged" 
+                                    DropDownOpened="Admin2ComboBox_DropDownOpened">
+
                         </ComboBox>
+
                     </DockPanel>
                 </Border>
             </StackPanel>
@@ -135,12 +143,25 @@
                                DockPanel.Dock="Left">
                         </Image>
                         <ComboBox x:Name="EmpleadoComboBox" 
-                                  BorderThickness="0">
+                                  BorderThickness="0"
+                                    SelectionChanged="EmpleadoComboBox_SelectionChanged" 
+                                    DropDownOpened="EmpleadoComboBox_DropDownOpened">
+                            
                         </ComboBox>
                     </DockPanel>
                 </Border>
             </StackPanel>
 
+        <!-- 2) Formulario de selección -->
+        <WrapPanel Grid.Row="2"
+               Orientation="Horizontal"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Top"
+               ItemHeight="Auto"
+               ItemWidth="Auto"
+               Margin="0,0,0,20">
+
+        </WrapPanel>
             <!-- 1) Formulario de INASISTENCIA -->    
             <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,50,0,0">
                 <TextBlock Text="Justificación de Inasistencia"
@@ -197,9 +218,15 @@
                                 <ComboBox x:Name="CbxAnio"
                                           Background="Transparent"
                                           BorderThickness="0"
-                                          VerticalContentAlignment="Center"/>
+                                          VerticalContentAlignment="Center"
+                                          
+                              SelectionChanged="CbxAnio_SelectionChanged" 
+                                    DropDownOpened="CbxAnio_DropDownOpened"/>
+
+
                             </Border>
                         </StackPanel>
+                        
                         <!-- Mes -->
                         <StackPanel Orientation="Vertical" MinWidth="120" Margin="0,0,10,0">
                             <TextBlock Text="Mes" FontSize="15" Foreground="{StaticResource titleColorA}"/>
@@ -212,7 +239,9 @@
                                 <ComboBox x:Name="CbxMes"
                                           Background="Transparent"
                                           BorderThickness="0"
-                                          VerticalContentAlignment="Center"/>
+                                          VerticalContentAlignment="Center"
+                                                SelectionChanged="CbxMes_SelectionChanged" 
+                                                DropDownOpened="CbxMes_DropDownOpened"/>
                             </Border>
                         </StackPanel>
                         <!-- Semana -->
@@ -227,7 +256,9 @@
                                 <ComboBox x:Name="CbxSemana"
                                           Background="Transparent"
                                           BorderThickness="0"
-                                          VerticalContentAlignment="Center"/>
+                                          VerticalContentAlignment="Center"
+                                            SelectionChanged="CbxSemana_SelectionChanged" 
+                                            DropDownOpened="CbxSemana_DropDownOpened"/>
                             </Border>
                         </StackPanel>
                         <!-- Día -->
@@ -242,7 +273,9 @@
                                 <ComboBox x:Name="CbxDia"
                                           Background="Transparent"
                                           BorderThickness="0"
-                                          VerticalContentAlignment="Center"/>
+                                          VerticalContentAlignment="Center"
+                                                SelectionChanged="CbxDia_SelectionChanged" 
+                                                DropDownOpened="CbxDia_DropDownOpened"/>
                             </Border>
                         </StackPanel>
                     </WrapPanel>

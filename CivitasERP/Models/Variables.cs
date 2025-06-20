@@ -8,6 +8,7 @@ namespace CivitasERP.Models
 {
     internal class Variables
     {
+        private static bool _Jefe;
         private static string _usuario;
         private static int? _idAdmin;
         private static int? _idObra;
@@ -19,6 +20,13 @@ namespace CivitasERP.Models
         private static string _indexComboboxAño;
         private static string? _indexComboboxMes;
         private static string? _indexComboboxSemana;
+
+        public static bool Jefe
+        {
+            get { return _Jefe; }
+            set { _Jefe = value; }
+        }
+
         public static string Usuario
         {
             get { return _usuario; }

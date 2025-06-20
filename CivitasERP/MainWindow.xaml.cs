@@ -112,10 +112,72 @@ namespace CivitasERP
                 cmd.ExecuteNonQuery();
             }
         }
-        private void EllipseProfile_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+
+        // JEFE
+        
+        public void CargarFotoPerfilJefe(int idAdmin)
         {
             var conexion = new Conexion();
-            string connectionString = conexion.ObtenerCadenaConexion(); 
+            string connectionString = conexion.ObtenerCadenaConexion();
+            const string sql = @"
+            SELECT FotoPerfilJefe
+              FROM Jefe 
+             WHERE id_Jefe = @id";
+            using (var cn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(sql, cn))
+            {
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = idAdmin;
+                cn.Open();
+                var result = cmd.ExecuteScalar();
+                if (result is byte[] fotoBytes && fotoBytes.Length > 0)
+                {
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.StreamSource = new MemoryStream(fotoBytes);
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.EndInit();
+
+                    EllipseProfile.Fill = new ImageBrush(bitmap)
+                    {
+                        Stretch = Stretch.UniformToFill
+                    };
+                }
+                else
+                {
+                    // Opcional: pinta un placeholder si no hay foto
+                    EllipseProfile.Fill = Brushes.LightGray;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Guarda el array de bytes en la BD para el id de admin actual.
+        /// </summary>
+        public void GuardarFotoPerfilJefe(byte[] fotoBytes, int idAdmin)
+        {
+            var conexion = new Conexion();
+            string connectionString = conexion.ObtenerCadenaConexion();
+            const string sql = @"
+            UPDATE Jefe
+               SET FotoPerfilJefe = @foto
+             WHERE id_Jefe = @id";
+            using (var cn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(sql, cn))
+            {
+                cmd.Parameters.Add("@foto", SqlDbType.VarBinary, fotoBytes.Length).Value = fotoBytes;
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = idAdmin;
+                cn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        
+        private void EllipseProfile_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (Variables.Jefe == false) { 
+
+            var conexion = new Conexion();
+            string connectionString = conexion.ObtenerCadenaConexion();
             var dlg = new OpenFileDialog
             {
                 Title = "Selecciona una foto de perfil",
@@ -148,6 +210,48 @@ namespace CivitasERP
                    .Value = Variables.IdAdmin;
                 cn.Open();
                 cmd.ExecuteNonQuery();
+            }
+               
+        }
+
+            if (Variables.Jefe == true)
+            {
+                var conexion = new Conexion();
+                string connectionString = conexion.ObtenerCadenaConexion();
+                var dlg = new OpenFileDialog
+                {
+                    Title = "Selecciona una foto de perfil",
+                    Filter = "Imágenes (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp",
+                };
+                if (dlg.ShowDialog() != true) return;
+
+                var ruta = dlg.FileName;
+                byte[] imagenBytes = File.ReadAllBytes(ruta);
+
+                // 1) Mostrarla inmediatamente
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.StreamSource = new MemoryStream(imagenBytes);
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+                EllipseProfile.Fill = new ImageBrush(bitmap) { Stretch = Stretch.UniformToFill };
+
+                // 2) Guardarla en la BD
+                const string sql = @"
+                              UPDATE Jefe 
+                                 SET FotoPerfilJefe = @foto 
+                               WHERE id_Jefe = @id";
+                using (var cn = new SqlConnection(connectionString))
+                using (var cmd = new SqlCommand(sql, cn))
+                {
+                    cmd.Parameters.Add("@foto", SqlDbType.VarBinary, imagenBytes.Length)
+                       .Value = imagenBytes;
+                    cmd.Parameters.Add("@id", SqlDbType.Int)
+                       .Value = Variables.IdAdmin;
+                    cn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+
             }
         }
 

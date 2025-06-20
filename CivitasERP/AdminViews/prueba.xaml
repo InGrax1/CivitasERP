@@ -13,7 +13,7 @@
             <Button Content="Guardar Cambios" Width="200" Margin="0,10,0,0" Click="GuardarCambios_Click"/>
             <DataGrid x:Name="AdminDataGrid" AutoGenerateColumns="True" IsReadOnly="False" CanUserAddRows="False" Margin="0,10,0,0"/>
             <ComboBox x:Name ="AdminComboBox" Margin="0,10,0,0" DropDownOpened="AdminComboBox_DropDownOpened" SelectionChanged="AdminComboBox_SelectionChanged"/>
-            <ComboBox x:Name="ObraComboBox" Margin="0,10,0,0" DropDownClosed="ObraComboBox_DropDownOpened" SelectionChanged="ObraComboBox_SelectionChanged"/>
+            <ComboBox x:Name="ObraComboBox" Margin="0,10,0,0" DropDownOpened="ObraComboBox_DropDownOpened" SelectionChanged="ObraComboBox_SelectionChanged"/>
 
 
         </StackPanel>

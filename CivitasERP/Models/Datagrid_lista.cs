@@ -187,7 +187,7 @@ namespace CivitasERP.Models
                                     e.emp_semanal, 
                                     e.emp_hora_extra  
                                     FROM empleado e
-                                    INNER JOIN asistencia a ON e.id_empleado = a.id_empleado
+                                    LEFT JOIN asistencia a ON e.id_empleado = a.id_empleado
                                     WHERE e.id_admins = @idAdmin 
                                       AND e.id_obra = @id_obra 
                                       ";
