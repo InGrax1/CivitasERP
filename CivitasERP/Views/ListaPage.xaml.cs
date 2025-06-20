@@ -22,6 +22,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using CivitasERP.ViewModels;
 using System.Drawing;
+using System.Collections;
 
 
 namespace CivitasERP.Views
@@ -51,6 +52,7 @@ namespace CivitasERP.Views
 
                 var empleados = repo.ObtenerEmpleados();
                 dataGridAsistencia.ItemsSource = empleados;
+
             }
             if (Variables.indexComboboxAño != null || Variables.indexComboboxMes != null || Variables.indexComboboxMes != null)
             {
@@ -91,8 +93,6 @@ namespace CivitasERP.Views
                     
                 }
             }
-
-
             DataContext = new ListaViewModel();
         }
 
@@ -200,6 +200,11 @@ namespace CivitasERP.Views
             else
             {
             }
+            /// <summary>
+            /// LEE EL NÚMERO DE ÍTEMS QUE TIENE EL GRID Y LO MUESTRA
+            /// A diferencia del DataGridNomina este lee directo el data grid con itemsSource
+            // Relee el número de ítems que tiene el grid y lo muestra
+            TotalPersonal.Text = dataGridAsistencia.Items.Count.ToString();
         }
         private int? ObtenerID_obra(int? idAdminObra, string obraNombre)
         {
@@ -392,12 +397,6 @@ namespace CivitasERP.Views
             ComBoxAnio.ItemsSource = tiempo.GetAnios();
             ComBoxAnio.SelectedItem = DateTime.Now.Year;
         }
-
-
-
-
-
-
     }
 }
 

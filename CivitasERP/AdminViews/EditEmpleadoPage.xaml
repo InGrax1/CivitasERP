@@ -248,9 +248,9 @@
             </Grid>
 
             <!-- 3) Botones Guardar / Cancelar -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="30">
                 <Button Style="{StaticResource LargeRoundButton}"
-                        Background="{StaticResource buttonColor2}"
+                        Background="{StaticResource titleColor3}"
                         x:Name="BtnCancelar"
                         Grid.Row="3"
                         Width="250"
@@ -264,14 +264,8 @@
                         Grid.Row="3"
                         Width="250"
                         Click="BtnGuardar_Click">
-                    <TextBlock Text="Cancelar" FontSize="20" Foreground="White"/>
+                    <TextBlock Text="Guarrdar" FontSize="20" Foreground="White"/>
                 </Button>
-
-                <Button Content="Guardar"
-                    Background="#6666FF"
-                    Foreground="White"
-                    Padding="10,5"
-                    Click="BtnGuardar_Click"/>
             </StackPanel>
 
             <!--FONDO-->

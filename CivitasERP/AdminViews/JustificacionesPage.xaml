@@ -336,9 +336,7 @@
                 Grid.Row="3"
                 Width="250"
                 Click="BtnGuardarJustificacion_Click">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="Guardar Justificacion" FontSize="20" Foreground="White"/>
-            </StackPanel>
         </Button>
     </Grid>
 </Page>

@@ -205,7 +205,7 @@ namespace CivitasERP
         private void HighlightNavButton(Button btnToActivate)
         {
             // Lista de todos los botones de menú
-            var navButtons = new[] { btnMenu, btnNomina, btnLista };
+            var navButtons = new[] { btnMenu, btnNomina, btnLista, btnJustificaciones, btnEmpleados, btnAdmins };
 
             // Rescata los brushes de los recursos
             var defaultBrush = (Brush)FindResource("buttonColor2"); // #4772E3

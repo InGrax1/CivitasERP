@@ -273,6 +273,7 @@
                                 VerticalAlignment="Center"
                                 Margin="0,0,20,0">
                             <TextBlock Text="5"
+                                       x:Name="TotalPersonal"
                                        Foreground="{StaticResource titleColor4}"
                                        FontWeight="Bold"
                                        FontSize="20"/>

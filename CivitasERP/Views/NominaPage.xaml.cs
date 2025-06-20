@@ -18,6 +18,7 @@ using static CivitasERP.Views.LoginPage;
 using System.Data.SqlClient;
 using System.Globalization;
 using static CivitasERP.Views.ForgotPasswordPage;
+using static CivitasERP.Models.DataGridNominas;
 
 
 
@@ -46,6 +47,9 @@ namespace CivitasERP.Views
 
                 var empleados = repo.ObtenerEmpleados();
                 dataGridNomina.ItemsSource = empleados;
+
+                CargarYSumar();
+
             }
 
 
@@ -165,6 +169,7 @@ namespace CivitasERP.Views
                 ComBoxMes.SelectedIndex = --numeroMes;
                 ComBoxAnio.SelectedItem = año;
 
+
             }
 
             string usuario = Variables.Usuario;
@@ -199,6 +204,7 @@ namespace CivitasERP.Views
             else
             {
             }
+            CargarYSumar();
         }
         private int? ObtenerID_obra(int? idAdminObra, string obraNombre)
         {
@@ -264,11 +270,6 @@ namespace CivitasERP.Views
 
 
 
-
-
-
-
-
         //    SEMANA
 
         private void ComBoxSemana_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -307,6 +308,7 @@ namespace CivitasERP.Views
             var empleados = repo.ObtenerEmpleados();
             dataGridNomina.ItemsSource = empleados;
 
+            CargarYSumar();
 
         }
 
@@ -329,12 +331,14 @@ namespace CivitasERP.Views
         private void ComBoxSemana_DropDownOpened(object sender, EventArgs e)
         {
             CargarMeses();
+            CargarYSumar();
         }
 
         // MES
         private void ComBoxMes_DropDownOpened(object sender, EventArgs e)
         {
             CargarMeses();
+            CargarYSumar();
         }
 
         private void ComBoxMes_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -391,6 +395,7 @@ namespace CivitasERP.Views
         private void ComBoxAnio_DropDownOpened(object sender, EventArgs e)
         {
             CargarAnios();
+            CargarYSumar();
         }
         private void CargarAnios()
         {
@@ -400,7 +405,34 @@ namespace CivitasERP.Views
         }
 
 
+        // SUMA DE TOTALES EN FOOTER
+        private void CalcularTotales(IEnumerable<DataGridNominas.Empleado> lista)
+        {
+            // Sumas cada columna
+            int totalPersonal = lista.Count();
+            decimal tJornada = lista.Sum(e => e.SueldoJornada);
+            decimal tSemanal = lista.Sum(x => x.SueldoSemanal);
+            decimal tHrsExtra = lista.Sum(x => x.HorasExtra);
+            decimal tPrecioHE = lista.Sum(x => x.PHoraExtra);
+            decimal tSuelExtra = lista.Sum(x => x.SuelExtra);
+            decimal tTrabajado = lista.Sum(x => x.SuelTrabajado);
+            decimal tGeneral = lista.Sum(x => x.SuelTotal);
 
-
+            // Asigna a tus TextBlocks
+            TotalPersonal.Text = totalPersonal.ToString();
+            TotalSuelJornal.Text = tJornada.ToString("C2");
+            TotalSuelSemanal.Text = tSemanal.ToString("C2");
+            TotalHrsExtra.Text = tHrsExtra.ToString("N2");
+            TotalPrecioHrsExt.Text = tPrecioHE.ToString("C2");
+            TotalSuelExt.Text = tSuelExtra.ToString("C2");
+            TotalSuelTrabajado.Text = tTrabajado.ToString("C2");
+            TotalGeneral.Text = tGeneral.ToString("C2");
+        }
+        private void CargarYSumar()
+        {
+            var empleados = repo.ObtenerEmpleados();
+            dataGridNomina.ItemsSource = empleados;
+            CalcularTotales(empleados);
+        }
     }
 }
