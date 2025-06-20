@@ -3,337 +3,306 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         Title="NominaPage"
-        MinHeight="800" MinWidth="600">
-    
+        MinHeight="800" MinWidth="600"
+        Background="{StaticResource BackgroudColor}">
     <Grid>
-        <!-- HEAD -->
-        <Border Grid.Column="1" 
-                    Panel.ZIndex="1"
-                    Background="White" 
-                    Margin="0">
-            <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <ScrollViewer Grid.Row="0"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Disabled"
+                      Margin="0,0,0,20">
+            <!-- FILTROS -->
+            <Grid Grid.Row="1" Margin="0,0,0,20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-
-                <ScrollViewer Grid.Row="1"
-                              HorizontalScrollBarVisibility="Auto"
-                              VerticalScrollBarVisibility="Disabled"
-                              Margin="0,0,0,20">
-                    <!-- FILTROS -->
-                    <Grid Grid.Row="1" Margin="0,0,0,20">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!-- Título -->
-                        <TextBlock Grid.Column="0" Grid.ColumnSpan="5"
-                                   Text="LISTA DE PERSONAL Y NÓMINA"
-                                   FontSize="26" FontWeight="Bold"
-                                   Margin="0,0,0,20"
-                                   Foreground="{StaticResource titleColorA}"/>
-
-                        <!-- Obra -->
-                        <TextBlock Grid.Row="1" Grid.Column="0"
-                                   Text="Obra" FontSize="16"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,10,0"
-                                   Foreground="{StaticResource titleColorB}"/>
-
-                        <Border Grid.Row="1" Grid.Column="1"
-                                Background="White" 
-                                CornerRadius="10"
-                                BorderBrush="#6666FF" 
-                                BorderThickness="1"
-                                MinHeight="30"
-                                MinWidth="80"
-                                Padding="3">
-                            <ComboBox x:Name="ObraComboBox"
-                                      Background="Transparent"
-                                      BorderBrush="Transparent"
-                                      BorderThickness="0"
-                                      FontSize="14"
-                                      VerticalContentAlignment="Stretch"
-                                      Padding="5"
-                                      IsEditable="False"
-                                      IsReadOnly="False" 
-                                      DropDownOpened="ObraComboBox_DropDownOpened" 
-                                      SelectionChanged="ObraComboBox_SelectionChanged"/>
-                        </Border>
-
-                        <!-- Periodo -->
-                        <StackPanel Grid.Row="1" Grid.Column="2"
-                                    Orientation="Horizontal" 
-                                    VerticalAlignment="Center">
-
-                        </StackPanel>
-
-                        <!-- Combos Mes + Año (ambos dentro de un StackPanel) -->
-                        <StackPanel Grid.Row="1" Grid.Column="2"
-                                    Orientation="Horizontal"
-                                    VerticalAlignment="Center"
-                                    Margin="0,0,10,0">
-
-
-                            <!-- Combo Semana -->
-                            <TextBlock Text="Semana"
-                                       FontSize="16"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Stretch"
-                                       Margin="10,0,10,0"
-                                       Foreground="{StaticResource titleColorB}"/>
-                            <Border Background="White"
-                                    CornerRadius="5"
-                                    BorderBrush="#6666FF"
-                                    MinHeight="30"
-                                    MinWidth="80"
-                                    BorderThickness="2"
-                                    Padding="1"
-                                    Margin="0,0,15,0">
-                                <ComboBox x:Name="ComBoxSemana"
-                                          Background="White"
-                                          BorderBrush="Transparent"
-                                          BorderThickness="0"
-                                          FontSize="14"                             
-                                          Foreground="DarkBlue"
-                                          FontWeight="Normal"
-                                          HorizontalContentAlignment="Stretch"
-                                          VerticalContentAlignment="Center"
-                                          DropDownOpened="ComBoxSemana_DropDownOpened"
-                                          SelectionChanged="ComBoxSemana_SelectionChanged"/>
-                            </Border>
-
-                            <!-- Combo Mes -->
-                            <TextBlock Text="Mes"
-                                       FontSize="16"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Stretch"
-                                       Margin="0,0,10,0"
-                                       Foreground="{StaticResource titleColorB}"/>
-                            <Border Background="White"
-                                    CornerRadius="5"
-                                    BorderBrush="#6666FF"
-                                    MinHeight="30"
-                                    MinWidth="80"
-                                    BorderThickness="2"
-                                    Padding="1"
-                                    Margin="0,0,15,0">
-                                <ComboBox x:Name="ComBoxMes"
-                                          Background="White"
-                                          BorderBrush="Transparent"
-                                          BorderThickness="0"
-                                          FontSize="14"                             
-                                          Foreground="DarkBlue"
-                                          FontWeight="Normal"
-                                          HorizontalContentAlignment="Stretch"
-                                          VerticalContentAlignment="Center"
-                                          DropDownOpened="ComBoxMes_DropDownOpened"
-                                          SelectionChanged="ComBoxMes_SelectionChanged"/>
-                            </Border>
-
-                            <!-- Combo Año -->
-                            <TextBlock Text="Año"
-                                       FontSize="16"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Stretch"
-                                       Margin="0,0,10,0"
-                                       Foreground="{StaticResource titleColorB}"/>
-                            <Border Background="White"
-                                    CornerRadius="5"
-                                    BorderBrush="#6666FF"
-                                    MinHeight="30"
-                                    MinWidth="80"
-                                    BorderThickness="2"
-                                    Padding="1"
-                                    Margin="0,0,0,0">
-                                <ComboBox x:Name="ComBoxAnio"
-                                          Background="White"
-                                          BorderBrush="Transparent"
-                                          BorderThickness="0"
-                                          FontSize="14"
-                                          Foreground="DarkBlue"
-                                          FontWeight="Normal"
-                                          HorizontalContentAlignment="Stretch"
-                                          VerticalContentAlignment="Center"
-                                          DropDownOpened="ComBoxAnio_DropDownOpened"
-                                          SelectionChanged="ComBoxAnio_SelectionChanged"/>
-                            </Border>
-                        </StackPanel>
-
-
-                        <!-- Agregar Nuevo Empleado -->
-                        <Border Grid.Row="1" Grid.Column="4"
-                                Background="{StaticResource buttonColor1}" 
-                                CornerRadius="5"
-                                Width="auto" 
-                                MinHeight="30"
-                                MinWidth="80"
-                                HorizontalAlignment="Center">
-                            <Button x:Name="btnNuevoEmpleado"
-                                    Background="Transparent"
-                                    BorderBrush="Transparent"
-                                    Foreground="{StaticResource titleColor4}"
-                                    FontWeight="Bold"
-                                    Click="btnNuevoEmpleado_Click" 
-                                    HorizontalAlignment="Stretch" 
-                                    Width="150"
-                                    HorizontalContentAlignment="Center">
-                                + Agregar Nuevo Personal
-                            </Button>
-                        </Border>
-
-                        <!-- Ubicación -->
-                        <TextBlock Grid.Row="2" Grid.Column="0"
-                                   Text="Ubicación"
-                                   FontSize="16"
-                                   VerticalAlignment="Center"
-                                   Margin="0,20,10,0"
-                                   Foreground="{StaticResource titleColorB}"/>
-
-                        <Border Grid.Row="2" Grid.Column="1"
-                                Background="White"
-                                CornerRadius="10"
-                                BorderBrush="#6666FF"
-                                BorderThickness="1"
-                                Height="30"
-                                Margin="0,20,0,0">
-                            <Label x:Name="UbicacionLabel"
-                                   Content="Ubicación . . ."
-                                   Background="Transparent"
-                                   Padding="5"
-                                   Foreground="Black"
-                                   VerticalContentAlignment="Center"/>
-                        </Border>
-                    </Grid>
-                </ScrollViewer>
-
-                <!-- DATA GRID -->
-                <Border Grid.Row="2" 
-                        CornerRadius="20"
-                        Background="#E5E5E5"
-                        SnapsToDevicePixels="True">
-                    <DataGrid x:Name="dataGridNomina"
-                              AutoGenerateColumns="False"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="False"
-                              IsReadOnly="True"
-                              Margin="10"
-                              HeadersVisibility="Column"
-                              GridLinesVisibility="None"
-                              ColumnWidth="*"
-                              RowHeight="20"
-                              HorizontalContentAlignment="Center"
-                              FontSize="15"
-                              AlternationCount="2">
-                            <!-- Aplica tu estilo -->
-                            <DataGrid.ColumnHeaderStyle>
-                                <StaticResource ResourceKey="ColumnHeaderRound"/>
-                            </DataGrid.ColumnHeaderStyle>
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="#" Binding="{Binding ID}" />
-                                <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
-                                <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" />
-                                <DataGridTextColumn Header="Días Trabajados" Binding="{Binding DiasTrabajados}" />
-                                <DataGridTextColumn Header="Días" Binding="{Binding Dias}"  />
-                                <DataGridTextColumn Header="Sueldo Jornada" Binding="{Binding SueldoJornada}" />
-                                <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal}" />
-                                <DataGridTextColumn Header="Horas Extra" Binding="{Binding HorasExtra}" />
-                                <DataGridTextColumn Header="Precio Hora Extra" Binding="{Binding PHoraExtra}"  />
-                                <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding SuelExtra}" />
-                                <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado}" />
-                                <DataGridTextColumn Header="Sueldo Total" Binding="{Binding SuelTotal}" />
-                            </DataGrid.Columns>
-                        </DataGrid>
-                </Border>
-    
-                <!-- FOOTER: Total de Personal + Totales -->
-                <Border Grid.Row="3"
-                        Background="{StaticResource Color1}"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <!-- Título -->
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"
+                           Text="LISTA DE PERSONAL Y NÓMINA"
+                           FontSize="26" FontWeight="Bold"
+                           Margin="0,0,0,20"
+                           Foreground="{StaticResource titleColorA}"/>
+                <!-- Obra -->
+                <TextBlock Grid.Row="1" Grid.Column="0"
+                           Text="Obra" FontSize="16"
+                           VerticalAlignment="Center"
+                           Margin="0,0,10,0"
+                           Foreground="{StaticResource titleColorB}"/>
+                <Border Grid.Row="1" Grid.Column="1"
+                        Background="White" 
                         CornerRadius="10"
-                        Padding="10"
-                        Margin="10,10,10,10">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!-- 1) Total de Personal label + contador -->
-                        <TextBlock Text="Total de Personal"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,5,0"
-                                   FontSize="20"/>
-                        <!--Circulo-->
-                        <Border Grid.Column="1"
-                                Background="{StaticResource primaryColor4}"
-                                CornerRadius="5"
-                                Padding="5"
-                                VerticalAlignment="Center"
-                                Margin="0,0,20,0">
-                            <TextBlock Text="-"
-                                       x:Name="TotalPersonal"
-                                       Foreground="{StaticResource titleColor4}"
-                                       FontWeight="Bold"
-                                       FontSize="20"/>
-                        </Border>
-                        <!-- 2) Valores finales -->
-                        <StackPanel Grid.Column="3"
-                                    Orientation="Horizontal"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Margin="5">
-                            <!--TOTAL FOOTER-->
-                            <TextBlock Grid.Column="2"
-                                       Text="TOTAL"
-                                       FontSize="20"
-                                       FontWeight="Bold"
-                                       Foreground="#5C5CFF"
-                                       Margin="0,0,20,0"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"/>
-                            <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
-                                <TextBlock Text="$---" FontSize="20" x:Name="TotalSuelJornal"/>
-                            </Border>
-                            <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
-                                <TextBlock Text="$---" FontSize="20" x:Name="TotalSuelSemanal"/>
-                            </Border>
-                            <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
-                                <TextBlock Text="$---" FontSize="20" x:Name="TotalHrsExtra"/>
-                            </Border>
-                            <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
-                                <TextBlock Text="$---" FontSize="20" x:Name="TotalPrecioHrsExt"/>
-                            </Border>
-                            <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
-                                <TextBlock Text="$---" FontSize="20" x:Name="TotalSuelExt"/>
-                            </Border>
-                            <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
-                                <TextBlock Text="$---" FontSize="20" x:Name="TotalSuelTrabajado"/>
-                            </Border>
-                            <!-- valor final resaltado -->
-                            <Border Background="{StaticResource primaryColor1}" CornerRadius="5" Padding="5" Margin="0,0,10,0">
-                                <TextBlock Text="$---"
-                                           x:Name="TotalGeneral"
-                                           Foreground="White"
-                                           FontWeight="Bold"
-                                           FontSize="20"/>
-                            </Border>
-                        </StackPanel>
-                    </Grid>
+                        BorderBrush="#6666FF" 
+                        BorderThickness="1"
+                        MinHeight="30"
+                        MinWidth="80"
+                        Padding="3">
+                    <ComboBox x:Name="ObraComboBox"
+                              Background="Transparent"
+                              BorderBrush="Transparent"
+                              BorderThickness="0"
+                              FontSize="14"
+                              VerticalContentAlignment="Stretch"
+                              Padding="5"
+                              IsEditable="False"
+                              IsReadOnly="False" 
+                              DropDownOpened="ObraComboBox_DropDownOpened" 
+                              SelectionChanged="ObraComboBox_SelectionChanged">
+                    </ComboBox>
                 </Border>
+                <!-- Combos Mes + Año (ambos dentro de un StackPanel) -->
+                <StackPanel Grid.Row="1" Grid.Column="2"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            Margin="0,0,10,0">
+                    <!-- Combo Semana -->
+                    <TextBlock Text="Semana"
+                               FontSize="16"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"
+                               Margin="10,0,10,0"
+                               Foreground="{StaticResource titleColorB}"/>
+                    <Border Background="White"
+                            CornerRadius="5"
+                            BorderBrush="#6666FF"
+                            MinHeight="30"
+                            MinWidth="80"
+                            BorderThickness="2"
+                            Padding="1"
+                            Margin="0,0,15,0">
+                        <ComboBox x:Name="ComBoxSemana"
+                                  Background="White"
+                                  BorderBrush="Transparent"
+                                  BorderThickness="0"
+                                  FontSize="14"                             
+                                  Foreground="DarkBlue"
+                                  FontWeight="Normal"
+                                  HorizontalContentAlignment="Stretch"
+                                  VerticalContentAlignment="Center"
+                                  DropDownOpened="ComBoxSemana_DropDownOpened"
+                                  SelectionChanged="ComBoxSemana_SelectionChanged"/>
+                    </Border>
+                    <!-- Combo Mes -->
+                    <TextBlock Text="Mes"
+                               FontSize="16"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"
+                               Margin="0,0,10,0"
+                               Foreground="{StaticResource titleColorB}"/>
+                    <Border Background="White"
+                            CornerRadius="5"
+                            BorderBrush="#6666FF"
+                            MinHeight="30"
+                            MinWidth="80"
+                            BorderThickness="2"
+                            Padding="1"
+                            Margin="0,0,15,0">
+                        <ComboBox x:Name="ComBoxMes"
+                                  Background="White"
+                                  BorderBrush="Transparent"
+                                  BorderThickness="0"
+                                  FontSize="14"                             
+                                  Foreground="DarkBlue"
+                                  FontWeight="Normal"
+                                  HorizontalContentAlignment="Stretch"
+                                  VerticalContentAlignment="Center"
+                                  DropDownOpened="ComBoxMes_DropDownOpened"
+                                  SelectionChanged="ComBoxMes_SelectionChanged"/>
+                    </Border>
+                    <!-- Combo Año -->
+                    <TextBlock Text="Año"
+                               FontSize="16"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"
+                               Margin="0,0,10,0"
+                               Foreground="{StaticResource titleColorB}"/>
+                    <Border Background="White"
+                            CornerRadius="5"
+                            BorderBrush="#6666FF"
+                            MinHeight="30"
+                            MinWidth="80"
+                            BorderThickness="2"
+                            Padding="1"
+                            Margin="0,0,0,0">
+                        <ComboBox x:Name="ComBoxAnio"
+                                  Background="White"
+                                  BorderBrush="Transparent"
+                                  BorderThickness="0"
+                                  FontSize="14"
+                                  Foreground="DarkBlue"
+                                  FontWeight="Normal"
+                                  HorizontalContentAlignment="Stretch"
+                                  VerticalContentAlignment="Center"
+                                  DropDownOpened="ComBoxAnio_DropDownOpened"
+                                  SelectionChanged="ComBoxAnio_SelectionChanged"/>
+                    </Border>
+                </StackPanel>
+                <!-- Agregar Nuevo Empleado -->
+                <Border Grid.Row="1" Grid.Column="4"
+                        Background="{StaticResource buttonColor1}" 
+                        CornerRadius="5"
+                        Width="auto" 
+                        MinHeight="30"
+                        MinWidth="80"
+                        HorizontalAlignment="Center">
+                    <Button x:Name="btnNuevoEmpleado"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Foreground="{StaticResource titleColor4}"
+                            FontWeight="Bold"
+                            Click="btnNuevoEmpleado_Click" 
+                            HorizontalAlignment="Stretch" 
+                            Width="150"
+                            HorizontalContentAlignment="Center">
+                        + Agregar Nuevo Personal
+                    </Button>
+                </Border>
+                <!-- Ubicación -->
+                <TextBlock Grid.Row="2" Grid.Column="0"
+                           Text="Ubicación"
+                           FontSize="16"
+                           VerticalAlignment="Center"
+                           Margin="0,20,10,0"
+                           Foreground="{StaticResource titleColorB}"/>
+                <Border Grid.Row="2" Grid.Column="1"
+                        Background="White"
+                        CornerRadius="10"
+                        BorderBrush="#6666FF"
+                        BorderThickness="1"
+                        Height="30"
+                        Margin="0,20,0,0">
+                    <Label x:Name="UbicacionLabel"
+                           Content="Ubicación . . ."
+                           Background="Transparent"
+                           Padding="5"
+                           Foreground="Black"
+                           VerticalContentAlignment="Center"/>
+                </Border>
+            </Grid>
+        </ScrollViewer>
+        <!-- DATA GRID -->
+        <Border Grid.Row="1" 
+                CornerRadius="20"
+                Background="#E5E5E5"
+                SnapsToDevicePixels="True">
+            <DataGrid x:Name="dataGridNomina"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      IsReadOnly="True"
+                      Margin="10"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="None"
+                      HorizontalContentAlignment="Center"
+                      FontSize="15"
+                      AlternationCount="2">
+                <!-- Aplica tu estilo -->
+                <DataGrid.ColumnHeaderStyle>
+                    <StaticResource ResourceKey="ColumnHeaderRound"/>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="#" Binding="{Binding ID}" />
+                    <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
+                    <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" />
+                    <DataGridTextColumn Header="Días Trabajados" Binding="{Binding DiasTrabajados}" />
+                    <DataGridTextColumn Header="Días" Binding="{Binding Dias}"  />
+                    <DataGridTextColumn Header="Sueldo Jornada" Binding="{Binding SueldoJornada}" />
+                    <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal}" />
+                    <DataGridTextColumn Header="Horas Extra" Binding="{Binding HorasExtra}" />
+                    <DataGridTextColumn Header="Precio Hora Extra" Binding="{Binding PHoraExtra}"  />
+                    <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding SuelExtra}" />
+                    <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado}" />
+                    <DataGridTextColumn Header="Sueldo Total" Binding="{Binding SuelTotal}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+        <!-- FOOTER: Total de Personal + Totales -->
+        <Border Grid.Row="2"
+                Background="{StaticResource Color1}"
+                CornerRadius="10"
+                Padding="10"
+                Margin="10,10,10,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <!-- 1) Total de Personal label + contador -->
+                <TextBlock Text="Total de Personal"
+                           VerticalAlignment="Center"
+                           Margin="0,0,5,0"
+                           FontSize="20"/>
+                <!--Circulo-->
+                <Border Grid.Column="1"
+                        Background="{StaticResource primaryColor4}"
+                        CornerRadius="5"
+                        Padding="5"
+                        VerticalAlignment="Center"
+                        Margin="0,0,20,0">
+                    <TextBlock Text="-"
+                               x:Name="TotalPersonal"
+                               Foreground="{StaticResource titleColor4}"
+                               FontWeight="Bold"
+                               FontSize="20"/>
+                </Border>
+                <!-- 2) Valores finales -->
+                <StackPanel Grid.Column="3"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Margin="5">
+                    <!--TOTAL FOOTER-->
+                    <TextBlock Grid.Column="2"
+                               Text="TOTAL"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               Foreground="#5C5CFF"
+                               Margin="0,0,20,0"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                    <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
+                        <TextBlock Text="$---" FontSize="20" x:Name="TotalSuelJornal"/>
+                    </Border>
+                    <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
+                        <TextBlock Text="$---" FontSize="20" x:Name="TotalSuelSemanal"/>
+                    </Border>
+                    <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
+                        <TextBlock Text="$---" FontSize="20" x:Name="TotalHrsExtra"/>
+                    </Border>
+                    <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
+                        <TextBlock Text="$---" FontSize="20" x:Name="TotalPrecioHrsExt"/>
+                    </Border>
+                    <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
+                        <TextBlock Text="$---" FontSize="20" x:Name="TotalSuelExt"/>
+                    </Border>
+                    <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
+                        <TextBlock Text="$---" FontSize="20" x:Name="TotalSuelTrabajado"/>
+                    </Border>
+                    <!-- valor final resaltado -->
+                    <Border Background="{StaticResource primaryColor1}" CornerRadius="5" Padding="5" Margin="0,0,10,0">
+                        <TextBlock Text="$---"
+                                   x:Name="TotalGeneral"
+                                   Foreground="White"
+                                   FontWeight="Bold"
+                                   FontSize="20"/>
+                    </Border>
+                </StackPanel>
             </Grid>
         </Border>
     </Grid>

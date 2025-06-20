@@ -307,9 +307,6 @@ namespace CivitasERP.Views
 
             var empleados = repo.ObtenerEmpleados();
             dataGridNomina.ItemsSource = empleados;
-
-            CargarYSumar();
-
         }
 
 
@@ -331,14 +328,12 @@ namespace CivitasERP.Views
         private void ComBoxSemana_DropDownOpened(object sender, EventArgs e)
         {
             CargarMeses();
-            CargarYSumar();
         }
 
         // MES
         private void ComBoxMes_DropDownOpened(object sender, EventArgs e)
         {
             CargarMeses();
-            CargarYSumar();
         }
 
         private void ComBoxMes_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -395,7 +390,6 @@ namespace CivitasERP.Views
         private void ComBoxAnio_DropDownOpened(object sender, EventArgs e)
         {
             CargarAnios();
-            CargarYSumar();
         }
         private void CargarAnios()
         {
@@ -404,7 +398,7 @@ namespace CivitasERP.Views
             ComBoxAnio.SelectedItem = DateTime.Now.Year;
         }
 
-
+        
         // SUMA DE TOTALES EN FOOTER
         private void CalcularTotales(IEnumerable<DataGridNominas.Empleado> lista)
         {

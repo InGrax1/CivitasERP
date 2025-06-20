@@ -4,146 +4,137 @@
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         xmlns:vm = "clr-namespace:CivitasERP.ViewModels"
         Title="NominaPage"
-        MinHeight="800" MinWidth="600">
+        MinHeight="800" MinWidth="600"
+        Background="{StaticResource BackgroudColor}">
 
     <Grid>
-        <!-- CONTENIDO CENTRAL -->
-            <Border Grid.Column="1" 
-                    Panel.ZIndex="1"
-                    Background="{StaticResource BackgroudColor}" 
-                    Margin="0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!--HEADER-->
+        <ScrollViewer Grid.Row="0"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Disabled"
+                      Margin="0,0,0,20">
+            <!-- FILTROS -->
+            <Grid Grid.Row="1" Margin="0,0,0,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <ScrollViewer Grid.Row="1"
-                              HorizontalScrollBarVisibility="Auto"
-                              VerticalScrollBarVisibility="Disabled"
-                              Margin="0,0,0,20">
-                    <!-- FILTROS -->
-                    <Grid Grid.Row="1" Margin="0,0,0,20">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!-- Título -->
-                        <TextBlock Grid.Column="0" 
-                                   Grid.ColumnSpan="5"
-                                   Text="LISTA DE PERSONAL Y PASE DE LISTA"
-                                   FontSize="26" 
-                                   FontWeight="Bold"
-                                   Margin="0,0,0,20"
-                                   Foreground="{StaticResource titleColorA}"/>
-                        <!-- Obra -->
-                        <TextBlock Grid.Row="1" Grid.Column="0"
-                                   Text="Obra" FontSize="16"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,10,0"
-                                   Foreground="{StaticResource titleColorB}"/>
-                        <Border Grid.Row="1" Grid.Column="1"
-                                CornerRadius="10"
-                                BorderBrush="#6666FF" 
-                                BorderThickness="1" 
-                                MinHeight="30"
-                                MinWidth="80"
-                                Padding="3">
-                            <ComboBox x:Name="ObraComboBox"
-                                      Background="Transparent"
-                                      BorderBrush="Transparent"
-                                      BorderThickness="0"
-                                      FontSize="14"
-                                      VerticalContentAlignment="Stretch"
-                                      Padding="5"
-                                      IsEditable="False"
-                                      IsReadOnly="False" Height="29" VerticalAlignment="Top" 
-                                      SelectionChanged="ObraComboBox_SelectionChanged" 
-                                      DropDownOpened="ObraComboBox_DropDownOpened"/>
-                        </Border>
-
-                        <!-- Combos Mes + Año (ambos dentro de un StackPanel) -->
-                        <StackPanel Grid.Row="1" Grid.Column="2"
-                                    Orientation="Horizontal"
-                                    VerticalAlignment="Center"
-                                    Margin="10,0,10,0">
-                            <!-- Combo Semana -->
-                            <TextBlock Text="Semana"
-                                       FontSize="16"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Stretch"
-                                       Margin="10,0,10,0"/>
-                            <Border Background="White"
-                                    CornerRadius="5"
-                                    BorderBrush="#6666FF"
-                                    MinHeight="30"
-                                    MinWidth="80"
-                                    BorderThickness="2"
-                                    Padding="1"
-                                    Margin="0,0,15,0">
-                                <ComboBox x:Name="ComBoxSemana"
-                                          Background="White"
-                                          BorderBrush="Transparent"
-                                          BorderThickness="0"
-                                          FontSize="14"                             
-                                          Foreground="DarkBlue"
-                                          FontWeight="Normal"
-                                          HorizontalContentAlignment="Stretch"
-                                          VerticalContentAlignment="Center" SelectionChanged="ComBoxSemana_SelectionChanged"/>
-                            </Border>
-
-                            <!-- Combo Mes -->
-                            <TextBlock Text="Mes"
-                                       FontSize="16"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Stretch"
-                                       Margin="0,0,10,0"/>
-                            <Border Background="White"
-                                    CornerRadius="5"
-                                    BorderBrush="#6666FF"
-                                    MinWidth="80"
-                                    MinHeight="30"
-                                    BorderThickness="2"
-                                    Padding="1"
-                                    Margin="0,0,15,0">
-                                <ComboBox x:Name="ComBoxMes"
-                                          Background="White"
-                                          BorderBrush="Transparent"
-                                          BorderThickness="0"
-                                          FontSize="14"                             
-                                          Foreground="DarkBlue"
-                                          FontWeight="Normal"
-                                          HorizontalContentAlignment="Center"
-                                          VerticalContentAlignment="Center"
-                                          DropDownOpened="ComBoxMes_DropDownOpened"
-                                          SelectionChanged="ComBoxMes_SelectionChanged"/>
-                            </Border>
-
-                            <!-- Combo Año -->
-                            <TextBlock Text="Año"
-                                       FontSize="16"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Stretch"
-                                       Margin="0,0,10,0"/>
-                            <Border Background="White"
-                                    CornerRadius="5"
-                                    BorderBrush="#6666FF"
-                                    MinHeight="30"
-                                    MinWidth="80"
-                                    BorderThickness="2"
-                                    Padding="1"
-                                    Margin="0,0,15,0">
-                                <ComboBox x:Name="ComBoxAnio"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <!-- Título -->
+                <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5"
+                           Text="LISTA DE PERSONAL Y PASE DE LISTA"
+                           FontSize="26" 
+                           FontWeight="Bold"
+                           Margin="0,0,0,20"
+                           Foreground="{StaticResource titleColorA}"/>
+                <!-- Obra -->
+                <TextBlock Grid.Row="1" Grid.Column="0"
+                           Text="Obra" FontSize="16"
+                           VerticalAlignment="Center"
+                           Margin="0,0,10,0"
+                           Foreground="{StaticResource titleColorB}"/>
+                <Border Grid.Row="1" Grid.Column="1"
+                        CornerRadius="10"
+                        BorderBrush="#6666FF" 
+                        BorderThickness="1" 
+                        MinHeight="30"
+                        MinWidth="80"
+                        Padding="3">
+                    <ComboBox x:Name="ObraComboBox"
+                              Background="Transparent"
+                              BorderBrush="Transparent"
+                              BorderThickness="0"
+                              FontSize="14"
+                              VerticalContentAlignment="Stretch"
+                              Padding="5"
+                              IsEditable="False"
+                              IsReadOnly="False" Height="29" VerticalAlignment="Top" 
+                              SelectionChanged="ObraComboBox_SelectionChanged" 
+                              DropDownOpened="ObraComboBox_DropDownOpened"/>
+                </Border>
+                <!-- Combos Mes + Año (ambos dentro de un StackPanel) -->
+                <StackPanel Grid.Row="1" Grid.Column="2"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            Margin="10,0,10,0">
+                    <!-- Combo Semana -->
+                    <TextBlock Text="Semana"
+                               FontSize="16"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"
+                               Margin="10,0,10,0"/>
+                    <Border Background="White"
+                            CornerRadius="5"
+                            BorderBrush="#6666FF"
+                            MinHeight="30"
+                            MinWidth="80"
+                            BorderThickness="2"
+                            Padding="1"
+                            Margin="0,0,15,0">
+                        <ComboBox x:Name="ComBoxSemana"
+                                  Background="White"
+                                  BorderBrush="Transparent"
+                                  BorderThickness="0"
+                                  FontSize="14"                             
+                                  Foreground="DarkBlue"
+                                  FontWeight="Normal"
+                                  HorizontalContentAlignment="Stretch"
+                                  VerticalContentAlignment="Center" 
+                                  SelectionChanged="ComBoxSemana_SelectionChanged"/>
+                    </Border>
+                    <!-- Combo Mes -->
+                    <TextBlock Text="Mes"
+                               FontSize="16"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"
+                               Margin="0,0,10,0"/>
+                    <Border Background="White"
+                            CornerRadius="5"
+                            BorderBrush="#6666FF"
+                            MinWidth="80"
+                            MinHeight="30"
+                            BorderThickness="2"
+                            Padding="1"
+                            Margin="0,0,15,0">
+                        <ComboBox x:Name="ComBoxMes"
+                                  Background="White"
+                                  BorderBrush="Transparent"
+                                  BorderThickness="0"
+                                  FontSize="14"                             
+                                  Foreground="DarkBlue"
+                                  FontWeight="Normal"
+                                  HorizontalContentAlignment="Center"
+                                  VerticalContentAlignment="Center"
+                                  DropDownOpened="ComBoxMes_DropDownOpened"
+                                  SelectionChanged="ComBoxMes_SelectionChanged"/>
+                    </Border>
+                    <!-- Combo Año -->
+                    <TextBlock Text="Año"
+                               FontSize="16"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch"
+                               Margin="0,0,10,0"/>
+                    <Border Background="White"
+                            CornerRadius="5"
+                            BorderBrush="#6666FF"
+                            MinHeight="30"
+                            MinWidth="80"
+                            BorderThickness="2"
+                            Padding="1"
+                            Margin="0,0,15,0">
+                        <ComboBox x:Name="ComBoxAnio"
                                           Background="White"
                                           BorderBrush="Transparent"
                                           BorderThickness="0"
@@ -154,133 +145,122 @@
                                           VerticalContentAlignment="Center"
                                           DropDownOpened="ComBoxAnio_DropDownOpened"
                                           SelectionChanged="ComBoxAnio_SelectionChanged"/>
-                            </Border>
-                        </StackPanel>
-
-
-                        <!-- Botón Huella -->
-                        <Button Grid.Row="2"
-                                Grid.Column="4"
-                                HorizontalAlignment="Center"
-                                Margin="0,20,0,0"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                Click="btnHuellaR_Click">
-                            <StackPanel>
-                                <Image Source="/Images/huella-dactilar.png"
-                                       Width="70"
-                                       Height="70"
-                                       HorizontalAlignment="Stretch"/>
-                                <TextBlock x:Name="lblEstadoHuella"
-                                           Text= "{Binding EstadoHuella}" 
-                                           Foreground="#5F5FFF"
-                                           FontSize="13"
-                                           FontWeight="Bold"
-                                           HorizontalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
-                        <!-- Ubicación -->
-                        <TextBlock Grid.Row="2" Grid.Column="0"
-                                   Text="Ubicación"
-                                   FontSize="16"
-                                   VerticalAlignment="Center"
-                                   Margin="0,20,10,0"/>
-
-                        <Border Grid.Row="2" Grid.Column="1"
-                                Background="White"
-                                CornerRadius="10"
-                                BorderBrush="#6666FF"
-                                BorderThickness="1"
-                                Height="30"
-                                Margin="0,20,0,0">
-                            <Label x:Name="UbicacionLabel"
-                                   Content="Ubicación . . ."
-                                   Background="Transparent"
-                                   Padding="5"
-                                   Foreground="Black"
-                                   VerticalContentAlignment="Center"/>
-                        </Border>
-                    </Grid>
-                </ScrollViewer>
-
-                <!-- DATA GRID -->
-                    <Border Grid.Row="2" 
-                            CornerRadius="20"
-                            Background="#E5E5E5"
-                            SnapsToDevicePixels="True">
-
-                        <DataGrid x:Name="dataGridAsistencia"
-                                  AutoGenerateColumns="False"
-                                  CanUserAddRows="False"
-                                  CanUserDeleteRows="False"
-                                  IsReadOnly="True"
-                                  Margin="10"
-                                  HeadersVisibility="Column"
-                                  GridLinesVisibility="None"
-                                  ColumnWidth="*"
-                                  RowHeight="20"
-                                  AlternationCount="2">
-                            <!-- Aplica tu estilo -->
-                            <DataGrid.ColumnHeaderStyle>
-                                <StaticResource ResourceKey="ColumnHeaderRound"/>
-                            </DataGrid.ColumnHeaderStyle>
-                            
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="#" Binding="{Binding ID}" />
-                                <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
-                                <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" />
-                                <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaL}" />
-                                <DataGridTextColumn Header="Salida" Binding="{Binding SalidaL}" />
-                                <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaM}" />
-                                <DataGridTextColumn Header="Salida" Binding="{Binding SalidaM}" />
-                                <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaMI}" />
-                                <DataGridTextColumn Header="Salida" Binding="{Binding SalidaMI}" />
-                                <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaJ}" />
-                                <DataGridTextColumn Header="Salida" Binding="{Binding SalidaJ}" />
-                                <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaV}" />
-                                <DataGridTextColumn Header="Salida" Binding="{Binding SalidaV}" />
-                                <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaS}" />
-                                <DataGridTextColumn Header="Salida" Binding="{Binding SalidaS}" />
-                            </DataGrid.Columns>
-                        </DataGrid>
                     </Border>
-
-                <!-- FOOTER: Total de Personal + Totales -->
-                <Border Grid.Row="3"
-                        Background="{StaticResource Color1}"
+                </StackPanel>
+                <!-- Botón Huella -->
+                <Button Grid.Row="2"
+                        Grid.Column="4"
+                        HorizontalAlignment="Center"
+                        Margin="0,20,0,0"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Click="btnHuellaR_Click">
+                    <StackPanel>
+                        <Image Source="/Images/huella-dactilar.png"
+                               Width="70"
+                               Height="70"
+                               HorizontalAlignment="Stretch"/>
+                        <TextBlock x:Name="lblEstadoHuella"
+                                   Text= "{Binding EstadoHuella}" 
+                                   Foreground="#5F5FFF"
+                                   FontSize="13"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <!-- Ubicación -->
+                <TextBlock Grid.Row="2" Grid.Column="0"
+                           Text="Ubicación"
+                           FontSize="16"
+                           VerticalAlignment="Center"
+                           Margin="0,20,10,0"/>
+                <Border Grid.Row="2" Grid.Column="1"
+                        Background="White"
                         CornerRadius="10"
-                        Padding="10"
-                        Margin="10,10,10,10"
-                        Width="200"
-                        HorizontalAlignment="Left">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!-- 1) Total de Personal label + contador -->
-                        <TextBlock Text="Total de Personal"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,5,0"
-                                   FontSize="20"/>
-                        <!--Circulo-->
-                        <Border Grid.Column="1"
-                                Background="{StaticResource primaryColor4}"
-                                CornerRadius="5"
-                                Padding="5"
-                                VerticalAlignment="Center"
-                                Margin="0,0,20,0">
-                            <TextBlock Text="5"
-                                       x:Name="TotalPersonal"
-                                       Foreground="{StaticResource titleColor4}"
-                                       FontWeight="Bold"
-                                       FontSize="20"/>
-                        </Border>
-                    </Grid>
+                        BorderBrush="#6666FF"
+                        BorderThickness="1"
+                        Height="30"
+                        Margin="0,20,0,0">
+                    <Label x:Name="UbicacionLabel"
+                           Content="Ubicación . . ."
+                           Background="Transparent"
+                           Padding="5"
+                           Foreground="Black"
+                           VerticalContentAlignment="Center"/>
                 </Border>
             </Grid>
-            </Border>
-        </Grid>
+        </ScrollViewer>
+        <!-- DATA GRID -->
+        <Border Grid.Row="1" 
+                CornerRadius="20"
+                Background="#E5E5E5"
+                SnapsToDevicePixels="True">
+            <DataGrid x:Name="dataGridAsistencia"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      IsReadOnly="True"
+                      Margin="10"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="None"
+                      HorizontalContentAlignment="Center"
+                      FontSize="15"
+                      AlternationCount="2">
+                <!-- Aplica tu estilo -->
+                <DataGrid.ColumnHeaderStyle>
+                    <StaticResource ResourceKey="ColumnHeaderRound"/>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="#" Binding="{Binding ID}" />
+                    <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
+                    <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" />
+                    <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaL}" />
+                    <DataGridTextColumn Header="Salida" Binding="{Binding SalidaL}" />
+                    <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaM}" />
+                    <DataGridTextColumn Header="Salida" Binding="{Binding SalidaM}" />
+                    <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaMI}" />
+                    <DataGridTextColumn Header="Salida" Binding="{Binding SalidaMI}" />
+                    <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaJ}" />
+                    <DataGridTextColumn Header="Salida" Binding="{Binding SalidaJ}" />
+                    <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaV}" />
+                    <DataGridTextColumn Header="Salida" Binding="{Binding SalidaV}" />
+                    <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaS}" />
+                    <DataGridTextColumn Header="Salida" Binding="{Binding SalidaS}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+        <!-- FOOTER: Total de Personal + Totales -->
+        <Border Grid.Row="2"
+                Background="{StaticResource Color1}"
+                CornerRadius="10"
+                Padding="10"
+                Margin="10,10,10,10"
+                Width="200"
+                HorizontalAlignment="Left">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <!-- 1) Total de Personal label + contador -->
+                <TextBlock Text="Total de Personal"
+                           VerticalAlignment="Center"
+                           Margin="0,0,5,0"
+                           FontSize="20"/>
+                <!--Circulo-->
+                <Border Grid.Column="1"
+                        Background="{StaticResource primaryColor4}"
+                        CornerRadius="5"
+                        Padding="5"
+                        VerticalAlignment="Center"
+                        Margin="0,0,20,0">
+                    <TextBlock Text="5"
+                               x:Name="TotalPersonal"
+                               Foreground="{StaticResource titleColor4}"
+                               FontWeight="Bold"
+                               FontSize="20"/>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
 </Page>

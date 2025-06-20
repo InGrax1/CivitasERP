@@ -142,7 +142,7 @@ namespace CivitasERP.Models
                                     e.emp_semanal, 
                                     e.emp_hora_extra  
                                     FROM empleado e
-                                    INNER JOIN asistencia a ON e.id_empleado = a.id_empleado
+                                    LEFT JOIN asistencia a ON e.id_empleado = a.id_empleado
                                     WHERE e.id_admins = @idAdmin 
                                       AND e.id_obra = @id_obra 
                                    ";
@@ -150,8 +150,7 @@ namespace CivitasERP.Models
                 SqlCommand cmd1 = new SqlCommand(query, connection);
                 cmd1.Parameters.AddWithValue("@idAdmin", idAdmin);
                 cmd1.Parameters.AddWithValue("@id_obra", id_obra);
-                cmd1.Parameters.AddWithValue("@fechaInicio", fechaInicio);
-                cmd1.Parameters.AddWithValue("@fechaFin", fechaFin);
+
                 connection.Open();
 
                 SqlDataReader reader1 = cmd1.ExecuteReader();
