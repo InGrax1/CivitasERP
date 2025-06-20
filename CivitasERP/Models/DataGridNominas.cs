@@ -27,7 +27,7 @@ namespace CivitasERP.Models
             public int ID { get; set; }
             public string Nombre { get; set; }
             public string Categoria { get; set; }
-            /*public int DiasTrabajados { get; set; }*/
+            public int DiasTrabajados { get; set; }
             public int Dias { get; set; }
             public decimal SueldoJornada { get; set; }
             public decimal SueldoSemanal { get; set; }

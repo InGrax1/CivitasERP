@@ -93,7 +93,9 @@ namespace CivitasERP.Views
                     
                 }
             }
-            DataContext = new ListaViewModel();
+
+
+/*            DataContext = new ListaViewModel();*/
         }
 
         // FUNCIONES PARA ESCANEO DE HUELLAS

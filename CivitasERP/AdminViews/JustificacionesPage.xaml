@@ -134,6 +134,7 @@
                         <ComboBox x:Name="ObraComboBox" 
                                   BorderThickness="0">
                         </ComboBox>
+
                     </DockPanel>
                 </Border>
             </StackPanel>
@@ -159,7 +160,10 @@
                                DockPanel.Dock="Left">
                         </Image>
                         <ComboBox x:Name="EmpleadoComboBox" 
-                                  BorderThickness="0">
+                                  BorderThickness="0"
+                                    SelectionChanged="EmpleadoComboBox_SelectionChanged" 
+                                    DropDownOpened="EmpleadoComboBox_DropDownOpened">
+                            
                         </ComboBox>
                     </DockPanel>
                 </Border>
@@ -220,9 +224,15 @@
                                 <ComboBox x:Name="CbxAnio"
                                           Background="Transparent"
                                           BorderThickness="0"
-                                          VerticalContentAlignment="Center"/>
+                                          VerticalContentAlignment="Center"
+                                          
+                              SelectionChanged="CbxAnio_SelectionChanged" 
+                                    DropDownOpened="CbxAnio_DropDownOpened"/>
+
+
                             </Border>
                         </StackPanel>
+                        
                         <!-- Mes -->
                         <StackPanel Orientation="Vertical" MinWidth="120" Margin="0,0,10,0">
                             <TextBlock Text="Mes" FontSize="15" Foreground="{StaticResource titleColorA}"/>
@@ -235,7 +245,9 @@
                                 <ComboBox x:Name="CbxMes"
                                           Background="Transparent"
                                           BorderThickness="0"
-                                          VerticalContentAlignment="Center"/>
+                                          VerticalContentAlignment="Center"
+                                                SelectionChanged="CbxMes_SelectionChanged" 
+                                                DropDownOpened="CbxMes_DropDownOpened"/>
                             </Border>
                         </StackPanel>
                         <!-- Semana -->
@@ -250,7 +262,9 @@
                                 <ComboBox x:Name="CbxSemana"
                                           Background="Transparent"
                                           BorderThickness="0"
-                                          VerticalContentAlignment="Center"/>
+                                          VerticalContentAlignment="Center"
+                                            SelectionChanged="CbxSemana_SelectionChanged" 
+                                            DropDownOpened="CbxSemana_DropDownOpened"/>
                             </Border>
                         </StackPanel>
                         <!-- Día -->
@@ -265,7 +279,9 @@
                                 <ComboBox x:Name="CbxDia"
                                           Background="Transparent"
                                           BorderThickness="0"
-                                          VerticalContentAlignment="Center"/>
+                                          VerticalContentAlignment="Center"
+                                                SelectionChanged="CbxDia_SelectionChanged" 
+                                                DropDownOpened="CbxDia_DropDownOpened"/>
                             </Border>
                         </StackPanel>
                     </WrapPanel>

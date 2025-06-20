@@ -56,11 +56,14 @@
                                Margin="5,0"
                                VerticalAlignment="Center"
                                DockPanel.Dock="Left">
-                            </Image>
-                            <ComboBox x:Name="AdminComboBox" 
-                              BorderThickness="0">
-                            </ComboBox>
-                        </DockPanel>
+                        </Image>
+                        <ComboBox x:Name="AdminComboBox" 
+                              BorderThickness="0"
+                                   SelectionChanged="AdminComboBox_SelectionChanged" 
+                                    DropDownOpened="AdminComboBox_DropDownOpened"
+                              >
+                        </ComboBox>
+                    </DockPanel>
 
                     </Border>
                 </StackPanel>
@@ -214,8 +217,8 @@
                                 Padding="5" 
                                 BorderThickness="1" 
                                 BorderBrush="{StaticResource primaryColor4}">
-                                <ComboBox x:Name="CbxCategoria" BorderThickness="0"/>
-                            </Border>
+                            <TextBox x:Name="TxtCategoria" BorderThickness="0"/>
+                        </Border>
 
                             <!--Sueldo Semanal-->
                             <TextBlock Text="Sueldo Semanal" 

@@ -20,7 +20,7 @@ namespace CivitasERP.Views
         public RegisterPage()
         {
             InitializeComponent();
-
+            
             // 1) Obtener la cadena de conexión
             _connectionString = new Conexion().ObtenerCadenaConexion();
 
@@ -92,7 +92,7 @@ namespace CivitasERP.Views
                     "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-
+            
             // 2) Obtener datos de los campos de texto
             string nombre = txtUsuario.Text;
             string apellidop = txtApellidoPaterno.Text;
@@ -110,7 +110,7 @@ namespace CivitasERP.Views
                     "Error de validación", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-
+            
             // 3) Crear el objeto Insert_admin incluyendo la huella
             Insert_admin inser = new Insert_admin
             {
