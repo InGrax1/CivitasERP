@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -31,7 +32,7 @@ namespace CivitasERP.AdminViews
             GuardarAsistencia();
             MessageBox.Show("Justificación guardada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
- 
+
 
         }
 
@@ -81,7 +82,7 @@ namespace CivitasERP.AdminViews
         }
 
 
-        private void cargar_empleados(int? id_admin, int? id_obra)
+        private void cargar_empleados(int? id_obra)
         {
             try
             {
@@ -95,13 +96,11 @@ namespace CivitasERP.AdminViews
                             CONCAT(emp_nombre, ' ',emp_apellidop, ' ', emp_apellidom) AS emple_nombre
                      FROM empleado 
                      WHERE 
-                        id_admins =@Id_admin
-                        AND id_obra=@Id_obra;
+                         id_obra=@Id_obra;
                         ";
 
                     using (var cmd = new SqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@Id_admin", id_admin);
                         cmd.Parameters.AddWithValue("@Id_obra", id_obra);
                         conn.Open();
 
@@ -123,7 +122,7 @@ namespace CivitasERP.AdminViews
         }
 
 
-        private void CargarDatosComboBox(int? id)
+        private void CargarDatosComboBox()
         {
 
             try
@@ -133,10 +132,9 @@ namespace CivitasERP.AdminViews
 
                 using (var conn = new SqlConnection(connectionString))
                 {
-                    string query = "SELECT obra_nombre FROM obra WHERE id_admin_obra = @idAdminObra";
+                    string query = "SELECT obra_nombre FROM obra ";
                     using (var cmd = new SqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@idAdminObra", id);
                         conn.Open();
 
                         using (var reader = cmd.ExecuteReader())
@@ -157,9 +155,9 @@ namespace CivitasERP.AdminViews
         }
 
 
-        private int? ObtenerID_obra(int? idAdminObra, string obraNombre)
+        private int? ObtenerID_obra( string obraNombre)
         {
-            if (idAdminObra == null || string.IsNullOrWhiteSpace(obraNombre))
+            if (string.IsNullOrWhiteSpace(obraNombre))
                 return null;
 
             var conexion = new Conexion();
@@ -167,10 +165,10 @@ namespace CivitasERP.AdminViews
 
             using (var conn = new SqlConnection(connectionString))
             {
-                string query = "SELECT id_obra FROM obra WHERE id_admin_obra = @idAdminObra AND obra_nombre = @obraNombre";
+                string query = "SELECT id_obra FROM obra WHERE  obra_nombre = @obraNombre";
                 using (var cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@idAdminObra", idAdminObra);
+
                     cmd.Parameters.AddWithValue("@obraNombre", obraNombre);
                     conn.Open();
 
@@ -190,14 +188,15 @@ namespace CivitasERP.AdminViews
             {
                 string admin = Admin2ComboBox.SelectedItem.ToString();
                 DB_admins admins = new DB_admins();
-
-                CargarDatosComboBox(admins.ObtenerIdPorUsuario(admin));
+                
             }
             else
             {
                 // Opcional: limpia los datos o muestra un mensaje
                 Console.WriteLine("No se ha seleccionado ningún administrador.");
             }
+            EmpleadoComboBox.Items.Clear();
+
         }
         private void Admin2ComboBox_DropDownOpened(object sender, EventArgs e)
         {
@@ -208,41 +207,35 @@ namespace CivitasERP.AdminViews
 
         private void ObraComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-
-            if (Admin2ComboBox.SelectedItem != null || ObraComboBox.SelectedItem != null)
+            if (ObraComboBox.SelectedItem != null)
             {
-                string admin = Admin2ComboBox.SelectedItem.ToString();
+
                 DB_admins admins = new DB_admins();
                 int? id_obra = 0;
-                id_obra = ObtenerID_obra(admins.ObtenerIdPorUsuario(admin), ObraComboBox.SelectedItem.ToString());
+                id_obra = ObtenerID_obra( ObraComboBox.SelectedItem.ToString());
 
-
-                cargar_empleados(admins.ObtenerIdPorUsuario(admin), id_obra);
-
-            }
-            else
-            {
-                // Opcional: limpia los datos o muestra un mensaje
+                MessageBox.Show("prueba");
+                cargar_empleados(id_obra);
 
             }
+
 
         }
         private void ObraComboBox_DropDownOpened(object sender, EventArgs e)
         {
-
+            CargarDatosComboBox();
         }
 
 
 
         private void EmpleadoComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string admin = Admin2ComboBox.SelectedItem.ToString();
+          
             DB_admins admins = new DB_admins();
             int? id_obra = 0;
-            id_obra = ObtenerID_obra(admins.ObtenerIdPorUsuario(admin), ObraComboBox.SelectedItem.ToString());
+            id_obra = ObtenerID_obra(ObraComboBox.SelectedItem.ToString());
             MessageBox.Show("" + ObtenerIdEmpleado(EmpleadoComboBox.SelectedItem.ToString()));
-
+            
         }
         private void EmpleadoComboBox_DropDownOpened(object sender, EventArgs e)
         {
@@ -565,6 +558,10 @@ namespace CivitasERP.AdminViews
             }
         }
 
+        private void ObraComboBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 
 }

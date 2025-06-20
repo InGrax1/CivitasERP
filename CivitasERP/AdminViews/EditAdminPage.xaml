@@ -8,28 +8,28 @@
       d:DesignHeight="1000" d:DesignWidth="1800"
       Title="EditAdminPage"  
       Background="{StaticResource BackgroudColor}">
-
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <!-- Título -->
-            <RowDefinition Height="*"/>
-            <!-- Formulario -->
-            <RowDefinition Height="Auto"/>
-            <!-- Botones -->
-        </Grid.RowDefinitions>
-        
-        <!--HEAD-->
-        <Grid Grid.Row="0" Margin="0,0,0,20" HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="AUTO"/>
+                <!-- Título -->
+                <RowDefinition Height="auto"/>
+                <!-- Formulario -->
+                <RowDefinition Height="Auto"/>
+                <!-- Botones -->
             </Grid.RowDefinitions>
-            <!-- 1) Título -->
-            <TextBlock Grid.Row="0"
+
+            <!--HEAD-->
+            <Grid Grid.Row="0" Margin="0,0,0,20" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="AUTO"/>
+                </Grid.RowDefinitions>
+                <!-- 1) Título -->
+                <TextBlock Grid.Row="0"
                        Text="Modificar datos de Administrador"
                        FontSize="24"
                        FontWeight="Bold"
@@ -37,21 +37,21 @@
                        HorizontalAlignment="Center"
                        Margin="0,0,0,20"/>
 
-            <!--SELECTOR DE ADMIN-->
-            <StackPanel Grid.Row="1">
-                <TextBlock Text="Elegir Administrador" 
+                <!--SELECTOR DE ADMIN-->
+                <StackPanel Grid.Row="1">
+                    <TextBlock Text="Elegir Administrador" 
                            Margin="0,0,0,0" 
                            VerticalAlignment="Center" 
                            Foreground="{StaticResource titleColorA}"/>
-                <Border Background="#F0F0F0" 
+                    <Border Background="#F0F0F0" 
                         CornerRadius="10" 
                         Padding="3"
-                        Margin="0,0,0,50"
+                        Margin="0,0,0,20"
                         BorderThickness="1" 
                         BorderBrush="{StaticResource primaryColor4}">
-                    <!--DockPanel para foto con comobo box-->
-                    <DockPanel LastChildFill="True" VerticalAlignment="Center">
-                        <Image Source="/Images/SearchPersonBlue.png"
+                        <!--DockPanel para foto con comobo box-->
+                        <DockPanel LastChildFill="True" VerticalAlignment="Center">
+                            <Image Source="/Images/SearchPersonBlue.png"
                                Width="24" Height="24"
                                Margin="5,0"
                                VerticalAlignment="Center"
@@ -65,166 +65,154 @@
                         </ComboBox>
                     </DockPanel>
 
-                </Border>
-            </StackPanel>
-        </Grid>
+                    </Border>
+                </StackPanel>
+            </Grid>
 
-        <!-- 2) Formulario -->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="190"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="190"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="190"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="190"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+            <!-- 2) Formulario -->
+            <Grid Grid.Row="1" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
 
-            <!--INFORMACION PERSONAL-->
-            <StackPanel Grid.Column="1" Grid.Row="1">
-                <!--Banner Titulo-->
-                <StackPanel Grid.Column="1" Grid.Row="0" Panel.ZIndex="1">
-                    <Border Background="{StaticResource primaryColor1}" 
+                <!--INFORMACION PERSONAL-->
+                <StackPanel Grid.Column="1" Margin="20,0,0,0">
+                    <!--Banner Titulo-->
+                    <StackPanel Grid.Column="1" Grid.Row="0" Panel.ZIndex="1">
+                        <Border Background="{StaticResource primaryColor1}" 
                             CornerRadius="10" 
                             Padding="5" 
                             Width="185"
                             Height="35"
                             Margin="0,0,0,-20">
-                        <TextBlock Text="INFORMACIÓN PERSONAL" 
+                            <TextBlock Text="INFORMACIÓN PERSONAL" 
                                    FontSize="12" 
                                    FontWeight="Bold" 
                                    Foreground="White" 
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
-                    </Border>
-                </StackPanel>
-                <!--CARD DATOS-->
-                <Border Background="{StaticResource Color1}" 
+                        </Border>
+                    </StackPanel>
+                    <!--CARD DATOS-->
+                    <Border Background="{StaticResource Color1}" 
                         CornerRadius="30" Margin="0,0,0,0" 
                         Width="300" Height="300" 
                         Panel.ZIndex="0">
-                    <StackPanel Margin="10" HorizontalAlignment="Stretch">
-                        <!-- Nombre -->
-                        <TextBlock Text="Nombre" 
+                        <StackPanel Margin="10" HorizontalAlignment="Stretch">
+                            <!-- Nombre -->
+                            <TextBlock Text="Nombre" 
                                    Margin="0,35,0,0" 
                                    VerticalAlignment="Center" 
                                    Foreground="{StaticResource titleColorA}"/>
-                        <Border Background="#F0F0F0" 
+                            <Border Background="#F0F0F0" 
                                 CornerRadius="10" 
                                 Padding="5" 
                                 BorderThickness="1" 
                                 BorderBrush="{StaticResource primaryColor4}">
-                            <TextBox x:Name="TxtNombre" BorderThickness="0"/>
-                        </Border>
+                                <TextBox x:Name="TxtNombre" BorderThickness="0"/>
+                            </Border>
 
-                        <!-- Apellido P -->
-                        <TextBlock Text="Apellido Paterno" 
+                            <!-- Apellido P -->
+                            <TextBlock Text="Apellido Paterno" 
                                    Margin="0,35,0,0" 
                                    VerticalAlignment="Center" 
                                    Foreground="{StaticResource titleColorA}"/>
-                        <Border Background="{StaticResource BackgroudColor}" 
+                            <Border Background="{StaticResource BackgroudColor}" 
                                 CornerRadius="10" 
                                 Padding="5" 
                                 BorderThickness="1" 
                                 BorderBrush="{StaticResource primaryColor4}">
-                            <TextBox x:Name="TxtApellidoP" BorderThickness="0"/>
-                        </Border>
+                                <TextBox x:Name="TxtApellidoP" BorderThickness="0"/>
+                            </Border>
 
-                        <!-- Apellido M -->
-                        <TextBlock Text="Apellido Materno" 
+                            <!-- Apellido M -->
+                            <TextBlock Text="Apellido Materno" 
                                    Margin="0,35,0,0" 
                                    VerticalAlignment="Center" 
                                    Foreground="{StaticResource titleColorA}"/>
-                        <Border Background="{StaticResource BackgroudColor}" 
+                            <Border Background="{StaticResource BackgroudColor}" 
                                 CornerRadius="10" 
                                 Padding="5" 
                                 BorderThickness="1" 
                                 BorderBrush="{StaticResource primaryColor4}">
-                            <TextBox x:Name="TxtApellidoM" BorderThickness="0"/>
-                        </Border>
-                    </StackPanel>
-                </Border>
-            </StackPanel>
+                                <TextBox x:Name="TxtApellidoM" BorderThickness="0"/>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
 
-            <!--INFORMACION DE CONTACTO-->
-            <StackPanel Grid.Column="5" Grid.Row="1">
-                <!--Banner Titulo-->
-                <StackPanel Grid.Column="1" Grid.Row="0" Panel.ZIndex="1">
-                    <Border Background="{StaticResource primaryColor1}" 
+                <!--INFORMACION DE CONTACTO-->
+                <StackPanel Grid.Column="3" Margin="20,0,0,0">
+                    <!--Banner Titulo-->
+                    <StackPanel Grid.Column="1" Grid.Row="0" Panel.ZIndex="1">
+                        <Border Background="{StaticResource primaryColor1}" 
                             CornerRadius="10" 
                             Padding="5" 
                             Width="185"
                             Height="35"
                             Margin="0,0,0,-20">
-                        <TextBlock Text="INFORMACIÓN DE CONTACTO" 
+                            <TextBlock Text="INFORMACIÓN DE CONTACTO" 
                                    FontSize="12" 
                                    FontWeight="Bold" 
                                    Foreground="White" 
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
-                    </Border>
-                </StackPanel>
-                <!--CARD CONTACTO-->
-                <Border Background="{StaticResource Color1}" 
+                        </Border>
+                    </StackPanel>
+                    <!--CARD CONTACTO-->
+                    <Border Background="{StaticResource Color1}" 
                         CornerRadius="30" Margin="0,0,0,0" 
                         Width="300" Height="300" 
                         Panel.ZIndex="0">
-                    <StackPanel Margin="10" HorizontalAlignment="Stretch">
-                        <!-- Correo -->
-                        <TextBlock Text="Correo" 
+                        <StackPanel Margin="10" HorizontalAlignment="Stretch">
+                            <!-- Correo -->
+                            <TextBlock Text="Correo" 
                                    Margin="0,35,0,0" 
                                    VerticalAlignment="Center" 
                                    Foreground="{StaticResource titleColorA}"/>
-                        <Border Background="#F0F0F0" 
+                            <Border Background="#F0F0F0" 
                                 CornerRadius="10" 
                                 Padding="5" 
                                 BorderThickness="1" 
                                 BorderBrush="{StaticResource primaryColor4}">
-                            <TextBox x:Name="TxtCorreo" BorderThickness="0"/>
-                        </Border>
+                                <TextBox x:Name="TxtCorreo" BorderThickness="0"/>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
 
-                    </StackPanel>
-                </Border>
-            </StackPanel>
-
-            <!--INFORMACION DE USUARIO-->
-            <StackPanel Grid.Column="3" Grid.Row="1">
-                <!--Banner Titulo-->
-                <StackPanel Grid.Column="1" Grid.Row="0" Panel.ZIndex="1">
-                    <Border Background="{StaticResource primaryColor1}" 
+                <!--INFORMACION DE USUARIO-->
+                <StackPanel Grid.Column="0" Margin="20,0,0,0">
+                    <!--Banner Titulo-->
+                    <StackPanel Grid.Column="1" Grid.Row="0" Panel.ZIndex="1">
+                        <Border Background="{StaticResource primaryColor1}" 
                             CornerRadius="10" 
                             Padding="5" 
                             Width="185"
                             Height="35"
                             Margin="0,0,0,-20">
-                        <TextBlock Text="INFORMACIÓN DE USUARIO" 
+                            <TextBlock Text="INFORMACIÓN DE USUARIO" 
                                    FontSize="12" 
                                    FontWeight="Bold" 
                                    Foreground="White" 
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
-                    </Border>
-                </StackPanel>
-                <!--CARD USUARIO-->
-                <Border Background="{StaticResource Color1}" 
+                        </Border>
+                    </StackPanel>
+                    <!--CARD USUARIO-->
+                    <Border Background="{StaticResource Color1}" 
                         CornerRadius="30" Margin="0,0,0,0" 
-                        Width="300" Height="500" 
+                        Width="300" Height="300" 
                         Panel.ZIndex="0">
-                    <StackPanel Margin="10" HorizontalAlignment="Stretch">
-                        <!-- Categoria -->
-                        <TextBlock Text="Categoría" 
+                        <StackPanel Margin="10" HorizontalAlignment="Stretch">
+                            <!-- Categoria -->
+                            <TextBlock Text="Categoría" 
                                    Margin="0,35,0,0" 
                                    VerticalAlignment="Center" 
                                    Foreground="{StaticResource titleColorA}"/>
-                        <Border Background="#F0F0F0" 
+                            <Border Background="#F0F0F0" 
                                 CornerRadius="10" 
                                 Padding="5" 
                                 BorderThickness="1" 
@@ -232,142 +220,120 @@
                             <TextBox x:Name="TxtCategoria" BorderThickness="0"/>
                         </Border>
 
-                        <!--Sueldo Semanal-->
-                        <TextBlock Text="Sueldo Semanal" 
+                            <!--Sueldo Semanal-->
+                            <TextBlock Text="Sueldo Semanal" 
                                    Margin="0,35,0,0" 
                                    VerticalAlignment="Center" 
                                    Foreground="{StaticResource titleColorA}"/>
-                        <Border Background="#F0F0F0" 
+                            <Border Background="#F0F0F0" 
                                 CornerRadius="10" 
                                 Padding="5" 
                                 BorderThickness="1" 
                                 BorderBrush="{StaticResource primaryColor4}">
-                            <TextBox x:Name="TxtSueldoSemanal" BorderThickness="0"/>
-                        </Border>
+                                <TextBox x:Name="TxtSueldoSemanal" BorderThickness="0"/>
+                            </Border>
 
-                        <!--Horas extra-->
-                        <TextBlock Text="Horas Extra" 
+                            <!--Obra Asignada-->
+                            <TextBlock Text="Obras Asignada" 
                                    Margin="0,35,0,0" 
                                    VerticalAlignment="Center" 
                                    Foreground="{StaticResource titleColorA}"/>
-                        <Border Background="#F0F0F0" 
+                            <Border Background="#F0F0F0" 
                                 CornerRadius="10" 
                                 Padding="5" 
                                 BorderThickness="1" 
                                 BorderBrush="{StaticResource primaryColor4}">
-                            <TextBox x:Name="TxtHorasExtra" BorderThickness="0"/>
-                        </Border>
+                                <ComboBox x:Name="CbxObra" BorderThickness="0"/>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
 
-                        <!--Multiplocador de Horas extra-->
-                        <TextBlock Text="Multiplocador de Horas Extra" 
-                                   Margin="0,35,0,0" 
-                                   VerticalAlignment="Center" 
-                                   Foreground="{StaticResource titleColorA}"/>
-                        <Border Background="#F0F0F0" 
-                                CornerRadius="10" 
-                                Padding="5" 
-                                BorderThickness="1" 
-                                BorderBrush="{StaticResource primaryColor4}">
-                            <ComboBox x:Name="CbxMultiplicador" BorderThickness="0">
-                                <ComboBoxItem Content="1,00"/>
-                                <ComboBoxItem Content="1.50"/>
-                                <ComboBoxItem Content="2.00"/>
-                                <ComboBoxItem Content="2.50"/>
-                                <ComboBoxItem Content="3.00"/>
-                            </ComboBox>
-                        </Border>
+            <!-- 3) Botones Guardar / Cancelar -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <Button Style="{StaticResource LargeRoundButton}"
+                        Background="{StaticResource titleColor3}"
+                        x:Name="BtnCancelar"
+                        Grid.Row="3"
+                        Width="250"
+                        Click="BtnCancelar_Click">
+                    <TextBlock Text="Cancelar" FontSize="20" Foreground="White"/>
+                </Button>
 
-                        <!--Obra Asignada-->
-                        <TextBlock Text="Obra Asignada" 
-                                   Margin="0,35,0,0" 
-                                   VerticalAlignment="Center" 
-                                   Foreground="{StaticResource titleColorA}"/>
-                        <Border Background="#F0F0F0" 
-                                CornerRadius="10" 
-                                Padding="5" 
-                                BorderThickness="1" 
-                                BorderBrush="{StaticResource primaryColor4}">
-                            <ComboBox x:Name="CbxObra" BorderThickness="0"/>
-                        </Border>
-                    </StackPanel>
-                </Border>
+                <Button Style="{StaticResource LargeRoundButton}"
+                        Background="{StaticResource buttonColor2}"
+                        x:Name="BtnGuardar"
+                        Grid.Row="3"
+                        Width="250"
+                        Click="BtnGuardar_Click">
+                    <TextBlock Text="Guarrdar" FontSize="20" Foreground="White"/>
+                </Button>
             </StackPanel>
-        </Grid>
 
-        <!-- 3) Botones Guardar / Cancelar -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
-            <Button Content="Cancelar"
-                    Padding="10,5"
-                    Click="BtnCancelar_Click"/>
-            <Button Content="Guardar"
-                    Background="#6666FF"
-                    Foreground="White"
-                    Padding="10,5"
-                    Click="BtnGuardar_Click"/>
-        </StackPanel>
-
-        <!--FONDO-->
-        <!-- 2) franjas diagonales -->
-        <Canvas Panel.ZIndex="-1">
-            <!-- franja 1 -->
-            <Rectangle Width="638" Height="60"
+            <!--FONDO-->
+            <!-- 2) franjas diagonales -->
+            <Canvas Panel.ZIndex="-1">
+                <!-- franja 1 -->
+                <Rectangle Width="638" Height="60"
                        RadiusX="20" RadiusY="20"
                        Fill="#5C7CFF" Opacity="0.2"
                        Canvas.Left="54" Canvas.Top="279" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <Rectangle.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform Angle="-43.612"/>
-                        <TranslateTransform X="15.945554337723227" Y="89.5096189432334"/>
-                    </TransformGroup>
-                </Rectangle.RenderTransform>
-            </Rectangle>
+                    <Rectangle.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-43.612"/>
+                            <TranslateTransform X="15.945554337723227" Y="89.5096189432334"/>
+                        </TransformGroup>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
 
-            <!-- franja 2 -->
-            <Rectangle Width="714" Height="60"
+                <!-- franja 2 -->
+                <Rectangle Width="714" Height="60"
                        RadiusX="20" RadiusY="20"
                        Fill="#5C7CFF" Opacity="0.2"
                        Canvas.Left="-36" Canvas.Top="864" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Rectangle.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform Angle="-43.009"/>
-                        <TranslateTransform X="13.846189432334192" Y="76.6746824526945"/>
-                    </TransformGroup>
-                </Rectangle.RenderTransform>
-            </Rectangle>
+                    <Rectangle.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-43.009"/>
+                            <TranslateTransform X="13.846189432334192" Y="76.6746824526945"/>
+                        </TransformGroup>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
 
-            <!-- franja 3 -->
-            <Rectangle Width="806" Height="60"
+                <!-- franja 3 -->
+                <Rectangle Width="806" Height="60"
                        RadiusX="20" RadiusY="20"
                        Fill="#5C7CFF" Opacity="0.2"
                        Canvas.Left="302" Canvas.Top="896" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <Rectangle.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform Angle="-43.423"/>
-                        <TranslateTransform X="21.794919243112258" Y="101.3397459621556"/>
-                    </TransformGroup>
-                </Rectangle.RenderTransform>
-            </Rectangle>
+                    <Rectangle.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-43.423"/>
+                            <TranslateTransform X="21.794919243112258" Y="101.3397459621556"/>
+                        </TransformGroup>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
 
-            <!-- 3) “blob” grande en bottom-right -->
-            <Rectangle Width="1415" Height="789"
+                <!-- 3) “blob” grande en bottom-right -->
+                <Rectangle Width="1415" Height="789"
                         RadiusX="150" RadiusY="150"
                         Fill="#5C7CFF" Opacity="1"
                         Canvas.Left="715" Canvas.Top="823" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Rectangle.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform/>
-                        <RotateTransform Angle="-43.423"/>
-                        <TranslateTransform X="21.794919243112258" Y="101.3397459621556"/>
-                    </TransformGroup>
-                </Rectangle.RenderTransform>
-            </Rectangle>
-        </Canvas>
-    </Grid>
+                    <Rectangle.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-43.423"/>
+                            <TranslateTransform X="21.794919243112258" Y="101.3397459621556"/>
+                        </TransformGroup>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+            </Canvas>
+        </Grid>
+    </ScrollViewer>
 </Page>
