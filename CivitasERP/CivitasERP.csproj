@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+	  <!-- Uncomment the next line if you want to use Windows Forms in your project -->
+	<!--  <UseWindowsForms>true</UseWindowsForms>     -->
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,8 +29,13 @@
     <None Remove="Images\usuario.png" />	  
   </ItemGroup>
 
+	<ItemGroup>
+		<Reference Include="System.Windows.Forms" />
+	</ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="LibraryHidSDK.Standard" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.6" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   </ItemGroup>
 

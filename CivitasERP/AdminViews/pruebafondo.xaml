@@ -7,6 +7,11 @@
         mc:Ignorable="d"
         Title="pruebafondo" Height="450" Width="800">
     <Grid>
+        
+        
+        
+        
+        
         <!-- 1) fondo blanco -->
         <Rectangle Fill="White" />
 

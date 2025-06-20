@@ -16,6 +16,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static CivitasERP.Views.ForgotPasswordPage;
 using CivitasERP.Models;
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
 
 namespace CivitasERP
 {
@@ -31,7 +34,6 @@ namespace CivitasERP
         // Field para llevar la cuenta del botón activo
         private Button _activeNavButton;
 
-
         public MainWindow()
         {
             InitializeComponent();
@@ -40,14 +42,51 @@ namespace CivitasERP
             if (Variables.IdAdmin.HasValue)
                 CargarFotoPerfil(Variables.IdAdmin.Value);
 
+            // Cada vez que cambie el estado (Normal, Minimized, Maximized) problemas de forms abajo
+            //this.StateChanged += MainWindow_StateChanged;
         }
 
         //Poder mover la ventana con libertad
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
         private void DragWindow(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
+
+            //cuando esta maximizada, restaurarla al tamaño normal al arrastrar
+            WindowInteropHelper helper = new WindowInteropHelper(this);
+            SendMessage(helper.Handle, 161, 2, 0);
+
+            //Maximo de ventana 
+            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
         }
+
+
+        // Manejo del estado de la ventana para maximizar correctamente USANDO WINDOWS FORMS (problemas "ambiguous reference")
+        // al usar forms y wpf genera conflicto entre ambos y por eso ocaciona la ambiguiedad
+        ///habilitar FORMS en <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+        ///
+        /*
+        private void MainWindow_StateChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                // 1) Averigua el HWND de esta ventana
+                var hwnd = new WindowInteropHelper(this).Handle;
+                // 2) Determina la pantalla (monitor) donde está
+                var screen = Screen.FromHandle(hwnd);
+                // 3) Toma su área de trabajo (excluye barra de tareas)
+                var wa = screen.WorkingArea;
+
+                // 4) Ajusta el tamaño y la posición
+                this.Top = wa.Top;
+                this.Left = wa.Left;
+                this.Width = wa.Width;
+                this.Height = wa.Height;
+            }
+        }*/
+
 
 
 
