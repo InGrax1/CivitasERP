@@ -187,7 +187,7 @@ namespace CivitasERP.Views
                 Variables.IdObra = id_obra;
 
 
-                UbicacionLabel.Text= ObtenerUbicacionObra(id_obra);
+                UbicacionLabel.Text = ObtenerUbicacionObra(id_obra);
                 Conexion Sconexion = new Conexion();
                 string connectionString;
 
@@ -398,7 +398,7 @@ namespace CivitasERP.Views
             ComBoxAnio.SelectedItem = DateTime.Now.Year;
         }
 
-        
+
         // SUMA DE TOTALES EN FOOTER
         private void CalcularTotales(IEnumerable<DataGridNominas.Empleado> lista)
         {

@@ -150,11 +150,11 @@ GROUP BY
                             SueldoJornada = reader.GetDecimal(3) / 6, // No aplica
                             Dias = reader.GetInt32(5),
                             HorasExtra = ObtenerTotalHorasExtra(reader.GetInt32(0)), // No se desglosa como tiempo
-                            PHoraExtra =reader.GetDecimal(4), // No se desglosa como tiempo
+                            PHoraExtra = reader.GetDecimal(4), // No se desglosa como tiempo
                             SueldoSemanal = reader.GetDecimal(3),
                             SuelExtra = reader.GetDecimal(4),
-                            SuelTrabajado = (reader.GetDecimal(3) /6)*reader.GetInt32(5),
-                            SuelTotal = (reader.GetDecimal(3)/6) * reader.GetInt32(5) + reader.GetDecimal(4)
+                            SuelTrabajado = (reader.GetDecimal(3) / 6) * reader.GetInt32(5),
+                            SuelTotal = (reader.GetDecimal(3) / 6) * reader.GetInt32(5) + reader.GetDecimal(4)
                         });
                     }
                 }
@@ -174,7 +174,7 @@ GROUP BY
             Conexion Sconexion = new Conexion();
             string connectionString = Sconexion.ObtenerCadenaConexion();
 
-            string fechaInicio="", fechaFin="";
+            string fechaInicio = "", fechaFin = "";
 
             fechaInicio = Variables.FechaInicio;
             fechaFin = Variables.FechaFin;
@@ -348,7 +348,7 @@ GROUP BY
 
             return totalHoras;
         }
-      
+
 
         public (bool exito, DateTime fechaInicio, DateTime fechaFin) ObtenerFechasDesdeGlobal()
         {
@@ -370,4 +370,4 @@ GROUP BY
         }
     }
 }
-    
+
