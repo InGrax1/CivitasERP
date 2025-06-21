@@ -60,7 +60,7 @@
                               Padding="5"
                               IsEditable="False"
                               IsReadOnly="False" 
-                              DropDownOpened="ObraComboBox_DropDownOpened" 
+                              DropDownOpened="ObraComboBox_DropDownOpened"
                               SelectionChanged="ObraComboBox_SelectionChanged">
                     </ComboBox>
                 </Border>
@@ -208,6 +208,11 @@
                       HeadersVisibility="Column"
                       GridLinesVisibility="None"
                       HorizontalContentAlignment="Center"
+                      EnableRowVirtualization="True"
+                      EnableColumnVirtualization="True"
+                      VirtualizingStackPanel.IsVirtualizing="True"
+                      VirtualizingStackPanel.VirtualizationMode="Recycling"
+                      ScrollViewer.IsDeferredScrollingEnabled="True"
                       FontSize="15"
                       AlternationCount="2">
                 <!-- Aplica tu estilo -->

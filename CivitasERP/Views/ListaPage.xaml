@@ -200,13 +200,15 @@
                       CanUserDeleteRows="False"
                       IsReadOnly="True"
                       Margin="10"
-                 EnableRowVirtualization="True"
-              VirtualizingStackPanel.IsVirtualizing="True"
-              VirtualizingStackPanel.VirtualizationMode="Recycling"
                       HeadersVisibility="Column"
                       GridLinesVisibility="None"
                       HorizontalContentAlignment="Center"
                       FontSize="15"
+                      EnableRowVirtualization="True"
+EnableColumnVirtualization="True"
+VirtualizingStackPanel.IsVirtualizing="True"
+VirtualizingStackPanel.VirtualizationMode="Recycling"
+ScrollViewer.IsDeferredScrollingEnabled="True"
                       AlternationCount="2">
                 <!-- Aplica tu estilo -->
                 <DataGrid.ColumnHeaderStyle>
