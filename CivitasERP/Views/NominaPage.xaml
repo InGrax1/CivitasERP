@@ -60,7 +60,7 @@
                               Padding="5"
                               IsEditable="False"
                               IsReadOnly="False" 
-                               
+                              DropDownOpened="ObraComboBox_DropDownOpened"
                               SelectionChanged="ObraComboBox_SelectionChanged">
                     </ComboBox>
                 </Border>
@@ -93,6 +93,7 @@
                                   FontWeight="Normal"
                                   HorizontalContentAlignment="Stretch"
                                   VerticalContentAlignment="Center"
+                                  DropDownOpened="ComBoxSemana_DropDownOpened"
                                   SelectionChanged="ComBoxSemana_SelectionChanged"/>
                     </Border>
                     <!-- Combo Mes -->
@@ -119,6 +120,7 @@
                                   FontWeight="Normal"
                                   HorizontalContentAlignment="Stretch"
                                   VerticalContentAlignment="Center"
+                                  DropDownOpened="ComBoxMes_DropDownOpened"
                                   SelectionChanged="ComBoxMes_SelectionChanged"/>
                     </Border>
                     <!-- Combo Año -->
@@ -145,6 +147,7 @@
                                   FontWeight="Normal"
                                   HorizontalContentAlignment="Stretch"
                                   VerticalContentAlignment="Center"
+                                  DropDownOpened="ComBoxAnio_DropDownOpened"
                                   SelectionChanged="ComBoxAnio_SelectionChanged"/>
                     </Border>
                 </StackPanel>

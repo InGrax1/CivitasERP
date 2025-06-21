@@ -1,54 +1,40 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CivitasERP.Models;
 using System.Windows;
-using System.IO.Packaging;
 using CivitasERP.Views;
-using static CivitasERP.Models.DataGridNominas;
-using System.Data.SqlTypes;
 using static CivitasERP.Views.LoginPage;
 
 namespace CivitasERP.Models
 {
     public class Datagrid_lista
     {
-
         public class Empleado_Asistencia
         {
             public int ID { get; set; }
             public string Nombre { get; set; }
             public string Categoria { get; set; }
 
-
             public TimeSpan? EntradaL { get; set; }
             public TimeSpan? SalidaL { get; set; }
-
 
             public TimeSpan? EntradaM { get; set; }
             public TimeSpan? SalidaM { get; set; }
 
-
             public TimeSpan? EntradaMI { get; set; }
             public TimeSpan? SalidaMI { get; set; }
-
 
             public TimeSpan? EntradaJ { get; set; }
             public TimeSpan? SalidaJ { get; set; }
 
-            
             public TimeSpan? EntradaV { get; set; }
             public TimeSpan? SalidaV { get; set; }
-
 
             public TimeSpan? EntradaS { get; set; }
             public TimeSpan? SalidaS { get; set; }
         }
+
         private readonly string connectionString;
 
         public Datagrid_lista(string connectionString)
@@ -56,517 +42,177 @@ namespace CivitasERP.Models
             this.connectionString = connectionString;
         }
 
-
         public List<Empleado_Asistencia> ObtenerEmpleados()
         {
-            List<Empleado_Asistencia> empleados = new List<Empleado_Asistencia>();
+            var empleados = new List<Empleado_Asistencia>();
 
+            string connStr = new Conexion().ObtenerCadenaConexion();
+            string usuario = Variables.Usuario;
+            int? idAdmin = new DB_admins().ObtenerIdPorUsuario(usuario);
+            int? idObra = Variables.IdObra ?? 0;
+            DateTime fechaInicio = DateTime.Parse(Variables.FechaInicio);
 
-            Conexion Sconexion = new Conexion();
-            string connectionString;
-
-            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
-            connectionString = obtenerCadenaConexion;
-
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connStr))
             {
-                string usuario = Variables.Usuario;
-                DB_admins dB_Admins = new DB_admins();
-                int? idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
-
-                // Aquí estás verificando si se ha guardado un id_obra globalmente
-                int? id_obra;
-
-                if (Variables.IdObra!= null)
-                {
-                    id_obra = Variables.IdObra;
-                }
-                else
-                {
-                    id_obra = 0; // cuidado: esto convierte el null a 0, podría ser ambiguo si 0 no es válido
-                }
-
-                string fechaInicio = "", fechaFin = "";
-
-                fechaInicio = Variables.FechaInicio;
-                fechaFin = Variables.FechaFin;
-
-
-                string query = @"SELECT id_admins, 
-                            CONCAT(admins.admins_nombre, ' ', admins.admins_apellidop, ' ', admins.admins_apellidom) AS admin_nombre, 
-                            admin_categoria 
-                     FROM admins 
-                     WHERE id_admins = @idAdmin";
-
-
-
-                SqlCommand cmd1 = new SqlCommand(query, connection);
-                cmd1.Parameters.AddWithValue("@idAdmin", idAdmin);
                 connection.Open();
 
-                SqlDataReader reader1 = cmd1.ExecuteReader();
+                // Cargar Admins
+                string queryAdmins = @"SELECT id_admins, CONCAT(admins_nombre, ' ', admins_apellidop, ' ', admins_apellidom) AS admin_nombre, admin_categoria 
+                                       FROM admins WHERE id_admins = @idAdmin";
 
-                Dictionary<int, Empleado_Asistencia> empleadosDict = new Dictionary<int, Empleado_Asistencia>();
-
-                string fechas;
-                fechas = Variables.FechaInicio;
-
-                DateTime fecha = DateTime.Parse(fechas);
-
-
-
-                while (reader1.Read())
+                using (SqlCommand cmd = new SqlCommand(queryAdmins, connection))
                 {
-
-                    empleados.Add(new Empleado_Asistencia
+                    cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        ID = reader1.GetInt32(0),
-                        Nombre = reader1.GetString(1),
-                        Categoria = reader1.GetString(2),
-
-
-
-                        EntradaL = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha),
-                        SalidaL = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha),
-
-                        EntradaM = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha.AddDays(1)),
-                        SalidaM = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha.AddDays(1)),
-
-                        EntradaMI = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha.AddDays(2)),
-                        SalidaMI = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha.AddDays(2)),
-
-                        EntradaJ = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha.AddDays(3)),
-                        SalidaJ = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha.AddDays(3)),
-
-                        EntradaV = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha.AddDays(4)),
-                        SalidaV = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha.AddDays(4)),
-
-                        EntradaS = ObtenerHorarioDeEntrada_Admin(reader1.GetInt32(0), fecha.AddDays(5)),
-                        SalidaS = ObtenerHorarioDeSalida_Admin(reader1.GetInt32(0), fecha.AddDays(5)),
-                    });
-                }
-                reader1.Close();
-
-            }
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-
-            {   
-
-
-                string usuario = Variables.Usuario;
-                DB_admins dB_Admins = new DB_admins();
-                int? idAdmin;
-                idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
-
-
-                // Aquí estás verificando si se ha guardado un id_obra globalmente
-                int? id_obra;
-
-                if (Variables.IdObra != null)
-                {
-                    id_obra = Variables.IdObra;
-                }
-                else
-                {
-                    id_obra = 0; // cuidado: esto convierte el null a 0, podría ser ambiguo si 0 no es válido
+                        while (reader.Read())
+                        {
+                            empleados.Add(CrearEmpleadoAsistencia(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), fechaInicio, true));
+                        }
+                    }
                 }
 
-                string fechaInicio = "", fechaFin = "";
+                // Cargar Empleados
+                string queryEmpleados = @"
+                    SELECT DISTINCT e.id_empleado, 
+                        CONCAT(e.emp_nombre, ' ', e.emp_apellidop, ' ', e.emp_apellidom) AS emp_nombre, 
+                        e.emp_puesto
+                    FROM empleado e
+                    LEFT JOIN asistencia a ON e.id_empleado = a.id_empleado
+                    WHERE e.id_admins = @idAdmin AND e.id_obra = @idObra";
 
-                fechaInicio = Variables.FechaInicio;
-                fechaFin = Variables.FechaFin;
-
-
-                string query = @"
-                                SELECT DISTINCT e.id_empleado, 
-                                    CONCAT(e.emp_nombre, ' ', e.emp_apellidop, ' ', e.emp_apellidom) AS emp_nombre, 
-                                    e.emp_puesto, 
-                                    e.emp_dia, 
-                                    e.emp_semanal, 
-                                    e.emp_hora_extra  
-                                    FROM empleado e
-                                    LEFT JOIN asistencia a ON e.id_empleado = a.id_empleado
-                                    WHERE e.id_admins = @idAdmin 
-                                      AND e.id_obra = @id_obra 
-                                      ";
-
-
-                SqlCommand cmd1 = new SqlCommand(query, connection);
-                cmd1.Parameters.AddWithValue("@idAdmin", idAdmin);
-                cmd1.Parameters.AddWithValue("@id_obra", id_obra);
-                cmd1.Parameters.AddWithValue("@fechaInicio", fechaInicio);
-                cmd1.Parameters.AddWithValue("@fechaFin", fechaFin);
-                connection.Open();
-
-                SqlDataReader reader1 = cmd1.ExecuteReader();
-
-                Dictionary<int, Empleado_Asistencia> empleadosDict = new Dictionary<int, Empleado_Asistencia>();
-
-                string fechas;
-                fechas = Variables.FechaInicio;
-
-                DateTime fecha = DateTime.Parse(fechas);
-
-                
-
-                while (reader1.Read())
+                using (SqlCommand cmd = new SqlCommand(queryEmpleados, connection))
                 {
-
-                    empleados.Add(new Empleado_Asistencia
+                    cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
+                    cmd.Parameters.AddWithValue("@idObra", idObra);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        ID = reader1.GetInt32(0),
-                        Nombre = reader1.GetString(1),
-                        Categoria = reader1.GetString(2),
-
-
-
-                        EntradaL = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha),
-                        SalidaL = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha),
-
-                        EntradaM = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(1)),
-                        SalidaM = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(1)),
-
-                        EntradaMI = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(2)),
-                        SalidaMI = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(2)),
-
-                        EntradaJ = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(3)),
-                        SalidaJ = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(3)),
-
-                        EntradaV = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(4)),
-                        SalidaV = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(4)),
-
-                        EntradaS = ObtenerHorarioDeEntrada(reader1.GetInt32(0), fecha.AddDays(5)),
-                        SalidaS = ObtenerHorarioDeSalida(reader1.GetInt32(0), fecha.AddDays(5)),
-                    });
+                        while (reader.Read())
+                        {
+                            empleados.Add(CrearEmpleadoAsistencia(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), fechaInicio, false));
+                        }
+                    }
                 }
-                reader1.Close();
-
             }
 
             return empleados;
         }
 
-        public TimeSpan? ObtenerHorarioDeEntrada(int idEmpleado, DateTime fecha)
+        private Empleado_Asistencia CrearEmpleadoAsistencia(int id, string nombre, string categoria, DateTime fecha, bool esAdmin)
         {
-            Conexion Sconexion = new Conexion();
-            string connectionString;
-
-            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
-            connectionString = obtenerCadenaConexion;
-
-
-            TimeSpan? horaEntrada = null;
-
-
-            string query = @"
-            SELECT asis_hora, asis_salida
-            FROM asistencia
-           WHERE id_empleado = @id_empleado AND CAST(asis_dia AS DATE) = @asis_dia";
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(query, conn))
+            return new Empleado_Asistencia
             {
-                cmd.Parameters.AddWithValue("@id_empleado", idEmpleado);
-                cmd.Parameters.AddWithValue("@asis_dia", fecha.Date);
-
-                conn.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        if (!reader.IsDBNull(0))
-                            horaEntrada = reader.GetTimeSpan(reader.GetOrdinal("asis_hora"));
-
-                       
-                    }
-                }
-            }
-            return (horaEntrada);
+                ID = id,
+                Nombre = nombre,
+                Categoria = categoria,
+                EntradaL = ObtenerHorario(id, fecha, esAdmin, true),
+                SalidaL = ObtenerHorario(id, fecha, esAdmin, false),
+                EntradaM = ObtenerHorario(id, fecha.AddDays(1), esAdmin, true),
+                SalidaM = ObtenerHorario(id, fecha.AddDays(1), esAdmin, false),
+                EntradaMI = ObtenerHorario(id, fecha.AddDays(2), esAdmin, true),
+                SalidaMI = ObtenerHorario(id, fecha.AddDays(2), esAdmin, false),
+                EntradaJ = ObtenerHorario(id, fecha.AddDays(3), esAdmin, true),
+                SalidaJ = ObtenerHorario(id, fecha.AddDays(3), esAdmin, false),
+                EntradaV = ObtenerHorario(id, fecha.AddDays(4), esAdmin, true),
+                SalidaV = ObtenerHorario(id, fecha.AddDays(4), esAdmin, false),
+                EntradaS = ObtenerHorario(id, fecha.AddDays(5), esAdmin, true),
+                SalidaS = ObtenerHorario(id, fecha.AddDays(5), esAdmin, false),
+            };
         }
 
-        public TimeSpan? ObtenerHorarioDeSalida(int idEmpleado, DateTime fecha)
+        private TimeSpan? ObtenerHorario(int id, DateTime fecha, bool esAdmin, bool esEntrada)
         {
-            Conexion Sconexion = new Conexion();
-            string connectionString;
+            TimeSpan? resultado = null;
+            string campo = esEntrada ? "asis_hora" : "asis_salida";
+            string columnaID = esAdmin ? "admins_id_asistencia" : "id_empleado";
 
-            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
-            connectionString = obtenerCadenaConexion;
+            string query = $"SELECT {campo} FROM asistencia WHERE {columnaID} = @id AND CAST(asis_dia AS DATE) = @fecha";
 
-
-            TimeSpan? horaSalida = null;
-
-            string query = @"
-            SELECT asis_hora, asis_salida
-            FROM asistencia
-           WHERE id_empleado = @id_empleado AND CAST(asis_dia AS DATE) = @asis_dia";
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(new Conexion().ObtenerCadenaConexion()))
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
-                cmd.Parameters.AddWithValue("@id_empleado", idEmpleado);
-                cmd.Parameters.AddWithValue("@asis_dia", fecha.Date);
-
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@fecha", fecha.Date);
                 conn.Open();
+
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    if (reader.Read())
-                    {
-                        if (!reader.IsDBNull(1))
-                            horaSalida = reader.GetTimeSpan(reader.GetOrdinal("asis_salida"));
-                    }
+                    if (reader.Read() && !reader.IsDBNull(0))
+                        resultado = reader.GetTimeSpan(0);
                 }
             }
-            return (horaSalida);
+
+            return resultado;
         }
 
-
-
-        public TimeSpan? ObtenerHorarioDeEntrada_Admin(int idEmpleado, DateTime fecha)
+        public void MarcarAsistencia(int idEmpleado, bool esAdmin = false)
         {
-            Conexion Sconexion = new Conexion();
-            string connectionString;
+            string cs = new Conexion().ObtenerCadenaConexion();
+            DateTime hoy = DateTime.Today;
+            TimeSpan ahora = DateTime.Now.TimeOfDay;
 
-            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
-            connectionString = obtenerCadenaConexion;
-
-
-            TimeSpan? horaEntrada = null;
-
-
-            string query = @"
-            SELECT asis_hora, asis_salida
-            FROM asistencia
-           WHERE admins_id_asistencia = @admins_id_asistencia AND CAST(asis_dia AS DATE) = @asis_dia";
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(query, conn))
-            {
-                cmd.Parameters.AddWithValue("@admins_id_asistencia", idEmpleado);
-                cmd.Parameters.AddWithValue("@asis_dia", fecha.Date);
-
-                conn.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        if (!reader.IsDBNull(0))
-                            horaEntrada = reader.GetTimeSpan(reader.GetOrdinal("asis_hora"));
-
-
-                    }
-                }
-            }
-            return (horaEntrada);
-        }
-
-        public TimeSpan? ObtenerHorarioDeSalida_Admin(int idEmpleado, DateTime fecha)
-        {
-            Conexion Sconexion = new Conexion();
-            string connectionString;
-
-            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
-            connectionString = obtenerCadenaConexion;
-
-
-            TimeSpan? horaSalida = null;
-
-            string query = @"
-            SELECT asis_hora, asis_salida
-            FROM asistencia
-           WHERE admins_id_asistencia = @admins_id_asistencia AND CAST(asis_dia AS DATE) = @asis_dia";
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(query, conn))
-            {
-                cmd.Parameters.AddWithValue("@admins_id_asistencia", idEmpleado);
-                cmd.Parameters.AddWithValue("@asis_dia", fecha.Date);
-
-                conn.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        if (!reader.IsDBNull(1))
-                            horaSalida = reader.GetTimeSpan(reader.GetOrdinal("asis_salida"));
-                    }
-                }
-            }
-            return (horaSalida);
-        }
-
-
-
-        /// <summary>
-        /// Marca la asistencia de un empleado:
-        /// - Si no existe registro para hoy, inserta asis_hora (hora de entrada).
-        /// - Si existe pero asis_salida es NULL, actualiza asis_salida (hora de salida).
-        /// </summary>
-        /// 
-        public void MarcarAsistencia(int idEmpleado)
-        {
-            // 1) Obtener la cadena de conexión (no uses “asis_id” aquí, solo id_asistencia cuando lo leas)
-            string connectionString = new Conexion().ObtenerCadenaConexion();
-
-            // 2) Fecha de hoy (solo la parte DATE)
-            DateTime fechaHoy = DateTime.Today;
-            TimeSpan horaAhora = DateTime.Now.TimeOfDay;
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(cs))
             {
                 conn.Open();
+                string columnaID = esAdmin ? "admins_id_asistencia" : "id_empleado";
 
-                // 3) Intentamos leer el registro de asistencia para este empleado Y esta fecha
-                //    Nota que aquí CORREGIMOS “asis_id” por “id_asistencia”
-                string sqlSelect = @"
-            SELECT id_asistencia, asis_hora, asis_salida
-              FROM asistencia
-             WHERE id_empleado = @idEmpleado
-               AND CAST(asis_dia AS DATE) = @fechaHoy";
+                string select = $@"
+                    SELECT id_asistencia, asis_hora, asis_salida
+                    FROM asistencia
+                    WHERE {columnaID} = @id AND CAST(asis_dia AS DATE) = @hoy";
 
-                using (SqlCommand cmdSelect = new SqlCommand(sqlSelect, conn))
+                using (SqlCommand cmdSelect = new SqlCommand(select, conn))
                 {
-                    cmdSelect.Parameters.AddWithValue("@idEmpleado", idEmpleado);
-                    cmdSelect.Parameters.AddWithValue("@fechaHoy", fechaHoy.Date);
+                    cmdSelect.Parameters.AddWithValue("@id", idEmpleado);
+                    cmdSelect.Parameters.AddWithValue("@hoy", hoy);
 
                     using (SqlDataReader reader = cmdSelect.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            // Ya existe fila de asistencia para “hoy” y este empleado
-                            int idAsistencia = reader.GetInt32(reader.GetOrdinal("id_asistencia"));
-                            bool tieneSalida = !reader.IsDBNull(reader.GetOrdinal("asis_salida"));
+                            int idAsistencia = reader.GetInt32(0);
+                            bool tieneSalida = !reader.IsDBNull(2);
                             reader.Close();
 
                             if (!tieneSalida)
                             {
-                                // Aún no ha marcado la salida: hacemos UPDATE para poner “asis_salida”
-                                string sqlUpdate = @"
-                            UPDATE asistencia
-                               SET asis_salida = @horaAhora
-                             WHERE id_asistencia = @idAsistencia
-                        ";
-                                using (SqlCommand cmdUpdate = new SqlCommand(sqlUpdate, conn))
+                                string update = @"UPDATE asistencia SET asis_salida = @ahora WHERE id_asistencia = @idAsistencia";
+                                using (SqlCommand cmdUpdate = new SqlCommand(update, conn))
                                 {
-                                    cmdUpdate.Parameters.AddWithValue("@horaAhora", horaAhora);
+                                    cmdUpdate.Parameters.AddWithValue("@ahora", ahora);
                                     cmdUpdate.Parameters.AddWithValue("@idAsistencia", idAsistencia);
                                     cmdUpdate.ExecuteNonQuery();
                                 }
                             }
                             else
                             {
-                                // Si detectas que ya tenía asis_salida (tercera pasada), 
-                                // tal vez quieras mostrar un mensaje informando que no puede volver a marcar:
-                                MessageBox.Show(
-                                    "Ya registraste tu salida para hoy. No se puede volver a marcar.",
-                                    "Atención",
-                                    MessageBoxButton.OK,
-                                    MessageBoxImage.Information);
+                                MessageBox.Show("Ya registraste tu salida para hoy.", "Atención", MessageBoxButton.OK, MessageBoxImage.Information);
                             }
                         }
                         else
                         {
-                            // reader.Read() = false -> no hay fila para hoy: INSERT para marcar la hora de entrada
                             reader.Close();
-
-                            string sqlInsert = @"
-                        INSERT INTO asistencia 
-                            (id_empleado, asis_dia, asis_hora, asis_salida, asis_hora_extra, admins_id_asistencia) 
-                        VALUES 
-                            (@idEmpleado, @fechaHoy, @horaAhora, NULL, '00:00:00', NULL)
-                    ";
-                            using (SqlCommand cmdInsert = new SqlCommand(sqlInsert, conn))
+                            string insert = $@"
+                                INSERT INTO asistencia 
+                                    ({columnaID}, asis_dia, asis_hora, asis_salida, asis_hora_extra, {(esAdmin ? "id_empleado" : "admins_id_asistencia")})
+                                VALUES
+                                    (@id, @hoy, @ahora, NULL, '00:00:00', NULL)";
+                            using (SqlCommand cmdInsert = new SqlCommand(insert, conn))
                             {
-                                cmdInsert.Parameters.AddWithValue("@idEmpleado", idEmpleado);
-                                cmdInsert.Parameters.AddWithValue("@fechaHoy", fechaHoy.Date);
-                                cmdInsert.Parameters.AddWithValue("@horaAhora", horaAhora);
-                                // En este ejemplo no asignamos admins_id_asistencia; si quieres grabar qué admin marcó,
-                                // reemplaza el NULL por tu propio parámetro: e.g.  @idAdminQueMarca
+                                cmdInsert.Parameters.AddWithValue("@id", idEmpleado);
+                                cmdInsert.Parameters.AddWithValue("@hoy", hoy);
+                                cmdInsert.Parameters.AddWithValue("@ahora", ahora);
                                 cmdInsert.ExecuteNonQuery();
                             }
                         }
                     }
                 }
-
-                conn.Close();
             }
         }
 
-        /// <summary>
-        /// Igual que MarcarAsistencia pero para admins:
-        /// - INSERT si no hay registro hoy.
-        /// - UPDATE salida si ya hay entrada sin salida.
-        /// </summary>
         public void MarcarAsistenciaAdmin(int idAdmin)
         {
-            string cs = new Conexion().ObtenerCadenaConexion();
-            DateTime hoy = DateTime.Today;
-            TimeSpan ahora = DateTime.Now.TimeOfDay;
-
-            using (var conn = new SqlConnection(cs))
-            {
-                conn.Open();
-                // 1) Buscamos registro de hoy para este admin
-                string sel = @"
-          SELECT id_asistencia, asis_hora, asis_salida
-            FROM asistencia
-           WHERE admins_id_asistencia = @idAdmin
-             AND CAST(asis_dia AS DATE) = @hoy";
-                using (var cmd = new SqlCommand(sel, conn))
-                {
-                    cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
-                    cmd.Parameters.AddWithValue("@hoy", hoy);
-                    using (var rdr = cmd.ExecuteReader())
-                    {
-                        if (rdr.Read())
-                        {
-                            int asisId = rdr.GetInt32(rdr.GetOrdinal("id_asistencia"));
-                            bool tieneSalida = !rdr.IsDBNull(rdr.GetOrdinal("asis_salida"));
-                            rdr.Close();
-                            if (!tieneSalida)
-                            {
-                                // 2) UPDATE salida
-                                string upd = @"UPDATE asistencia
-                                         SET asis_salida = @ahora
-                                       WHERE id_asistencia = @asisId";
-                                using (var u = new SqlCommand(upd, conn))
-                                {
-                                    u.Parameters.AddWithValue("@ahora", ahora);
-                                    u.Parameters.AddWithValue("@asisId", asisId);
-                                    u.ExecuteNonQuery();
-                                }
-                            }
-                            else
-                            {
-                                MessageBox.Show("Ya marcaste tu salida hoy (admin).", "Atención",
-                                                MessageBoxButton.OK, MessageBoxImage.Information);
-                            }
-                        }
-                        else
-                        {
-                            // 3) INSERT entrada
-                            rdr.Close();
-                            string ins = @"
-                      INSERT INTO asistencia
-                        (admins_id_asistencia, asis_dia, asis_hora, asis_salida, asis_hora_extra, id_empleado)
-                      VALUES
-                        (@idAdmin, @hoy, @ahora, NULL, '00:00:00', NULL)";
-                            using (var i = new SqlCommand(ins, conn))
-                            {
-                                i.Parameters.AddWithValue("@idAdmin", idAdmin);
-                                i.Parameters.AddWithValue("@hoy", hoy);
-                                i.Parameters.AddWithValue("@ahora", ahora);
-                                i.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                }
-            }
+            MarcarAsistencia(idAdmin, true);
         }
-
-
-
     }
-
 }
