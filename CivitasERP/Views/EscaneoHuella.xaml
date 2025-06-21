@@ -1,0 +1,34 @@
+﻿<Window x:Class="CivitasERP.Views.EscaneoHuella"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CivitasERP.Views"
+        mc:Ignorable="d"
+        Title="EscaneoHuella" Height="350" Width="350">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="ESCANEANDO HUELLA ..." 
+                   FontSize="20" 
+                   HorizontalAlignment="Center" 
+                   Margin="10" 
+                   Grid.Row="0"/>
+        <Image Source="/Images/huella-dactilar.png"
+               Grid.Row="1"
+               Height="190"
+               Width="190">
+               
+        </Image>
+        
+        <Button x:Name="CancelarScan" Grid.Row="2"
+                Content="Cancelar Escaneo">
+            
+        </Button>
+
+
+    </Grid>
+</Window>

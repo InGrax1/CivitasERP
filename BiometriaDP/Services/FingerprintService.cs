@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
+using System.Windows.Forms;
 using DPFP;
 using DPFP.Capture;
 using DPFP.Processing;
@@ -53,6 +54,7 @@ namespace BiometriaDP.Services
 
         public void StartVerification()
         {
+            MessageBox.Show("PRUEBA 1");
             try
             {
                 _enrollmentMode = false;
