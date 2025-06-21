@@ -79,6 +79,7 @@ namespace CivitasERP.ViewModels
 
         private void StartScan()
         {
+            MessageBox.Show("PRUEBA 1");
             EstadoHuella = "⏳ Coloca tu dedo…";
             _fingerService.StartVerification();
         }

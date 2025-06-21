@@ -1,26 +1,13 @@
 ﻿using CivitasERP.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Data;
-using Microsoft.Win32;
-using static CivitasERP.Views.LoginPage;
 using System.Data.SqlClient;
 using System.Globalization;
-using static CivitasERP.Views.ForgotPasswordPage;
-using static CivitasERP.Models.DataGridNominas;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 
-
+using GlobalCalendar = System.Globalization.Calendar; // Alias para evitar ambigüedad
 
 namespace CivitasERP.Views
 {
@@ -30,105 +17,84 @@ namespace CivitasERP.Views
     public partial class NominaPage : Page
     {
         private DataGridNominas repo;
+
         public NominaPage()
         {
             InitializeComponent();
+
             if (Variables.ObraNom != null)
             {
                 CargarDatosComboBox();
                 ObraComboBox.SelectedItem = Variables.ObraNom;
-                Conexion Sconexion = new Conexion();
-                string connectionString;
-
-                string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
-                connectionString = obtenerCadenaConexion;
-
-                repo = new DataGridNominas(connectionString);
-
-                var empleados = repo.ObtenerEmpleados();
-                dataGridNomina.ItemsSource = empleados;
-
+                CargarEmpleados();
                 CargarYSumar();
-
             }
 
-
-            if (Variables.indexComboboxAño != null || Variables.indexComboboxMes != null || Variables.indexComboboxMes != null)
+            if (Variables.indexComboboxAño != null || Variables.indexComboboxMes != null)
             {
                 if (Variables.ObraNom != null)
                 {
                     CargarDatosComboBox();
                     ObraComboBox.SelectedItem = Variables.ObraNom;
-                    Conexion Sconexion = new Conexion();
-                    string connectionString;
-
-                    string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
-                    connectionString = obtenerCadenaConexion;
-                    repo = new DataGridNominas(connectionString);
-
-                    var empleados = repo.ObtenerEmpleados();
-                    dataGridNomina.ItemsSource = empleados;
+                    CargarEmpleados();
                 }
-                if (Variables.indexComboboxAño != null || Variables.indexComboboxMes != null || Variables.indexComboboxMes != null)
+
+                if (Variables.indexComboboxAño != null)
                 {
+                    CargarAnios();
+                    ComBoxAnio.SelectedItem = Variables.indexComboboxAño;
+                }
 
-                    if (Variables.indexComboboxAño != null)
+                if (Variables.indexComboboxMes != null)
+                {
+                    CargarMeses();
+                    ComBoxMes.SelectedItem = Variables.indexComboboxMes;
+
+                    Agregar_tiempo tiempo = new Agregar_tiempo();
+
+                    // Limpiar semanas antes de actualizar
+                    ComBoxSemana.ItemsSource = null;
+                    ComBoxSemana.SelectedItem = null;
+
+                    if (ComBoxAnio.SelectedItem is int anio && ComBoxMes.SelectedIndex >= 0)
                     {
-                        CargarAnios();
-                        ComBoxAnio.SelectedItem = Variables.indexComboboxAño;
+                        int mes = ComBoxMes.SelectedIndex + 1;
+                        ComBoxSemana.ItemsSource = tiempo.GetSemanasDelMes(anio, mes);
                     }
+                }
 
-                    if (Variables.indexComboboxMes != null)
-                    {
-
-
-                        CargarMeses();
-                        ComBoxMes.SelectedItem = Variables.indexComboboxMes;
-
-
-
-
-                        Agregar_tiempo tiempo = new Agregar_tiempo();
-                        // Limpiar semanas cada vez que cambie año o mes
-                        ComBoxSemana.ItemsSource = null;
-                        ComBoxSemana.SelectedItem = null;
-
-                        // Verificar que tanto el año como el mes sean válidos
-                        if (ComBoxAnio.SelectedItem is int anio && ComBoxMes.SelectedIndex >= 0)
-                        {
-                            int mes = ComBoxMes.SelectedIndex + 1;
-                            ComBoxSemana.ItemsSource = tiempo.GetSemanasDelMes(anio, mes);
-                        }
-                    }
-
-
-                    if (Variables.indexComboboxSemana != null)
-                    {
-                        ComBoxSemana.SelectedItem = Variables.indexComboboxSemana;
-
-                    }
+                if (Variables.indexComboboxSemana != null)
+                {
+                    ComBoxSemana.SelectedItem = Variables.indexComboboxSemana;
                 }
             }
         }
 
+        private string ObtenerConexion()
+        {
+            return new Conexion().ObtenerCadenaConexion();
+        }
+
+        private void CargarEmpleados()
+        {
+            repo = new DataGridNominas(ObtenerConexion());
+            var empleados = repo.ObtenerEmpleados();
+            dataGridNomina.ItemsSource = empleados;
+        }
 
         private void btnNuevoEmpleado_Click(object sender, RoutedEventArgs e)
         {
             NuevoEmpleadoPage nuevoEmpleadoPage = new NuevoEmpleadoPage();
             nuevoEmpleadoPage.Show();
         }
+
         private void ObraComboBox_DropDownOpened(object sender, EventArgs e)
         {
             CargarDatosComboBox();
         }
 
-
-
-
-        // OBRA
         private void ObraComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             if (Variables.FechaFin == null || Variables.FechaInicio == null)
             {
                 DateTime hoy = DateTime.Now;
@@ -145,20 +111,11 @@ namespace CivitasERP.Views
                 Variables.FechaInicio = lunes.ToString(formato);
                 Variables.FechaFin = domingo.ToString(formato);
 
-
-
-                // Obtener cultura invariable con reglas ISO 8601
                 CultureInfo cultura = CultureInfo.InvariantCulture;
-                System.Globalization.Calendar calendario = cultura.Calendar;
+                GlobalCalendar calendario = cultura.Calendar;
 
-                // Calcular número de semana según regla ISO 8601
-
-                // Obtener nombre del mes y número
                 int numeroMes = hoy.Month;
-
-                // Obtener año
                 string año = hoy.Year.ToString();
-
 
                 int numeroSemana = calendario.GetWeekOfYear(hoy, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
 
@@ -166,10 +123,8 @@ namespace CivitasERP.Views
                 CargarMeses();
 
                 ComBoxSemana.SelectedIndex = numeroSemana;
-                ComBoxMes.SelectedIndex = --numeroMes;
+                ComBoxMes.SelectedIndex = numeroMes - 1;
                 ComBoxAnio.SelectedItem = año;
-
-
             }
 
             string usuario = Variables.Usuario;
@@ -178,7 +133,6 @@ namespace CivitasERP.Views
 
             if (ObraComboBox.SelectedItem != null)
             {
-
                 string nombre_obra = ObraComboBox.SelectedItem.ToString();
 
                 Variables.ObraNom = nombre_obra;
@@ -186,35 +140,20 @@ namespace CivitasERP.Views
                 int? id_obra = ObtenerID_obra(idAdmin, nombre_obra);
                 Variables.IdObra = id_obra;
 
+                UbicacionLabel.Text = ObtenerUbicacionObra(id_obra);
 
-                UbicacionLabel.Text= ObtenerUbicacionObra(id_obra);
-                Conexion Sconexion = new Conexion();
-                string connectionString;
-
-                string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
-                connectionString = obtenerCadenaConexion;
-                repo = new DataGridNominas(connectionString);
-
-                var empleados = repo.ObtenerEmpleados();
-                dataGridNomina.ItemsSource = empleados;
-
-                //this.Loaded += HomePage_Loaded;
-
+                CargarEmpleados();
             }
-            else
-            {
-            }
+
             CargarYSumar();
         }
+
         private int? ObtenerID_obra(int? idAdminObra, string obraNombre)
         {
             if (idAdminObra == null || string.IsNullOrWhiteSpace(obraNombre))
                 return null;
 
-            var conexion = new Conexion();
-            string connectionString = conexion.ObtenerCadenaConexion();
-
-            using (var conn = new SqlConnection(connectionString))
+            using (var conn = new SqlConnection(ObtenerConexion()))
             {
                 string query = "SELECT id_obra FROM obra WHERE id_admin_obra = @idAdminObra AND obra_nombre = @obraNombre";
                 using (var cmd = new SqlCommand(query, conn))
@@ -240,10 +179,7 @@ namespace CivitasERP.Views
 
             try
             {
-                var conexion = new Conexion();
-                string connectionString = conexion.ObtenerCadenaConexion();
-
-                using (var conn = new SqlConnection(connectionString))
+                using (var conn = new SqlConnection(ObtenerConexion()))
                 {
                     string query = "SELECT obra_nombre FROM obra WHERE id_admin_obra = @idAdminObra";
                     using (var cmd = new SqlCommand(query, conn))
@@ -268,13 +204,8 @@ namespace CivitasERP.Views
             }
         }
 
-
-
-        //    SEMANA
-
         private void ComBoxSemana_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             Variables.Fecha = ComBoxSemana.SelectedItem?.ToString() ?? string.Empty;
 
             Agregar_tiempo tiempo = new Agregar_tiempo();
@@ -283,41 +214,25 @@ namespace CivitasERP.Views
 
             if (resultado.exito)
             {
-                // Ya puedes usar fechaInicio y fechaFin como DateTime
                 DateTime inicio = resultado.fechaInicio;
                 DateTime fin = resultado.fechaFin;
 
-                // Opcional: convertir a formato SQL
                 Variables.FechaInicio = inicio.ToString("yyyy-MM-dd");
                 Variables.FechaFin = fin.ToString("yyyy-MM-dd");
-
 
                 Variables.indexComboboxSemana = ComBoxSemana.SelectedItem.ToString();
             }
 
-
-
-            Conexion Sconexion = new Conexion();
-            string connectionString;
-
-            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
-            connectionString = obtenerCadenaConexion;
-
-            repo = new DataGridNominas(connectionString);
-
-            var empleados = repo.ObtenerEmpleados();
-            dataGridNomina.ItemsSource = empleados;
+            CargarEmpleados();
         }
 
-
-        void ActualizarSemanas()
+        private void ActualizarSemanas()
         {
             Agregar_tiempo tiempo = new Agregar_tiempo();
-            // Limpiar semanas cada vez que cambie año o mes
+
             ComBoxSemana.ItemsSource = null;
             ComBoxSemana.SelectedItem = null;
 
-            // Verificar que tanto el año como el mes sean válidos
             if (ComBoxAnio.SelectedItem is int anio && ComBoxMes.SelectedIndex >= 0)
             {
                 int mes = ComBoxMes.SelectedIndex + 1;
@@ -330,7 +245,6 @@ namespace CivitasERP.Views
             CargarMeses();
         }
 
-        // MES
         private void ComBoxMes_DropDownOpened(object sender, EventArgs e)
         {
             CargarMeses();
@@ -338,15 +252,11 @@ namespace CivitasERP.Views
 
         private void ComBoxMes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-
-
             Agregar_tiempo tiempo = new Agregar_tiempo();
-            // Limpiar semanas cada vez que cambie año o mes
+
             ComBoxSemana.ItemsSource = null;
             ComBoxSemana.SelectedItem = null;
 
-            // Verificar que tanto el año como el mes sean válidos
             if (ComBoxAnio.SelectedItem is int anio && ComBoxMes.SelectedIndex >= 0)
             {
                 int mes = ComBoxMes.SelectedIndex + 1;
@@ -354,27 +264,25 @@ namespace CivitasERP.Views
             }
             ActualizarSemanas();
 
-            Variables.indexComboboxMes = ComBoxMes.SelectedItem.ToString();
+            Variables.indexComboboxMes = ComBoxMes.SelectedItem?.ToString();
         }
+
         private void CargarMeses()
         {
             Agregar_tiempo tiempo = new Agregar_tiempo();
             ComBoxMes.ItemsSource = tiempo.GetMeses();
-            ComBoxMes.SelectedItem = DateTime.Now.Year;
-
+            ComBoxMes.SelectedItem = DateTime.Now.Month;  // Corregí para que sea el mes actual (no año)
         }
 
-        // AÑO
         private void ComBoxAnio_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
             Agregar_tiempo tiempo = new Agregar_tiempo();
+
             if (ComBoxAnio.ItemsSource == null)
             {
-                ComBoxAnio.ItemsSource = tiempo.GetAnios(); // GetAnios() debe devolver una lista de int (años)
+                ComBoxAnio.ItemsSource = tiempo.GetAnios();
             }
 
-            // Solo establecer el año actual si aún no hay un año seleccionado
             if (ComBoxAnio.SelectedItem == null || !(ComBoxAnio.SelectedItem is int))
             {
                 int anioActual = DateTime.Now.Year;
@@ -385,12 +293,14 @@ namespace CivitasERP.Views
             }
             ActualizarSemanas();
 
-            Variables.indexComboboxAño = ComBoxAnio.SelectedItem.ToString();
+            Variables.indexComboboxAño = ComBoxAnio.SelectedItem?.ToString();
         }
+
         private void ComBoxAnio_DropDownOpened(object sender, EventArgs e)
         {
             CargarAnios();
         }
+
         private void CargarAnios()
         {
             Agregar_tiempo tiempo = new Agregar_tiempo();
@@ -398,11 +308,8 @@ namespace CivitasERP.Views
             ComBoxAnio.SelectedItem = DateTime.Now.Year;
         }
 
-        
-        // SUMA DE TOTALES EN FOOTER
         private void CalcularTotales(IEnumerable<DataGridNominas.Empleado> lista)
         {
-            // Sumas cada columna
             int totalPersonal = lista.Count();
             decimal tJornada = lista.Sum(e => e.SueldoJornada);
             decimal tSemanal = lista.Sum(x => x.SueldoSemanal);
@@ -412,7 +319,6 @@ namespace CivitasERP.Views
             decimal tTrabajado = lista.Sum(x => x.SuelTrabajado);
             decimal tGeneral = lista.Sum(x => x.SuelTotal);
 
-            // Asigna a tus TextBlocks
             TotalPersonal.Text = totalPersonal.ToString();
             TotalSuelJornal.Text = tJornada.ToString("C2");
             TotalSuelSemanal.Text = tSemanal.ToString("C2");
@@ -422,6 +328,7 @@ namespace CivitasERP.Views
             TotalSuelTrabajado.Text = tTrabajado.ToString("C2");
             TotalGeneral.Text = tGeneral.ToString("C2");
         }
+
         private void CargarYSumar()
         {
             var empleados = repo.ObtenerEmpleados();
@@ -431,28 +338,22 @@ namespace CivitasERP.Views
 
         public string ObtenerUbicacionObra(int? idObra)
         {
-            Conexion Sconexion = new Conexion();
-            string connectionString;
-
-            string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
-            connectionString = obtenerCadenaConexion;
             string ubicacion = null;
-            string query = "SELECT obra_ubicacion FROM obra WHERE id_obra = @IdObra";
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            using (SqlCommand command = new SqlCommand(query, connection))
+            using (SqlConnection connection = new SqlConnection(ObtenerConexion()))
+            using (SqlCommand command = new SqlCommand("SELECT obra_ubicacion FROM obra WHERE id_obra = @IdObra", connection))
             {
                 command.Parameters.AddWithValue("@IdObra", idObra);
-
                 try
                 {
                     connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    if (reader.Read())
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        ubicacion = reader["obra_ubicacion"].ToString();
+                        if (reader.Read())
+                        {
+                            ubicacion = reader["obra_ubicacion"].ToString();
+                        }
                     }
-                    reader.Close();
                 }
                 catch (Exception ex)
                 {
