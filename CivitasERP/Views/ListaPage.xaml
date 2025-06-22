@@ -161,7 +161,8 @@
                                Height="70"
                                HorizontalAlignment="Stretch"/>
                         <TextBlock x:Name="lblEstadoHuella"
-                                   Text= "{Binding EstadoHuella}" 
+                                   Text= "{Binding EstadoHuella}"
+                                   
                                    Foreground="#5F5FFF"
                                    FontSize="13"
                                    FontWeight="Bold"
