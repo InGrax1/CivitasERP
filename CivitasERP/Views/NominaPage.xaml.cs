@@ -20,6 +20,7 @@ namespace CivitasERP.Views
 
         public NominaPage()
         {
+
             InitializeComponent();
             cargar_admin();
             if (Variables.ObraNom != null)
@@ -66,6 +67,11 @@ namespace CivitasERP.Views
                 if (Variables.indexComboboxSemana != null)
                 {
                     ComBoxSemana.SelectedItem = Variables.indexComboboxSemana;
+                }
+                if (Variables.Jefe == true)
+                {
+                    AdminComboBox.Visibility = Visibility.Collapsed;
+                    
                 }
             }
         }
@@ -145,7 +151,7 @@ namespace CivitasERP.Views
                 CargarEmpleados();
             }
 
-            CargarYSumar();
+
         }
 
         private int? ObtenerID_obra(int? idAdminObra, string obraNombre)
@@ -175,7 +181,15 @@ namespace CivitasERP.Views
         {
             string usuario = Variables.Usuario;
             var dB_Admins = new DB_admins();
-            int? idAdminObra = dB_Admins.ObtenerIdPorUsuario(usuario);
+            int? idAdminObra;
+
+            if (AdminComboBox.SelectedItem!=null) {
+                idAdminObra = dB_Admins.ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString());
+            }
+            else
+            {
+                 idAdminObra = dB_Admins.ObtenerIdPorUsuario(usuario);
+            }
 
             try
             {

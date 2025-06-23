@@ -29,8 +29,6 @@ namespace CivitasERP.AdminViews
         }
         private void BtnGuardarJustificacion_Click(object sender, RoutedEventArgs e)
         {
-            GuardarAsistencia();
-            MessageBox.Show("Justificación guardada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
             }
 
@@ -572,10 +570,7 @@ namespace CivitasERP.AdminViews
             }
         }
 
-        private void ObraComboBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
 
-        }
 
         private void CbxMultiplicador_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -677,12 +672,15 @@ namespace CivitasERP.AdminViews
 
         private void BtnGuardarInasistencia_Click(object sender, RoutedEventArgs e)
         {
+            GuardarAsistencia();
+            MessageBox.Show("Justificación guardada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
         }
 
         private void BtnGuardarHoraExt_Click(object sender, RoutedEventArgs e)
         {
-
+            añadir_hora_extra();
+            MessageBox.Show("Hora extra guardada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 

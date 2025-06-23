@@ -1,182 +1,254 @@
 ﻿using CivitasERP.Models;
-using CivitasERP.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Globalization;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using static CivitasERP.Models.Datagrid_lista;
+using System.Data.SqlClient;
+using System;
+using System.Linq;
+using CivitasERP.ViewModels;
 
 namespace CivitasERP.Views
 {
     public partial class ListaPage : Page
     {
-        private readonly string _connectionString;
-        private readonly Datagrid_lista _repo;
-        private readonly int _idAdmin;
+        private Datagrid_lista repo;
 
         public ListaPage()
         {
             InitializeComponent();
-            /*this.DataContext = new ListaViewModel();*/
-            _connectionString = new Conexion().ObtenerCadenaConexion();
-            _repo = new Datagrid_lista(_connectionString);
-            _idAdmin = new DB_admins()
-                                   .ObtenerIdPorUsuario(Variables.Usuario) ?? 0;
-
-            Loaded += ListaPage_Loaded;
-            Loaded += async (_, __) => await CargarAsistenciaAsync();
-        }
-
-        private async void ListaPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            CargarDatosComboBox();
-            ConfigurarCombos();
-            await CargarAsistenciaAsync();
-        }
-
-        private async Task CargarAsistenciaAsync()
-        {
-            // 1) Asegura que haya rango de fechas
-            if (string.IsNullOrEmpty(Variables.FechaInicio) ||
-                string.IsNullOrEmpty(Variables.FechaFin))
+            //InicializarPagina();
+            EstablecerRangoFechaActual();
+            if (Variables.ObraNom != null)
             {
-                var hoy = DateTime.Today;
-                int diff = ((int)hoy.DayOfWeek - (int)DayOfWeek.Monday + 7) % 7;
-                var lunes = hoy.AddDays(-diff);
-                var domingo = lunes.AddDays(6);
-                Variables.FechaInicio = lunes.ToString("yyyy-MM-dd");
-                Variables.FechaFin = domingo.ToString("yyyy-MM-dd");
+                CargarObras(Variables.IdAdmin);
+                ObraComboBox.SelectedItem = Variables.ObraNom;
+                ActualizarEmpleadosGrid();
             }
 
-            // 2) Actualiza obra seleccionada
-            if (!string.IsNullOrWhiteSpace(Variables.ObraNom))
-                Variables.IdObra = ObtenerID_obra(_idAdmin, Variables.ObraNom);
+            if (Variables.indexComboboxAño != null || Variables.indexComboboxMes != null)
+            {
+                if (Variables.ObraNom != null)
+                {
+                    CargarObras(Variables.IdAdmin);
+                    ObraComboBox.SelectedItem = Variables.ObraNom;
+                    ActualizarEmpleadosGrid();
+                }
 
-            // 3) Llama al repo async
-            var inicio = DateTime.Parse(Variables.FechaInicio, CultureInfo.InvariantCulture);
-            var fin = DateTime.Parse(Variables.FechaFin, CultureInfo.InvariantCulture);
-            var empleados = await _repo
-                .ObtenerEmpleadosAsync(_idAdmin, Variables.IdObra ?? 0, inicio, fin);
+                if (Variables.indexComboboxAño != null)
+                {
+                    CargarAnios();
+                    ComBoxAnio.SelectedItem = Variables.indexComboboxAño;
+                }
 
-            dataGridAsistencia.ItemsSource = empleados;
-            TotalPersonal.Text = empleados.Count.ToString();
+                if (Variables.indexComboboxMes != null)
+                {
+                    CargarMeses();
+                    ComBoxMes.SelectedItem = Variables.indexComboboxMes;
+
+                    Agregar_tiempo tiempo = new Agregar_tiempo();
+
+                    // Limpiar semanas antes de actualizar
+                    ComBoxSemana.ItemsSource = null;
+                    ComBoxSemana.SelectedItem = null;
+
+                    if (ComBoxAnio.SelectedItem is int anio && ComBoxMes.SelectedIndex >= 0)
+                    {
+                        int mes = ComBoxMes.SelectedIndex + 1;
+                        ComBoxSemana.ItemsSource = tiempo.GetSemanasDelMes(anio, mes);
+                    }
+                }
+
+                if (Variables.indexComboboxSemana != null)
+                {
+                    ComBoxSemana.SelectedItem = Variables.indexComboboxSemana;
+                }
+            }
+        }
+        private void InicializarPagina()
+        {
+
+
+            CargarMeses();
+            CargarAnios();
+            if (ComBoxAnio.SelectedItem is int anio && ComBoxMes.SelectedIndex >= 0)
+            {
+                int mes = ComBoxMes.SelectedIndex + 1;
+                ComBoxSemana.ItemsSource = new Agregar_tiempo().GetSemanasDelMes(anio, mes);
+            }
+            string usuario = Variables.Usuario;
+            int? idAdmin = new DB_admins().ObtenerIdPorUsuario(usuario);
+
+            if (Variables.ObraNom != null)
+            {
+                CargarObras(idAdmin);
+                ObraComboBox.SelectedItem = Variables.ObraNom;
+            }
+
+            if (Variables.indexComboboxAño != null || Variables.indexComboboxMes != null)
+            {
+
+                if (Variables.indexComboboxAño != null)
+                    ComBoxAnio.SelectedItem = Variables.indexComboboxAño;
+
+                if (Variables.indexComboboxMes != null)
+                {
+                    ComBoxMes.SelectedItem = Variables.indexComboboxMes;
+                    ActualizarSemanas();
+                }
+
+                if (Variables.indexComboboxSemana != null)
+                    ComBoxSemana.SelectedItem = Variables.indexComboboxSemana;
+            }
+
+            if (Variables.FechaInicio == null || Variables.FechaFin == null)
+                EstablecerRangoFechaActual();
+
+            ActualizarEmpleadosGrid();
         }
 
-        private int? ObtenerID_obra(int idAdmin, string obraNombre)
+        private void EstablecerRangoFechaActual()
         {
-            const string sql = @"
-                SELECT id_obra 
-                  FROM obra 
-                 WHERE id_admin_obra = @idAdmin 
-                   AND obra_nombre   = @obra";
-            using var conn = new SqlConnection(_connectionString);
-            using var cmd = new SqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
-            cmd.Parameters.AddWithValue("@obra", obraNombre);
+            DateTime hoy = DateTime.Now;
+            int diferenciaConLunes = ((int)hoy.DayOfWeek + 6) % 7;
+            DateTime lunes = hoy.AddDays(-diferenciaConLunes);
+            DateTime domingo = lunes.AddDays(6);
+
+            Variables.FechaInicio = lunes.ToString("yyyy-MM-dd");
+            Variables.FechaFin = domingo.ToString("yyyy-MM-dd");
+
+            CultureInfo cultura = CultureInfo.InvariantCulture;
+            int numeroMes = hoy.Month;
+            int numeroSemana = cultura.Calendar.GetWeekOfYear(hoy, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+            CargarAnios();
+            CargarMeses();
+
+            ComBoxAnio.SelectedItem = hoy.Year;
+            ComBoxMes.SelectedIndex = numeroMes - 1;
+            ComBoxSemana.SelectedIndex = numeroSemana;
+        }
+
+        private void ActualizarEmpleadosGrid()
+        {
+            repo = new Datagrid_lista(ObtenerConnectionString());
+            dataGridAsistencia.ItemsSource = repo.ObtenerEmpleados();
+            TotalPersonal.Text = dataGridAsistencia.Items.Count.ToString();
+        }
+
+        private string ObtenerConnectionString() =>
+            new Conexion().ObtenerCadenaConexion();
+
+        private void CargarObras(int? idAdmin)
+        {
+            try
+            {
+                using var conn = new SqlConnection(ObtenerConnectionString());
+                conn.Open();
+                var cmd = new SqlCommand("SELECT obra_nombre FROM obra WHERE id_admin_obra = @idAdminObra", conn);
+                cmd.Parameters.AddWithValue("@idAdminObra", idAdmin);
+
+                using var reader = cmd.ExecuteReader();
+                ObraComboBox.Items.Clear();
+                while (reader.Read())
+                {
+                    ObraComboBox.Items.Add(reader["obra_nombre"].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar obras: " + ex.Message);
+            }
+        }
+
+        private void ObraComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ObraComboBox.SelectedItem is string nombreObra)
+            {
+                Variables.ObraNom = nombreObra;
+
+                int? idAdmin = new DB_admins().ObtenerIdPorUsuario(Variables.Usuario);
+                int? idObra = ObtenerID_obra(idAdmin, nombreObra);
+                Variables.IdObra = idObra;
+
+                UbicacionLabel.Text = ObtenerUbicacionObra(idObra);
+                ActualizarEmpleadosGrid();
+            }
+        }
+
+        private int? ObtenerID_obra(int? idAdminObra, string obraNombre)
+        {
+            if (idAdminObra == null || string.IsNullOrWhiteSpace(obraNombre)) return null;
+
+            using var conn = new SqlConnection(ObtenerConnectionString());
             conn.Open();
-            var r = cmd.ExecuteScalar();
-            return r != null && int.TryParse(r.ToString(), out var i) ? i : (int?)null;
+            var cmd = new SqlCommand("SELECT id_obra FROM obra WHERE id_admin_obra = @idAdminObra AND obra_nombre = @obraNombre", conn);
+            cmd.Parameters.AddWithValue("@idAdminObra", idAdminObra);
+            cmd.Parameters.AddWithValue("@obraNombre", obraNombre);
+
+            object resultado = cmd.ExecuteScalar();
+            return resultado != null && int.TryParse(resultado.ToString(), out int idObra) ? idObra : null;
         }
 
-        private void CargarDatosComboBox()
+        private void ComBoxSemana_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            const string sql = @"
-                SELECT obra_nombre
-                  FROM obra
-                 WHERE id_admin_obra = @idAdmin";
-            var lista = new List<string>();
-            using var conn = new SqlConnection(_connectionString);
-            using var cmd = new SqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@idAdmin", _idAdmin);
-            conn.Open();
-            using var rdr = cmd.ExecuteReader();
-            while (rdr.Read())
-                lista.Add(rdr.GetString(0));
-            ObraComboBox.ItemsSource = lista;
+            if (ComBoxSemana.SelectedItem == null) return;
+
+            Variables.Fecha = ComBoxSemana.SelectedItem.ToString();
+
+            var resultado = new Agregar_tiempo().ObtenerFechasDesdeGlobal();
+            if (resultado.exito)
+            {
+                Variables.FechaInicio = resultado.fechaInicio.ToString("yyyy-MM-dd");
+                Variables.FechaFin = resultado.fechaFin.ToString("yyyy-MM-dd");
+                Variables.indexComboboxSemana = ComBoxSemana.SelectedItem.ToString();
+            }
+
+            ActualizarEmpleadosGrid();
         }
 
-        private void ConfigurarCombos()
+        private void ComBoxMes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var tiempo = new Agregar_tiempo();
-            ComBoxAnio.ItemsSource = tiempo.GetAnios();
-            ComBoxMes.ItemsSource = tiempo.GetMeses();
-            ComBoxAnio.SelectedItem = DateTime.Now.Year;
-            ComBoxMes.SelectedIndex = DateTime.Now.Month - 1;
             ActualizarSemanas();
-
-            if (int.TryParse(Variables.indexComboboxAño, out var a))
-                ComBoxAnio.SelectedItem = a;
-            if (int.TryParse(Variables.indexComboboxMes, out var m))
-                ComBoxMes.SelectedIndex = m - 1;
-            if (!string.IsNullOrEmpty(Variables.indexComboboxSemana))
-                ComBoxSemana.SelectedItem = Variables.indexComboboxSemana;
+            Variables.indexComboboxMes = ComBoxMes.SelectedItem?.ToString();
         }
 
         private void ActualizarSemanas()
         {
-            var tiempo = new Agregar_tiempo();
             if (ComBoxAnio.SelectedItem is int anio && ComBoxMes.SelectedIndex >= 0)
-                ComBoxSemana.ItemsSource =
-                  tiempo.GetSemanasDelMes(anio, ComBoxMes.SelectedIndex + 1);
-            else
-                ComBoxSemana.ItemsSource = null;
-        }
-
-        // ** Eventos de UI **
-        private async void ObraComboBox_SelectionChanged(object s, SelectionChangedEventArgs e)
-            => await CargarAsistenciaAsync();
-
-        private async void ComBoxAnio_SelectionChanged(object s, SelectionChangedEventArgs e)
-        {
-            Variables.indexComboboxAño = ComBoxAnio.SelectedItem?.ToString();
-            ActualizarSemanas();
-            await CargarAsistenciaAsync();
-        }
-
-        private async void ComBoxMes_SelectionChanged(object s, SelectionChangedEventArgs e)
-        {
-            Variables.indexComboboxMes = ComBoxMes.SelectedItem?.ToString();
-            ActualizarSemanas();
-            await CargarAsistenciaAsync();
-        }
-
-        private async void ComBoxSemana_SelectionChanged(object s, SelectionChangedEventArgs e)
-        {
-            if (ComBoxSemana.SelectedItem != null)
             {
-                Variables.indexComboboxSemana = ComBoxSemana.SelectedItem.ToString();
-
-                // Recalcula fechas
-                var tiempo = new Agregar_tiempo();
-                var (ok, ini, fin) = tiempo.ObtenerFechasDesdeGlobal();
-                if (ok)
-                {
-                    Variables.FechaInicio = ini.ToString("yyyy-MM-dd");
-                    Variables.FechaFin = fin.ToString("yyyy-MM-dd");
-                }
-
-                await CargarAsistenciaAsync();
+                int mes = ComBoxMes.SelectedIndex + 1;
+                ComBoxSemana.ItemsSource = new Agregar_tiempo().GetSemanasDelMes(anio, mes);
             }
         }
 
+        private void ComBoxMes_DropDownOpened(object sender, EventArgs e)
+            => CargarMeses();
 
-        private void ObraComboBox_DropDownOpened(object s, EventArgs e)
-            => CargarDatosComboBox();
+        private void ComBoxAnio_DropDownOpened(object sender, EventArgs e)
+            => CargarAnios();
 
-        private void ComBoxAnio_DropDownOpened(object s, EventArgs e)
-            => ConfigurarCombos();
-
-        private void ComBoxMes_DropDownOpened(object s, EventArgs e)
+        private void ComBoxAnio_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ConfigurarCombos();
-            ActualizarSemanas();
+            if (ComBoxAnio.SelectedItem != null)
+            {
+                Variables.indexComboboxAño = ComBoxAnio.SelectedItem.ToString();
+                ActualizarSemanas();
+            }
+        }
+
+        private void CargarMeses()
+        {
+            ComBoxMes.ItemsSource = new Agregar_tiempo().GetMeses();
+        }
+
+        private void CargarAnios()
+        {
+            ComBoxAnio.ItemsSource = new Agregar_tiempo().GetAnios();
         }
 
         private void btnHuellaR_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("PRUEBA 2");
             if (DataContext is ListaViewModel vm)
                 vm.ScanCommand.Execute(null);
         }
@@ -184,13 +256,22 @@ namespace CivitasERP.Views
         public string ObtenerUbicacionObra(int? idObra)
         {
             if (idObra == null) return string.Empty;
-            const string sql = "SELECT obra_ubicacion FROM obra WHERE id_obra = @idObra";
-            using var conn = new SqlConnection(_connectionString);
-            using var cmd = new SqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@idObra", idObra);
+
+            string query = "SELECT obra_ubicacion FROM obra WHERE id_obra = @IdObra";
+
+            using var conn = new SqlConnection(ObtenerConnectionString());
             conn.Open();
-            return cmd.ExecuteScalar()?.ToString() ?? string.Empty;
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@IdObra", idObra);
+
+            using var reader = cmd.ExecuteReader();
+            return reader.Read() ? reader["obra_ubicacion"].ToString() : string.Empty;
         }
 
+        private void ObraComboBox_DropDownOpened(object sender, EventArgs e)
+        {
+            int? idAdmin = new DB_admins().ObtenerIdPorUsuario(Variables.Usuario);
+            CargarObras(idAdmin);
+        }
     }
 }

@@ -123,20 +123,6 @@ namespace CivitasERP.Models
             return empleados;
         }
 
-        public (bool exito, DateTime fechaInicio, DateTime fechaFin) ObtenerFechasDesdeGlobal()
-        {
-            string texto = Variables.Fecha;
-            if (string.IsNullOrWhiteSpace(texto)) return (false, DateTime.MinValue, DateTime.MinValue);
 
-            string[] partes = texto.Split(" - ");
-            if (partes.Length == 2 &&
-                DateTime.TryParseExact(partes[0], "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime inicio) &&
-                DateTime.TryParseExact(partes[1], "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime fin))
-            {
-                return (true, inicio, fin);
-            }
-
-            return (false, DateTime.MinValue, DateTime.MinValue);
-        }
     }
 }
