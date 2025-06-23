@@ -23,6 +23,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -37,13 +38,44 @@
                            FontSize="26" FontWeight="Bold"
                            Margin="0,0,0,20"
                            Foreground="{StaticResource titleColorA}"/>
-                <!-- Obra -->
+                <!--OPCION ADMINISTRADOR ADMINS-->
                 <TextBlock Grid.Row="1" Grid.Column="0"
-                           Text="Obra" FontSize="16"
+                           Text="Administrador" FontSize="16"
                            VerticalAlignment="Center"
                            Margin="0,0,10,0"
                            Foreground="{StaticResource titleColorB}"/>
                 <Border Grid.Row="1" Grid.Column="1"
+                        Background="White" 
+                        CornerRadius="10"
+                        BorderBrush="#6666FF" 
+                        BorderThickness="1"
+                        MinHeight="30"
+                        MinWidth="80"
+                        Padding="3"
+                        Margin="0,0,0,10">
+                    <ComboBox x:Name="AdminComboBox"
+                              Background="Transparent"
+                              BorderBrush="Transparent"
+                              BorderThickness="0"
+                              FontSize="14"
+                              VerticalContentAlignment="Stretch"
+                              Padding="5"
+                              IsEditable="False"
+                              IsReadOnly="False" 
+                              DropDownOpened="AdminComboBox_DropDownOpened"
+                              SelectionChanged="AdminComboBox_SelectionChanged">
+                    </ComboBox>
+                </Border>
+
+
+
+                <!-- Obra -->
+                <TextBlock Grid.Row="2" Grid.Column="0"
+                           Text="Obra" FontSize="16"
+                           VerticalAlignment="Center"
+                           Margin="0,0,10,0"
+                           Foreground="{StaticResource titleColorB}"/>
+                <Border Grid.Row="2" Grid.Column="1"
                         Background="White" 
                         CornerRadius="10"
                         BorderBrush="#6666FF" 
@@ -65,7 +97,7 @@
                     </ComboBox>
                 </Border>
                 <!-- Combos Mes + Año (ambos dentro de un StackPanel) -->
-                <StackPanel Grid.Row="1" Grid.Column="2"
+                <StackPanel Grid.Row="2" Grid.Column="2"
                             Orientation="Horizontal"
                             VerticalAlignment="Center"
                             Margin="0,0,10,0">
@@ -152,7 +184,7 @@
                     </Border>
                 </StackPanel>
                 <!-- Agregar Nuevo Empleado -->
-                <Border Grid.Row="1" Grid.Column="4"
+                <Border Grid.Row="2" Grid.Column="4"
                         Background="{StaticResource buttonColor1}" 
                         CornerRadius="5"
                         Width="auto" 
@@ -172,13 +204,13 @@
                     </Button>
                 </Border>
                 <!-- Ubicación -->
-                <TextBlock Grid.Row="2" Grid.Column="0"
+                <TextBlock Grid.Row="3" Grid.Column="0"
                            Text="Ubicación"
                            FontSize="16"
                            VerticalAlignment="Center"
                            Margin="0,20,10,0"
                            Foreground="{StaticResource titleColorB}"/>
-                <Border Grid.Row="2" Grid.Column="1"
+                <Border Grid.Row="3" Grid.Column="1"
                         Background="White"
                         CornerRadius="10"
                         BorderBrush="#6666FF"
@@ -248,13 +280,15 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
+
                 <!-- 1) Total de Personal label + contador -->
                 <TextBlock Text="Total de Personal"
                            VerticalAlignment="Center"
                            Margin="0,0,5,0"
+                           Grid.Row="1"
                            FontSize="20"/>
                 <!--Circulo-->
-                <Border Grid.Column="1"
+                <Border Grid.Column="1" Grid.Row="1"
                         Background="{StaticResource primaryColor4}"
                         CornerRadius="5"
                         Padding="5"
@@ -266,15 +300,23 @@
                                FontWeight="Bold"
                                FontSize="20"/>
                 </Border>
+
                 <!-- 2) Valores finales -->
-                <StackPanel Grid.Column="3"
-                            Orientation="Horizontal"
+                <Grid Grid.Column="3" Grid.Row="1"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
                     <!--TOTAL FOOTER-->
-                    <TextBlock Grid.Column="2"
-                               Text="TOTAL"
+                    <TextBlock Text="TOTAL"
                                FontSize="20"
                                FontWeight="Bold"
                                Foreground="#5C5CFF"
@@ -307,7 +349,7 @@
                                    FontWeight="Bold"
                                    FontSize="20"/>
                     </Border>
-                </StackPanel>
+                </Grid>
             </Grid>
         </Border>
     </Grid>

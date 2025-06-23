@@ -292,7 +292,7 @@
             </StackPanel>
             <!-- 2) Formulario de HORA EXTRA -->
             <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,30,0,0">
-                <TextBlock Text="Justificación de Inasistencia"
+                <TextBlock Text="Justificación de Horas Extras"
                            FontSize="20"
                            FontWeight="Bold"
                            Foreground="{StaticResource titleColorA}"
@@ -368,17 +368,31 @@
                     </WrapPanel>
                 </Border>
             </StackPanel>
+
+            <!-- 3) Botón Guardar -->
+            <Button Grid.Row="4" Grid.Column="0"
+                    Style="{StaticResource LargeRoundButton}"
+                    Background="{StaticResource buttonColor2}"
+                    x:Name="btnJustIna"
+                    Margin="20"
+                    Width="250"
+                    Click="BtnGuardarInasistencia_Click">
+                <TextBlock Text="Guardar Justificacion" FontSize="20" Foreground="White"/>
+            </Button>
+
+
+            <!-- 3) Botón Guardar -->
+            <Button Grid.Row="4" Grid.Column="1"
+                    Style="{StaticResource LargeRoundButton}"
+                    Background="{StaticResource buttonColor2}"
+                    x:Name="btnJustHrx"
+                    Margin="20"
+                    Width="250"
+                    Click="BtnGuardarHoraExt_Click">
+                <TextBlock Text="Guardar Hora Extra" FontSize="20" Foreground="White"/>
+            </Button>
         </Grid>
 
-        <!-- 3) Botón Guardar -->
-        <Button Grid.Row="4"
-                Style="{StaticResource LargeRoundButton}"
-                Background="{StaticResource buttonColor2}"
-                x:Name="btnLista"
-                Margin="20"
-                Width="250"
-                Click="BtnGuardarJustificacion_Click">
-                <TextBlock Text="Guardar Justificacion" FontSize="20" Foreground="White"/>
-        </Button>
+        
     </Grid>
 </Page>
