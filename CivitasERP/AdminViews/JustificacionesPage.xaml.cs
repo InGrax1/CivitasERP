@@ -674,6 +674,16 @@ namespace CivitasERP.AdminViews
                 MessageBox.Show("Error al guardar la asistencia: " + ex.Message);
             }
         }
+
+        private void BtnGuardarInasistencia_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnGuardarHoraExt_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
 }

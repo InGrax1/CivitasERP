@@ -363,5 +363,14 @@ namespace CivitasERP.Views
 
             return ubicacion;
         }
+
+        private void AdminComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+        private void AdminComboBox_DropDownOpened(object sender, EventArgs e)
+        {
+
+        }
     }
 }
