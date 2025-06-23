@@ -21,7 +21,7 @@ namespace CivitasERP.Views
         public NominaPage()
         {
             InitializeComponent();
-
+            cargar_admin();
             if (Variables.ObraNom != null)
             {
                 CargarDatosComboBox();
@@ -366,10 +366,55 @@ namespace CivitasERP.Views
 
         private void AdminComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            DB_admins dB_Admins = new DB_admins();  
+            string nombreadmin="";
+            AdminComboBox.SelectedItem = nombreadmin;
+            Variables.IdAdmin= dB_Admins.ObtenerIdPorUsuario(nombreadmin);
         }
         private void AdminComboBox_DropDownOpened(object sender, EventArgs e)
         {
+
+        }
+        private void cargar_admin()
+        {
+
+            string usuario = Variables.Usuario;
+            var dB_Admins = new DB_admins();
+            Variables.IdAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
+            int? idAdminObra = Variables.IdAdmin;
+
+            try
+            {
+                var conexion = new Conexion();
+                string connectionString = conexion.ObtenerCadenaConexion();
+
+                using (var conn = new SqlConnection(connectionString))
+                {
+                    // Suponiendo que quieres obtener todos los admins, o filtrar de alguna forma
+                    string query = @"SELECT
+                            admins_usuario AS admin_nombre
+                     FROM admins;";
+
+                    using (var cmd = new SqlCommand(query, conn))
+                    {
+                        conn.Open();
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            AdminComboBox.Items.Clear();
+                            while (reader.Read())
+                            {
+                                AdminComboBox.Items.Add(reader["admin_nombre"].ToString());
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar administradores: " + ex.Message);
+            }
+
 
         }
     }

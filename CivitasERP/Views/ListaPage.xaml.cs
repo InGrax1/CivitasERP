@@ -19,7 +19,7 @@ namespace CivitasERP.Views
         public ListaPage()
         {
             InitializeComponent();
-            this.DataContext = new ListaViewModel();
+            /*this.DataContext = new ListaViewModel();*/
             _connectionString = new Conexion().ObtenerCadenaConexion();
             _repo = new Datagrid_lista(_connectionString);
             _idAdmin = new DB_admins()
@@ -144,15 +144,23 @@ namespace CivitasERP.Views
 
         private async void ComBoxSemana_SelectionChanged(object s, SelectionChangedEventArgs e)
         {
-            Variables.indexComboboxSemana = ComBoxSemana.SelectedItem?.ToString();
-            var (ok, ini, fin) = new Agregar_tiempo().ObtenerFechasDesdeGlobal();
-            if (ok)
+            if (ComBoxSemana.SelectedItem != null)
             {
-                Variables.FechaInicio = ini.ToString("yyyy-MM-dd");
-                Variables.FechaFin = fin.ToString("yyyy-MM-dd");
+                Variables.indexComboboxSemana = ComBoxSemana.SelectedItem.ToString();
+
+                // Recalcula fechas
+                var tiempo = new Agregar_tiempo();
+                var (ok, ini, fin) = tiempo.ObtenerFechasDesdeGlobal();
+                if (ok)
+                {
+                    Variables.FechaInicio = ini.ToString("yyyy-MM-dd");
+                    Variables.FechaFin = fin.ToString("yyyy-MM-dd");
+                }
+
+                await CargarAsistenciaAsync();
             }
-            await CargarAsistenciaAsync();
         }
+
 
         private void ObraComboBox_DropDownOpened(object s, EventArgs e)
             => CargarDatosComboBox();
@@ -183,5 +191,6 @@ namespace CivitasERP.Views
             conn.Open();
             return cmd.ExecuteScalar()?.ToString() ?? string.Empty;
         }
+
     }
 }

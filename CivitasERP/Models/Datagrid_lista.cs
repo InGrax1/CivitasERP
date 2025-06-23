@@ -1,6 +1,7 @@
 ﻿using CivitasERP.Views; // para Variables
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,6 +27,9 @@ namespace CivitasERP.Models
             public TimeSpan? SalidaV { get; set; }
             public TimeSpan? EntradaS { get; set; }
             public TimeSpan? SalidaS { get; set; }
+
+            public int DiasTrabajados { get; set; }
+            public TimeSpan? HorasTotales { get; set; }
         }
 
         private readonly string _connectionString;
@@ -33,9 +37,6 @@ namespace CivitasERP.Models
         public Datagrid_lista(string connectionString)
             => _connectionString = connectionString;
 
-        /// <summary>
-        /// Tu consulta PIVOT asíncrona
-        /// </summary>
         public async Task<List<Empleado_Asistencia>> ObtenerEmpleadosAsync(
             int idAdmin, int idObra, DateTime fechaInicio, DateTime fechaFin)
         {
@@ -64,7 +65,6 @@ Asis AS (
       a.asis_salida
     FROM asistencia a
     WHERE a.asis_dia BETWEEN @fechaInicio AND @fechaFin
-
 )
 SELECT
   u.ID,
@@ -81,24 +81,27 @@ SELECT
   MAX(CASE WHEN DATEPART(WEEKDAY, A.asis_dia)=5 THEN A.asis_hora   END) AS EntradaV,
   MAX(CASE WHEN DATEPART(WEEKDAY, A.asis_dia)=5 THEN A.asis_salida END) AS SalidaV,
   MAX(CASE WHEN DATEPART(WEEKDAY, A.asis_dia)=6 THEN A.asis_hora   END) AS EntradaS,
-  MAX(CASE WHEN DATEPART(WEEKDAY, A.asis_dia)=6 THEN A.asis_salida END) AS SalidaS
+  MAX(CASE WHEN DATEPART(WEEKDAY, A.asis_dia)=6 THEN A.asis_salida END) AS SalidaS,
+  COUNT(DISTINCT A.asis_dia) AS DiasTrabajados,
+  SUM(DATEDIFF(MINUTE, A.asis_hora, A.asis_salida)) AS MinutosTrabajados
 FROM Usuarios u
 LEFT JOIN Asis A ON A.ID = u.ID
 GROUP BY u.ID, u.Nombre, u.Categoria;
 ";
+
             using var conn = new SqlConnection(_connectionString);
             using var cmd = new SqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
-            cmd.Parameters.AddWithValue("@idObra", idObra);
-            cmd.Parameters.AddWithValue("@fechaInicio", fechaInicio);
-            cmd.Parameters.AddWithValue("@fechaFin", fechaFin);
+            cmd.Parameters.Add("@idAdmin", SqlDbType.Int).Value = idAdmin;
+            cmd.Parameters.Add("@idObra", SqlDbType.Int).Value = idObra;
+            cmd.Parameters.Add("@fechaInicio", SqlDbType.Date).Value = fechaInicio;
+            cmd.Parameters.Add("@fechaFin", SqlDbType.Date).Value = fechaFin;
 
             await conn.OpenAsync().ConfigureAwait(false);
             using var rdr = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
 
             while (await rdr.ReadAsync().ConfigureAwait(false))
             {
-                lista.Add(new Empleado_Asistencia
+                var empleado = new Empleado_Asistencia
                 {
                     ID = rdr.GetInt32(0),
                     Nombre = rdr.GetString(1),
@@ -115,29 +118,30 @@ GROUP BY u.ID, u.Nombre, u.Categoria;
                     SalidaV = rdr.IsDBNull(12) ? null : rdr.GetTimeSpan(12),
                     EntradaS = rdr.IsDBNull(13) ? null : rdr.GetTimeSpan(13),
                     SalidaS = rdr.IsDBNull(14) ? null : rdr.GetTimeSpan(14),
-                });
+                    DiasTrabajados = rdr.IsDBNull(15) ? 0 : rdr.GetInt32(15),
+                    HorasTotales = rdr.IsDBNull(16) ? null : TimeSpan.FromMinutes(rdr.GetInt32(16))
+                };
+                lista.Add(empleado);
             }
 
             return lista;
         }
 
-        /// <summary>
-        /// Síncrono, para tu ViewModel
-        /// </summary>
-        public List<Empleado_Asistencia> ObtenerEmpleados()
+        private (int idAdmin, int idObra, DateTime inicio, DateTime fin) ObtenerParametros()
         {
-            var idAdmin = new DB_admins().ObtenerIdPorUsuario(Variables.Usuario) ?? 0;
-            var idObra = Variables.IdObra ?? 0;
-            var inicio = DateTime.Parse(Variables.FechaInicio);
-            var fin = DateTime.Parse(Variables.FechaFin);
-
-            return ObtenerEmpleadosAsync(idAdmin, idObra, inicio, fin)
-                   .GetAwaiter().GetResult();
+            int idAdmin = new DB_admins().ObtenerIdPorUsuario(Variables.Usuario) ?? 0;
+            int idObra = Variables.IdObra ?? 0;
+            DateTime inicio = DateTime.Parse(Variables.FechaInicio);
+            DateTime fin = DateTime.Parse(Variables.FechaFin);
+            return (idAdmin, idObra, inicio, fin);
         }
 
-        /// <summary>
-        /// Síncrono para marcar entrada/salida
-        /// </summary>
+        public List<Empleado_Asistencia> ObtenerEmpleados()
+        {
+            var (idAdmin, idObra, inicio, fin) = ObtenerParametros();
+            return ObtenerEmpleadosAsync(idAdmin, idObra, inicio, fin).GetAwaiter().GetResult();
+        }
+
         public void MarcarAsistencia(int id, bool esAdmin = false)
         {
             var hoy = DateTime.Today;
@@ -148,12 +152,11 @@ GROUP BY u.ID, u.Nombre, u.Categoria;
             using var conn = new SqlConnection(_connectionString);
             conn.Open();
 
-            // 1) ¿Ya hay registro hoy?
             var sel = $@"
-        SELECT id_asistencia, asis_salida
-          FROM asistencia
-         WHERE {col} = @id
-           AND CAST(asis_dia AS DATE)=@hoy";
+SELECT id_asistencia, asis_salida
+FROM asistencia
+WHERE {col} = @id
+AND CAST(asis_dia AS DATE) = @hoy";
             using (var cmd = new SqlCommand(sel, conn))
             {
                 cmd.Parameters.AddWithValue("@id", id);
@@ -166,14 +169,13 @@ GROUP BY u.ID, u.Nombre, u.Categoria;
                     rdr.Close();
                     if (tieneSalida)
                     {
-                        MessageBox.Show(
-                          "Ya registraste tu salida para hoy.",
-                          "Atención", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show("Ya registraste tu salida para hoy.",
+                            "Atención", MessageBoxButton.OK, MessageBoxImage.Information);
                         return;
                     }
-                    // sólo actualiza salida
+
                     using var upd = new SqlCommand(
-                      "UPDATE asistencia SET asis_salida=@ahora WHERE id_asistencia=@idAsis", conn);
+                        "UPDATE asistencia SET asis_salida = @ahora WHERE id_asistencia = @idAsis", conn);
                     upd.Parameters.AddWithValue("@ahora", ahora);
                     upd.Parameters.AddWithValue("@idAsis", idAsis);
                     upd.ExecuteNonQuery();
@@ -181,7 +183,6 @@ GROUP BY u.ID, u.Nombre, u.Categoria;
                 }
             }
 
-            // 2) no había registro → insert completo
             var ins = $@"
 INSERT INTO asistencia 
   ({col}, asis_dia, asis_hora, asis_salida, asis_hora_extra, {other})
@@ -194,9 +195,6 @@ VALUES
             cmdIns.ExecuteNonQuery();
         }
 
-        /// <summary>
-        /// Para tu ViewModel
-        /// </summary>
         public void MarcarAsistenciaAdmin(int idAdmin)
             => MarcarAsistencia(idAdmin, true);
     }
