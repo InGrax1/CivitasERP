@@ -576,7 +576,8 @@ namespace CivitasERP.AdminViews
         {
 
         }
-        private void añadir_hora_extra() {
+        private void añadir_hora_extra()
+        {
             try
             {
                 if (CbxDia.SelectedItem == null)
@@ -586,17 +587,32 @@ namespace CivitasERP.AdminViews
                 }
 
                 // Convertir fecha
-                string fechaStr = CbxDia.SelectedItem.ToString(); // "Lunes 17/06/2025"
+                string fechaStr = CbxDia.SelectedItem.ToString();
                 if (!DateTime.TryParse(fechaStr.Substring(fechaStr.IndexOf(' ') + 1), out DateTime fechaSeleccionada))
                 {
                     MessageBox.Show("Fecha inválida seleccionada.");
                     return;
                 }
 
-                // Valores fijos
-                TimeSpan horasExtra = new TimeSpan(2, 0, 0);    // 2 horas extra
-                decimal pagaHoraExtra = 120.00m;                // Pago por hora extra
-                decimal salarioDelDia = 1000.00m;               // Salario del día
+                // Obtener cantidad de horas extra desde el UI
+                if (!double.TryParse(TxtHorasExtra.Text, out double horasExtraCantidad) || horasExtraCantidad <= 0)
+                {
+                    MessageBox.Show("Ingrese una cantidad válida de horas extra.");
+                    return;
+                }
+
+                // Obtener multiplicador desde ComboBox
+                decimal multiplicador = 1; // Valor por defecto
+                if (CbxMultiplicador.SelectedItem is ComboBoxItem selectedItem) // <--- CAMBIO
+                {
+                    if (!decimal.TryParse(selectedItem.Content.ToString(), out multiplicador))
+                    {
+                        MessageBox.Show("Multiplicador inválido.");
+                        return;
+                    }
+                }
+
+                TimeSpan horasExtra = TimeSpan.FromHours(horasExtraCantidad);
 
                 Conexion conexion = new Conexion();
                 string connectionString = conexion.ObtenerCadenaConexion();
@@ -605,6 +621,7 @@ namespace CivitasERP.AdminViews
                 using (SqlCommand cmd = new SqlCommand())
                 {
                     cmd.Connection = conn;
+                    conn.Open();
 
                     if (EmpleadoComboBox.SelectedItem != null)
                     {
@@ -615,10 +632,25 @@ namespace CivitasERP.AdminViews
                             return;
                         }
 
+                        // Obtener sueldo base del empleado
+                        cmd.CommandText = "SELECT emp_semanal FROM empleado WHERE id_empleado = @idEmp";
+                        cmd.Parameters.AddWithValue("@idEmp", idEmpleado);
+                        object sueldoObj = cmd.ExecuteScalar();
+                        if (sueldoObj == null)
+                        {
+                            MessageBox.Show("No se encontró el sueldo del empleado.");
+                            return;
+                        }
+
+                        decimal sueldoBase = Convert.ToDecimal(sueldoObj);
+                        decimal salarioDelDia = sueldoBase / 6;
+                        decimal pagaHoraExtra = (salarioDelDia / 8) * multiplicador; // <--- CAMBIO
+
+                        cmd.Parameters.Clear();
+
                         cmd.CommandText = @"
                     INSERT INTO asistencia (asis_dia, asis_hora_extra, id_empleado, paga_horaXT, salariofecha)
                     VALUES (@fecha, @horasExtra, @idEmpleado, @pagaExtra, @salario)";
-
                         cmd.Parameters.AddWithValue("@fecha", fechaSeleccionada.Date);
                         cmd.Parameters.AddWithValue("@horasExtra", horasExtra);
                         cmd.Parameters.AddWithValue("@idEmpleado", idEmpleado);
@@ -635,10 +667,25 @@ namespace CivitasERP.AdminViews
                             return;
                         }
 
+                        // Obtener sueldo base del administrador
+                        cmd.CommandText = "SELECT admins_semanal FROM admins WHERE id_admins = @idAd";
+                        cmd.Parameters.AddWithValue("@idAd", idAdmin);
+                        object sueldoObj = cmd.ExecuteScalar();
+                        if (sueldoObj == null)
+                        {
+                            MessageBox.Show("No se encontró el sueldo del administrador.");
+                            return;
+                        }
+
+                        decimal sueldoBase = Convert.ToDecimal(sueldoObj);
+                        decimal salarioDelDia = sueldoBase / 6;
+                        decimal pagaHoraExtra = (salarioDelDia / 8) * multiplicador; // <--- CAMBIO
+
+                        cmd.Parameters.Clear();
+
                         cmd.CommandText = @"
                     INSERT INTO asistencia (asis_dia, asis_hora_extra, admins_id_asistencia, paga_horaXT, salariofecha)
                     VALUES (@fecha, @horasExtra, @idAdmin, @pagaExtra, @salario)";
-
                         cmd.Parameters.AddWithValue("@fecha", fechaSeleccionada.Date);
                         cmd.Parameters.AddWithValue("@horasExtra", horasExtra);
                         cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
@@ -651,7 +698,6 @@ namespace CivitasERP.AdminViews
                         return;
                     }
 
-                    conn.Open();
                     int resultado = cmd.ExecuteNonQuery();
 
                     if (resultado > 0)

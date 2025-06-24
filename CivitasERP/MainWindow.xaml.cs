@@ -66,13 +66,13 @@ namespace CivitasERP
             if (Variables.IdAdmin.HasValue)
                 CargarFotoPerfil(Variables.IdAdmin.Value);
 
-
+            /*
             if (Variables.Jefe==false) {
                 btnJustificaciones.Visibility= Visibility.Collapsed;
                 btnEmpleados.Visibility = Visibility.Collapsed;
                 btnAdmins.Visibility = Visibility.Collapsed;
                 btnRegis.Visibility = Visibility.Collapsed;
-            }
+            }*/
             // Cada vez que cambie el estado (Normal, Minimized, Maximized) problemas de forms abajo
             //this.StateChanged += MainWindow_StateChanged;
         }
