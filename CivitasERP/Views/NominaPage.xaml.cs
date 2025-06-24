@@ -22,6 +22,17 @@ namespace CivitasERP.Views
         {
 
             InitializeComponent();
+
+            //Ocultar botones de navegación según el tipo de usuario
+            if (Variables.Jefe == false)
+            {
+                AdminLabel.Visibility = Visibility.Collapsed;
+                AdminComboBox.Visibility = Visibility.Collapsed;
+                AdminBorder.Visibility = Visibility.Collapsed;
+            }
+
+
+
             cargar_admin();
             if (Variables.ObraNom != null)
             {

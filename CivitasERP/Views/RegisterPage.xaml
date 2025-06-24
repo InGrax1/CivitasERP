@@ -150,7 +150,7 @@
                     </Border>
                 </StackPanel>
 
-                <!-- Apellido Materno / Categoria -->
+                <!-- Apellido Materno / correo -->
                 <StackPanel Grid.Row="2" 
                             Grid.Column="0" 
                             Margin="10">
@@ -186,8 +186,25 @@
                     </Border>
                 </StackPanel>
 
-                <!-- Sueldo Semanal -->
-
+                <!-- Categoria / Sueldo Semanal -->
+                <StackPanel Grid.Row="3" 
+                            Grid.Column="0" 
+                            Margin="10">
+                    <TextBlock Text="Categoria" 
+                               Foreground="{StaticResource titleColorB}" 
+                               FontSize="14" 
+                               Margin="0,20,0,5"/>
+                    <Border Background="{StaticResource primaryColor2}" 
+                        CornerRadius="10" 
+                        Padding="3"
+                        BorderThickness="1"
+                        BorderBrush="{StaticResource BoxColor1}">
+                        <ComboBox x:Name="CmboCategoria" BorderThickness="0" Background="Transparent" Foreground="White">
+                            <ComboBoxItem Content="Administrador" />
+                            <ComboBoxItem Content="Director" />
+                        </ComboBox>
+                    </Border>
+                </StackPanel>
                 <StackPanel Grid.Row="3" 
                             Grid.Column="1" 
                             Margin="10">

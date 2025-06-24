@@ -153,10 +153,10 @@ GROUP BY u.ID, u.Nombre, u.Categoria;
             conn.Open();
 
             var sel = $@"
-SELECT id_asistencia, asis_salida
-FROM asistencia
-WHERE {col} = @id
-AND CAST(asis_dia AS DATE) = @hoy";
+                        SELECT id_asistencia, asis_salida
+                        FROM asistencia
+                        WHERE {col} = @id
+                        AND CAST(asis_dia AS DATE) = @hoy";
             using (var cmd = new SqlCommand(sel, conn))
             {
                 cmd.Parameters.AddWithValue("@id", id);
@@ -184,10 +184,10 @@ AND CAST(asis_dia AS DATE) = @hoy";
             }
 
             var ins = $@"
-INSERT INTO asistencia 
-  ({col}, asis_dia, asis_hora, asis_salida, asis_hora_extra, {other})
-VALUES
-  (@id, @hoy, @ahora, NULL, '00:00:00', NULL)";
+                    INSERT INTO asistencia 
+                      ({col}, asis_dia, asis_hora, asis_salida, asis_hora_extra, {other})
+                    VALUES
+                      (@id, @hoy, @ahora, NULL, '00:00:00', NULL)";
             using var cmdIns = new SqlCommand(ins, conn);
             cmdIns.Parameters.AddWithValue("@id", id);
             cmdIns.Parameters.AddWithValue("@hoy", hoy);

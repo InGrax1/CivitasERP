@@ -8,6 +8,7 @@
       d:DesignHeight="1000" d:DesignWidth="1800"
       Title="EditAdminPage"  
       Background="{StaticResource BackgroudColor}">
+    
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Margin="20">
         <Grid.RowDefinitions>
