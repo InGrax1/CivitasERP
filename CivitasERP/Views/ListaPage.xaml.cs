@@ -17,7 +17,7 @@ namespace CivitasERP.Views
         public ListaPage()
         {
             InitializeComponent();
-
+            cargar_admin();
             //Ocultar botones de navegación según el tipo de usuario
             if (Variables.Jefe == false)
             {
@@ -30,16 +30,20 @@ namespace CivitasERP.Views
             EstablecerRangoFechaActual();
             if (Variables.ObraNom != null)
             {
-                CargarObras(Variables.IdAdmin);
+                CargarObras();
                 ObraComboBox.SelectedItem = Variables.ObraNom;
                 ActualizarEmpleadosGrid();
             }
-
+            if (Variables.AdminSeleccionado != null) {
+                cargar_admin();
+                AdminComboBox.SelectedItem= Variables.AdminSeleccionado;
+                    ActualizarEmpleadosGrid();
+            }
             if (Variables.indexComboboxAño != null || Variables.indexComboboxMes != null)
             {
                 if (Variables.ObraNom != null)
                 {
-                    CargarObras(Variables.IdAdmin);
+                    CargarObras();
                     ObraComboBox.SelectedItem = Variables.ObraNom;
                     ActualizarEmpleadosGrid();
                 }
@@ -72,6 +76,8 @@ namespace CivitasERP.Views
                 {
                     ComBoxSemana.SelectedItem = Variables.indexComboboxSemana;
                 }
+
+
             }
         }
         private void InicializarPagina()
@@ -90,7 +96,7 @@ namespace CivitasERP.Views
 
             if (Variables.ObraNom != null)
             {
-                CargarObras(idAdmin);
+                CargarObras();
                 ObraComboBox.SelectedItem = Variables.ObraNom;
             }
 
@@ -140,49 +146,115 @@ namespace CivitasERP.Views
 
         private void ActualizarEmpleadosGrid()
         {
-            repo = new Datagrid_lista(ObtenerConnectionString());
+            /*repo = new Datagrid_lista(ObtenerConnectionString());
             dataGridAsistencia.ItemsSource = repo.ObtenerEmpleados();
-            TotalPersonal.Text = dataGridAsistencia.Items.Count.ToString();
+            TotalPersonal.Text = dataGridAsistencia.Items.Count.ToString();*/
+
+            DB_admins dB_Admins = new DB_admins();
+            if (AdminComboBox.SelectedItem != null)
+            {
+
+                repo = new Datagrid_lista(ObtenerConnectionString());
+                dataGridAsistencia.ItemsSource = repo.ObtenerEmpleados(dB_Admins.ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString()));
+                TotalPersonal.Text = dataGridAsistencia.Items.Count.ToString();
+            }
+            else
+            {
+
+                repo = new Datagrid_lista(ObtenerConnectionString());
+                dataGridAsistencia.ItemsSource = repo.ObtenerEmpleados(Variables.IdAdmin);
+                TotalPersonal.Text = dataGridAsistencia.Items.Count.ToString();
+            }
         }
 
         private string ObtenerConnectionString() =>
             new Conexion().ObtenerCadenaConexion();
 
-        private void CargarObras(int? idAdmin)
+        private void CargarObras()
         {
+
+            string usuario = Variables.Usuario;
+            var dB_Admins = new DB_admins();
+            int? idAdminObra;
+
+            if (AdminComboBox.SelectedItem != null)
+            {
+                idAdminObra = dB_Admins.ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString());
+            }
+            else
+            {
+                idAdminObra = dB_Admins.ObtenerIdPorUsuario(usuario);
+            }
+            var conexion = new Conexion();
+            string connectionString = conexion.ObtenerCadenaConexion();
             try
             {
-                using var conn = new SqlConnection(ObtenerConnectionString());
-                conn.Open();
-                var cmd = new SqlCommand("SELECT obra_nombre FROM obra WHERE id_admin_obra = @idAdminObra", conn);
-                cmd.Parameters.AddWithValue("@idAdminObra", idAdmin);
-
-                using var reader = cmd.ExecuteReader();
-                ObraComboBox.Items.Clear();
-                while (reader.Read())
+                using (var conn = new SqlConnection(connectionString))
                 {
-                    ObraComboBox.Items.Add(reader["obra_nombre"].ToString());
+                    string query = "SELECT obra_nombre FROM obra WHERE id_admin_obra = @idAdminObra";
+                    using (var cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@idAdminObra", idAdminObra);
+                        conn.Open();
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            ObraComboBox.Items.Clear();
+                            while (reader.Read())
+                            {
+                                ObraComboBox.Items.Add(reader["obra_nombre"].ToString());
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar obras: " + ex.Message);
+                MessageBox.Show("Error al cargar datos: " + ex.Message);
             }
         }
 
         private void ObraComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ObraComboBox.SelectedItem is string nombreObra)
+            string usuario = Variables.Usuario;
+            DB_admins dB_Admins = new DB_admins();
+            int? idAdmin;
+            if (AdminComboBox.SelectedItem != null)
             {
-                Variables.ObraNom = nombreObra;
+                idAdmin = dB_Admins.ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString());
 
-                int? idAdmin = new DB_admins().ObtenerIdPorUsuario(Variables.Usuario);
-                int? idObra = ObtenerID_obra(idAdmin, nombreObra);
-                Variables.IdObra = idObra;
+                if (ObraComboBox.SelectedItem is string nombreObra)
+                {
+                    Variables.ObraNom = nombreObra;
 
-                UbicacionLabel.Text = ObtenerUbicacionObra(idObra);
-                ActualizarEmpleadosGrid();
+                    idAdmin = new DB_admins().ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString());
+                    int? idObra = ObtenerID_obra(idAdmin, nombreObra);
+                    Variables.IdObra = idObra;
+
+                    UbicacionLabel.Text = ObtenerUbicacionObra(idObra);
+                    ActualizarEmpleadosGrid();
+
+                }
             }
+            else
+            {
+                idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
+                if (ObraComboBox.SelectedItem is string nombreObra)
+                {
+                    Variables.ObraNom = nombreObra;
+
+                    idAdmin = new DB_admins().ObtenerIdPorUsuario(Variables.Usuario);
+                    int? idObra = ObtenerID_obra(idAdmin, nombreObra);
+                    Variables.IdObra = idObra;
+
+                    UbicacionLabel.Text = ObtenerUbicacionObra(idObra);
+                    ActualizarEmpleadosGrid();
+
+                }
+            }
+            
+           
+
         }
 
         private int? ObtenerID_obra(int? idAdminObra, string obraNombre)
@@ -280,7 +352,64 @@ namespace CivitasERP.Views
         private void ObraComboBox_DropDownOpened(object sender, EventArgs e)
         {
             int? idAdmin = new DB_admins().ObtenerIdPorUsuario(Variables.Usuario);
-            CargarObras(idAdmin);
+            CargarObras();
+        }
+
+        private void AdminComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DB_admins dB_Admins = new DB_admins();
+            string nombreadmin = "";
+            AdminComboBox.SelectedItem = nombreadmin;
+            Variables.IdAdmin = dB_Admins.ObtenerIdPorUsuario(nombreadmin);
+            Variables.AdminSeleccionado = AdminComboBox.SelectedItem.ToString();
+        }
+        private void AdminComboBox_DropDownOpened(object sender, EventArgs e)
+        {
+
+        }
+        
+
+        private void cargar_admin()
+        {
+
+            string usuario = Variables.Usuario;
+            var dB_Admins = new DB_admins();
+            Variables.IdAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
+            int? idAdminObra = Variables.IdAdmin;
+
+            try
+            {
+                var conexion = new Conexion();
+                string connectionString = conexion.ObtenerCadenaConexion();
+
+                using (var conn = new SqlConnection(connectionString))
+                {
+                    // Suponiendo que quieres obtener todos los admins, o filtrar de alguna forma
+                    string query = @"SELECT
+                            admins_usuario AS admin_nombre
+                     FROM admins;";
+
+                    using (var cmd = new SqlCommand(query, conn))
+                    {
+                        conn.Open();
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            AdminComboBox.Items.Clear();
+                            while (reader.Read())
+                            {
+                                AdminComboBox.Items.Add(reader["admin_nombre"].ToString());
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar administradores: " + ex.Message);
+            }
+
+
         }
     }
 }

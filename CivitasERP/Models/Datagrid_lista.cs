@@ -127,18 +127,18 @@ GROUP BY u.ID, u.Nombre, u.Categoria;
             return lista;
         }
 
-        private (int idAdmin, int idObra, DateTime inicio, DateTime fin) ObtenerParametros()
+        private (int idAdmin, int idObra, DateTime inicio, DateTime fin) ObtenerParametros(int? id_admin)
         {
-            int idAdmin = new DB_admins().ObtenerIdPorUsuario(Variables.Usuario) ?? 0;
+            int idAdmin = id_admin ?? new DB_admins().ObtenerIdPorUsuario(Variables.Usuario) ?? 0;
             int idObra = Variables.IdObra ?? 0;
             DateTime inicio = DateTime.Parse(Variables.FechaInicio);
             DateTime fin = DateTime.Parse(Variables.FechaFin);
             return (idAdmin, idObra, inicio, fin);
         }
 
-        public List<Empleado_Asistencia> ObtenerEmpleados()
+        public List<Empleado_Asistencia> ObtenerEmpleados(int? id_admin = null)
         {
-            var (idAdmin, idObra, inicio, fin) = ObtenerParametros();
+            var (idAdmin, idObra, inicio, fin) = ObtenerParametros(id_admin);
             return ObtenerEmpleadosAsync(idAdmin, idObra, inicio, fin).GetAwaiter().GetResult();
         }
 

@@ -25,6 +25,7 @@ namespace CivitasERP.Models
 
         public byte[] Huella { get; set; }
 
+        public string usuario { get; set; }
 
         public void InsertarAdmin()
         {
@@ -93,5 +94,23 @@ namespace CivitasERP.Models
                 return new byte[32]; // Devuelve un arreglo vacío como respaldo
             }
         }
+
+
+            public void InsertarJefe()
+            {
+                string connectionString = new Conexion().ObtenerCadenaConexion();
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Jefe (Jefe_usuario, Jefe_contra) VALUES (@usuario, @contra)", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@usuario", Usuario);
+                        cmd.Parameters.AddWithValue("@contra", HashPassword(Contra));
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+        
     }
 }

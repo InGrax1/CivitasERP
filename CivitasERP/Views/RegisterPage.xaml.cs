@@ -5,6 +5,8 @@ using System.Windows.Input;
 using CivitasERP.Models;
 using BiometriaDP.Services;
 using static CivitasERP.Views.LoginPage;
+using System.Windows.Controls;
+using System.Data.SqlClient;
 
 namespace CivitasERP.Views
 {
@@ -92,43 +94,67 @@ namespace CivitasERP.Views
                     "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            
-            // 2) Obtener datos de los campos de texto
+
+
+            // 2) Obtener datos de los campos
+            decimal semanal = 0;
+            bool exito = decimal.TryParse(txtSueldo.Text, out semanal);
             string nombre = txtUsuario.Text;
             string apellidop = txtApellidoPaterno.Text;
             string apellidom = txtApellidoMaterno.Text;
             string usuario = txtUsuario.Text;
             string correo = txtCorreo.Text;
             string contraseña = pwdPassword.Password;
-            string categoria = "admin";
-            decimal semanal = 0.00m;
-            bool exito = decimal.TryParse(txtSueldo.Text, out semanal);
             if (!exito)
             {
-                MessageBox.Show(
-                    "El campo sueldo no es un número válido.",
+                MessageBox.Show("El campo sueldo no es un número válido.",
                     "Error de validación", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            
-            // 3) Crear el objeto Insert_admin incluyendo la huella
-            Insert_admin inser = new Insert_admin
-            {
-                Nombre = nombre,
-                ApellidoP = apellidop,
-                ApellidoM = apellidom,
-                Correo = correo,
-                Usuario = usuario,
-                Contra = contraseña,
-                Semanal = semanal,
-                Categoria = categoria,
-                Huella = _templateHuella
-            };
 
-            // 4) Llamar al método que inserta en la base de datos
+            // 3) Verificar selección en ComboBox
+            if (CmboCategoria.SelectedItem == null)
+            {
+                MessageBox.Show("Selecciona una categoría (Administrador o Director).",
+                    "Categoría requerida", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            string categoria = ((ComboBoxItem)CmboCategoria.SelectedItem).Content.ToString();
+
             try
             {
-                inser.InsertarAdmin();
+                if (categoria == "Administrador")
+                {
+                    Insert_admin inser = new Insert_admin
+                    {
+                        Nombre = nombre,
+                        ApellidoP = apellidop,
+                        ApellidoM = apellidom,
+                        Correo = correo,
+                        Usuario = usuario,
+                        Contra = contraseña,
+                        Semanal = semanal,
+                        Categoria = "Administrador",
+                        Huella = _templateHuella
+                    };
+
+                    inser.InsertarAdmin();
+                }
+                else if (categoria == "Director")
+                {
+                    // Suponiendo que tienes o crearás una clase Insert_jefe
+                    Insert_admin insert_Jefe = new Insert_admin
+
+
+                    {
+                        Usuario = usuario,
+                        Contra = contraseña // asumiendo que Jefe_contra = huella
+                                            // Aquí puedes agregar campos adicionales si necesitas
+                    };
+
+                    insert_Jefe.InsertarJefe();
+                }
 
                 // Limpiar formularios y variable de huella
                 _templateHuella = null;
@@ -138,15 +164,17 @@ namespace CivitasERP.Views
                 txtCorreo.Clear();
                 pwdPassword.Clear();
                 txtSueldo.Clear();
+                CmboCategoria.SelectedIndex = -1;
                 EstadoHuella.Text = "Click para capturar huella";
+
+                MessageBox.Show("Registro completado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    $"Error al guardar el usuario: {ex.Message}",
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error al guardar el usuario: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
         // --- Botones de ventana ---
         private void btnMin_Click(object sender, RoutedEventArgs e)
@@ -164,5 +192,7 @@ namespace CivitasERP.Views
             if (e.LeftButton == MouseButtonState.Pressed)
                 DragMove();
         }
+
+
     }
 }

@@ -74,7 +74,7 @@ namespace CivitasERP.Views
 
                     Variables.IdAdmin = idAdmin;
                     Variables.Usuario = usuario;
-                    Variables.Jefe = false;
+                    Variables.Jefe = true;
 
                     MainWindow ventanaPrincipal = new MainWindow();
                     ventanaPrincipal.Show();
