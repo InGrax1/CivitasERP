@@ -27,13 +27,19 @@
                     Panel.ZIndex="3"
                     HorizontalAlignment="Left" 
                     Margin="6,43,0,0">
-            <Ellipse x:Name="EllipseProfile"
-                     Width="137" Height="137"
-                     Stroke="DarkBlue" 
-                     StrokeThickness="2"
-                     Fill="{StaticResource BackgroudColor}"
-                     Cursor="Hand"
-                     MouseLeftButtonDown="EllipseProfile_MouseLeftButtonUp"/>
+            <Grid Width="137" Height="137">
+                <Ellipse x:Name="EllipseProfile"
+                         Width="137" Height="137"
+                         Stroke="DarkBlue" 
+                         StrokeThickness="2"
+                         Fill="{StaticResource BackgroudColor}"
+                         Cursor="Hand"
+                         MouseLeftButtonDown="EllipseProfile_MouseLeftButtonUp"/>
+                <Image Source="/Images/Photo.png"
+                       Width="40" Height="40"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+            </Grid>
         </StackPanel>
 
         <!-- MENÚ LATERAL -->

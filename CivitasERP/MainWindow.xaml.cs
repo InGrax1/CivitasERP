@@ -55,11 +55,6 @@ namespace CivitasERP
             }
 
 
-
-
-
-
-
             InitializeComponent();
             MainFrame.Navigate(new HomePage());
 
@@ -454,6 +449,10 @@ namespace CivitasERP
             }
 
         }
-        
+
+        private void EllipseProfile_DpiChanged(object sender, DpiChangedEventArgs e)
+        {
+
+        }
     }
 }
