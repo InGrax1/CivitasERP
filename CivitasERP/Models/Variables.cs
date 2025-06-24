@@ -21,6 +21,9 @@ namespace CivitasERP.Models
         private static string? _indexComboboxMes;
         private static string? _indexComboboxSemana;
 
+        private static string _AdminSeleccionado;
+
+
         public static bool Jefe
         {
             get { return _Jefe; }
@@ -86,6 +89,12 @@ namespace CivitasERP.Models
         {
             get { return _indexComboboxSemana; }
             set { _indexComboboxSemana = value; }
+        }
+
+        public static string AdminSeleccionado
+        {
+            get { return _AdminSeleccionado; }
+            set { _AdminSeleccionado = value; }
         }
 
     }

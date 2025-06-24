@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows;
 using CivitasERP.Models;
 
 namespace CivitasERP.Models
@@ -30,15 +31,17 @@ namespace CivitasERP.Models
             this.connectionString = connectionString;
         }
 
-        public List<Empleado> ObtenerEmpleados()
+        public List<Empleado> ObtenerEmpleados(int? idAdminm, string usuariom)
         {
+            
+
             var empleados = new List<Empleado>();
             var fechaInicio = Variables.FechaInicio;
             var fechaFin = Variables.FechaFin;
-            var usuario = Variables.Usuario;
-            var idAdmin = new DB_admins().ObtenerIdPorUsuario(usuario) ?? 0;
+            var usuario = usuariom;
+            var idAdmin = idAdminm.GetValueOrDefault();
             var idObra = Variables.IdObra ?? 0;
-
+           
             empleados.AddRange(ObtenerDatosNomina(idAdmin, fechaInicio, fechaFin, true));
             empleados.AddRange(ObtenerDatosNomina(idAdmin, fechaInicio, fechaFin, false, idObra));
 
@@ -52,34 +55,40 @@ namespace CivitasERP.Models
 
             string query = esAdmin
 ? @"
-    SELECT 
-        ad.id_admins,
-        CONCAT(ad.admins_nombre, ' ', ad.admins_apellidop, ' ', ad.admins_apellidom) AS Nombre,
-        ad.admin_categoria,
-        ad.admins_semanal AS SueldoSemanal,
-        ISNULL(SUM(a.paga_horaXT), 0) AS PagaHoraExtra,
-        COUNT(DISTINCT a.asis_dia) AS Dias,
-        ISNULL(SUM(DATEDIFF(MINUTE, 0, a.asis_hora_extra)) / 60.0, 0) AS HorasExtra
-    FROM admins ad
-    LEFT JOIN asistencia a ON ad.id_admins = a.admins_id_asistencia 
-        AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
-    WHERE ad.id_admins = @idAdmin
-    GROUP BY ad.id_admins, ad.admins_nombre, ad.admins_apellidop, ad.admins_apellidom, ad.admin_categoria, ad.admins_semanal"
+SELECT 
+    ad.id_admins,
+    CONCAT(ad.admins_nombre, ' ', ad.admins_apellidop, ' ', ad.admins_apellidom) AS Nombre,
+    ad.admin_categoria,
+    ISNULL(SUM(a.salariofecha), 0) * 6 AS SueldoSemanalCalculado,
+    ISNULL(SUM(a.paga_horaXT), 0) AS PagaHoraExtra,
+    COUNT(DISTINCT a.asis_dia) AS Dias,
+    ISNULL(SUM(DATEDIFF(MINUTE, 0, a.asis_hora_extra)) / 60.0, 0) AS HorasExtra
+FROM admins ad
+LEFT JOIN asistencia a 
+    ON ad.id_admins = a.admins_id_asistencia 
+    AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
+WHERE ad.id_admins = @idAdmin
+GROUP BY ad.id_admins, ad.admins_nombre, ad.admins_apellidop, ad.admins_apellidom, ad.admin_categoria;
+
+"
 :
 @"
-    SELECT 
-        e.id_empleado,
-        CONCAT(e.emp_nombre, ' ', e.emp_apellidop, ' ', e.emp_apellidom) AS Nombre,
-        e.emp_puesto,
-        e.emp_semanal AS SueldoSemanal,
-        ISNULL(SUM(a.paga_horaXT), 0) AS PagaHoraExtra,
-        COUNT(DISTINCT a.asis_dia) AS Dias,
-        ISNULL(SUM(DATEDIFF(MINUTE, 0, a.asis_hora_extra)) / 60.0, 0) AS HorasExtra
-    FROM empleado e
-    LEFT JOIN asistencia a ON e.id_empleado = a.id_empleado 
-        AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
-    WHERE e.id_admins = @idAdmin AND e.id_obra = @idObra
-    GROUP BY e.id_empleado, e.emp_nombre, e.emp_apellidop, e.emp_apellidom, e.emp_puesto, e.emp_semanal";
+  SELECT 
+    e.id_empleado,
+    CONCAT(e.emp_nombre, ' ', e.emp_apellidop, ' ', e.emp_apellidom) AS Nombre,
+    e.emp_puesto,
+    ISNULL(SUM(a.salariofecha), 0) * 6 AS SueldoSemanalCalculado,
+    ISNULL(SUM(a.paga_horaXT), 0) AS PagaHoraExtra,
+    COUNT(DISTINCT a.asis_dia) AS Dias,
+    ISNULL(SUM(DATEDIFF(MINUTE, 0, a.asis_hora_extra)) / 60.0, 0) AS HorasExtra
+FROM empleado e
+LEFT JOIN asistencia a 
+    ON e.id_empleado = a.id_empleado 
+    AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
+WHERE e.id_admins = @idAdmin AND e.id_obra = @idObra
+GROUP BY e.id_empleado, e.emp_nombre, e.emp_apellidop, e.emp_apellidom, e.emp_puesto;
+
+";
 
 
             using (SqlConnection conn = new SqlConnection(connectionString))
