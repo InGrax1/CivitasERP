@@ -66,14 +66,19 @@ namespace CivitasERP
             if (Variables.IdAdmin.HasValue)
                 CargarFotoPerfil(Variables.IdAdmin.Value);
 
-            /*
-            if (Variables.Jefe==false) {
+
+            //Ocultar botones de navegación según el tipo de usuario
+            if (Variables.Jefe==false) 
+            {
                 btnJustificaciones.Visibility= Visibility.Collapsed;
                 btnEmpleados.Visibility = Visibility.Collapsed;
                 btnAdmins.Visibility = Visibility.Collapsed;
                 btnRegis.Visibility = Visibility.Collapsed;
-            }*/
+                //ComboBox de administradores en nomina y lista page esta en code behind de cada una
+            }
+
             // Cada vez que cambie el estado (Normal, Minimized, Maximized) problemas de forms abajo
+            // NO ACTIVAR HASTA LEER *WINDOW STYLE FORMS*
             //this.StateChanged += MainWindow_StateChanged;
         }
 
@@ -94,6 +99,7 @@ namespace CivitasERP
         }
 
 
+        //WINDOW STYLE FORMS
         // Manejo del estado de la ventana para maximizar correctamente USANDO WINDOWS FORMS (problemas "ambiguous reference")
         // al usar forms y wpf genera conflicto entre ambos y por eso ocaciona la ambiguiedad
         ///habilitar FORMS en <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
@@ -340,19 +346,14 @@ namespace CivitasERP
                     MainFrame.Navigate(new HomePage());
                     break;
                 case "btnNomina":
-                    MainFrame.Navigate(new NominaPage());
+                    MainFrame.Navigate(new NominaPage());     
                     break;
                 case "btnLista":
                     MainFrame.Navigate(new ListaPage());
                     break;
                 case "btnLogout":
-                    /// 1) Instanciamos la ventana de Login
                     var loginWindow = new LoginPage();
-
-                    /// 2) Mostramos Login en modo no modal (para que la app siga viva)
                     loginWindow.Show();
-
-                    /// 3) Cerramos la ventana actual (dejará viva únicamente la de Login)
                     this.Close();
                     break;
                 case "btnJustificaciones":

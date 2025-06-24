@@ -25,6 +25,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -39,13 +40,45 @@
                            FontWeight="Bold"
                            Margin="0,0,0,20"
                            Foreground="{StaticResource titleColorA}"/>
-                <!-- Obra -->
+                
+                <!--OPCION ADMINISTRADOR ADMINS-->
                 <TextBlock Grid.Row="1" Grid.Column="0"
-                           Text="Obra" FontSize="16"
+                           x:Name="AdminLabel"
+                           Text="Administrador" FontSize="16"
                            VerticalAlignment="Center"
                            Margin="0,0,10,0"
                            Foreground="{StaticResource titleColorB}"/>
                 <Border Grid.Row="1" Grid.Column="1"
+                        x:Name="AdminBorder"
+                        Background="White" 
+                        CornerRadius="10"
+                        BorderBrush="#6666FF" 
+                        BorderThickness="1"
+                        MinHeight="30"
+                        MinWidth="80"
+                        Padding="3"
+                        Margin="0,0,0,10">
+                    <ComboBox x:Name="AdminComboBox"
+                              Background="Transparent"
+                              BorderBrush="Transparent"
+                              BorderThickness="0"
+                              FontSize="14"
+                              VerticalContentAlignment="Stretch"
+                              Padding="5"
+                              IsEditable="False"
+                              IsReadOnly="False"
+                              DropDownOpened="AdminComboBox_DropDownOpened"
+                              SelectionChanged="AdminComboBox_SelectionChanged">
+                    </ComboBox>
+                </Border>
+
+                <!-- Obra -->
+                <TextBlock Grid.Row="2" Grid.Column="0"
+                           Text="Obra" FontSize="16"
+                           VerticalAlignment="Center"
+                           Margin="0,0,10,0"
+                           Foreground="{StaticResource titleColorB}"/>
+                <Border Grid.Row="2" Grid.Column="1"
                         CornerRadius="10"
                         BorderBrush="#6666FF" 
                         BorderThickness="1" 
@@ -65,7 +98,7 @@
                               DropDownOpened="ObraComboBox_DropDownOpened"/>
                 </Border>
                 <!-- Combos Mes + Año (ambos dentro de un StackPanel) -->
-                <StackPanel Grid.Row="1" Grid.Column="2"
+                <StackPanel Grid.Row="2" Grid.Column="2"
                             Orientation="Horizontal"
                             VerticalAlignment="Center"
                             Margin="10,0,10,0">
@@ -148,7 +181,7 @@
                     </Border>
                 </StackPanel>
                 <!-- Botón Huella -->
-                <Button Grid.Row="2"
+                <Button Grid.Row="3"
                         Grid.Column="4"
                         HorizontalAlignment="Center"
                         Margin="0,20,0,0"
@@ -170,12 +203,12 @@
                     </StackPanel>
                 </Button>
                 <!-- Ubicación -->
-                <TextBlock Grid.Row="2" Grid.Column="0"
+                <TextBlock Grid.Row="3" Grid.Column="0"
                            Text="Ubicación"
                            FontSize="16"
                            VerticalAlignment="Center"
                            Margin="0,20,10,0"/>
-                <Border Grid.Row="2" Grid.Column="1"
+                <Border Grid.Row="3" Grid.Column="1"
                         Background="White"
                         CornerRadius="10"
                         BorderBrush="#6666FF"
