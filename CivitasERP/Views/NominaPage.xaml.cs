@@ -358,6 +358,7 @@ namespace CivitasERP.Views
             ComBoxAnio.SelectedItem = DateTime.Now.Year;
         }
 
+        //Calcula los totales de la nómina en el Footer
         private void CalcularTotales(IEnumerable<DataGridNominas.Empleado> lista)
         {
             int totalPersonal = lista.Count();
