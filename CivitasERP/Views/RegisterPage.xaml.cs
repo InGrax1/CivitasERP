@@ -27,11 +27,10 @@ namespace CivitasERP.Views
             _connectionString = new Conexion().ObtenerCadenaConexion();
 
             // 2) Inicializar el servicio de huella (sólo Enrollment)
-            int loggedAdmin = Variables.IdAdmin
-                ?? throw new InvalidOperationException("No hay admin logueado");
-            _fingerService = new FingerprintService(_connectionString, loggedAdmin);
-
-
+            int loggedAdmin = 1;
+            // ?? throw new InvalidOperationException("No hay admin logueado");
+             _fingerService = new FingerprintService(_connectionString, loggedAdmin);
+            
             _fingerService.OnEnrollmentComplete += FingerService_OnEnrollmentComplete;
             _fingerService.OnError += FingerService_OnError;
 
@@ -87,13 +86,18 @@ namespace CivitasERP.Views
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
             // 1) Asegurarnos de que ya se haya capturado la huella
-            if (_templateHuella == null)
+            if(CmboCategoria.SelectedIndex == 0)
             {
-                MessageBox.Show(
-                    "Primero debes capturar la huella con el botón “Capturar Huella”.",
-                    "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                if (_templateHuella == null)
+                {
+                    MessageBox.Show(
+                        "Primero debes capturar la huella con el botón “Capturar Huella”.",
+                        "Atención", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
             }
+            
 
 
             // 2) Obtener datos de los campos

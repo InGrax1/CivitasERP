@@ -30,12 +30,8 @@ namespace CivitasERP.AdminViews
         private void BtnGuardarJustificacion_Click(object sender, RoutedEventArgs e)
         {
 
-            }
-
-        
-
-
-
+        }
+   
         private void cargar_admin()
         {
 
@@ -468,7 +464,10 @@ namespace CivitasERP.AdminViews
         }
 
 
+        private void CbxMultiplicador_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
+        }
 
         private void GuardarAsistencia()
         {
@@ -490,78 +489,98 @@ namespace CivitasERP.AdminViews
 
                 // Parsear la fecha seleccionada
                 string fechaStr = CbxDia.SelectedItem.ToString(); // Ej: "Lunes 17/06/2025"
-                DateTime fechaSeleccionada;
-
-                if (!DateTime.TryParse(fechaStr.Substring(fechaStr.IndexOf(' ') + 1), out fechaSeleccionada))
+                if (!DateTime.TryParse(fechaStr.Substring(fechaStr.IndexOf(' ') + 1), out DateTime fechaSeleccionada))
                 {
                     MessageBox.Show("Fecha inválida seleccionada.");
                     return;
                 }
 
-                // Establecer horas fijas
+                // Horas fijas
                 TimeSpan horaEntrada = new TimeSpan(8, 0, 0);  // 08:00 AM
-                TimeSpan horaSalida = new TimeSpan(18, 0, 0);  // 06:00 PM
+                TimeSpan horaSalida = new TimeSpan(18, 0, 0); // 06:00 PM
 
-                Conexion conexion = new Conexion();
-                string connectionString = conexion.ObtenerCadenaConexion();
-
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                var conexion = new Conexion();
+                string cs = conexion.ObtenerCadenaConexion();
+                using (var conn = new SqlConnection(cs))
+                using (var cmd = new SqlCommand())
                 {
-                    string query = string.Empty;
-                    SqlCommand cmd = new SqlCommand();
                     cmd.Connection = conn;
+                    conn.Open();
 
+                    // --- 1) Obtener salario semanal y calcular salario del día ---
+                    decimal salarioSemanal, salarioDelDia;
                     if (EmpleadoComboBox.SelectedItem != null)
                     {
-                        // Asistencia de empleado
-                        int? idEmpleado = ObtenerIdEmpleado(EmpleadoComboBox.SelectedItem.ToString());
-                        if (idEmpleado == null)
+                        int? idEmp = ObtenerIdEmpleado(EmpleadoComboBox.SelectedItem.ToString());
+                        if (idEmp == null)
                         {
                             MessageBox.Show("No se pudo obtener el ID del empleado.");
                             return;
                         }
 
-                        query = @"INSERT INTO asistencia 
-                          (asis_dia, asis_hora, asis_salida, id_empleado) 
-                          VALUES (@fecha, @horaEntrada, @horaSalida, @idEmpleado)";
+                        // Leer emp_semanal
+                        cmd.CommandText = "SELECT emp_semanal FROM empleado WHERE id_empleado = @id";
+                        cmd.Parameters.AddWithValue("@id", idEmp);
+                        salarioSemanal = (decimal)cmd.ExecuteScalar();
+                        cmd.Parameters.Clear();
 
-                        cmd.CommandText = query;
+                        salarioDelDia = salarioSemanal / 6m;
+
+                        // Preparar INSERT
+                        cmd.CommandText = @"
+                    INSERT INTO asistencia
+                      (asis_dia, asis_hora, asis_salida, id_empleado, salariofecha)
+                    VALUES
+                      (@fecha, @horaEntrada, @horaSalida, @id, @salario)";
                         cmd.Parameters.AddWithValue("@fecha", fechaSeleccionada.Date);
                         cmd.Parameters.AddWithValue("@horaEntrada", horaEntrada);
                         cmd.Parameters.AddWithValue("@horaSalida", horaSalida);
-                        cmd.Parameters.AddWithValue("@idEmpleado", idEmpleado);
+                        cmd.Parameters.AddWithValue("@id", idEmp);
+                        cmd.Parameters.AddWithValue("@salario", salarioDelDia);
                     }
-                    else if (Admin2ComboBox.SelectedItem != null)
+                    else // admin
                     {
-                        // Asistencia de admin
                         string usuarioAdmin = Admin2ComboBox.SelectedItem.ToString();
-                        DB_admins dB_Admins = new DB_admins();
-                        int? idAdmin = dB_Admins.ObtenerIdPorUsuario(usuarioAdmin);
-
+                        var dBAdmins = new DB_admins();
+                        int? idAdmin = dBAdmins.ObtenerIdPorUsuario(usuarioAdmin);
                         if (idAdmin == null)
                         {
                             MessageBox.Show("No se pudo obtener el ID del administrador.");
                             return;
                         }
 
-                        query = @"INSERT INTO asistencia 
-                          (asis_dia, asis_hora, asis_salida, admins_id_asistencia) 
-                          VALUES (@fecha, @horaEntrada, @horaSalida, @idAdmin)";
+                        // Leer admins_semanal
+                        cmd.CommandText = "SELECT admins_semanal FROM admins WHERE id_admins = @id";
+                        cmd.Parameters.AddWithValue("@id", idAdmin);
+                        salarioSemanal = (decimal)cmd.ExecuteScalar();
+                        cmd.Parameters.Clear();
 
-                        cmd.CommandText = query;
+                        salarioDelDia = salarioSemanal / 6m;
+
+                        // Preparar INSERT
+                        cmd.CommandText = @"
+                    INSERT INTO asistencia
+                      (asis_dia, asis_hora, asis_salida, admins_id_asistencia, salariofecha)
+                    VALUES
+                      (@fecha, @horaEntrada, @horaSalida, @id, @salario)";
                         cmd.Parameters.AddWithValue("@fecha", fechaSeleccionada.Date);
                         cmd.Parameters.AddWithValue("@horaEntrada", horaEntrada);
                         cmd.Parameters.AddWithValue("@horaSalida", horaSalida);
-                        cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
+                        cmd.Parameters.AddWithValue("@id", idAdmin);
+                        cmd.Parameters.AddWithValue("@salario", salarioDelDia);
                     }
 
-                    conn.Open();
-                    int result = cmd.ExecuteNonQuery();
-
-                    if (result > 0)
-                        MessageBox.Show("Asistencia registrada correctamente con hora fija (08:00 AM - 06:00 PM).", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    // Ejecutar
+                    int filas = cmd.ExecuteNonQuery();
+                    if (filas > 0)
+                    {
+                        MessageBox.Show($"Asistencia registrada correctamente.\nSalario del día: {salarioDelDia:C}",
+                                        "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
                     else
+                    {
                         MessageBox.Show("No se pudo guardar la asistencia.");
+                    }
                 }
             }
             catch (Exception ex)
@@ -572,10 +591,6 @@ namespace CivitasERP.AdminViews
 
 
 
-        private void CbxMultiplicador_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
         private void añadir_hora_extra()
         {
             try

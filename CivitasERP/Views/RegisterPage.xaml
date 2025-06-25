@@ -93,7 +93,8 @@
                             BorderBrush="{StaticResource BoxColor1}">
                         <TextBox x:Name="txtNombre" 
                                  BorderThickness="0" 
-                                 Background="Transparent"/>
+                                 Background="Transparent"
+                                 Foreground="{StaticResource titleColorA}"/>
                     </Border>
                 </StackPanel>
                 <StackPanel Grid.Row="0" 
@@ -110,7 +111,8 @@
                             BorderBrush="{StaticResource BoxColor1}">
                         <TextBox x:Name="txtUsuario" 
                                  BorderThickness="0" 
-                                 Background="Transparent"/>
+                                 Background="Transparent"
+                                 Foreground="{StaticResource titleColorA}"/>
                     </Border>
                 </StackPanel>
 
@@ -129,7 +131,8 @@
                             BorderBrush="{StaticResource BoxColor1}">
                         <TextBox x:Name="txtApellidoPaterno" 
                                  BorderThickness="0" 
-                                 Background="Transparent"/>
+                                 Background="Transparent"
+                                 Foreground="{StaticResource titleColorA}"/>
                     </Border>
                 </StackPanel>
                 <StackPanel Grid.Row="1" 
@@ -146,7 +149,8 @@
                             BorderBrush="{StaticResource BoxColor1}">
                         <PasswordBox x:Name="pwdPassword" 
                                      BorderThickness="0" 
-                                     Background="Transparent"/>
+                                     Background="Transparent"
+                                     Foreground="{StaticResource titleColorA}"/>
                     </Border>
                 </StackPanel>
 
@@ -165,7 +169,8 @@
                             BorderBrush="{StaticResource BoxColor1}">
                         <TextBox x:Name="txtApellidoMaterno" 
                                  BorderThickness="0" 
-                                 Background="Transparent"/>
+                                 Background="Transparent"
+                                 Foreground="{StaticResource titleColorA}"/>
                     </Border>
                 </StackPanel>
                 <StackPanel Grid.Row="2" 
@@ -182,7 +187,8 @@
                             BorderBrush="{StaticResource BoxColor1}">
                         <TextBox x:Name="txtCorreo" 
                                  BorderThickness="0" 
-                                 Background="Transparent"/>
+                                 Background="Transparent"
+                                 Foreground="{StaticResource titleColorA}"/>
                     </Border>
                 </StackPanel>
 
@@ -199,7 +205,7 @@
                         Padding="3"
                         BorderThickness="1"
                         BorderBrush="{StaticResource BoxColor1}">
-                        <ComboBox x:Name="CmboCategoria" BorderThickness="0" Background="Transparent" Foreground="White">
+                        <ComboBox x:Name="CmboCategoria" BorderThickness="0" Background="Transparent" Foreground="{StaticResource titleColorA}">
                             <ComboBoxItem Content="Administrador" />
                             <ComboBoxItem Content="Director" />
                         </ComboBox>
@@ -217,7 +223,7 @@
                             Padding="5"
                             BorderThickness="1"
                             BorderBrush="{StaticResource BoxColor1}">
-                        <TextBox x:Name="txtSueldo" BorderThickness="0" Background="Transparent" Foreground="White"/>
+                        <TextBox x:Name="txtSueldo" BorderThickness="0" Background="Transparent" Foreground="{StaticResource titleColorA}"/>
                     </Border>
                 </StackPanel>
             </Grid>

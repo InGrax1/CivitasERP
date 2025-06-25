@@ -25,6 +25,7 @@
     <None Remove="Images\NewRegister.png" />
     <None Remove="Images\Nomina.png" />
     <None Remove="Images\Obra.png" />
+    <None Remove="Images\Photo.png" />
     <None Remove="Images\SearchPersonBlue.png" />
     <None Remove="Images\usuario.png" />	  
   </ItemGroup>
@@ -113,6 +114,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Obra.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Photo.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\SearchPersonBlue.png">

@@ -152,12 +152,26 @@ GROUP BY u.ID, u.Nombre, u.Categoria;
             using var conn = new SqlConnection(_connectionString);
             conn.Open();
 
-            var sel = $@"
-                        SELECT id_asistencia, asis_salida
-                        FROM asistencia
-                        WHERE {col} = @id
-                        AND CAST(asis_dia AS DATE) = @hoy";
-            using (var cmd = new SqlCommand(sel, conn))
+            // --- 1) Obtener salario semanal ---
+            string tablaSalario = esAdmin ? "admins" : "empleado";
+            string campoSalario = esAdmin ? "admins_semanal" : "emp_semanal";
+            decimal salarioSemanal;
+            using (var cmdSal = new SqlCommand($@"
+            SELECT {campoSalario}
+            FROM {tablaSalario}
+            WHERE {(esAdmin ? "id_admins" : "id_empleado")} = @id", conn))
+            {
+                cmdSal.Parameters.AddWithValue("@id", id);
+                salarioSemanal = (decimal)cmdSal.ExecuteScalar();
+            }
+            decimal salarioPorDia = salarioSemanal / 6;
+
+            // --- 2) Verificar si ya existe registro para hoy ---
+            using (var cmd = new SqlCommand($@"
+            SELECT id_asistencia, asis_salida
+            FROM asistencia
+            WHERE {col} = @id
+              AND CAST(asis_dia AS DATE) = @hoy", conn))
             {
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.Parameters.AddWithValue("@hoy", hoy);
@@ -167,6 +181,7 @@ GROUP BY u.ID, u.Nombre, u.Categoria;
                     var idAsis = rdr.GetInt32(0);
                     var tieneSalida = !rdr.IsDBNull(1);
                     rdr.Close();
+
                     if (tieneSalida)
                     {
                         MessageBox.Show("Ya registraste tu salida para hoy.",
@@ -174,26 +189,33 @@ GROUP BY u.ID, u.Nombre, u.Categoria;
                         return;
                     }
 
-                    using var upd = new SqlCommand(
-                        "UPDATE asistencia SET asis_salida = @ahora WHERE id_asistencia = @idAsis", conn);
+                    // --- 3) Actualizar la salida y el salario proporcional ---
+                    using var upd = new SqlCommand(@"
+                UPDATE asistencia
+                   SET asis_salida    = @ahora,
+                       salariofecha  = @salario
+                 WHERE id_asistencia = @idAsis", conn);
                     upd.Parameters.AddWithValue("@ahora", ahora);
+                    upd.Parameters.AddWithValue("@salario", salarioPorDia);
                     upd.Parameters.AddWithValue("@idAsis", idAsis);
                     upd.ExecuteNonQuery();
                     return;
                 }
             }
 
-            var ins = $@"
-                    INSERT INTO asistencia 
-                      ({col}, asis_dia, asis_hora, asis_salida, asis_hora_extra, {other})
-                    VALUES
-                      (@id, @hoy, @ahora, NULL, '00:00:00', NULL)";
-            using var cmdIns = new SqlCommand(ins, conn);
+            // --- 4) Si no hay registro para hoy, insertar nuevo ---
+            using var cmdIns = new SqlCommand($@"
+        INSERT INTO asistencia
+           ({col}, asis_dia, asis_hora, salariofecha, asis_salida, asis_hora_extra, {other})
+        VALUES
+           (@id, @hoy, @ahora, @salario, NULL, '00:00:00', NULL)", conn);
             cmdIns.Parameters.AddWithValue("@id", id);
             cmdIns.Parameters.AddWithValue("@hoy", hoy);
             cmdIns.Parameters.AddWithValue("@ahora", ahora);
+            cmdIns.Parameters.AddWithValue("@salario", salarioPorDia);
             cmdIns.ExecuteNonQuery();
         }
+
 
         public void MarcarAsistenciaAdmin(int idAdmin)
             => MarcarAsistencia(idAdmin, true);

@@ -53,9 +53,18 @@ namespace CivitasERP.ViewModels
         {
             _cs = new Conexion().ObtenerCadenaConexion();
             _repo = new Datagrid_lista(_cs);
+            int loggedAdmin;
 
-            int loggedAdmin = Variables.IdAdmin
-                ?? throw new InvalidOperationException("No hay admin logueado");
+            if (Variables.Jefe == true)
+            {
+                // 2) Inicializar el servicio de huella (sólo Enrollment)
+                loggedAdmin = 1;
+            }
+            else
+            {
+                loggedAdmin = Variables.IdAdmin ?? throw new InvalidOperationException("No hay admin logueado");
+            }
+              
             _fingerService = new FingerprintService(_cs, loggedAdmin); _fingerService.OnVerificationComplete += OnVerified;
 
             _fingerService.OnError += OnError;
