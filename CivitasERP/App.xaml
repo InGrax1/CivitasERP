@@ -14,6 +14,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <conv:DeleteButtonVisibilityConverter x:Key="DeleteBtnVisConverter"/>
+            <conv:StatusToBrushConverter x:Key="StatusToBrush"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -30,7 +30,9 @@ namespace CivitasERP.Models
 
             public int DiasTrabajados { get; set; }
             public TimeSpan? HorasTotales { get; set; }
+
         }
+ 
 
         private readonly string _connectionString;
 

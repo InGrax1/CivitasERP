@@ -1,9 +1,12 @@
-﻿using System;
+﻿using CivitasERP.Converters;
+using CivitasERP.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Windows;
-using CivitasERP.Models;
+using static CivitasERP.Models.DataGridNominas;
 
 namespace CivitasERP.Models
 {
@@ -22,7 +25,17 @@ namespace CivitasERP.Models
             public decimal SuelExtra { get; set; }
             public decimal SuelTrabajado { get; set; }
             public decimal SuelTotal { get; set; }
+
+            public List<DayAttendance> DiasTrabajadosDetalle { get; set; }
+
         }
+        public class DayAttendance
+        {
+            public string DayName { get; set; }   // “Lun”, “Mar”, …
+            public bool HasCheckIn { get; set; }
+            public bool HasCheckOut { get; set; }
+        }
+
 
         private readonly string connectionString;
 
@@ -101,19 +114,22 @@ namespace CivitasERP.Models
                     cmd.Parameters.AddWithValue("@idObra", idObra);
 
                 conn.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                using (var reader = cmd.ExecuteReader())
                 {
+                    // Leemos todos los empleados (admin o común)
                     while (reader.Read())
                     {
+                        // 1) Calcula tus sueldos y horas como antes
                         decimal sueldoSemanal = reader.GetDecimal(3);
                         int dias = reader.GetInt32(5);
                         decimal sueldoJornada = sueldoSemanal / divisorDias;
-                        decimal sueldoTrabajado = sueldoJornada * dias;
                         decimal horasExtra = reader.GetDecimal(6);
                         decimal pagaHoraExtra = reader.GetDecimal(4);
+                        decimal sueldoTrabajado = sueldoJornada * dias;
                         decimal sueldoTotal = sueldoTrabajado + pagaHoraExtra;
 
-                        empleados.Add(new Empleado
+                        // 2) Creamos el objeto Empleado
+                        var empleado = new Empleado
                         {
                             ID = reader.GetInt32(0),
                             Nombre = reader.GetString(1),
@@ -125,9 +141,64 @@ namespace CivitasERP.Models
                             PHoraExtra = pagaHoraExtra,
                             SuelExtra = pagaHoraExtra,
                             SuelTrabajado = sueldoTrabajado,
-                            SuelTotal = sueldoTotal
-                        });
-                    }
+                            SuelTotal = sueldoTotal,
+
+                            // 3) inicializamos la lista de detalle de días
+                            DiasTrabajadosDetalle = new List<DayAttendance>()
+                        };
+
+                        // 4) Rellenamos día a día
+                        DateTime inicio = DateTime.Parse(fechaInicio);
+                        DateTime fin = DateTime.Parse(fechaFin);
+                        for (var d = inicio; d <= fin; d = d.AddDays(1))
+                        {
+                            bool hasIn, hasOut;
+                            var fechaDia = d.Date;
+
+                            // Cada chequeo en SU PROPIA conexión
+                            using (var conn2 = new SqlConnection(connectionString))
+                            using (var cmdIn = new SqlCommand(
+                                @"SELECT COUNT(*) FROM asistencia
+              WHERE CAST(asis_dia AS date)=@dia
+                AND asis_hora IS NOT NULL
+                AND " + (esAdmin
+                                             ? "admins_id_asistencia"
+                                             : "id_empleado") + "=@id",
+                                conn2))
+                            {
+                                cmdIn.Parameters.AddWithValue("@dia", fechaDia);
+                                cmdIn.Parameters.AddWithValue("@id", empleado.ID);
+                                conn2.Open();
+                                hasIn = (int)cmdIn.ExecuteScalar() > 0;
+                            }
+
+                            using (var conn3 = new SqlConnection(connectionString))
+                            using (var cmdOut = new SqlCommand(
+                                @"SELECT COUNT(*) FROM asistencia
+              WHERE CAST(asis_dia AS date)=@dia
+                AND asis_salida IS NOT NULL
+                AND " + (esAdmin
+                                             ? "admins_id_asistencia"
+                                             : "id_empleado") + "=@id",
+                                conn3))
+                            {
+                                cmdOut.Parameters.AddWithValue("@dia", fechaDia);
+                                cmdOut.Parameters.AddWithValue("@id", empleado.ID);
+                                conn3.Open();
+                                hasOut = (int)cmdOut.ExecuteScalar() > 0;
+                            }
+
+                            empleado.DiasTrabajadosDetalle.Add(new DayAttendance
+                            {
+                                DayName = fechaDia.ToString("ddd"),
+                                HasCheckIn = hasIn,
+                                HasCheckOut = hasOut
+                            });
+                        }
+
+                        // 5) Finalmente lo agregamos a la lista
+                        empleados.Add(empleado);
+                    } // while reader
                 }
             }
 
