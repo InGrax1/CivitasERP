@@ -366,11 +366,6 @@ namespace CivitasERP
             HighlightNavButton(btn);
         }
 
-        private void btnpruea_Click(object sender, RoutedEventArgs e)
-        {
-            prueba prueba = new prueba();
-            prueba.ShowDialog();
-        }
         //Resaltar el botón activo
         private void HighlightNavButton(Button btnToActivate)
         {

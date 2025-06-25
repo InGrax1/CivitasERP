@@ -17,6 +17,8 @@ namespace CivitasERP.Views
     public partial class NominaPage : Page
     {
         private DataGridNominas repo;
+        private NuevoEmpleadoPage _NuevoEmpleadoPage = null;
+
 
         public NominaPage()
         {
@@ -115,8 +117,61 @@ namespace CivitasERP.Views
 
         private void btnNuevoEmpleado_Click(object sender, RoutedEventArgs e)
         {
-            NuevoEmpleadoPage nuevoEmpleadoPage = new NuevoEmpleadoPage();
-            nuevoEmpleadoPage.Show();
+            if (_NuevoEmpleadoPage == null)
+            {
+                _NuevoEmpleadoPage = new NuevoEmpleadoPage();
+                // Cuando se cierre por completo, dejamos la referencia en null:
+                _NuevoEmpleadoPage.Closed += (s, args) =>
+                {
+                    _NuevoEmpleadoPage = null;
+                };
+                _NuevoEmpleadoPage.ShowDialog();
+            }
+            else
+            {
+                _NuevoEmpleadoPage.Activate();
+            }
+        }
+
+        //ELIMINAR EMPLEADO
+        private async void BtnEliminarEmpleado_Click(object sender, RoutedEventArgs e)
+        {
+            // 1) Sacar el Empleado asociado a la fila
+            var btn = sender as Button;
+            if (btn?.DataContext is DataGridNominas.Empleado empleado)
+            {
+                // 2) Confirmar
+                var resp = MessageBox.Show(
+                    $"¿Seguro que deseas eliminar a {empleado.Nombre}?",
+                    "Confirmar eliminación",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
+                if (resp != MessageBoxResult.Yes)
+                    return;
+
+                try
+                {
+                    // 3) Llamar a tu repositorio para borrar
+                    await repo.EliminarEmpleadoAsync(empleado.ID);
+
+                    // 4) Refrescar el grid y recalcular totales
+                    CargarEmpleados();
+                    CalcularTotales((IEnumerable<DataGridNominas.Empleado>)dataGridNomina.ItemsSource);
+
+                    MessageBox.Show("Empleado eliminado correctamente.",
+                                    "Éxito",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al eliminar: {ex.Message}",
+                                    "Error",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Error);
+                }
+            }
         }
 
         private void ObraComboBox_DropDownOpened(object sender, EventArgs e)
@@ -382,24 +437,18 @@ namespace CivitasERP.Views
 
         private void CargarYSumar()
         {
-
-
             DB_admins dB_Admins = new DB_admins();
             if (AdminComboBox.SelectedItem != null)
             {
-
                 var empleados = repo.ObtenerEmpleados(dB_Admins.ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString()), AdminComboBox.SelectedItem.ToString());
                 dataGridNomina.ItemsSource = empleados;
                 CalcularTotales(empleados);
-
             }
             else
             {
-
                 var empleados = repo.ObtenerEmpleados(Variables.IdAdmin, Variables.Usuario);
                 dataGridNomina.ItemsSource = empleados;
                 CalcularTotales(empleados);
-
             }
         }
 

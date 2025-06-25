@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <None Remove="Images\AdminPanel.png" />
+    <None Remove="Images\Delete.png" />
     <None Remove="Images\Empleados.png" />
     <None Remove="Images\FrontLoaderBlue.png" />
     <None Remove="Images\home.png" />
@@ -72,6 +73,9 @@
 
 	<ItemGroup>
     <Resource Include="Images\AdminPanel.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Delete.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Empleados.png">
