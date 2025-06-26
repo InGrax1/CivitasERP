@@ -71,7 +71,29 @@ namespace CivitasERP
                 btnRegis.Visibility = Visibility.Collapsed;
                 //ComboBox de administradores en nomina y lista page esta en code behind de cada una
             }
+            if (Variables.Jefe == false)
+            {
+                AdminDataAccess acceso = new AdminDataAccess();
+                int idAdminBuscado = Variables.IdAdmin.Value;
 
+                AdminInfo admin = acceso.ObtenerUsuarioYCategoriaPorId(idAdminBuscado);
+
+                if (admin != null)
+                {
+                    LabelName.Text = admin.Usuario;
+                    LabelRol.Text = admin.Categoria;
+                }
+                else
+                {
+                    Console.WriteLine("Admin no encontrado.");
+                }
+            }
+            else {
+
+
+                LabelName.Text = ObtenerJefePorUsuario(Variables.Usuario).Jefe_Usuario;
+                LabelRol.Text = "Director";
+            }
             // Cada vez que cambie el estado (Normal, Minimized, Maximized) problemas de forms abajo
             // NO ACTIVAR HASTA LEER *WINDOW STYLE FORMS*
             //this.StateChanged += MainWindow_StateChanged;
@@ -448,6 +470,83 @@ namespace CivitasERP
         private void EllipseProfile_DpiChanged(object sender, DpiChangedEventArgs e)
         {
 
+        }
+
+        public class AdminInfo
+        {
+            public string Usuario { get; set; }
+            public string Categoria { get; set; }
+        }
+
+        public class AdminDataAccess
+        {
+            
+            
+            public AdminInfo ObtenerUsuarioYCategoriaPorId(int idAdmin)
+            {
+                var cs = new Conexion().ObtenerCadenaConexion();
+                AdminInfo admin = null;
+
+                string query = "SELECT admins_usuario, admin_categoria FROM admins WHERE id_admins = @IdAdmin";
+
+                using (SqlConnection connection = new SqlConnection(cs))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@IdAdmin", idAdmin);
+
+                    try
+                    {
+                        connection.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        if (reader.Read())
+                        {
+                            admin = new AdminInfo
+                            {
+                                Usuario = reader["admins_usuario"].ToString(),
+                                Categoria = reader["admin_categoria"].ToString()
+                            };
+                        }
+                        reader.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error al obtener los datos del admin: " + ex.Message);
+                    }
+                }
+
+                return admin;
+            }
+        }
+        public class Jefe
+        {
+            public int Id_Jefe { get; set; }
+            public string Jefe_Usuario { get; set; }
+        }
+        public Jefe ObtenerJefePorUsuario(string usuario)
+        {
+            Jefe jefe = null;
+            var cs = new Conexion().ObtenerCadenaConexion();
+            using (SqlConnection conn = new SqlConnection(cs))
+            {
+                string query = "SELECT id_Jefe, Jefe_usuario FROM Jefe WHERE Jefe_usuario = @Usuario";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Usuario", usuario);
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    jefe = new Jefe
+                    {
+                        Id_Jefe = reader.GetInt32(0),
+                        Jefe_Usuario = reader.GetString(1)
+                    };
+                }
+            }
+
+            return jefe;
         }
     }
 }
