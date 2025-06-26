@@ -1,12 +1,11 @@
-﻿using CivitasERP.Converters;
-using CivitasERP.Models;
+﻿using CivitasERP.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Globalization;
 using System.Windows;
 using static CivitasERP.Models.DataGridNominas;
+using CivitasERP.Converters;
 
 namespace CivitasERP.Models
 {
@@ -61,79 +60,77 @@ namespace CivitasERP.Models
             return empleados;
         }
 
+
+       
         private List<Empleado> ObtenerDatosNomina(int idAdmin, string fechaInicio, string fechaFin, bool esAdmin, int idObra = 0)
         {
-            var empleados = new List<Empleado>();
             const decimal divisorDias = 6m;
+            var empleados = new List<Empleado>();
 
-            string query = esAdmin
-                                ? @"
-                                SELECT 
-                                    ad.id_admins,
-                                    CONCAT(ad.admins_nombre, ' ', ad.admins_apellidop, ' ', ad.admins_apellidom) AS Nombre,
-                                    ad.admin_categoria,
-                                    ISNULL(SUM(a.salariofecha), 0) * 6 AS SueldoSemanalCalculado,
-                                    ISNULL(SUM(a.paga_horaXT), 0) AS PagaHoraExtra,
-                                    COUNT(DISTINCT a.asis_dia) AS Dias,
-                                    ISNULL(SUM(DATEDIFF(MINUTE, 0, a.asis_hora_extra)) / 60.0, 0) AS HorasExtra
-                                FROM admins ad
-                                LEFT JOIN asistencia a 
-                                    ON ad.id_admins = a.admins_id_asistencia 
-                                    AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
-                                WHERE ad.id_admins = @idAdmin
-                                GROUP BY ad.id_admins, ad.admins_nombre, ad.admins_apellidop, ad.admins_apellidom, ad.admin_categoria;
+            // 1) Traemos la lista base de empleados + sus totales
+            string baseSql = esAdmin
+              ? @"
+                SELECT 
+                    ad.id_admins      AS OwnerId,
+                    CONCAT(ad.admins_nombre, ' ', ad.admins_apellidop, ' ', ad.admins_apellidom) AS Nombre,
+                    ad.admin_categoria               AS Categoria,
+                    ISNULL(SUM(a.salariofecha),0) * 6    AS SueldoSemanal,
+                    ISNULL(SUM(a.paga_horaXT),0)        AS PagaHoraExtra,
+                    COUNT(DISTINCT a.asis_dia)          AS Dias,
+                    ISNULL(SUM(DATEDIFF(MINUTE,0,a.asis_hora_extra))/60.0,0) AS HorasExtra
+                FROM admins ad
+                LEFT JOIN asistencia a 
+                  ON ad.id_admins = a.admins_id_asistencia 
+                 AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
+                WHERE ad.id_admins = @idAdmin
+                GROUP BY ad.id_admins, ad.admins_nombre, ad.admins_apellidop, ad.admins_apellidom, ad.admin_categoria;
+                "
+                      : @"
+                SELECT 
+                    e.id_empleado    AS OwnerId,
+                    CONCAT(e.emp_nombre, ' ', e.emp_apellidop, ' ', e.emp_apellidom) AS Nombre,
+                    e.emp_puesto                     AS Categoria,
+                    ISNULL(SUM(a.salariofecha),0) * 6    AS SueldoSemanal,
+                    ISNULL(SUM(a.paga_horaXT),0)        AS PagaHoraExtra,
+                    COUNT(DISTINCT a.asis_dia)          AS Dias,
+                    ISNULL(SUM(DATEDIFF(MINUTE,0,a.asis_hora_extra))/60.0,0) AS HorasExtra
+                FROM empleado e
+                LEFT JOIN asistencia a 
+                  ON e.id_empleado = a.id_empleado 
+                 AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
+                WHERE e.id_admins = @idAdmin
+                  AND e.id_obra   = @idObra
+                GROUP BY e.id_empleado, e.emp_nombre, e.emp_apellidop, e.emp_apellidom, e.emp_puesto;
+                ";
 
-                                "
-                                :
-                                @"
-                                  SELECT 
-                                    e.id_empleado,
-                                    CONCAT(e.emp_nombre, ' ', e.emp_apellidop, ' ', e.emp_apellidom) AS Nombre,
-                                    e.emp_puesto,
-                                    ISNULL(SUM(a.salariofecha), 0) * 6 AS SueldoSemanalCalculado,
-                                    ISNULL(SUM(a.paga_horaXT), 0) AS PagaHoraExtra,
-                                    COUNT(DISTINCT a.asis_dia) AS Dias,
-                                    ISNULL(SUM(DATEDIFF(MINUTE, 0, a.asis_hora_extra)) / 60.0, 0) AS HorasExtra
-                                FROM empleado e
-                                LEFT JOIN asistencia a 
-                                    ON e.id_empleado = a.id_empleado 
-                                    AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
-                                WHERE e.id_admins = @idAdmin AND e.id_obra = @idObra
-                                GROUP BY e.id_empleado, e.emp_nombre, e.emp_apellidop, e.emp_apellidom, e.emp_puesto;
 
-                                ";
-
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(query, conn))
+            //IMPLEMENTACION GRAFICA DE ASISTENCIA EN NOMINAS EN LA COLUMNA DE ASISTENCIA DEL DATA GRID
+            using (var conn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(baseSql, conn))
             {
                 cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
                 cmd.Parameters.AddWithValue("@fechaInicio", fechaInicio);
                 cmd.Parameters.AddWithValue("@fechaFin", fechaFin);
-                if (!esAdmin)
-                    cmd.Parameters.AddWithValue("@idObra", idObra);
+                if (!esAdmin) cmd.Parameters.AddWithValue("@idObra", idObra);
 
                 conn.Open();
-                using (var reader = cmd.ExecuteReader())
+                using (var rdr = cmd.ExecuteReader())
                 {
-                    // Leemos todos los empleados (admin o común)
-                    while (reader.Read())
+                    while (rdr.Read())
                     {
-                        // 1) Calcula tus sueldos y horas como antes
-                        decimal sueldoSemanal = reader.GetDecimal(3);
-                        int dias = reader.GetInt32(5);
-                        decimal sueldoJornada = sueldoSemanal / divisorDias;
-                        decimal horasExtra = reader.GetDecimal(6);
-                        decimal pagaHoraExtra = reader.GetDecimal(4);
-                        decimal sueldoTrabajado = sueldoJornada * dias;
-                        decimal sueldoTotal = sueldoTrabajado + pagaHoraExtra;
+                        var sueldoSemanal = rdr.GetDecimal(3);
+                        var dias = rdr.GetInt32(5);
+                        var sueldoJornada = sueldoSemanal / divisorDias;
+                        var horasExtra = rdr.GetDecimal(6);
+                        var pagaHoraExtra = rdr.GetDecimal(4);
+                        var sueldoTrabajado = sueldoJornada * dias;
+                        var sueldoTotal = sueldoTrabajado + pagaHoraExtra;
 
-                        // 2) Creamos el objeto Empleado
-                        var empleado = new Empleado
+                        empleados.Add(new Empleado
                         {
-                            ID = reader.GetInt32(0),
-                            Nombre = reader.GetString(1),
-                            Categoria = reader.GetString(2),
+                            ID = rdr.GetInt32(0),
+                            Nombre = rdr.GetString(1),
+                            Categoria = rdr.GetString(2),
                             Dias = dias,
                             SueldoJornada = sueldoJornada,
                             SueldoSemanal = sueldoSemanal,
@@ -142,68 +139,99 @@ namespace CivitasERP.Models
                             SuelExtra = pagaHoraExtra,
                             SuelTrabajado = sueldoTrabajado,
                             SuelTotal = sueldoTotal,
-
-                            // 3) inicializamos la lista de detalle de días
                             DiasTrabajadosDetalle = new List<DayAttendance>()
-                        };
-
-                        // 4) Rellenamos día a día
-                        DateTime inicio = DateTime.Parse(fechaInicio);
-                        DateTime fin = DateTime.Parse(fechaFin);
-                        for (var d = inicio; d <= fin; d = d.AddDays(1))
-                        {
-                            bool hasIn, hasOut;
-                            var fechaDia = d.Date;
-
-                            // Cada chequeo en SU PROPIA conexión
-                            using (var conn2 = new SqlConnection(connectionString))
-                            using (var cmdIn = new SqlCommand(
-                                @"SELECT COUNT(*) FROM asistencia
-              WHERE CAST(asis_dia AS date)=@dia
-                AND asis_hora IS NOT NULL
-                AND " + (esAdmin
-                                             ? "admins_id_asistencia"
-                                             : "id_empleado") + "=@id",
-                                conn2))
-                            {
-                                cmdIn.Parameters.AddWithValue("@dia", fechaDia);
-                                cmdIn.Parameters.AddWithValue("@id", empleado.ID);
-                                conn2.Open();
-                                hasIn = (int)cmdIn.ExecuteScalar() > 0;
-                            }
-
-                            using (var conn3 = new SqlConnection(connectionString))
-                            using (var cmdOut = new SqlCommand(
-                                @"SELECT COUNT(*) FROM asistencia
-              WHERE CAST(asis_dia AS date)=@dia
-                AND asis_salida IS NOT NULL
-                AND " + (esAdmin
-                                             ? "admins_id_asistencia"
-                                             : "id_empleado") + "=@id",
-                                conn3))
-                            {
-                                cmdOut.Parameters.AddWithValue("@dia", fechaDia);
-                                cmdOut.Parameters.AddWithValue("@id", empleado.ID);
-                                conn3.Open();
-                                hasOut = (int)cmdOut.ExecuteScalar() > 0;
-                            }
-
-                            empleado.DiasTrabajadosDetalle.Add(new DayAttendance
-                            {
-                                DayName = fechaDia.ToString("ddd"),
-                                HasCheckIn = hasIn,
-                                HasCheckOut = hasOut
-                            });
-                        }
-
-                        // 5) Finalmente lo agregamos a la lista
-                        empleados.Add(empleado);
-                    } // while reader
+                        });
+                    }
                 }
+            }
+
+            // 2) Traemos **una sola** vez** todas las asistencias del rango y todos los OwnerId’s**:
+            //    (OwnerId = id_admins para admins, o id_empleado para trabajadores)
+            var attendance = new Dictionary<(int OwnerId, DateTime Dia), (bool HasIn, bool HasOut)>();
+
+            string attSql = esAdmin
+                ? @"
+                  SELECT 
+                    a.admins_id_asistencia    AS OwnerId,
+                    CAST(a.asis_dia AS date)  AS Dia,
+                    MAX(CASE WHEN a.asis_hora      IS NOT NULL THEN 1 ELSE 0 END) AS HasIn,
+                    MAX(CASE WHEN a.asis_salida    IS NOT NULL THEN 1 ELSE 0 END) AS HasOut
+                  FROM asistencia a
+                  WHERE a.admins_id_asistencia = @idAdmin
+                    AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
+                  GROUP BY a.admins_id_asistencia, CAST(a.asis_dia AS date);
+                  "
+                            : @"
+                  SELECT 
+                    a.id_empleado            AS OwnerId,
+                    CAST(a.asis_dia AS date) AS Dia,
+                    MAX(CASE WHEN a.asis_hora      IS NOT NULL THEN 1 ELSE 0 END) AS HasIn,
+                    MAX(CASE WHEN a.asis_salida    IS NOT NULL THEN 1 ELSE 0 END) AS HasOut
+                  FROM asistencia a
+                  INNER JOIN empleado e 
+                    ON e.id_empleado = a.id_empleado
+                  WHERE e.id_admins = @idAdmin
+                    AND e.id_obra   = @idObra
+                    AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
+                  GROUP BY a.id_empleado, CAST(a.asis_dia AS date);
+                  ";
+
+            using (var conn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(attSql, conn))
+            {
+                cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
+                cmd.Parameters.AddWithValue("@fechaInicio", fechaInicio);
+                cmd.Parameters.AddWithValue("@fechaFin", fechaFin);
+                if (!esAdmin) cmd.Parameters.AddWithValue("@idObra", idObra);
+
+                conn.Open();
+                using (var rdr = cmd.ExecuteReader())
+                {
+                    while (rdr.Read())
+                    {
+                        int owner = rdr.GetInt32(0);
+                        DateTime dia = rdr.GetDateTime(1);
+                        bool hasIn = rdr.GetInt32(2) == 1;
+                        bool hasOut = rdr.GetInt32(3) == 1;
+                        attendance[(owner, dia)] = (hasIn, hasOut);
+                    }
+                }
+            }
+
+            // 3) Ahora, para cada empleado, rellenamos su lista de DayAttendance
+            var desde = DateTime.Parse(fechaInicio);
+            var hasta = DateTime.Parse(fechaFin);
+            foreach (var emp in empleados)
+            {
+                var detalle = new List<DayAttendance>();
+                for (var d = desde; d <= hasta; d = d.AddDays(1))
+                {
+                    var key = (emp.ID, d.Date);
+                    if (attendance.TryGetValue(key, out var inf))
+                    {
+                        detalle.Add(new DayAttendance
+                        {
+                            DayName = d.ToString("ddd"),
+                            HasCheckIn = inf.HasIn,
+                            HasCheckOut = inf.HasOut
+                        });
+                    }
+                    else
+                    {
+                        detalle.Add(new DayAttendance
+                        {
+                            DayName = d.ToString("ddd"),
+                            HasCheckIn = false,
+                            HasCheckOut = false
+                        });
+                    }
+                }
+                emp.DiasTrabajadosDetalle = detalle;
             }
 
             return empleados;
         }
+
 
         /// <summary>
         /// Elimina el empleado con el ID dado de la base de datos.

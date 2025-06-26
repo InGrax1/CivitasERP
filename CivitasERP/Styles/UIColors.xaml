@@ -11,6 +11,8 @@
 
 
     <SolidColorBrush x:Key="Color1" Color="#E5E5E5"/>
+    <SolidColorBrush x:Key="Color2" Color="LightGreen"/>
+    <SolidColorBrush x:Key="Color3" Color="LightCoral"/>
 
 
     <!--Colores de texto-->

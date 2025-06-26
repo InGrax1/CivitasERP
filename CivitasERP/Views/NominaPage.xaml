@@ -6,6 +6,7 @@
         Title="NominaPage"
         MinHeight="800" MinWidth="600"
         Background="{StaticResource BackgroudColor}">
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -258,8 +259,8 @@
                     <DataGridTextColumn Header="#" Binding="{Binding ID}" />
                     <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
                     <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" />
-
                     <DataGridTemplateColumn Header="Días Trabajados">
+                        
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ItemsControl ItemsSource="{Binding DiasTrabajadosDetalle}">
@@ -271,22 +272,20 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Border CornerRadius="5" Margin="2" Padding="3"
-                    Background="{StaticResource BackgroudColor}">
+                                                    Background="LightGray">
                                                 <StackPanel>
                                                     <TextBlock Text="{Binding DayName}"
-                           FontWeight="Bold"
-                           HorizontalAlignment="Center"/>
+                                                               FontWeight="Bold"
+                                                               HorizontalAlignment="Center"/>
                                                     <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Center">
+                                                                HorizontalAlignment="Center">
                                                         <TextBlock Text="In"
-                             Margin="0,0,4,0"
-                             Padding="2,0"
-                             Background="{Binding HasCheckIn,
-                                                  Converter={StaticResource StatusToBrush}}"/>
+                                                                   Margin="0,0,4,0"
+                                                                   Padding="2,0"
+                                                                   Background="{Binding HasCheckIn, Converter={StaticResource StatusToBrush}}"/>
                                                         <TextBlock Text="Out"
-                             Padding="2,0"
-                             Background="{Binding HasCheckOut,
-                                                  Converter={StaticResource StatusToBrush}}"/>
+                                                                   Padding="2,0"
+                                                                   Background="{Binding HasCheckOut, Converter={StaticResource StatusToBrush}}"/>
                                                     </StackPanel>
                                                 </StackPanel>
                                             </Border>
@@ -296,8 +295,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-
-
+                    
                     <DataGridTextColumn Header="Días" Binding="{Binding Dias}"  />
                     <DataGridTextColumn Header="Sueldo Jornada" Binding="{Binding SueldoJornada}" />
                     <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal}" />
