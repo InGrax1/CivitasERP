@@ -59,7 +59,7 @@ SELECT
     ad.id_admins,
     CONCAT(ad.admins_nombre, ' ', ad.admins_apellidop, ' ', ad.admins_apellidom) AS Nombre,
     ad.admin_categoria,
-    ISNULL(SUM(a.salariofecha), 0) * 6 AS SueldoSemanalCalculado,
+    ISNULL(SUM(a.salariofecha), 0) AS SueldoSemanalCalculado,
     ISNULL(SUM(a.paga_horaXT), 0) AS PagaHoraExtra,
     COUNT(DISTINCT a.asis_dia) AS Dias,
     ISNULL(SUM(DATEDIFF(MINUTE, 0, a.asis_hora_extra)) / 60.0, 0) AS HorasExtra
