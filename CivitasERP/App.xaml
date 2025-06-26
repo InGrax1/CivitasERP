@@ -2,19 +2,19 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:CivitasERP"
+             xmlns:conv="clr-namespace:CivitasERP.Converters"
              StartupUri="Views/LoginPage.xaml">
     <Application.Resources>
         <ResourceDictionary>
+
             <ResourceDictionary.MergedDictionaries>
-                <!-- ¡Sin la barra inicial! -->
                 <ResourceDictionary Source="Styles/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="Styles/UIColors.xaml"/>
-                <ResourceDictionary Source="/Styles/DataGridColumnHeader.xaml"/>
+                <ResourceDictionary Source="Styles/DataGridColumnHeader.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <!-- Aquí podrías añadir recursos globales adicionales -->
+
+            <conv:DeleteButtonVisibilityConverter x:Key="DeleteBtnVisConverter"/>
+            <conv:StatusToBrushConverter x:Key="StatusToBrush"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
-
-    
-    

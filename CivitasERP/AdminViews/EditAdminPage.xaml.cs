@@ -30,12 +30,6 @@ namespace CivitasERP.AdminViews
             cargar_admin();
         }
 
-        private void BtnCancelar_Click(object sender, RoutedEventArgs e)
-        {
-            // Navigate back to the previous page
-            NavigationService?.GoBack();
-        }
-
         private void BtnGuardar_Click(object sender, RoutedEventArgs e)
         {
             string admin;
