@@ -30,20 +30,22 @@
                        HorizontalAlignment="Center"
                        FontWeight="Light"
                        FontSize="15"/>
+            
             <TextBlock Foreground="{StaticResource titleColor3}"
                        HorizontalAlignment="Center"
                        FontWeight="Light"
                        FontSize="15"
                        Margin="0,10,0,0"
-                       TextWrapping="Wrap"
-                       Text="
-                       1.- Selecciona si quieres modificar un Administrador o Empleado &#x0a;
-                       2.- Si es un Administrador seleccionalo en la opcion de *Elegir Admin* &#x0a;
-                       3.- Si es un Empleado selecciona la obra en la que se encuentra y el nombre de la persona *Elegir Obra* y *Elegir Empleado &#x0a;
-                       4.- Haz las modificaiones de Fecha o Horas extra (peden ser ambas) &#x0a;
-                       *Solo se puede un administrador o empleado a la vez*" />
+                       TextWrapping="Wrap">
+                1.- Selecciona si quieres modificar un Administrador o Empleado<LineBreak/>
+                2.- Si es un Administrador seleccionalo en la opcion de *Elegir Admin*<LineBreak/>
+                3.- Si es un Empleado selecciona la obra en la que se encuentra y el nombre de la persona<LineBreak/>
+                4.- Haz las modificaiones de Fecha o Horas extra (peden ser ambas)<LineBreak/>
+                Nota: *Solo se puede un administrador o empleado a la vez*
+
+            </TextBlock>
         </StackPanel>
-        
+
         <!--Card Opcions Admin/Empleado-->
         <StackPanel Grid.Row="1" Margin="30">
             <!--Banner Titulo-->
@@ -112,7 +114,7 @@
                     </DockPanel>
                 </Border>
             </StackPanel>
-            
+
             <!--SELECTOR DE OBRA-->
             <StackPanel Grid.Row="0" Grid.Column="2" Width="300" Margin="0,20,0,0" HorizontalAlignment="Center">
                 <TextBlock Text="Elegir Obra" 
@@ -167,14 +169,14 @@
                                   BorderThickness="0"
                                     SelectionChanged="EmpleadoComboBox_SelectionChanged" 
                                     DropDownOpened="EmpleadoComboBox_DropDownOpened">
-                            
+
                         </ComboBox>
                     </DockPanel>
                 </Border>
             </StackPanel>
-            
 
-            <!-- 1) Formulario de INASISTENCIA -->    
+
+            <!-- 1) Formulario de INASISTENCIA -->
             <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,30,0,0">
                 <TextBlock Text="Justificación de Inasistencia"
                            FontSize="20"
@@ -182,12 +184,14 @@
                            Foreground="{StaticResource titleColorA}"
                            HorizontalAlignment="Center"
                            Margin="0,20,0,10"/>
-                <TextBlock Text="Selecciona la fecha de inasistencia de la persona"
-                           FontSize="15"
+                <TextBlock FontSize="15"
                            FontWeight="Light"
                            Foreground="{StaticResource titleColor3}"
                            HorizontalAlignment="Center"
-                           Margin="0,0,0,0"/>
+                           Margin="0,0,0,0">
+                    Selecciona la fecha de inasistencia de la persona<LineBreak/>
+                    Nota:Si requieres justificar varias fechas, deberas seleccionar una fecha a la vez
+                </TextBlock>
             </StackPanel>
             <!--Card Datos-->
             <StackPanel Grid.Row="3" Grid.Column="0" Margin="30">
@@ -235,7 +239,7 @@
 
                             </Border>
                         </StackPanel>
-                        
+
                         <!-- Mes -->
                         <StackPanel Orientation="Vertical" MinWidth="120" Margin="0,0,10,0">
                             <TextBlock Text="Mes" FontSize="15" Foreground="{StaticResource titleColorA}"/>
@@ -298,7 +302,7 @@
                            Foreground="{StaticResource titleColorA}"
                            HorizontalAlignment="Center"
                            Margin="0,20,0,10"/>
-                <TextBlock Text="Selecciona la fecha de inasistencia de la persona"
+                <TextBlock Text="Selecciona la cantidad de horas extra y el multiplicador"
                            FontSize="15"
                            FontWeight="Light"
                            Foreground="{StaticResource titleColor3}"
@@ -393,6 +397,68 @@
             </Button>
         </Grid>
 
-        
+        <!--FONDO-->
+        <!-- 2) franjas diagonales -->
+        <Canvas Panel.ZIndex="-1">
+            <!-- franja 1 -->
+            <Rectangle Width="638" Height="60"
+           RadiusX="20" RadiusY="20"
+           Fill="#5C7CFF" Opacity="0.2"
+           Canvas.Left="54" Canvas.Top="279" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Rectangle.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-43.612"/>
+                        <TranslateTransform X="15.945554337723227" Y="89.5096189432334"/>
+                    </TransformGroup>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+
+            <!-- franja 2 -->
+            <Rectangle Width="714" Height="60"
+           RadiusX="20" RadiusY="20"
+           Fill="#5C7CFF" Opacity="0.2"
+           Canvas.Left="-36" Canvas.Top="864" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-43.009"/>
+                        <TranslateTransform X="13.846189432334192" Y="76.6746824526945"/>
+                    </TransformGroup>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+
+            <!-- franja 3 -->
+            <Rectangle Width="806" Height="60"
+           RadiusX="20" RadiusY="20"
+           Fill="#5C7CFF" Opacity="0.2"
+           Canvas.Left="302" Canvas.Top="896" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Rectangle.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-43.423"/>
+                        <TranslateTransform X="21.794919243112258" Y="101.3397459621556"/>
+                    </TransformGroup>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+
+            <!-- 3) “blob” grande en bottom-right -->
+            <Rectangle Width="1415" Height="789"
+                    RadiusX="150" RadiusY="150"
+                    Fill="#5C7CFF" Opacity="1"
+                    Canvas.Left="845" Canvas.Top="873" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Rectangle.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-43.423"/>
+                        <TranslateTransform X="21.794919243112258" Y="101.3397459621556"/>
+                    </TransformGroup>
+                </Rectangle.RenderTransform>
+            </Rectangle>
+        </Canvas>
     </Grid>
 </Page>

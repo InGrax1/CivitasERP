@@ -29,6 +29,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    
                 </Grid.RowDefinitions>
                 <!-- 1) Título -->
                 <TextBlock Grid.Row="0"
@@ -38,8 +40,22 @@
                        Foreground="#6666FF"
                        HorizontalAlignment="Center"
                        Margin="0,0,0,20"/>
+                <!-- 2) Instrucciones -->
+                <TextBlock Grid.Row="1"
+                    Foreground="{StaticResource titleColor3}"
+                           HorizontalAlignment="Center"
+                           FontWeight="Light"
+                           FontSize="15"
+                           Margin="0,10,0,20"
+                           TextWrapping="Wrap">
+                    1.- Selecciona la el administrador encargado del empleado <LineBreak/>
+                    2.- Selecciona la obra de procedencia del empleado<LineBreak/>
+                    3.- Selecciona el empleado a modificar<LineBreak/>
+                    Nota: Para cambiar el sueldo semanal deberá ser cambiado al finalizar la semana después de hacer el ultimo checkout de la persona
+                </TextBlock>
+                
                 <!--SELECTOR DE Admin-->
-                <StackPanel Grid.Row="1">
+                <StackPanel Grid.Row="2">
                     <TextBlock Text="Elegir Admin" 
                            Margin="0,0,0,0" 
                            VerticalAlignment="Center" 
@@ -68,7 +84,7 @@
                     </Border>
                 </StackPanel>
                 <!--SELECTOR DE OBRA-->
-                <StackPanel Grid.Row="2">
+                <StackPanel Grid.Row="3">
                     <TextBlock Text="Elegir Obra" 
                            Margin="0,0,0,0" 
                            VerticalAlignment="Center" 
@@ -97,7 +113,7 @@
                     </Border>
                 </StackPanel>
                 <!--SELECTOR DE ADMIN-->
-                <StackPanel Grid.Row="3">
+                <StackPanel Grid.Row="4">
                     <TextBlock Text="Elegir Empleado" 
                            Margin="0,0,0,0" 
                            VerticalAlignment="Center" 
@@ -254,17 +270,8 @@
                 </StackPanel>
             </Grid>
 
-            <!-- 3) Botones Guardar / Cancelar -->
+            <!-- 3) Botone Guardar -->
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="30">
-                <Button Style="{StaticResource LargeRoundButton}"
-                        Background="{StaticResource titleColor3}"
-                        x:Name="BtnCancelar"
-                        Grid.Row="3"
-                        Width="250"
-                        Click="BtnCancelar_Click">
-                    <TextBlock Text="Cancelar" FontSize="20" Foreground="White"/>
-                </Button>
-
                 <Button Style="{StaticResource LargeRoundButton}"
                         Background="{StaticResource buttonColor2}"
                         x:Name="BtnGuardar"

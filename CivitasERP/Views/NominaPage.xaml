@@ -2,9 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        xmlns:converters="clr-namespace:CivitasERP.Converters"
         Title="NominaPage"
         MinHeight="800" MinWidth="600"
         Background="{StaticResource BackgroudColor}">
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -238,9 +240,10 @@
                       CanUserDeleteRows="False"
                       IsReadOnly="True"
                       Margin="10"
-                      HeadersVisibility="Column"
-                      GridLinesVisibility="None"
+                      VerticalContentAlignment="Center"
                       HorizontalContentAlignment="Center"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="None"    
                       EnableRowVirtualization="True"
                       EnableColumnVirtualization="True"
                       VirtualizingStackPanel.IsVirtualizing="True"
@@ -256,7 +259,43 @@
                     <DataGridTextColumn Header="#" Binding="{Binding ID}" />
                     <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
                     <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" />
-                    <DataGridTextColumn Header="Días Trabajados" Binding="{Binding DiasTrabajados}" />
+                    <DataGridTemplateColumn Header="Días Trabajados">
+                        
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ItemsControl ItemsSource="{Binding DiasTrabajadosDetalle}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border CornerRadius="5" Margin="2" Padding="3"
+                                                    Background="LightGray">
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding DayName}"
+                                                               FontWeight="Bold"
+                                                               HorizontalAlignment="Center"/>
+                                                    <StackPanel Orientation="Horizontal"
+                                                                HorizontalAlignment="Center">
+                                                        <TextBlock Text="In"
+                                                                   Margin="0,0,4,0"
+                                                                   Padding="2,0"
+                                                                   Background="{Binding HasCheckIn, Converter={StaticResource StatusToBrush}}"/>
+                                                        <TextBlock Text="Out"
+                                                                   Padding="2,0"
+                                                                   Background="{Binding HasCheckOut, Converter={StaticResource StatusToBrush}}"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    
                     <DataGridTextColumn Header="Días" Binding="{Binding Dias}"  />
                     <DataGridTextColumn Header="Sueldo Jornada" Binding="{Binding SueldoJornada}" />
                     <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal}" />
@@ -265,6 +304,26 @@
                     <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding SuelExtra}" />
                     <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado}" />
                     <DataGridTextColumn Header="Sueldo Total" Binding="{Binding SuelTotal}" />
+
+                    <DataGridTemplateColumn Header="Eliminar" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="{StaticResource buttonExit}" CornerRadius="5" Width="35" Height="35">
+                                    <Button Padding="5,2"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Width="35" Height="35"
+                                            Click="BtnEliminarEmpleado_Click"
+                                            ToolTip="Eliminar"
+                                            Visibility="{Binding ID, Converter={StaticResource DeleteBtnVisConverter}}">
+                                        <Image Source="/Images/Delete.png" Width="35" Height="35"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                    </Button>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
@@ -350,7 +409,7 @@
                         <TextBlock Text="Sueldo Trabajado" FontSize="20" HorizontalAlignment="Center"/>
                     </Border>
                     <Border Background="{StaticResource primaryColor1}" CornerRadius="5" Padding="5" Margin="0,0,10,10" Grid.Column="7" Grid.Row="0">
-                        <TextBlock Text="Total" Foreground="WhiteSmoke" FontWeight="Bold" FontSize="20"/>
+                        <TextBlock Text="Total" Foreground="WhiteSmoke" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"/>
                     </Border>
 
                     <!--Valores Totales-->
