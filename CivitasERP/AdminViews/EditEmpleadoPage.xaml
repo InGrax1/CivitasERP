@@ -55,7 +55,7 @@
                 </TextBlock>
                 
                 <!--SELECTOR DE Admin-->
-                <StackPanel Grid.Row="2">
+                <StackPanel Grid.Row="2" MinWidth="300" MaxWidth="500">
                     <TextBlock Text="Elegir Admin" 
                            Margin="0,0,0,0" 
                            VerticalAlignment="Center" 
@@ -74,17 +74,16 @@
                                VerticalAlignment="Center"
                                DockPanel.Dock="Left">
                             </Image>
-                            <ComboBox x:Name="Admin2ComboBox" 
-                                  BorderThickness="0"
+                            <ComboBox x:Name="Admin2ComboBox"
+                                    BorderThickness="0"
                                     SelectionChanged="Admin2ComboBox_SelectionChanged" 
-                                    DropDownOpened="Admin2ComboBox_DropDownOpened"
-                                  >
+                                    DropDownOpened="Admin2ComboBox_DropDownOpened">
                             </ComboBox>
                         </DockPanel>
                     </Border>
                 </StackPanel>
                 <!--SELECTOR DE OBRA-->
-                <StackPanel Grid.Row="3">
+                <StackPanel Grid.Row="3" MinWidth="300" MaxWidth="500">
                     <TextBlock Text="Elegir Obra" 
                            Margin="0,0,0,0" 
                            VerticalAlignment="Center" 
@@ -113,7 +112,7 @@
                     </Border>
                 </StackPanel>
                 <!--SELECTOR DE ADMIN-->
-                <StackPanel Grid.Row="4">
+                <StackPanel Grid.Row="4" MinWidth="300" MaxWidth="500">
                     <TextBlock Text="Elegir Empleado" 
                            Margin="0,0,0,0" 
                            VerticalAlignment="Center" 

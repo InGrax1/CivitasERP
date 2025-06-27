@@ -76,6 +76,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -116,7 +117,7 @@
             </StackPanel>
 
             <!--SELECTOR DE OBRA-->
-            <StackPanel Grid.Row="0" Grid.Column="2" Width="300" Margin="0,20,0,0" HorizontalAlignment="Center">
+            <StackPanel Grid.Row="0" Grid.Column="1" Width="300" Margin="0,20,0,0" HorizontalAlignment="Center">
                 <TextBlock Text="Elegir Obra" 
                            Margin="0,0,0,0" 
                            VerticalAlignment="Center" 
@@ -394,6 +395,17 @@
                     Width="250"
                     Click="BtnGuardarHoraExt_Click">
                 <TextBlock Text="Guardar Hora Extra" FontSize="20" Foreground="White"/>
+            </Button>
+            
+            <!-- 4) Botón Historial -->
+            <Button Grid.Row="4" Grid.Column="2"
+                    Style="{StaticResource LargeRoundButton}"
+                    Background="{StaticResource buttonColor2}"
+                    x:Name="btnJustHrs"
+                    Margin="20"
+                    Width="250"
+                    Click="BtnHistorialHrsExt_Click">
+                <TextBlock Text="Historial Horas Extra" FontSize="20" Foreground="White"/>
             </Button>
         </Grid>
 

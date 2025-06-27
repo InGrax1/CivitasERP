@@ -746,6 +746,7 @@ namespace CivitasERP.AdminViews
             añadir_hora_extra();
             MessageBox.Show("Hora extra guardada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
     }
 
 }
