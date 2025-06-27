@@ -615,7 +615,8 @@ namespace CivitasERP.AdminViews
                     MessageBox.Show("Ingrese una cantidad válida de horas extra.");
                     return;
                 }
-
+          
+                decimal horasExtraCantidaddec = (decimal)horasExtraCantidad;
                 // Obtener multiplicador desde ComboBox
                 decimal multiplicador = 1; // Valor por defecto
                 if (CbxMultiplicador.SelectedItem is ComboBoxItem selectedItem)
@@ -659,7 +660,7 @@ namespace CivitasERP.AdminViews
 
                         decimal sueldoBase = Convert.ToDecimal(sueldoObj);
                         decimal salarioDelDia = sueldoBase / 6;
-                        decimal pagaHoraExtra = (salarioDelDia / 8) * multiplicador;
+                        decimal pagaHoraExtra = (salarioDelDia / 8) * (multiplicador* horasExtraCantidaddec);
 
                         cmd.Parameters.Clear();
 
@@ -695,7 +696,7 @@ namespace CivitasERP.AdminViews
 
                         decimal sueldoBase = Convert.ToDecimal(sueldoObj);
                         decimal salarioDelDia = sueldoBase / 6;
-                        decimal pagaHoraExtra = (salarioDelDia / 8) * multiplicador;
+                        decimal pagaHoraExtra = (salarioDelDia / 8) * (multiplicador* horasExtraCantidaddec);
 
                         cmd.Parameters.Clear();
 

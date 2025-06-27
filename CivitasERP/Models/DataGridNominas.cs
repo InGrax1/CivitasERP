@@ -113,7 +113,7 @@ SELECT
     a.id_admins AS OwnerId,
     CONCAT(ad.admins_nombre, ' ', ad.admins_apellidop, ' ', ad.admins_apellidom) AS Nombre,
     ad.admin_categoria AS Categoria,
-    ISNULL(salario.salario_diario_fijo * 6, 0) AS SueldoSemanal,  -- fijo para 6 días
+    ISNULL(salario.salario_diario_fijo * extra.dias_laborados, 0) AS SueldoSemanal,  -- ahora basado en días trabajados
     ISNULL(extra.paga_horaXT_total, 0) AS PagaHoraExtra,
     ISNULL(extra.dias_laborados, 0) AS Dias,
     ISNULL(extra.horas_extra_total, 0) AS HorasExtra
@@ -176,7 +176,7 @@ SELECT
     e.id_empleado AS OwnerId,
     CONCAT(e.emp_nombre, ' ', e.emp_apellidop, ' ', e.emp_apellidom) AS Nombre,
     e.emp_puesto AS Categoria,
-    ISNULL(salario.salario_diario_fijo * 6, 0) AS SueldoSemanal,
+    ISNULL(salario.salario_diario_fijo * extra.dias_laborados, 0) AS SueldoSemanal,  -- ahora basado en días trabajados
     ISNULL(extra.paga_horaXT_total, 0) AS PagaHoraExtra,
     ISNULL(extra.dias_laborados, 0) AS Dias,
     ISNULL(extra.horas_extra_total, 0) AS HorasExtra
@@ -187,7 +187,6 @@ WHERE e.id_admins = @idAdmin AND e.id_obra = @idObra
 GROUP BY 
     e.id_empleado, e.emp_nombre, e.emp_apellidop, e.emp_apellidom, e.emp_puesto,
     salario.salario_diario_fijo, extra.paga_horaXT_total, extra.dias_laborados, extra.horas_extra_total;
-
 
 
 
