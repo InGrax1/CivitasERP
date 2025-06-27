@@ -397,16 +397,6 @@
                 <TextBlock Text="Guardar Hora Extra" FontSize="20" Foreground="White"/>
             </Button>
             
-            <!-- 4) Botón Historial -->
-            <Button Grid.Row="4" Grid.Column="2"
-                    Style="{StaticResource LargeRoundButton}"
-                    Background="{StaticResource buttonColor2}"
-                    x:Name="btnJustHrs"
-                    Margin="20"
-                    Width="250"
-                    Click="BtnHistorialHrsExt_Click">
-                <TextBlock Text="Historial Horas Extra" FontSize="20" Foreground="White"/>
-            </Button>
         </Grid>
 
         <!--FONDO-->
