@@ -696,7 +696,7 @@ namespace CivitasERP.AdminViews
 
                         decimal sueldoBase = Convert.ToDecimal(sueldoObj);
                         decimal salarioDelDia = sueldoBase / 6;
-                        decimal pagaHoraExtra = (salarioDelDia / 8) * (multiplicador* horasExtraCantidaddec);
+                        decimal pagaHoraExtra = (salarioDelDia / 8) * (multiplicador * horasExtraCantidaddec);
 
                         cmd.Parameters.Clear();
 
