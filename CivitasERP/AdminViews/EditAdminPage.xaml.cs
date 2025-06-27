@@ -32,6 +32,18 @@ namespace CivitasERP.AdminViews
 
         private void BtnGuardar_Click(object sender, RoutedEventArgs e)
         {
+
+            // 1) Validar que hayan seleccionado un empleado
+            if (AdminComboBox.SelectedItem == null)
+            {
+                MessageBox.Show(
+                    "Por favor selecciona un empleado.",
+                    "Campos incompletos",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
             string admin;
             admin = AdminComboBox.SelectedItem.ToString();
             DB_admins admins = new DB_admins();

@@ -1,12 +1,13 @@
-﻿using System;
+﻿using BiometriaDP.Services;
+using CivitasERP.Models;
+using System;
+using System.Data.SqlClient;
 using System.IO;
 using System.Windows;
-using System.Windows.Input;
-using CivitasERP.Models;
-using BiometriaDP.Services;
-using static CivitasERP.Views.LoginPage;
 using System.Windows.Controls;
-using System.Data.SqlClient;
+using System.Windows.Input;
+using static CivitasERP.Views.LoginPage;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CivitasERP.Views
 {
@@ -109,6 +110,21 @@ namespace CivitasERP.Views
             string usuario = txtUsuario.Text;
             string correo = txtCorreo.Text;
             string contraseña = pwdPassword.Password;
+
+            if (string.IsNullOrWhiteSpace(nombre) ||
+                string.IsNullOrWhiteSpace(apellidop) ||
+                string.IsNullOrWhiteSpace(apellidom) ||
+                string.IsNullOrWhiteSpace(usuario) ||
+                string.IsNullOrWhiteSpace(correo) ||
+                string.IsNullOrWhiteSpace(contraseña)) 
+            {
+                MessageBox.Show(
+                    "Por favor completa todos los campos antes de registrar.",
+                    "Campos incompletos", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+
             if (!exito)
             {
                 MessageBox.Show("El campo sueldo no es un número válido.",

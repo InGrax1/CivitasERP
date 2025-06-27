@@ -1,4 +1,5 @@
-﻿using CivitasERP.Models;
+﻿using BiometriaDP.Services;
+using CivitasERP.Models;
 using System;
 using System.Data.SqlClient;
 using System.IO;
@@ -6,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using static CivitasERP.Views.LoginPage;
-using BiometriaDP.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace CivitasERP.Views
 {
     /// <summary>
@@ -82,6 +83,7 @@ namespace CivitasERP.Views
         // --- Guarda el admin en BD junto con la huella ---
         private void btnRegister_Click(object sender, RoutedEventArgs e)
         {
+            // 0) Validar huella
             if (_templateHuella == null)
             {
                 MessageBox.Show(
@@ -98,6 +100,17 @@ namespace CivitasERP.Views
             decimal sueldo = 0.00m;
             bool exito = decimal.TryParse(txtSueldo.Text, out sueldo);
 
+            if (string.IsNullOrWhiteSpace(Nombre) ||
+                string.IsNullOrWhiteSpace(apellidop) ||
+                string.IsNullOrWhiteSpace(apellidom) ||
+                string.IsNullOrWhiteSpace(categoria))
+            {
+                MessageBox.Show(
+                    "Por favor completa todos los campos antes de registrar.",
+                    "Campos incompletos", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (!exito)
             {
                 MessageBox.Show(
@@ -105,6 +118,8 @@ namespace CivitasERP.Views
                     "Error de validación", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+
+            
 
             // 2) Obtener ID de admin y ID de obra
             string usuario = Variables.Usuario;
