@@ -8,8 +8,8 @@
     <UseWPF>true</UseWPF>
 	  <!-- Uncomment the next line if you want to use Windows Forms in your project -->
 	<!--  <UseWindowsForms>true</UseWindowsForms>     -->
-	  <ApplicationIcon>Images\Logo-CivitasERP-B ico.ico</ApplicationIcon>
-	  <WinFXResource>Images\Logo-CivitasERP-B ico.ico</WinFXResource>
+	    <ApplicationIcon>Images\Logo-CivitasERP-B ico.ico</ApplicationIcon>
+        <WinFXResource>Images\Logo-CivitasERP-B ico.ico</WinFXResource>
   </PropertyGroup>
 
   <ItemGroup>

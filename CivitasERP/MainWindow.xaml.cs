@@ -47,7 +47,6 @@ namespace CivitasERP
                 // 3) Probamos abrir la conexión
                 using var conn = new SqlConnection(cs);
                 conn.Open();
-                MessageBox.Show("¡Conexión exitosa!", "Estado");
             }
             catch (Exception ex)
             {
