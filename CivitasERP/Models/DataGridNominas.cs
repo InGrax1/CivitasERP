@@ -211,7 +211,7 @@ GROUP BY
                         var horasExtra = rdr.GetDecimal(6);
                         var pagaHoraExtra = rdr.GetDecimal(4) ;
                         var sueldoTrabajado = sueldoJornada * dias;
-                        var sueldoTotal = sueldoTrabajado + (pagaHoraExtra * horasExtra);
+                        var sueldoTotal = sueldoTrabajado + pagaHoraExtra;
 
                         empleados.Add(new Empleado
                         {
