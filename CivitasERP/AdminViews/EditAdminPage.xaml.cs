@@ -37,9 +37,6 @@ namespace CivitasERP.AdminViews
             DB_admins admins = new DB_admins();
 
             GuardarDatosAdmindb(admins.ObtenerIdPorUsuario(admin));
-            MessageBox.Show("Empleado guardado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-            // Navigate back to the previous page after saving
-            NavigationService?.GoBack();
         }
 
         private void AdminComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -236,11 +233,11 @@ namespace CivitasERP.AdminViews
                     int rowsAffected = command.ExecuteNonQuery();
                     if (rowsAffected > 0)
                     {
-                        MessageBox.Show("Datos guardados correctamente.");
+                        MessageBox.Show("Datos del Administrador actualizados correctamente.", "Exito", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     else
                     {
-                        MessageBox.Show("No se encontró el administrador para actualizar.");
+                        MessageBox.Show("No se encontró el Administrador para actualizar.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                 }
                 catch (Exception ex)

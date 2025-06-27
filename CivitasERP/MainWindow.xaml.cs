@@ -176,11 +176,13 @@ namespace CivitasERP
                     {
                         Stretch = Stretch.UniformToFill
                     };
+                    ImgPlaceholder.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
                     // Opcional: pinta un placeholder si no hay foto
                     EllipseProfile.Fill = Brushes.LightGray;
+                    ImgPlaceholder.Visibility = Visibility.Visible;
                 }
             }
         }
@@ -234,11 +236,13 @@ namespace CivitasERP
                     {
                         Stretch = Stretch.UniformToFill
                     };
+                    ImgPlaceholder.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
                     // Opcional: pinta un placeholder si no hay foto
                     EllipseProfile.Fill = Brushes.LightGray;
+                    ImgPlaceholder.Visibility = Visibility.Visible;
                 }
             }
         }
@@ -288,6 +292,8 @@ namespace CivitasERP
             bitmap.CacheOption = BitmapCacheOption.OnLoad;
             bitmap.EndInit();
             EllipseProfile.Fill = new ImageBrush(bitmap) { Stretch = Stretch.UniformToFill };
+            ImgPlaceholder.Visibility = Visibility.Collapsed;
+
 
             // 2) Guardarla en la BD
             const string sql = @"

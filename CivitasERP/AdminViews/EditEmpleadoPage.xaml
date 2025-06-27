@@ -55,7 +55,7 @@
                 </TextBlock>
                 
                 <!--SELECTOR DE Admin-->
-                <StackPanel Grid.Row="2" MinWidth="300" MaxWidth="500">
+                <StackPanel Grid.Row="2" MinWidth="300" MaxWidth="400">
                     <TextBlock Text="Elegir Admin" 
                            Margin="0,0,0,0" 
                            VerticalAlignment="Center" 
@@ -83,7 +83,7 @@
                     </Border>
                 </StackPanel>
                 <!--SELECTOR DE OBRA-->
-                <StackPanel Grid.Row="3" MinWidth="300" MaxWidth="500">
+                <StackPanel Grid.Row="3" MinWidth="300" MaxWidth="400">
                     <TextBlock Text="Elegir Obra" 
                            Margin="0,0,0,0" 
                            VerticalAlignment="Center" 
@@ -112,7 +112,7 @@
                     </Border>
                 </StackPanel>
                 <!--SELECTOR DE ADMIN-->
-                <StackPanel Grid.Row="4" MinWidth="300" MaxWidth="500">
+                <StackPanel Grid.Row="4" MinWidth="300" MaxWidth="400">
                     <TextBlock Text="Elegir Empleado" 
                            Margin="0,0,0,0" 
                            VerticalAlignment="Center" 

@@ -239,6 +239,8 @@ namespace CivitasERP.Views
                 CargarEmpleados();
             }
 
+            //Carga los totales del footer
+            CargarYSumar();
 
         }
 
@@ -329,6 +331,8 @@ namespace CivitasERP.Views
             }
 
             CargarEmpleados();
+            //Carga los totales del footer
+            CargarYSumar();
         }
 
         private void ActualizarSemanas()
@@ -348,6 +352,7 @@ namespace CivitasERP.Views
         private void ComBoxSemana_DropDownOpened(object sender, EventArgs e)
         {
             CargarMeses();
+
         }
 
         private void ComBoxMes_DropDownOpened(object sender, EventArgs e)
@@ -377,6 +382,7 @@ namespace CivitasERP.Views
             Agregar_tiempo tiempo = new Agregar_tiempo();
             ComBoxMes.ItemsSource = tiempo.GetMeses();
             ComBoxMes.SelectedItem = DateTime.Now.Month;  // Corregí para que sea el mes actual (no año)
+
         }
 
         private void ComBoxAnio_SelectionChanged(object sender, SelectionChangedEventArgs e)

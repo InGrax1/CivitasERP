@@ -48,7 +48,17 @@ namespace CivitasERP.Views
 
             Insert_Obra insert_Obra = new Insert_Obra();
             insert_Obra.AgregarObra(nombreObra, ubicacion, idAdminObra);  
-            
+
+            MessageBox.Show(
+                "Obra agregada correctamente.",
+                "Éxito",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+
+            //Limpiar el formulario
+            txtObraNombre.Text = "";
+            txtObraUbicacion.Text = "";
+
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)

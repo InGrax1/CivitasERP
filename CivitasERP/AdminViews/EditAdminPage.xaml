@@ -59,7 +59,7 @@
                            TextWrapping="Wrap"/>
 
                 <!--SELECTOR DE ADMIN-->
-                <StackPanel Grid.Row="3">
+                <StackPanel Grid.Row="3" MinWidth="300" MaxWidth="400">
                     <TextBlock Text="Elegir Administrador" 
                            Margin="0,0,0,0" 
                            VerticalAlignment="Center" 
@@ -255,7 +255,7 @@
                             </Border>
 
                             <!--Obra Asignada-->
-                            <TextBlock Text="Obras Asignada" 
+                            <TextBlock Text="Obras Asignada (Solo Consulta)" 
                                    Margin="0,35,0,0" 
                                    VerticalAlignment="Center" 
                                    Foreground="{StaticResource titleColorA}"/>
