@@ -737,16 +737,18 @@ namespace CivitasERP.AdminViews
 
         private void BtnGuardarInasistencia_Click(object sender, RoutedEventArgs e)
         {
+            // Siempre se guarda primero la inasistencia
             GuardarAsistencia();
-            MessageBox.Show("Justificación guardada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
 
-        }
-
-        private void BtnGuardarHoraExt_Click(object sender, RoutedEventArgs e)
-        {
-            añadir_hora_extra();
-            MessageBox.Show("Hora extra guardada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+            // Sólo llamamos a añadir_hora_extra() si hay algo válido en el textbox
+            if (!string.IsNullOrWhiteSpace(TxtHorasExtra.Text))
+            {
+                //si el valor es un número decimal y mayor a 0, añadimos la hora extra
+                if (decimal.TryParse(TxtHorasExtra.Text,out decimal horas) && horas>0)
+                {
+                    añadir_hora_extra();
+                }
+            }
         }
     }
-
 }

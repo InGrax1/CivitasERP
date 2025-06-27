@@ -35,7 +35,8 @@
                          Fill="{StaticResource BackgroudColor}"
                          Cursor="Hand"
                          MouseLeftButtonDown="EllipseProfile_MouseLeftButtonUp"/>
-                <Image Source="/Images/Photo.png"
+                <Image x:Name="ImgPlaceholder"
+                       Source="/Images/Photo.png"
                        Width="40" Height="40"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>

@@ -30,9 +30,17 @@ namespace CivitasERP.AdminViews
 
         private void BtnGuardar_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Empleado guardado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-            // Navigate back to the previous page after saving
-            NavigationService?.GoBack();
+            // 1) Validar que hayan seleccionado un empleado
+            if (EmpleadoComboBox.SelectedItem == null)
+            {
+                MessageBox.Show(
+                    "Por favor selecciona un empleado.",
+                    "Campos incompletos",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
             GuardarDatosEmpleado(ObtenerIdEmpleado(EmpleadoComboBox.SelectedItem.ToString()));
         }
         
@@ -384,11 +392,11 @@ namespace CivitasERP.AdminViews
 
                         if (rowsAffected > 0)
                         {
-                            MessageBox.Show("Datos del empleado actualizados correctamente.");
+                            MessageBox.Show("Datos del Empleado actualizados correctamente.", "Exito", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                         else
                         {
-                            MessageBox.Show("No se encontró el empleado para actualizar.");
+                            MessageBox.Show("No se Encontró el empleado para actualizar.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
                         }
                     }
                     catch (Exception ex)

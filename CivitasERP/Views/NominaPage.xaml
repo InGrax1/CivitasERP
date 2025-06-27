@@ -344,7 +344,7 @@
                            VerticalAlignment="Center"
                            Margin="0,0,5,0"
                            Grid.Row="1"
-                           FontSize="20"/>
+                           FontSize="16"/>
                 <!--Circulo-->
                 <Border Grid.Column="1" Grid.Row="1"
                         Background="{StaticResource primaryColor4}"
@@ -356,7 +356,7 @@
                                x:Name="TotalPersonal"
                                Foreground="{StaticResource titleColor4}"
                                FontWeight="Bold"
-                               FontSize="20"/>
+                               FontSize="16"/>
                 </Border>
 
                 <!-- 2) Valores finales -->
@@ -380,7 +380,7 @@
                     </Grid.RowDefinitions>
                     <!--TOTAL FOOTER-->
                     <TextBlock Text="TOTAL"
-                               FontSize="20"
+                               FontSize="16"
                                Grid.Column="0"
                                Grid.Row="1"
                                FontWeight="Bold"
@@ -390,48 +390,48 @@
                                VerticalAlignment="Center"/>
                     
                     <Border Background="WhiteSmoke" CornerRadius="5" Padding="5" Margin="0,0,10,10" Grid.Column="1" Grid.Row="0">
-                        <TextBlock Text="Sueldo Jornal" FontSize="20" Grid.Column="0"/>
+                        <TextBlock Text="Sueldo Jornal" FontSize="15" Grid.Column="0"/>
                     </Border>
                     <Border Background="WhiteSmoke" CornerRadius="5" Padding="5" Margin="0,0,10,10" Grid.Column="2" Grid.Row="0">
-                        <TextBlock Text="Sueldo Semanal" FontSize="20" />
+                        <TextBlock Text="Sueldo Semanal" FontSize="15" />
                     </Border>
                     <Border Background="WhiteSmoke" CornerRadius="5" Padding="5" Margin="0,0,10,10" Grid.Column="3" Grid.Row="0">
-                        <TextBlock Text="Horas Extra" FontSize="20"/>
+                        <TextBlock Text="Horas Extra" FontSize="15"/>
                     </Border>
                     <Border Background="WhiteSmoke" CornerRadius="5" Padding="5" Margin="0,0,10,10" Grid.Column="4" Grid.Row="0">
-                        <TextBlock Text="Precio Hora Extra" FontSize="20"/>
+                        <TextBlock Text="Precio Hora Extra" FontSize="15"/>
                     </Border>
                     <Border Background="WhiteSmoke" CornerRadius="5" Padding="5" Margin="0,0,10,10" Grid.Column="5" Grid.Row="0">
-                        <TextBlock Text="Sueldo Extra" FontSize="20"/>
+                        <TextBlock Text="Sueldo Extra" FontSize="15"/>
                     </Border>
                     <Border Background="WhiteSmoke" CornerRadius="5" Padding="5" Margin="0,0,10,10" Grid.Column="6" Grid.Row="0">
-                        <TextBlock Text="Sueldo Trabajado" FontSize="20" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Sueldo Trabajado" FontSize="15" HorizontalAlignment="Center"/>
                     </Border>
                     <Border Background="{StaticResource primaryColor1}" CornerRadius="5" Padding="5" Margin="0,0,10,10" Grid.Column="7" Grid.Row="0">
-                        <TextBlock Text="Total" Foreground="WhiteSmoke" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Total" Foreground="WhiteSmoke" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"/>
                     </Border>
 
                     <!--Valores Totales-->
                     <Border Background="WhiteSmoke" CornerRadius="5" Padding="5" Margin="0,0,10,0" Grid.Column="1" Grid.Row="1">
-                        <TextBlock Text="$---" FontSize="20" x:Name="TotalSuelJornal" Grid.Column="0" HorizontalAlignment="Center"/>
+                        <TextBlock Text="$---" FontSize="15" x:Name="TotalSuelJornal" Grid.Column="0" HorizontalAlignment="Center"/>
                     </Border>
                     <Border Background="WhiteSmoke" CornerRadius="5" Padding="5" Margin="0,0,10,0" Grid.Column="2" Grid.Row="1">
-                        <TextBlock Text="$---" FontSize="20" x:Name="TotalSuelSemanal" HorizontalAlignment="Center"/>
+                        <TextBlock Text="$---" FontSize="15" x:Name="TotalSuelSemanal" HorizontalAlignment="Center"/>
                     </Border>
                     <Border Background="WhiteSmoke" CornerRadius="5" Padding="5" Margin="0,0,10,0" Grid.Column="3" Grid.Row="1">
-                        <TextBlock Text="$---" FontSize="20" x:Name="TotalHrsExtra" HorizontalAlignment="Center"/>
+                        <TextBlock Text="$---" FontSize="15" x:Name="TotalHrsExtra" HorizontalAlignment="Center"/>
                     </Border>
                     <Border Background="WhiteSmoke" CornerRadius="5" Padding="5" Margin="0,0,10,0" Grid.Column="4" Grid.Row="1">
-                        <TextBlock Text="$---" FontSize="20" x:Name="TotalPrecioHrsExt" HorizontalAlignment="Center"/>
+                        <TextBlock Text="$---" FontSize="15" x:Name="TotalPrecioHrsExt" HorizontalAlignment="Center"/>
                     </Border>
                     <Border Background="WhiteSmoke" CornerRadius="5" Padding="5" Margin="0,0,10,0" Grid.Column="5" Grid.Row="1">
-                        <TextBlock Text="$---" FontSize="20" x:Name="TotalSuelExt" HorizontalAlignment="Center"/>
+                        <TextBlock Text="$---" FontSize="15" x:Name="TotalSuelExt" HorizontalAlignment="Center"/>
                     </Border>
                     <Border Background="WhiteSmoke" CornerRadius="5" Padding="5" Margin="0,0,10,0" Grid.Column="6" Grid.Row="1">
-                        <TextBlock Text="$---" FontSize="20" x:Name="TotalSuelTrabajado" HorizontalAlignment="Center"/>
+                        <TextBlock Text="$---" FontSize="15" x:Name="TotalSuelTrabajado" HorizontalAlignment="Center"/>
                     </Border>
                     <Border Background="{StaticResource primaryColor1}" CornerRadius="5" Padding="5" Margin="0,0,10,0" Grid.Column="7" Grid.Row="1">
-                        <TextBlock Text="$---" x:Name="TotalGeneral" Foreground="WhiteSmoke" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center"/>
+                        <TextBlock Text="$---" x:Name="TotalGeneral" Foreground="WhiteSmoke" FontWeight="Bold" FontSize="15" HorizontalAlignment="Center"/>
                     </Border>
                 </Grid>
             </Grid>

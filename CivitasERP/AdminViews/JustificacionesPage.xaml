@@ -9,7 +9,7 @@
       Title="JustificacionesPage"
       Background="{StaticResource BackgroudColor}">
 
-    <Grid Margin="20">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -24,38 +24,33 @@
                        FontWeight="Bold"
                        Foreground="#6666FF"
                        HorizontalAlignment="Center"
-                       Margin="0,0,0,10"/>
-            <TextBlock Text="Sección para poder justificar las faltas de los empleados en general"
+                       Margin="0,20,0,10"/>
+            <TextBlock Text="Sección para poder justificar las faltas y/o horas extra de los empleados en general"
                        Foreground="{StaticResource titleColor3}"
                        HorizontalAlignment="Center"
                        FontWeight="Light"
                        FontSize="15"/>
-            
+
             <TextBlock Foreground="{StaticResource titleColor3}"
                        HorizontalAlignment="Center"
                        FontWeight="Light"
                        FontSize="15"
-                       Margin="0,10,0,0"
+                       Margin="0,5,0,0"
                        TextWrapping="Wrap">
-                1.- Selecciona si quieres modificar un Administrador o Empleado<LineBreak/>
-                2.- Si es un Administrador seleccionalo en la opcion de *Elegir Admin*<LineBreak/>
-                3.- Si es un Empleado selecciona la obra en la que se encuentra y el nombre de la persona<LineBreak/>
-                4.- Haz las modificaiones de Fecha o Horas extra (peden ser ambas)<LineBreak/>
                 Nota: *Solo se puede un administrador o empleado a la vez*
-
             </TextBlock>
         </StackPanel>
 
         <!--Card Opcions Admin/Empleado-->
-        <StackPanel Grid.Row="1" Margin="30">
+        <Grid Grid.Row="1" Margin="30">
             <!--Banner Titulo-->
             <StackPanel Panel.ZIndex="1">
                 <Border Background="{StaticResource primaryColor1}" 
-                CornerRadius="10" 
-                Padding="5" 
-                Width="185"
-                Height="35"
-                Margin="0,0,0,-20">
+                        CornerRadius="10" 
+                        Padding="5" 
+                        Width="185"
+                        Height="35"
+                        Margin="0,0,0,-20">
                     <TextBlock Text="Selecciona una opcion" 
                        FontSize="12" 
                        FontWeight="Bold" 
@@ -64,20 +59,158 @@
                        VerticalAlignment="Center"/>
                 </Border>
             </StackPanel>
-            <Border Background="{StaticResource Color1}"
-            CornerRadius="30">
+            
+            <!--Tarjeta Contenedora de opciones-->
+            <Border Background="#DADDFF"
+                    CornerRadius="30"
+                    HorizontalAlignment="Center"
+                    Padding="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!--Opcion 1-->
+                    <Border Background="Transparent"
+                            BorderBrush="{StaticResource primaryColor1}"
+                            BorderThickness="1"
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            CornerRadius="10" 
+                            Padding="5" 
+                            Width="130"
+                            Height="35"
+                            Margin="0,20,0,0">
+                        <TextBlock Text="Opcion 1" 
+                                   FontSize="12" 
+                                   FontWeight="Bold" 
+                                   Foreground="{StaticResource primaryColor1}" 
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
 
+                    <!--Opcion 2-->
+                    <Border Background="Transparent"
+                            BorderBrush="{StaticResource primaryColor1}"
+                            BorderThickness="1"
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            CornerRadius="10" 
+                            Padding="5" 
+                            Width="130"
+                            Height="35"
+                            Margin="0,20,0,0">
+                        <TextBlock Text="Opcion 2" 
+                                   FontSize="12" 
+                                   FontWeight="Bold" 
+                                   Foreground="{StaticResource primaryColor1}" 
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+
+
+
+                    <!--SELECTOR DE Admin-->
+                    <StackPanel Grid.Row="1" Grid.Column="0" Width="300" Margin="0,10,5,0">
+                        <TextBlock Text="Elegir Admin" 
+                                   Margin="0,0,0,0" 
+                                   VerticalAlignment="Center" 
+                                   Foreground="{StaticResource titleColorA}"/>
+                        <Border Background="#F0F0F0" 
+                                CornerRadius="10" 
+                                Padding="3"
+                                Margin="0,0,0,0"
+                                BorderThickness="1" 
+                                BorderBrush="{StaticResource primaryColor4}">
+                            <!--DockPanel para foto con comobo box-->
+                            <DockPanel LastChildFill="True" VerticalAlignment="Center">
+                                <Image Source="/Images/SearchPersonBlue.png"
+                                       Width="24" Height="24"
+                                       Margin="5,0"
+                                       VerticalAlignment="Center"
+                                       DockPanel.Dock="Left">
+                                </Image>
+                                <ComboBox x:Name="Admin2ComboBox" 
+                                          BorderThickness="0"
+                                          DropDownOpened="Admin2ComboBox_DropDownOpened"
+                                          SelectionChanged="Admin2ComboBox_SelectionChanged">
+                                </ComboBox>
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!--SELECTOR DE OBRA-->
+                    <StackPanel Grid.Row="1" Grid.Column="1" Width="300" Margin="5,10,0,0" HorizontalAlignment="Center">
+                        <TextBlock Text="Elegir Obra" 
+                                   Margin="0,0,0,0" 
+                                   VerticalAlignment="Center" 
+                                   Foreground="{StaticResource titleColorA}"/>
+                        <Border Background="#F0F0F0" 
+                                CornerRadius="10" 
+                                Padding="3"
+                                Margin="0,0,0,0"
+                                BorderThickness="1" 
+                                BorderBrush="{StaticResource primaryColor4}">
+                            <!--DockPanel para foto con comobo box-->
+                            <DockPanel LastChildFill="True" VerticalAlignment="Center">
+                                <Image Source="/Images/FrontLoaderBlue.png"
+                                       Width="24" Height="24"
+                                       Margin="5,0"
+                                       VerticalAlignment="Center"
+                                       DockPanel.Dock="Left">
+                                </Image>
+                                <ComboBox x:Name="ObraComboBox" 
+                                          BorderThickness="0"
+                                          DropDownOpened="ObraComboBox_DropDownOpened"
+                                          SelectionChanged="ObraComboBox_SelectionChanged">
+                                </ComboBox>
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!--SELECTOR DE EMPLEADO-->
+                    <StackPanel Grid.Row="2" Grid.Column="1" Width="300" Margin="0,15,0,0" HorizontalAlignment="Center">
+                        <TextBlock Text="Elegir Empleado" 
+                                   Margin="0,0,0,0" 
+                                   VerticalAlignment="Center" 
+                                   Foreground="{StaticResource titleColorA}"/>
+                        <Border Background="#F0F0F0" 
+                                CornerRadius="10" 
+                                Padding="3"
+                                Margin="0,0,0,0"
+                                BorderThickness="1" 
+                                BorderBrush="{StaticResource primaryColor4}">
+                            <!--DockPanel para foto con comobo box-->
+                            <DockPanel LastChildFill="True" VerticalAlignment="Center">
+                                <Image Source="/Images/SearchPersonBlue.png"
+                                       Width="24" Height="24"
+                                       Margin="5,0"
+                                       VerticalAlignment="Center"
+                                       DockPanel.Dock="Left">
+                                </Image>
+                                <ComboBox x:Name="EmpleadoComboBox" 
+                                          BorderThickness="0"
+                                          SelectionChanged="EmpleadoComboBox_SelectionChanged" 
+                                          DropDownOpened="EmpleadoComboBox_DropDownOpened">
+                                </ComboBox>
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
             </Border>
-        </StackPanel>
+        </Grid>
 
 
         <!--Fomulario-->
         <Grid Grid.Row="2" HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -85,116 +218,25 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-
-            <!--SELECTOR DE Admin-->
-            <StackPanel Grid.Row="1" Grid.Column="0" Width="300" Margin="0,20,50,0">
-                <TextBlock Text="Elegir Admin" 
-                           Margin="0,0,0,0" 
-                           VerticalAlignment="Center" 
-                           Foreground="{StaticResource titleColorA}"/>
-                <Border Background="#F0F0F0" 
-                        CornerRadius="10" 
-                        Padding="3"
-                        Margin="0,0,0,0"
-                        BorderThickness="1" 
-                        BorderBrush="{StaticResource primaryColor4}">
-                    <!--DockPanel para foto con comobo box-->
-                    <DockPanel LastChildFill="True" VerticalAlignment="Center">
-                        <Image Source="/Images/SearchPersonBlue.png"
-                               Width="24" Height="24"
-                               Margin="5,0"
-                               VerticalAlignment="Center"
-                               DockPanel.Dock="Left">
-                        </Image>
-                        <ComboBox x:Name="Admin2ComboBox" 
-                                  BorderThickness="0"
-                                  DropDownOpened="Admin2ComboBox_DropDownOpened"
-                                  SelectionChanged="Admin2ComboBox_SelectionChanged">
-                        </ComboBox>
-                    </DockPanel>
-                </Border>
-            </StackPanel>
-
-            <!--SELECTOR DE OBRA-->
-            <StackPanel Grid.Row="0" Grid.Column="2" Width="300" Margin="0,20,0,0" HorizontalAlignment="Center">
-                <TextBlock Text="Elegir Obra" 
-                           Margin="0,0,0,0" 
-                           VerticalAlignment="Center" 
-                           Foreground="{StaticResource titleColorA}"/>
-                <Border Background="#F0F0F0" 
-                        CornerRadius="10" 
-                        Padding="3"
-                        Margin="0,0,0,0"
-                        BorderThickness="1" 
-                        BorderBrush="{StaticResource primaryColor4}">
-                    <!--DockPanel para foto con comobo box-->
-                    <DockPanel LastChildFill="True" VerticalAlignment="Center">
-                        <Image Source="/Images/FrontLoaderBlue.png"
-                               Width="24" Height="24"
-                               Margin="5,0"
-                               VerticalAlignment="Center"
-                               DockPanel.Dock="Left">
-                        </Image>
-                        <ComboBox x:Name="ObraComboBox" 
-                                  BorderThickness="0"
-                                  DropDownOpened="ObraComboBox_DropDownOpened"
-                                  SelectionChanged="ObraComboBox_SelectionChanged">
-                        </ComboBox>
-
-                    </DockPanel>
-                </Border>
-            </StackPanel>
-
-            <!--SELECTOR DE EMPLEADO-->
-            <StackPanel Grid.Row="1" Grid.Column="1" Width="300" Margin="0,15,0,0" HorizontalAlignment="Center">
-                <TextBlock Text="Elegir Empleado" 
-                           Margin="0,0,0,0" 
-                           VerticalAlignment="Center" 
-                           Foreground="{StaticResource titleColorA}"/>
-                <Border Background="#F0F0F0" 
-                        CornerRadius="10" 
-                        Padding="3"
-                        Margin="0,0,0,0"
-                        BorderThickness="1" 
-                        BorderBrush="{StaticResource primaryColor4}">
-                    <!--DockPanel para foto con comobo box-->
-                    <DockPanel LastChildFill="True" VerticalAlignment="Center">
-                        <Image Source="/Images/SearchPersonBlue.png"
-                               Width="24" Height="24"
-                               Margin="5,0"
-                               VerticalAlignment="Center"
-                               DockPanel.Dock="Left">
-                        </Image>
-                        <ComboBox x:Name="EmpleadoComboBox" 
-                                  BorderThickness="0"
-                                    SelectionChanged="EmpleadoComboBox_SelectionChanged" 
-                                    DropDownOpened="EmpleadoComboBox_DropDownOpened">
-
-                        </ComboBox>
-                    </DockPanel>
-                </Border>
-            </StackPanel>
-
-
-            <!-- 1) Formulario de INASISTENCIA -->
-            <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,30,0,0">
-                <TextBlock Text="Justificación de Inasistencia"
+            <!-- 1) INASISTENCIA -->
+            <StackPanel Grid.Row="0" Grid.Column="0">
+                <TextBlock Text="Justificación de Inasistencia y/o Hora Extra"
                            FontSize="20"
-                           FontWeight="Bold"
+                           FontWeight="SemiBold"
                            Foreground="{StaticResource titleColorA}"
                            HorizontalAlignment="Center"
-                           Margin="0,20,0,10"/>
+                           Margin="0,0,0,10"/>
                 <TextBlock FontSize="15"
                            FontWeight="Light"
                            Foreground="{StaticResource titleColor3}"
                            HorizontalAlignment="Center"
                            Margin="0,0,0,0">
-                    Selecciona la fecha de inasistencia de la persona<LineBreak/>
+                    Selecciona la fecha a modificar<LineBreak/>
                     Nota:Si requieres justificar varias fechas, deberas seleccionar una fecha a la vez
                 </TextBlock>
             </StackPanel>
-            <!--Card Datos-->
-            <StackPanel Grid.Row="3" Grid.Column="0" Margin="30">
+            <!--Card Datos FECHA-->
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="30">
                 <!--Banner Titulo-->
                 <StackPanel Panel.ZIndex="1">
                     <Border Background="{StaticResource primaryColor1}" 
@@ -294,24 +336,19 @@
                     </WrapPanel>
                 </Border>
             </StackPanel>
-            <!-- 2) Formulario de HORA EXTRA -->
-            <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,30,0,0">
-                <TextBlock Text="Justificación de Horas Extras"
-                           FontSize="20"
-                           FontWeight="Bold"
-                           Foreground="{StaticResource titleColorA}"
-                           HorizontalAlignment="Center"
-                           Margin="0,20,0,10"/>
-                <TextBlock Text="Selecciona la cantidad de horas extra y el multiplicador"
-                           FontSize="15"
-                           FontWeight="Light"
-                           Foreground="{StaticResource titleColor3}"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,0"/>
-            </StackPanel>
-            <!--Card Datos-->
-            <StackPanel Grid.Row="3" Grid.Column="1" Margin="30">
-                <!--Banner Titulo-->
+
+            <TextBlock Grid.Row="2"
+                       FontSize="15"
+                       FontWeight="Light"
+                       Foreground="{StaticResource titleColor3}"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,10">
+                    Si la persona requiere Horas Extra (Opcional)                
+            </TextBlock>
+
+            <!-- 2) HORA EXTRA -->
+            <StackPanel Grid.Row="3" Grid.Column="1">
+                <!--Banner Titulo 2-->
                 <StackPanel Panel.ZIndex="1">
                     <Border Background="{StaticResource primaryColor1}" 
                             CornerRadius="10" 
@@ -350,7 +387,7 @@
                                           VerticalContentAlignment="Center"/>
                             </Border>
                         </StackPanel>
-                        <!-- Multiplocador -->
+                        <!-- Multiplicador -->
                         <StackPanel Orientation="Vertical" MinWidth="120" Margin="0,0,10,0">
                             <TextBlock Text="Multiplicador de Horas Extra" FontSize="15" Foreground="{StaticResource titleColorA}"/>
                             <Border Background="#F5F5F5"
@@ -382,18 +419,6 @@
                     Width="250"
                     Click="BtnGuardarInasistencia_Click">
                 <TextBlock Text="Guardar Justificacion" FontSize="20" Foreground="White"/>
-            </Button>
-
-
-            <!-- 3) Botón Guardar -->
-            <Button Grid.Row="4" Grid.Column="1"
-                    Style="{StaticResource LargeRoundButton}"
-                    Background="{StaticResource buttonColor2}"
-                    x:Name="btnJustHrx"
-                    Margin="20"
-                    Width="250"
-                    Click="BtnGuardarHoraExt_Click">
-                <TextBlock Text="Guardar Hora Extra" FontSize="20" Foreground="White"/>
             </Button>
         </Grid>
 
