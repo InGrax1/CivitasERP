@@ -102,9 +102,7 @@ HorasYExtras AS (
     SELECT 
         admins_id_asistencia AS id_admins,
         COUNT(DISTINCT CAST(asis_dia AS DATE)) AS dias_laborados,
-        -- tomar solo una hora extra pagada (el máximo valor registrado de paga_horaXT)
-        CASE WHEN SUM(paga_horaXT) > 0 THEN MAX(paga_horaXT) ELSE 0 END AS paga_horaXT_total,
-        -- seguir sumando todas las horas extras normalmente
+        SUM(paga_horaXT) AS paga_horaXT_total,  -- 🔁 suma total de paga_horaXT
         SUM(DATEDIFF(MINUTE, 0, asis_hora_extra)) / 60.0 AS horas_extra_total
     FROM AsistenciaFiltrada
     GROUP BY admins_id_asistencia
@@ -114,7 +112,7 @@ SELECT
     CONCAT(ad.admins_nombre, ' ', ad.admins_apellidop, ' ', ad.admins_apellidom) AS Nombre,
     ad.admin_categoria AS Categoria,
     ISNULL(salario.salario_diario_fijo * 6, 0) AS SueldoSemanal,  -- fijo para 6 días
-    ISNULL(extra.paga_horaXT_total, 0) AS PagaHoraExtra,
+    ISNULL(extra.paga_horaXT_total, 0) AS PagaHoraExtra,  -- suma directa
     ISNULL(extra.dias_laborados, 0) AS Dias,
     ISNULL(extra.horas_extra_total, 0) AS HorasExtra
 FROM admins a
@@ -125,6 +123,7 @@ WHERE a.id_admins = @idAdmin
 GROUP BY 
     a.id_admins, ad.admins_nombre, ad.admins_apellidop, ad.admins_apellidom, ad.admin_categoria,
     salario.salario_diario_fijo, extra.paga_horaXT_total, extra.dias_laborados, extra.horas_extra_total;
+
 
                 "
 
@@ -167,7 +166,7 @@ HorasYExtras AS (
     SELECT 
         id_empleado,
         COUNT(DISTINCT CAST(asis_dia AS DATE)) AS dias_laborados,
-        CASE WHEN SUM(paga_horaXT) > 0 THEN MAX(paga_horaXT) ELSE 0 END AS paga_horaXT_total,
+        SUM(paga_horaXT) AS paga_horaXT_total,  -- 🔁 suma total de paga_horaXT
         SUM(DATEDIFF(MINUTE, 0, asis_hora_extra)) / 60.0 AS horas_extra_total
     FROM AsistenciaFiltrada
     GROUP BY id_empleado
@@ -177,7 +176,7 @@ SELECT
     CONCAT(e.emp_nombre, ' ', e.emp_apellidop, ' ', e.emp_apellidom) AS Nombre,
     e.emp_puesto AS Categoria,
     ISNULL(salario.salario_diario_fijo * 6, 0) AS SueldoSemanal,
-    ISNULL(extra.paga_horaXT_total, 0) AS PagaHoraExtra,
+    ISNULL(extra.paga_horaXT_total, 0) AS PagaHoraExtra,  -- suma directa
     ISNULL(extra.dias_laborados, 0) AS Dias,
     ISNULL(extra.horas_extra_total, 0) AS HorasExtra
 FROM empleado e
@@ -187,8 +186,6 @@ WHERE e.id_admins = @idAdmin AND e.id_obra = @idObra
 GROUP BY 
     e.id_empleado, e.emp_nombre, e.emp_apellidop, e.emp_apellidom, e.emp_puesto,
     salario.salario_diario_fijo, extra.paga_horaXT_total, extra.dias_laborados, extra.horas_extra_total;
-
-
 
 
 
@@ -214,7 +211,7 @@ GROUP BY
                         var horasExtra = rdr.GetDecimal(6);
                         var pagaHoraExtra = rdr.GetDecimal(4) ;
                         var sueldoTrabajado = sueldoJornada * dias;
-                        var sueldoTotal = sueldoTrabajado + (pagaHoraExtra * horasExtra);
+                        var sueldoTotal = sueldoTrabajado + pagaHoraExtra;
 
                         empleados.Add(new Empleado
                         {

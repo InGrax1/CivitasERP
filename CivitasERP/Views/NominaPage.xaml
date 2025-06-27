@@ -300,7 +300,7 @@
                     <DataGridTextColumn Header="Sueldo Jornada" Binding="{Binding SueldoJornada}" />
                     <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal}" />
                     <DataGridTextColumn Header="Horas Extra" Binding="{Binding HorasExtra}" />
-                    <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding SuelExtra}" />
+                    <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding PHoraExtra}"  />
                     <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado}" />
                     <DataGridTextColumn Header="Sueldo Total" Binding="{Binding SuelTotal}" />
 
