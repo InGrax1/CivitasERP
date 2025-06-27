@@ -618,7 +618,7 @@ namespace CivitasERP.AdminViews
 
                 // Obtener multiplicador desde ComboBox
                 decimal multiplicador = 1; // Valor por defecto
-                if (CbxMultiplicador.SelectedItem is ComboBoxItem selectedItem) // <--- CAMBIO
+                if (CbxMultiplicador.SelectedItem is ComboBoxItem selectedItem)
                 {
                     if (!decimal.TryParse(selectedItem.Content.ToString(), out multiplicador))
                     {
@@ -659,18 +659,19 @@ namespace CivitasERP.AdminViews
 
                         decimal sueldoBase = Convert.ToDecimal(sueldoObj);
                         decimal salarioDelDia = sueldoBase / 6;
-                        decimal pagaHoraExtra = (salarioDelDia / 8) * multiplicador; // <--- CAMBIO
+                        decimal pagaHoraExtra = (salarioDelDia / 8) * multiplicador;
 
                         cmd.Parameters.Clear();
 
                         cmd.CommandText = @"
-                    INSERT INTO asistencia (asis_dia, asis_hora_extra, id_empleado, paga_horaXT, salariofecha)
-                    VALUES (@fecha, @horasExtra, @idEmpleado, @pagaExtra, @salario)";
+                INSERT INTO asistencia (asis_dia, asis_hora_extra, id_empleado, paga_horaXT, salariofecha, multiplicador_hora)
+                VALUES (@fecha, @horasExtra, @idEmpleado, @pagaExtra, @salario, @multiplicadorHora)";
                         cmd.Parameters.AddWithValue("@fecha", fechaSeleccionada.Date);
                         cmd.Parameters.AddWithValue("@horasExtra", horasExtra);
                         cmd.Parameters.AddWithValue("@idEmpleado", idEmpleado);
                         cmd.Parameters.AddWithValue("@pagaExtra", pagaHoraExtra);
                         cmd.Parameters.AddWithValue("@salario", salarioDelDia);
+                        cmd.Parameters.AddWithValue("@multiplicadorHora", multiplicador);
                     }
                     else if (Admin2ComboBox.SelectedItem != null)
                     {
@@ -694,18 +695,19 @@ namespace CivitasERP.AdminViews
 
                         decimal sueldoBase = Convert.ToDecimal(sueldoObj);
                         decimal salarioDelDia = sueldoBase / 6;
-                        decimal pagaHoraExtra = (salarioDelDia / 8) * multiplicador; // <--- CAMBIO
+                        decimal pagaHoraExtra = (salarioDelDia / 8) * multiplicador;
 
                         cmd.Parameters.Clear();
 
                         cmd.CommandText = @"
-                    INSERT INTO asistencia (asis_dia, asis_hora_extra, admins_id_asistencia, paga_horaXT, salariofecha)
-                    VALUES (@fecha, @horasExtra, @idAdmin, @pagaExtra, @salario)";
+                INSERT INTO asistencia (asis_dia, asis_hora_extra, admins_id_asistencia, paga_horaXT, salariofecha, multiplicador_hora)
+                VALUES (@fecha, @horasExtra, @idAdmin, @pagaExtra, @salario, @multiplicadorHora)";
                         cmd.Parameters.AddWithValue("@fecha", fechaSeleccionada.Date);
                         cmd.Parameters.AddWithValue("@horasExtra", horasExtra);
                         cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
                         cmd.Parameters.AddWithValue("@pagaExtra", pagaHoraExtra);
                         cmd.Parameters.AddWithValue("@salario", salarioDelDia);
+                        cmd.Parameters.AddWithValue("@multiplicadorHora", multiplicador);
                     }
                     else
                     {
@@ -730,6 +732,7 @@ namespace CivitasERP.AdminViews
                 MessageBox.Show("Error al guardar la asistencia: " + ex.Message);
             }
         }
+
 
         private void BtnGuardarInasistencia_Click(object sender, RoutedEventArgs e)
         {

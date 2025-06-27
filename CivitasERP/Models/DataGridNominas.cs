@@ -102,7 +102,9 @@ HorasYExtras AS (
     SELECT 
         admins_id_asistencia AS id_admins,
         COUNT(DISTINCT CAST(asis_dia AS DATE)) AS dias_laborados,
-        SUM(paga_horaXT) AS paga_horaXT_total,
+        -- tomar solo una hora extra pagada (el máximo valor registrado de paga_horaXT)
+        CASE WHEN SUM(paga_horaXT) > 0 THEN MAX(paga_horaXT) ELSE 0 END AS paga_horaXT_total,
+        -- seguir sumando todas las horas extras normalmente
         SUM(DATEDIFF(MINUTE, 0, asis_hora_extra)) / 60.0 AS horas_extra_total
     FROM AsistenciaFiltrada
     GROUP BY admins_id_asistencia
@@ -165,7 +167,7 @@ HorasYExtras AS (
     SELECT 
         id_empleado,
         COUNT(DISTINCT CAST(asis_dia AS DATE)) AS dias_laborados,
-        SUM(paga_horaXT) AS paga_horaXT_total,
+        CASE WHEN SUM(paga_horaXT) > 0 THEN MAX(paga_horaXT) ELSE 0 END AS paga_horaXT_total,
         SUM(DATEDIFF(MINUTE, 0, asis_hora_extra)) / 60.0 AS horas_extra_total
     FROM AsistenciaFiltrada
     GROUP BY id_empleado
@@ -174,7 +176,7 @@ SELECT
     e.id_empleado AS OwnerId,
     CONCAT(e.emp_nombre, ' ', e.emp_apellidop, ' ', e.emp_apellidom) AS Nombre,
     e.emp_puesto AS Categoria,
-    ISNULL(salario.salario_diario_fijo * 6, 0) AS SueldoSemanal, -- fijo, sin depender de días
+    ISNULL(salario.salario_diario_fijo * 6, 0) AS SueldoSemanal,
     ISNULL(extra.paga_horaXT_total, 0) AS PagaHoraExtra,
     ISNULL(extra.dias_laborados, 0) AS Dias,
     ISNULL(extra.horas_extra_total, 0) AS HorasExtra
@@ -210,9 +212,9 @@ GROUP BY
                         var dias = rdr.GetInt32(5);
                         var sueldoJornada = sueldoSemanal / divisorDias;
                         var horasExtra = rdr.GetDecimal(6);
-                        var pagaHoraExtra = rdr.GetDecimal(4);
+                        var pagaHoraExtra = rdr.GetDecimal(4) ;
                         var sueldoTrabajado = sueldoJornada * dias;
-                        var sueldoTotal = sueldoTrabajado + pagaHoraExtra;
+                        var sueldoTotal = sueldoTrabajado + (pagaHoraExtra * horasExtra);
 
                         empleados.Add(new Empleado
                         {
@@ -224,7 +226,7 @@ GROUP BY
                             SueldoSemanal = sueldoSemanal,
                             HorasExtra = horasExtra,
                             PHoraExtra = pagaHoraExtra,
-                            SuelExtra = pagaHoraExtra,
+                            SuelExtra = pagaHoraExtra *horasExtra,
                             SuelTrabajado = sueldoTrabajado,
                             SuelTotal = sueldoTotal,
                             DiasTrabajadosDetalle = new List<DayAttendance>()
