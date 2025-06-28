@@ -239,9 +239,8 @@ namespace CivitasERP.Views
                 CargarEmpleados();
             }
 
-            //Carga los totales del footer
+            //carga suma footer
             CargarYSumar();
-
         }
 
         private int? ObtenerID_obra(int? idAdminObra, string obraNombre)
@@ -331,7 +330,7 @@ namespace CivitasERP.Views
             }
 
             CargarEmpleados();
-            //Carga los totales del footer
+            //carga suma footer
             CargarYSumar();
         }
 

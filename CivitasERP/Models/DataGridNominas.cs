@@ -44,9 +44,7 @@ namespace CivitasERP.Models
         }
 
         public List<Empleado> ObtenerEmpleados(int? idAdminm, string usuariom)
-        {
-            
-
+        {       
             var empleados = new List<Empleado>();
             var fechaInicio = Variables.FechaInicio;
             var fechaFin = Variables.FechaFin;

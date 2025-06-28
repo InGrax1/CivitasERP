@@ -278,6 +278,7 @@ namespace CivitasERP.AdminViews
                 cargar_empleados(admins.ObtenerIdPorUsuario(admin), id_obra);
             }
 
+
         }
         private void ObraComboBox_DropDownOpened(object sender, EventArgs e)
         {

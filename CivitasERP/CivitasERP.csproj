@@ -10,7 +10,10 @@
 	<!--  <UseWindowsForms>true</UseWindowsForms>     -->
 	    <ApplicationIcon>Images\Logo-CivitasERP-B ico.ico</ApplicationIcon>
         <WinFXResource>Images\Logo-CivitasERP-B ico.ico</WinFXResource>
+
 	  <UserSecretsId>CivitasERP-Wpf-Dev</UserSecretsId>
+	  <UseAppHost>true</UseAppHost>
+
 
   </PropertyGroup>
 

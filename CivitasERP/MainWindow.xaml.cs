@@ -41,10 +41,7 @@ namespace CivitasERP
                 // 1) Obtenemos la cadena de conexión
                 var cs = new Conexion().ObtenerCadenaConexion();
 
-                // 2) Mostramos la cadena para verificar que venga de appsettings.Development.json
-                MessageBox.Show(cs, "Cadena leída");
-
-                // 3) Probamos abrir la conexión
+                // 2) Probamos abrir la conexión
                 using var conn = new SqlConnection(cs);
                 conn.Open();
             }
