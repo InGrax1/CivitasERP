@@ -27,6 +27,8 @@ namespace CivitasERP.Models
             public TimeSpan? SalidaV { get; set; }
             public TimeSpan? EntradaS { get; set; }
             public TimeSpan? SalidaS { get; set; }
+            public TimeSpan? EntradaD { get; set; }
+            public TimeSpan? SalidaD { get; set; }
 
             public int DiasTrabajados { get; set; }
             public TimeSpan? HorasTotales { get; set; }
@@ -84,6 +86,8 @@ SELECT
   MAX(CASE WHEN DATEPART(WEEKDAY, A.asis_dia)=5 THEN A.asis_salida END) AS SalidaV,
   MAX(CASE WHEN DATEPART(WEEKDAY, A.asis_dia)=6 THEN A.asis_hora   END) AS EntradaS,
   MAX(CASE WHEN DATEPART(WEEKDAY, A.asis_dia)=6 THEN A.asis_salida END) AS SalidaS,
+  MAX(CASE WHEN DATEPART(WEEKDAY, A.asis_dia)=7 THEN A.asis_hora   END) AS EntradaD,
+  MAX(CASE WHEN DATEPART(WEEKDAY, A.asis_dia)=7 THEN A.asis_salida END) AS SalidaD,
   COUNT(DISTINCT A.asis_dia) AS DiasTrabajados,
   SUM(DATEDIFF(MINUTE, A.asis_hora, A.asis_salida)) AS MinutosTrabajados
 FROM Usuarios u

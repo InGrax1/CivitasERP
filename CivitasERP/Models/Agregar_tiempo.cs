@@ -10,8 +10,6 @@ namespace CivitasERP.Models
 {
     internal class Agregar_tiempo
     {
-
-
         public (bool exito, DateTime fechaInicio, DateTime fechaFin) ObtenerFechasDesdeGlobal()
         {
             string texto = Variables.Fecha;
@@ -52,38 +50,39 @@ namespace CivitasERP.Models
                 .ToList();
         }
 
+
+        // Obtiene las semanas del mes de lunes a domingo indepindependientemente de que parte de esa semana caiga en el mes anterior o siguiente
         public List<string> GetSemanasDelMes(int anio, int mes)
         {
-            List<string> semanas = new List<string>();
+            var semanas = new List<string>();
+            // Primer y último día del mes
             DateTime primerDia = new DateTime(anio, mes, 1);
             DateTime ultimoDia = primerDia.AddMonths(1).AddDays(-1);
-            DateTime actual = primerDia;
 
-            while (actual <= ultimoDia)
+            // 1) Hallamos el lunes de la primera “semana” que toque este mes
+            //    DayOfWeek.Monday == 1, Sunday == 0, así que hacemos:
+            int diasParaLunes = ((int)primerDia.DayOfWeek + 6) % 7;
+            DateTime semanaInicio = primerDia.AddDays(-diasParaLunes);
+
+            while (semanaInicio <= ultimoDia)
             {
-                // Alinear al lunes anterior (o el mismo día si es lunes)
-                DateTime inicioSemana = actual.DayOfWeek == DayOfWeek.Monday
-                    ? actual
-                    : actual.AddDays(-(int)actual.DayOfWeek + (actual.DayOfWeek == DayOfWeek.Sunday ? -6 : 1));
+                DateTime semanaFin = semanaInicio.AddDays(6);
 
-                DateTime finSemana = inicioSemana.AddDays(6);
-                if (finSemana > ultimoDia)
-                    finSemana = ultimoDia;
-
-                if (finSemana >= primerDia)
+                // 3) Comprobamos que ese bloque toque el mes
+                if (semanaFin >= primerDia && semanaInicio <= ultimoDia)
                 {
-                    semanas.Add($"{inicioSemana:dd/MM/yyyy} - {finSemana:dd/MM/yyyy}");
+                    // Ajustamos los extremos al mes (opcional)
+                    DateTime inicioVisible = semanaInicio < primerDia ? primerDia : semanaInicio;
+                    DateTime finVisible = semanaFin > ultimoDia ? ultimoDia : semanaFin;
+
+                    semanas.Add($"{inicioVisible:dd/MM/yyyy} – {finVisible:dd/MM/yyyy}");
                 }
 
-                actual = finSemana.AddDays(1);
+                // Avanzamos al siguiente bloque de lunes
+                semanaInicio = semanaInicio.AddDays(7);
             }
 
-            return semanas.Distinct().ToList();
+            return semanas;
         }
-
-
-
-
-
     }
 }

@@ -44,7 +44,7 @@
                 <!--OPCION ADMINISTRADOR ADMINS-->
                 <TextBlock Grid.Row="1" Grid.Column="0"
                            x:Name="AdminLabel"
-                           Text="Administrador" FontSize="16"
+                           Text="Superintendente" FontSize="16"
                            VerticalAlignment="Center"
                            Margin="0,0,10,0"
                            Foreground="{StaticResource titleColorB}"/>
@@ -201,7 +201,7 @@
                             FontWeight="Bold"
                             Click="btnNuevoEmpleado_Click" 
                             HorizontalAlignment="Stretch" 
-                            Width="150"
+                            Width="170"
                             HorizontalContentAlignment="Center">
                         + Agregar Nuevo Personal
                     </Button>
