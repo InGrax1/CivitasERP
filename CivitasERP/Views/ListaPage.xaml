@@ -256,7 +256,7 @@
                     <DataGridTextColumn Header="#" Binding="{Binding ID}" Width="50"/>
                     <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" MinWidth="100" MaxWidth="150"/>
                     <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" MinWidth="100" MaxWidth="130"/>
-                    
+
                     <!-- LUNES: agrupa Entrada y Salida -->
                     <DataGridTemplateColumn MinWidth="120" Width="*">
                         <DataGridTemplateColumn.HeaderTemplate>

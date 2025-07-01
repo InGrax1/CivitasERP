@@ -30,7 +30,7 @@ namespace CivitasERP.Models
             public TimeSpan? EntradaD { get; set; }
             public TimeSpan? SalidaD { get; set; }
 
-            public int DiasTrabajados { get; set; }
+            public int? DiasTrabajados { get; set; }
             public TimeSpan? HorasTotales { get; set; }
 
         }
@@ -43,7 +43,7 @@ namespace CivitasERP.Models
 
         public async Task<List<Empleado_Asistencia>> ObtenerEmpleadosAsync(
             int idAdmin, int idObra, DateTime fechaInicio, DateTime fechaFin)
-        {
+        { MessageBox.Show( "IDADMIN: "+ idAdmin +"OBRA:" + idObra + "FECHA INICIO:"+ fechaInicio + "FECHA FIN: "+ fechaFin);
             var lista = new List<Empleado_Asistencia>();
             var sql = @"
 SET DATEFIRST 1;
@@ -124,8 +124,10 @@ GROUP BY u.ID, u.Nombre, u.Categoria;
                     SalidaV = rdr.IsDBNull(12) ? null : rdr.GetTimeSpan(12),
                     EntradaS = rdr.IsDBNull(13) ? null : rdr.GetTimeSpan(13),
                     SalidaS = rdr.IsDBNull(14) ? null : rdr.GetTimeSpan(14),
-                    DiasTrabajados = rdr.IsDBNull(15) ? 0 : rdr.GetInt32(15),
-                    HorasTotales = rdr.IsDBNull(16) ? null : TimeSpan.FromMinutes(rdr.GetInt32(16))
+                    EntradaD = rdr.IsDBNull(15) ? null : rdr.GetTimeSpan(15),
+                    SalidaD = rdr.IsDBNull(16) ? null : rdr.GetTimeSpan(16),
+                    DiasTrabajados = rdr.IsDBNull(17) ? 0 : rdr.GetInt32(17),
+                    HorasTotales = rdr.IsDBNull(18) ? null : TimeSpan.FromMinutes(rdr.GetInt32(18))
                 };
                 lista.Add(empleado);
             }

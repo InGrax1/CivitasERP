@@ -128,7 +128,7 @@ namespace CivitasERP.Views
             DateTime hoy = DateTime.Now;
             int diferenciaConLunes = ((int)hoy.DayOfWeek + 6) % 7;
             DateTime lunes = hoy.AddDays(-diferenciaConLunes);
-            DateTime domingo = lunes.AddDays(6);
+            DateTime domingo = lunes.AddDays(7);
 
             Variables.FechaInicio = lunes.ToString("yyyy-MM-dd");
             Variables.FechaFin = domingo.ToString("yyyy-MM-dd");
