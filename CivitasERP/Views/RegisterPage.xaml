@@ -206,7 +206,7 @@
                         BorderThickness="1"
                         BorderBrush="{StaticResource BoxColor1}">
                         <ComboBox x:Name="CmboCategoria" BorderThickness="0" Background="Transparent" Foreground="{StaticResource titleColorA}">
-                            <ComboBoxItem Content="Administrador" />
+                            <ComboBoxItem Content="Superintendente" />
                             <ComboBoxItem Content="Director" />
                         </ComboBox>
                     </Border>

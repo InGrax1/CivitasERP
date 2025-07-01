@@ -44,7 +44,7 @@
                 <!--OPCION ADMINISTRADOR ADMINS-->
                 <TextBlock Grid.Row="1" Grid.Column="0"
                            x:Name="AdminLabel"
-                           Text="Administrador" FontSize="16"
+                           Text="Superintendente" FontSize="16"
                            VerticalAlignment="Center"
                            Margin="0,0,10,0"
                            Foreground="{StaticResource titleColorB}"/>
@@ -184,18 +184,22 @@
                 <Button Grid.Row="3"
                         Grid.Column="4"
                         HorizontalAlignment="Center"
-                        Margin="0,20,0,0"
                         Background="Transparent"
                         BorderThickness="0"
                         Click="btnHuellaR_Click">
                     <StackPanel>
+                        <TextBlock Text= "Pase de Lista" 
+                                   Foreground="#5F5FFF"
+                                   FontSize="13"
+                                   Margin="0,0,0,10"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"/>
                         <Image Source="/Images/huella-dactilar.png"
                                Width="70"
                                Height="70"
                                HorizontalAlignment="Stretch"/>
                         <TextBlock x:Name="lblEstadoHuella"
                                    Text= "{Binding EstadoHuella}"
-                                   
                                    Foreground="#5F5FFF"
                                    FontSize="13"
                                    FontWeight="Bold"
@@ -206,15 +210,13 @@
                 <TextBlock Grid.Row="3" Grid.Column="0"
                            Text="Ubicación"
                            FontSize="16"
-                           VerticalAlignment="Center"
-                           Margin="0,20,10,0"/>
+                           VerticalAlignment="Center"/>
                 <Border Grid.Row="3" Grid.Column="1"
                         Background="White"
                         CornerRadius="10"
                         BorderBrush="#6666FF"
                         BorderThickness="1"
-                        Height="30"
-                        Margin="0,20,0,0">
+                        Height="30">
                     <TextBlock x:Name="UbicacionLabel"
                            Text="ubicacion..."
                            Background="Transparent"
@@ -229,6 +231,8 @@
                 Background="#E5E5E5"
                 SnapsToDevicePixels="True">
             <DataGrid x:Name="dataGridAsistencia"
+                      ColumnWidth="*"
+                      MinColumnWidth="80"
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
@@ -239,31 +243,265 @@
                       HorizontalContentAlignment="Center"
                       FontSize="15"
                       EnableRowVirtualization="True"
-EnableColumnVirtualization="True"
-VirtualizingStackPanel.IsVirtualizing="True"
-VirtualizingStackPanel.VirtualizationMode="Recycling"
-ScrollViewer.IsDeferredScrollingEnabled="True"
+                      EnableColumnVirtualization="True"
+                      VirtualizingStackPanel.IsVirtualizing="True"
+                      VirtualizingStackPanel.VirtualizationMode="Recycling"
+                      ScrollViewer.IsDeferredScrollingEnabled="True"
                       AlternationCount="2">
                 <!-- Aplica tu estilo -->
                 <DataGrid.ColumnHeaderStyle>
                     <StaticResource ResourceKey="ColumnHeaderRound"/>
                 </DataGrid.ColumnHeaderStyle>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="#" Binding="{Binding ID}" />
-                    <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
-                    <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" />
-                    <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaL}" />
-                    <DataGridTextColumn Header="Salida" Binding="{Binding SalidaL}" />
-                    <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaM}" />
-                    <DataGridTextColumn Header="Salida" Binding="{Binding SalidaM}" />
-                    <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaMI}" />
-                    <DataGridTextColumn Header="Salida" Binding="{Binding SalidaMI}" />
-                    <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaJ}" />
-                    <DataGridTextColumn Header="Salida" Binding="{Binding SalidaJ}" />
-                    <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaV}" />
-                    <DataGridTextColumn Header="Salida" Binding="{Binding SalidaV}" />
-                    <DataGridTextColumn Header="Entrada" Binding="{Binding EntradaS}" />
-                    <DataGridTextColumn Header="Salida" Binding="{Binding SalidaS}" />
+                <DataGrid.Columns >
+                    <DataGridTextColumn Header="#" Binding="{Binding ID}" Width="50"/>
+                    <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" MinWidth="100" MaxWidth="150"/>
+                    <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" MinWidth="100" MaxWidth="130"/>
+                    
+                    <!-- LUNES: agrupa Entrada y Salida -->
+                    <DataGridTemplateColumn MinWidth="120" Width="*">
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="Lunes" FontWeight="Bold" HorizontalAlignment="Center" FontSize="14"/>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Entrada" HorizontalAlignment="Center" FontSize="12" Margin="5" />
+                                        <TextBlock Grid.Column="1" Text="Salida"  HorizontalAlignment="Center" FontSize="12" Margin="5"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding EntradaL}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding SalidaL}" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- MARTES: agrupa Entrada y Salida -->
+                    <DataGridTemplateColumn MinWidth="120" Width="*">
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="Martes" FontWeight="Bold" HorizontalAlignment="Center" FontSize="14"/>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Entrada" HorizontalAlignment="Center" FontSize="12" Margin="5"/>
+                                        <TextBlock Grid.Column="1" Text="Salida" HorizontalAlignment="Center" FontSize="12" Margin="5"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding EntradaM}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding SalidaM}" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- MIERCOLES: agrupa Entrada y Salida -->
+                    <DataGridTemplateColumn MinWidth="120" Width="*">
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="Miercoles" FontWeight="Bold" HorizontalAlignment="Center" FontSize="14"/>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Entrada" Margin="5" HorizontalAlignment="Center" FontSize="12"/>
+                                        <TextBlock Grid.Column="1" Text="Salida" Margin="5" HorizontalAlignment="Center" FontSize="12"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding EntradaMI}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding SalidaMI}" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- JUEVES: agrupa Entrada y Salida -->
+                    <DataGridTemplateColumn MinWidth="120" Width="*">
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="Jueves" FontWeight="Bold" HorizontalAlignment="Center" FontSize="14"/>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Entrada" Margin="5" HorizontalAlignment="Center" FontSize="12"/>
+                                        <TextBlock Grid.Column="1" Text="Salida" Margin="5" HorizontalAlignment="Center" FontSize="12"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding EntradaJ}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding SalidaJ}" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- VIERNES: agrupa Entrada y Salida -->
+                    <DataGridTemplateColumn MinWidth="120" Width="*">
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="Viernes" FontWeight="Bold" HorizontalAlignment="Center" FontSize="14"/>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Entrada" Margin="5" HorizontalAlignment="Center" FontSize="12"/>
+                                        <TextBlock Grid.Column="1" Text="Salida" Margin="5" HorizontalAlignment="Center" FontSize="12"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding EntradaV}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding SalidaV}" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- SABADO: agrupa Entrada y Salida -->
+                    <DataGridTemplateColumn MinWidth="120" Width="*">
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="Sabado" FontWeight="Bold" HorizontalAlignment="Center" FontSize="14"/>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Entrada" Margin="5" HorizontalAlignment="Center" FontSize="12"/>
+                                        <TextBlock Grid.Column="1" Text="Salida" Margin="5" HorizontalAlignment="Center" FontSize="12"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding EntradaS}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding SalidaS}" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- DOMINGO: agrupa Entrada y Salida -->
+                    <DataGridTemplateColumn MinWidth="120" Width="*">
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Text="Domingo" FontWeight="Bold" HorizontalAlignment="Center" FontSize="14"/>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Entrada" Margin="5" HorizontalAlignment="Center" FontSize="12"/>
+                                        <TextBlock Grid.Column="1" Text="Salida" Margin="5" HorizontalAlignment="Center" FontSize="12"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding EntradaD}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding SalidaD}" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
                 </DataGrid.Columns>
             </DataGrid>
         </Border>

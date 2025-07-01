@@ -144,7 +144,7 @@ namespace CivitasERP.Views
 
             try
             {
-                if (categoria == "Administrador")
+                if (categoria == "Superintendente")
                 {
                     Insert_admin inser = new Insert_admin
                     {
@@ -155,7 +155,7 @@ namespace CivitasERP.Views
                         Usuario = usuario,
                         Contra = contraseña,
                         Semanal = semanal,
-                        Categoria = "Administrador",
+                        Categoria = "Superintendente",
                         Huella = _templateHuella
                     };
 

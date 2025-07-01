@@ -54,7 +54,6 @@ namespace BiometriaDP.Services
 
         public void StartVerification()
         {
-            MessageBox.Show("PRUEBA 1");
             try
             {
                 _enrollmentMode = false;

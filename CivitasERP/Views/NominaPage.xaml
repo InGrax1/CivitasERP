@@ -251,7 +251,7 @@
                       ScrollViewer.IsDeferredScrollingEnabled="True"
                       FontSize="15"
                       AlternationCount="2">
-                <!-- Aplica tu estilo -->
+                <!-- estilo -->
                 <DataGrid.ColumnHeaderStyle>
                     <StaticResource ResourceKey="ColumnHeaderRound"/>
                 </DataGrid.ColumnHeaderStyle>
@@ -259,8 +259,8 @@
                     <DataGridTextColumn Header="#" Binding="{Binding ID}" />
                     <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
                     <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" />
+
                     <DataGridTemplateColumn Header="Días Trabajados">
-                        
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ItemsControl ItemsSource="{Binding DiasTrabajadosDetalle}">
@@ -295,16 +295,16 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    
-                    <DataGridTextColumn Header="Días" Binding="{Binding Dias}"  />
+
+                    <DataGridTextColumn Header="Días" Binding="{Binding Dias}" />
                     <DataGridTextColumn Header="Sueldo Jornada" Binding="{Binding SueldoJornada}" />
-                    <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal}" />
-                    <DataGridTextColumn Header="Horas Extra" Binding="{Binding HorasExtra}" />
-                    <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding PHoraExtra}"  />
-                    <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado}" />
+                    <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal}"  />
+                    <DataGridTextColumn Header="Horas Extra" Binding="{Binding HorasExtra}"  />
+                    <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding PHoraExtra}" />
+                    <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado}"   />
                     <DataGridTextColumn Header="Sueldo Total" Binding="{Binding SuelTotal}" />
 
-                    <DataGridTemplateColumn Header="Eliminar" Width="100">
+                    <DataGridTemplateColumn Header="Eliminar">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Border Background="{StaticResource buttonExit}" CornerRadius="5" Width="35" Height="35">
