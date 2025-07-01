@@ -297,12 +297,12 @@
                     </DataGridTemplateColumn>
 
                     <DataGridTextColumn Header="Días" Binding="{Binding Dias}" />
-                    <DataGridTextColumn Header="Sueldo Jornada" Binding="{Binding SueldoJornada}" />
-                    <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal}"  />
-                    <DataGridTextColumn Header="Horas Extra" Binding="{Binding HorasExtra}"  />
-                    <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding PHoraExtra}" />
-                    <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado}"   />
-                    <DataGridTextColumn Header="Sueldo Total" Binding="{Binding SuelTotal}" />
+                    <DataGridTextColumn Header="Sueldo Jornada" Binding="{Binding SueldoJornada, StringFormat={}{0:F2}}" />
+                    <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal, StringFormat={}{0:F2}}"  />
+                    <DataGridTextColumn Header="Horas Extra" Binding="{Binding HorasExtra, StringFormat={}{0:N0}}"  />
+                    <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding PHoraExtra, StringFormat={}{0:F2}}" />
+                    <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado, StringFormat={}{0:F2}}"   />
+                    <DataGridTextColumn Header="Sueldo Total" Binding="{Binding SuelTotal, StringFormat={}{0:F2}}" />
 
                     <DataGridTemplateColumn Header="Eliminar">
                         <DataGridTemplateColumn.CellTemplate>
