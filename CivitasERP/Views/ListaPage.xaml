@@ -285,8 +285,8 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding EntradaL, StringFormat={}{0:HH:mm}}" HorizontalAlignment="Center"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding SalidaL, StringFormat={}{0:HH:mm}}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding EntradaL, StringFormat={}{0:hh\\:mm}}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding SalidaL, StringFormat={}{0:hh\\:mm}}" HorizontalAlignment="Center"/>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -320,8 +320,8 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding EntradaM, StringFormat={}{0:HH:mm}}" HorizontalAlignment="Center"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding SalidaM, StringFormat={}{0:HH:mm}}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding EntradaM, StringFormat={}{0:hh\\:mm}}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding SalidaM, StringFormat={}{0:hh\\:mm}}" HorizontalAlignment="Center"/>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -355,8 +355,8 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding EntradaMI, StringFormat={}{0:HH:mm}}" HorizontalAlignment="Center"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding SalidaMI, StringFormat={}{0:HH:mm}}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding EntradaMI, StringFormat={}{0:hh\\:mm}}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding SalidaMI, StringFormat={}{0:hh\\:mm}}" HorizontalAlignment="Center"/>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -390,8 +390,8 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding EntradaJ, StringFormat={}{0:HH:mm}}" HorizontalAlignment="Center"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding SalidaJ, StringFormat={}{0:HH:mm}}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding EntradaJ, StringFormat={}{0:hh\\:mm}}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding SalidaJ, StringFormat={}{0:hh\\:mm}}" HorizontalAlignment="Center"/>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -425,8 +425,8 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding EntradaV, StringFormat={}{0:HH:mm}}" HorizontalAlignment="Center"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding SalidaV, StringFormat={}{0:HH:mm}}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding EntradaV, StringFormat={}{0:hh\\:mm}}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding SalidaV, StringFormat={}{0:hh\\:mm}}" HorizontalAlignment="Center"/>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -460,8 +460,8 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding EntradaS, StringFormat={}{0:HH:mm}}" HorizontalAlignment="Center"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding SalidaS, StringFormat={}{0:HH:mm}}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding EntradaS, StringFormat={}{0:hh\\:mm}}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding SalidaS, StringFormat={}{0:hh\\:mm}}" HorizontalAlignment="Center"/>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -495,8 +495,8 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding EntradaD, StringFormat={}{0:HH:mm}}" HorizontalAlignment="Center"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding SalidaD, StringFormat={}{0:HH:mm}}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="0" Text="{Binding EntradaD, StringFormat={}{0:hh\\:mm}}" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding SalidaD, StringFormat={}{0:hh\\:mm}}" HorizontalAlignment="Center"/>
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
