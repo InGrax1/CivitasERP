@@ -183,6 +183,7 @@
                 <!-- Botón Huella -->
                 <Button Grid.Row="3"
                         Grid.Column="4"
+                        x:Name="btnHuellaLista"
                         HorizontalAlignment="Center"
                         Background="Transparent"
                         BorderThickness="0"
@@ -210,13 +211,15 @@
                 <TextBlock Grid.Row="3" Grid.Column="0"
                            Text="Ubicación"
                            FontSize="16"
-                           VerticalAlignment="Center"/>
+                           VerticalAlignment="Center"
+                           Margin="0,10,0,0"/>
                 <Border Grid.Row="3" Grid.Column="1"
                         Background="White"
                         CornerRadius="10"
                         BorderBrush="#6666FF"
                         BorderThickness="1"
-                        Height="30">
+                        Height="30"
+                        Margin="0,10,0,0">
                     <TextBlock x:Name="UbicacionLabel"
                            Text="ubicacion..."
                            Background="Transparent"

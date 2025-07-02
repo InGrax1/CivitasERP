@@ -188,6 +188,7 @@
                 </StackPanel>
                 <!-- Agregar Nuevo Empleado -->
                 <Border Grid.Row="2" Grid.Column="4"
+                        x:Name="btnNuevoEmpleadoBorder"
                         Background="{StaticResource buttonColor1}" 
                         CornerRadius="5"
                         Width="auto" 

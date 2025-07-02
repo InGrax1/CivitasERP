@@ -24,10 +24,13 @@ namespace CivitasERP.Views
                 AdminLabel.Visibility = Visibility.Collapsed;
                 AdminComboBox.Visibility = Visibility.Collapsed;
                 AdminBorder.Visibility = Visibility.Collapsed;
-            }
+            }else if (Variables.Jefe == true)
+            {
+                btnHuellaLista.Visibility = Visibility.Collapsed;
+            }    
 
-            //InicializarPagina();
-            EstablecerRangoFechaActual();
+                //InicializarPagina();
+                EstablecerRangoFechaActual();
             if (Variables.AdminSeleccionado != null)
             {
                 cargar_admin();

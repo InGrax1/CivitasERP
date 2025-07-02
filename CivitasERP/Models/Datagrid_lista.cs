@@ -43,7 +43,7 @@ namespace CivitasERP.Models
 
         public async Task<List<Empleado_Asistencia>> ObtenerEmpleadosAsync(
             int idAdmin, int idObra, DateTime fechaInicio, DateTime fechaFin)
-        { MessageBox.Show( "IDADMIN: "+ idAdmin +"OBRA:" + idObra + "FECHA INICIO:"+ fechaInicio + "FECHA FIN: "+ fechaFin);
+        { 
             var lista = new List<Empleado_Asistencia>();
             var sql = @"
 SET DATEFIRST 1;

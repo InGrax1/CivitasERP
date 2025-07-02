@@ -32,6 +32,10 @@ namespace CivitasERP.Views
                 AdminComboBox.Visibility = Visibility.Collapsed;
                 AdminBorder.Visibility = Visibility.Collapsed;
             }
+            else if (Variables.Jefe == true)
+            {
+                btnNuevoEmpleadoBorder.Visibility = Visibility.Collapsed;
+            }
 
 
             if (Variables.AdminSeleccionado != null)
