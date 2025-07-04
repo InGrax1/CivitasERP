@@ -50,7 +50,7 @@ namespace CivitasERP.Views
             {
                 CargarDatosComboBox();
                 ObraComboBox.SelectedItem = Variables.ObraNom;
-                CargarEmpleados();
+                //CargarEmpleados();
                 CargarYSumar();
             }
 
@@ -60,7 +60,8 @@ namespace CivitasERP.Views
                 {
                     CargarDatosComboBox();
                     ObraComboBox.SelectedItem = Variables.ObraNom;
-                    CargarEmpleados();
+                    //CargarEmpleados();
+
                 }
 
                 if (Variables.indexComboboxAño != null)
@@ -105,9 +106,10 @@ namespace CivitasERP.Views
             DB_admins dB_Admins = new DB_admins();
             if (AdminComboBox.SelectedItem != null)
             {
-
+               
                 repo = new DataGridNominas(ObtenerConexion());
-                var empleados = repo.ObtenerEmpleados(dB_Admins.ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString()), AdminComboBox.SelectedItem.ToString());
+                var empleados = repo.ObtenerEmpleados(dB_Admins.ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString()),AdminComboBox.SelectedItem.ToString());
+                dataGridNomina.ItemsSource = null;
                 dataGridNomina.ItemsSource = empleados;
             }
             else {
@@ -329,7 +331,6 @@ namespace CivitasERP.Views
 
                 Variables.FechaInicio = inicio.ToString("yyyy-MM-dd");
                 Variables.FechaFin = fin.ToString("yyyy-MM-dd");
-
                 Variables.indexComboboxSemana = ComBoxSemana.SelectedItem.ToString();
             }
 
@@ -450,15 +451,18 @@ namespace CivitasERP.Views
             if (AdminComboBox.SelectedItem != null)
             {
                 var empleados = repo.ObtenerEmpleados(dB_Admins.ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString()), AdminComboBox.SelectedItem.ToString());
-                dataGridNomina.ItemsSource = empleados;
+                dataGridNomina.ItemsSource = null;            // ← 🔄 Resetear
+                dataGridNomina.ItemsSource = empleados;       // ← 🆕 Asignar nueva lista
                 CalcularTotales(empleados);
             }
             else
             {
                 var empleados = repo.ObtenerEmpleados(Variables.IdAdmin, Variables.Usuario);
-                dataGridNomina.ItemsSource = empleados;
+                dataGridNomina.ItemsSource = null;            // ← 🔄 Resetear
+                dataGridNomina.ItemsSource = empleados;       // ← 🆕 Asignar nueva lista
                 CalcularTotales(empleados);
             }
+
         }
 
         public string ObtenerUbicacionObra(int? idObra)
@@ -491,11 +495,13 @@ namespace CivitasERP.Views
 
         private void AdminComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DB_admins dB_Admins = new DB_admins();  
-            string nombreadmin="";
-            AdminComboBox.SelectedItem = nombreadmin;
-            Variables.IdAdmin= dB_Admins.ObtenerIdPorUsuario(nombreadmin);
-            Variables.AdminSeleccionado=AdminComboBox.SelectedItem.ToString();
+            DB_admins dB_Admins = new DB_admins();
+            if (AdminComboBox.SelectedItem != null)
+            {
+                string nombreadmin = AdminComboBox.SelectedItem.ToString();
+                Variables.IdAdmin = dB_Admins.ObtenerIdPorUsuario(nombreadmin);
+                Variables.AdminSeleccionado = nombreadmin;
+            }
         }
         private void AdminComboBox_DropDownOpened(object sender, EventArgs e)
         {
