@@ -35,6 +35,7 @@
     <None Remove="Images\Obra.png" />
     <None Remove="Images\Photo.png" />
     <None Remove="Images\SearchPersonBlue.png" />
+    <None Remove="Images\Settings.png" />
     <None Remove="Images\usuario.png" />	  
   </ItemGroup>
 
@@ -132,6 +133,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\SearchPersonBlue.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Settings.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\usuario.png">

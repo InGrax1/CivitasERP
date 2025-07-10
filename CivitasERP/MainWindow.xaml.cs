@@ -384,7 +384,11 @@ namespace CivitasERP
                 case "btnAdmins":
                     MainFrame.Navigate(new EditAdminPage());
                     break;
-             
+                case "btnConfiguracion":
+                    //MainFrame.Navigate(new ConfiguracionPage());
+                    break;
+
+
             }
             // Resaltar el botón activo
             HighlightNavButton(btn);
