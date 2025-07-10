@@ -5,54 +5,174 @@
         Title="NominaPage"
         Width="1800" Height="1000"
         Background= "{StaticResource BackgroudColor}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>     
+        <!--Titulo-->
+        <StackPanel Grid.Row="0" Margin="10">
+            <TextBlock Text="Bienvenido a CivitasERP"
+                       FontSize="30"
+                       FontWeight="Bold"
+                       Margin="20,20,0,0"
+                       HorizontalAlignment="Left"/>
+            <TextBlock Text="Jueves, 09 de Julio de 2025 - 10:30 AM"
+                       FontSize="20"
+                       Margin="20,5,0,0"
+                       HorizontalAlignment="Left"/>
+        </StackPanel>
 
-            <!-- CONTENIDO CENTRAL -->
-            <Border Grid.Column="1" Panel.ZIndex="1"
-                    CornerRadius="0,0,0,0" 
-                    Background="{StaticResource BackgroudColor}" 
-                    Margin="0">
-                <Grid Margin="20">
-                    
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                
-                <!--2) Mensaje Bienvenida-->
-                <Grid Grid.Row="1" HorizontalAlignment="Stretch" Margin="0,20,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <!-- Texto -->
-                        <RowDefinition Height="Auto"/>
-                        <!-- Imagen -->
-                    </Grid.RowDefinitions>
-                    
-                    <!--mensaje de bienvenido y logo-->
-                    <StackPanel Grid.Row="0" Margin="0,20,0,0">
-                        <TextBlock Text="Bienvenido a CivitasERP" 
-                                   FontSize="70" 
+        <!--Resumen-->
+        <Border Grid.Row="1" Margin="10"
+                BorderThickness="2"
+                BorderBrush="LightGray" 
+                CornerRadius="20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Resumen"
+                           FontSize="20"
+                           Margin="10,10,0,0"
+                           HorizontalAlignment="Left"
+                           Grid.Row="0"/>
+                <!--Total Empleados-->
+                <Border Background="LightBlue" 
+                        CornerRadius="20" 
+                        Height="120"
+                        Margin="10"
+                        Grid.Column="0"
+                        Grid.Row="1">
+                    <StackPanel>
+                        <TextBlock Text="Total empleados activos"
+                                   FontSize="24"
                                    FontWeight="Bold"
+                                   Margin="10,10,0,0"
                                    HorizontalAlignment="Center"
-                                   Foreground="{StaticResource titleColorA}"/>
-                        <TextBlock Text="Sistema de gestión empresarial"
-                                   FontSize="30" 
-                                   HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center"
-                                   Foreground="{StaticResource titleColorB}"/> 
-                        <Image Source="/Images/LOGO CONSORCIO CIVIL.png"
-                               MaxWidth="500" 
-                               MaxHeight="500"
-                               HorizontalAlignment="Center"
-                               Margin="0,20,0,0"/>
+                                   Foreground="DarkSlateBlue"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="150"
+                                   FontSize="36"
+                                   FontWeight="Bold"
+                                   Margin="10,10,0,0"
+                                   Foreground="DarkSlateBlue"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
                     </StackPanel>
-                </Grid>
+                </Border>
+
+                <!--Total Nomina Semanal-->
+                <Border Background="LightGreen" 
+                        CornerRadius="20" 
+                        Margin="10"
+                        Height="120"
+                        Grid.Column="1"
+                        Grid.Row="1">
+                    <StackPanel>
+                        <TextBlock Text="Nomina (Semanal)"
+                                   FontSize="24"
+                                   FontWeight="Bold"
+                                   Margin="10,10,0,0"
+                                   HorizontalAlignment="Center"
+                                   Foreground="DarkOliveGreen"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="$250"
+                                   FontSize="36"
+                                   FontWeight="Bold"
+                                   Margin="10,10,0,0"
+                                   Foreground="DarkOliveGreen"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!--Total Horas Extra Acum.-->
+                <Border Background="LightGoldenrodYellow" 
+                        CornerRadius="20" 
+                        Margin="10"
+                        Height="120"
+                        Grid.Column="2"
+                        Grid.Row="1">
+                    <StackPanel>
+                        <TextBlock Text="Horas extra (Acumuladas)"
+                                   FontSize="24"
+                                   FontWeight="Bold"
+                                   Margin="10,10,0,0"
+                                   HorizontalAlignment="Center"
+                                   Foreground="DarkOliveGreen"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="87"
+                                   FontSize="36"
+                                   FontWeight="Bold"
+                                   Margin="10,10,0,0"
+                                   Foreground="DarkOliveGreen"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!--Total Ausencias Recientes-->
+                <Border Background="LightPink" 
+                        CornerRadius="20" 
+                        Margin="10"
+                        Height="120"
+                        Grid.Column="3"
+                        Grid.Row="1">
+                    <StackPanel>
+                        <TextBlock Text="Ausencias Recientes"
+                                   FontSize="24"
+                                   FontWeight="Bold"
+                                   Margin="10,10,0,0"
+                                   HorizontalAlignment="Center"
+                                   Foreground="DarkRed"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="5"
+                                   FontSize="36"
+                                   FontWeight="Bold"
+                                   Margin="10,10,0,0"
+                                   Foreground="DarkRed"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
             </Grid>
-            </Border>
-        </Grid>
+        </Border>
+       
+        <!--Graficas-->
+        <Border Grid.Row="2" Margin="10"
+                BorderThickness="2"
+                BorderBrush="LightGray" 
+                CornerRadius="20">
+            <Grid Grid.Row="2" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!--Empleados x obra-->
+                
+                
+                
+                <!--Actividad reciente-->
+                
+                
+                
+                
+            </Grid>
+        </Border>
+        
+
+    </Grid>
 </Page>
