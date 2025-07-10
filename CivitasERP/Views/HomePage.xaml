@@ -47,7 +47,7 @@
                            HorizontalAlignment="Left"
                            Grid.Row="0"/>
                 <!--Total Empleados-->
-                <Border Background="LightBlue" 
+                <Border Background="#DBEAFE" 
                         CornerRadius="20" 
                         Height="120"
                         Margin="10"
@@ -59,20 +59,21 @@
                                    FontWeight="Bold"
                                    Margin="10,10,0,0"
                                    HorizontalAlignment="Center"
-                                   Foreground="DarkSlateBlue"
+                                   Foreground="#223E8C"
                                    VerticalAlignment="Center"/>
-                        <TextBlock Text="150"
+                        <TextBlock Text="0"
+                                   x:Name="txtTotalEmpleados"
                                    FontSize="36"
                                    FontWeight="Bold"
                                    Margin="10,10,0,0"
-                                   Foreground="DarkSlateBlue"
+                                   Foreground="#223E8C"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
                 </Border>
 
                 <!--Total Nomina Semanal-->
-                <Border Background="LightGreen" 
+                <Border Background="#DCFCE7" 
                         CornerRadius="20" 
                         Margin="10"
                         Height="120"
@@ -84,20 +85,21 @@
                                    FontWeight="Bold"
                                    Margin="10,10,0,0"
                                    HorizontalAlignment="Center"
-                                   Foreground="DarkOliveGreen"
+                                   Foreground="#14532D"
                                    VerticalAlignment="Center"/>
-                        <TextBlock Text="$250"
+                        <TextBlock Text="$0"
+                                   x:Name="txtNominaSemanal"
                                    FontSize="36"
                                    FontWeight="Bold"
                                    Margin="10,10,0,0"
-                                   Foreground="DarkOliveGreen"
+                                   Foreground="#14532D"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
                 </Border>
 
                 <!--Total Horas Extra Acum.-->
-                <Border Background="LightGoldenrodYellow" 
+                <Border Background="#FEF9C3" 
                         CornerRadius="20" 
                         Margin="10"
                         Height="120"
@@ -109,20 +111,21 @@
                                    FontWeight="Bold"
                                    Margin="10,10,0,0"
                                    HorizontalAlignment="Center"
-                                   Foreground="DarkOliveGreen"
+                                   Foreground="#724013"
                                    VerticalAlignment="Center"/>
-                        <TextBlock Text="87"
+                        <TextBlock Text="0"
+                                   x:Name="txtHorasExtra"
                                    FontSize="36"
                                    FontWeight="Bold"
                                    Margin="10,10,0,0"
-                                   Foreground="DarkOliveGreen"
+                                   Foreground="#724013"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
                 </Border>
 
                 <!--Total Ausencias Recientes-->
-                <Border Background="LightPink" 
+                <Border Background="#FEE2E2" 
                         CornerRadius="20" 
                         Margin="10"
                         Height="120"
@@ -134,13 +137,14 @@
                                    FontWeight="Bold"
                                    Margin="10,10,0,0"
                                    HorizontalAlignment="Center"
-                                   Foreground="DarkRed"
+                                   Foreground="#AA3E3E"
                                    VerticalAlignment="Center"/>
-                        <TextBlock Text="5"
+                        <TextBlock Text="0"
+                                   x:Name="txtAusencias"
                                    FontSize="36"
                                    FontWeight="Bold"
                                    Margin="10,10,0,0"
-                                   Foreground="DarkRed"
+                                   Foreground="#AA3E3E"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
@@ -149,30 +153,36 @@
         </Border>
        
         <!--Graficas-->
-        <Border Grid.Row="2" Margin="10"
-                BorderThickness="2"
-                BorderBrush="LightGray" 
-                CornerRadius="20">
-            <Grid Grid.Row="2" Margin="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <!--Empleados x obra-->
+        <Grid Grid.Row="2" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!--Empleados x obra-->
+            <Border Grid.Column="0" Margin="10"
+                    BorderThickness="2"
+                    BorderBrush="LightGray" 
+                    CornerRadius="20">
+                <StackPanel>
+                    <TextBlock Text="Empleados por Obra"/>
+                    <Image Source="/Images/huella-dactilar.png"
+                           Width="100" Height="100">
+                    </Image>
+                    
+                </StackPanel>
                 
                 
-                
-                <!--Actividad reciente-->
-                
-                
-                
-                
-            </Grid>
-        </Border>
-        
+            </Border>
 
+
+            <!--Actividad reciente-->
+
+
+
+
+        </Grid>
     </Grid>
 </Page>
