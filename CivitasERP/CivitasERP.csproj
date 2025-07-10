@@ -19,16 +19,21 @@
 
   <ItemGroup>
     <None Remove="Images\AdminPanel.png" />
+    <None Remove="Images\Copyright.png" />
     <None Remove="Images\Delete.png" />
+    <None Remove="Images\Description.png" />
     <None Remove="Images\Empleados.png" />
     <None Remove="Images\FrontLoaderBlue.png" />
+    <None Remove="Images\Group.png" />
     <None Remove="Images\home.png" />
     <None Remove="Images\huella-dactilar.png" />
+    <None Remove="Images\Info.png" />
     <None Remove="Images\Justification.png" />
     <None Remove="Images\Key.png" />
     <None Remove="Images\lista.png" />
     <None Remove="Images\LOGO CONSORCIO CIVIL 2.png" />
     <None Remove="Images\LOGO CONSORCIO CIVIL.png" />
+    <None Remove="Images\Logo-CivitasERP-B ico.ico" />
     <None Remove="Images\Logout.png" />
     <None Remove="Images\NewRegister.png" />
     <None Remove="Images\Nomina.png" />
@@ -84,7 +89,13 @@
     <Resource Include="Images\AdminPanel.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\Copyright.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\Delete.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Description.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Empleados.png">
@@ -93,7 +104,13 @@
     <Resource Include="Images\FrontLoaderBlue.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\Group.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\huella-dactilar.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Info.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Justification.png">
@@ -115,6 +132,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\LOGO CONSORCIO CIVIL.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Logo-CivitasERP-B ico.ico">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Logout.png">

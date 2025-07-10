@@ -18,6 +18,7 @@ namespace CivitasERP.Views
         public ListaPage()
         {
             InitializeComponent();
+            DataContext = new ListaViewModel();
 
             idAdminActual = new DB_admins().ObtenerIdPorUsuario(Variables.Usuario);
             Variables.IdAdmin = idAdminActual;

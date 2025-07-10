@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CivitasERP.Views"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="500" d:DesignWidth="900"
       Title="ConfigurationPage"
       Background="{StaticResource BackgroudColor}">
 
@@ -24,34 +24,90 @@
                 
                 <TextBlock Text="Configuracion"
                            Grid.Row="0"
-                           FontSize="24"
+                           FontSize="30"
                            FontWeight="Bold"
                            Foreground="{StaticResource titleColorA}"
                            HorizontalAlignment="Center"/>
                 <TextBlock Text="Especificaciones del programa"
                            Grid.Row="1"
-                           FontSize="15"
+                           FontSize="25"
                            FontWeight="Normal"
                            Margin="5"
                            Foreground="{StaticResource titleColor3}"
                            HorizontalAlignment="Center"/>
-                <Grid Grid.Row="2" Margin="10" HorizontalAlignment="Left">
+                <Grid Grid.Row="2" Margin="10" HorizontalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-
-                    <StackPanel>
-                        <Image Source="/Images/AdminPanel.png" Grid.Column="0" Height="20" Width="20"/>
-                        <TextBlock Text="Version"
-                                   Grid.Column="1"
-                                   FontWeight="Normal"
-                                   Width="100"
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!--Version-->
+                    <Image Source="/Images/Info.png" 
+                           Grid.Column="0" Grid.Row="0" 
+                           Height="30" Width="30"
+                           Margin="0,20,10,0"/>
+                    <StackPanel Grid.Column="1" Grid.Row="0">
+                        <TextBlock Text="Version" 
+                                   FontWeight="Light"
+                                   Foreground="Gray"
+                                   FontSize="20"
+                                   Margin="0,20,0,0"
                                    HorizontalAlignment="Left"/>
-                        <TextBlock Text="CivitasERP v1.1.3" FontWeight="SemiBold" Grid.Column="1"/>
+                        <TextBlock Text="CivitasERP v1.1.3" FontWeight="SemiBold" Grid.Column="1" FontSize="25"/>
+                    </StackPanel>
+
+                    <!--Creadores-->
+                    <Image Source="/Images/Group.png" 
+                           Grid.Column="0" Grid.Row="1" 
+                           Height="30" Width="30"
+                           Margin="0,20,10,0"/>
+                    <StackPanel Grid.Column="1" Grid.Row="1">
+                        <TextBlock Text="Creadores" 
+                                   FontWeight="Light"
+                                   Foreground="Gray"
+                                   Margin="0,20,0,0"
+                                   FontSize="20"
+                                   HorizontalAlignment="Left"/>
+                        <TextBlock Text="InGrax1 / jesusnegrete135790" FontWeight="SemiBold" Grid.Column="1" FontSize="25"/>
                     </StackPanel>
                     
-                    
+                    <!--Copyrigth-->
+                    <Image Source="/Images/Copyright.png" 
+                           Grid.Column="0" Grid.Row="2" 
+                           Height="30" Width="30"
+                           Margin="0,20,10,0"/>
+                    <StackPanel Grid.Column="1" Grid.Row="2">
+                        <TextBlock Text="Copyrigth" 
+                                   FontWeight="Light"
+                                   Foreground="Gray"
+                                   Margin="0,20,0,0"
+                                   FontSize="20"
+                                   HorizontalAlignment="Left"/>
+                        <TextBlock Text="© 2025 Consorcio Civil. Todos los derechos reservados" FontWeight="SemiBold" Grid.Column="1" FontSize="25"/>
+                    </StackPanel>
+
+                    <!--Descripcion-->
+                    <Image Source="/Images/Description.png" 
+                           Grid.Column="0" Grid.Row="3" 
+                           Height="30" Width="30"
+                           Margin="0,20,10,0"/>
+                    <StackPanel Grid.Column="1" Grid.Row="3">
+                        <TextBlock Text="Descripcion" 
+                                   FontWeight="Light"
+                                   Foreground="Gray"
+                                   Margin="0,20,0,0"
+                                   FontSize="20"
+                                   HorizontalAlignment="Left"/>
+                        <TextBlock Text="Sistema de gestion empresarial para la asistencia de empleados" FontWeight="SemiBold" Grid.Column="1" FontSize="25"/>
+                    </StackPanel>
+
+
                 </Grid>
             </Grid>
         </Border>
