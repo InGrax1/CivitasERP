@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
         Title="NominaPage"
-        Width="1800" Height="1000"
+        Width="1366" Height="768"
+        xmlns:oxy="http://oxyplot.org/wpf"
         Background= "{StaticResource BackgroudColor}">
     <Grid>
         <Grid.RowDefinitions>
@@ -166,12 +167,11 @@
                     BorderThickness="2"
                     BorderBrush="LightGray" 
                     CornerRadius="20">
-                <StackPanel>
-                    <TextBlock Text="Empleados por Obra"/>
-                    <Image Source="/Images/huella-dactilar.png"
-                           Width="100" Height="100">
-                    </Image>
-                    
+                <StackPanel Margin="10" Height="500">
+                    <oxy:PlotView x:Name="piePlot"
+                                  Height="350"
+                                  Margin="10"/>
+
                 </StackPanel>
                 
                 
