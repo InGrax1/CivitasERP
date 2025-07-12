@@ -168,13 +168,25 @@
                     BorderBrush="LightGray" 
                     CornerRadius="20">
                 <StackPanel Margin="10" Height="500">
+                    <!--Grafica de Dona Empleados-->
                     <oxy:PlotView x:Name="piePlot"
                                   Height="350"
                                   Margin="10"/>
-
                 </StackPanel>
                 
                 
+            </Border>
+            <!--Gastos Mensuales Nomina-->
+            <Border Grid.Column="1" Margin="10"
+                    BorderThickness="2"
+                    BorderBrush="LightGray" 
+                    CornerRadius="20">
+                <StackPanel Margin="10" Height="500">
+                    <!--Grafica de Gatos-->
+                    
+                </StackPanel>
+
+
             </Border>
 
 
