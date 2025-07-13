@@ -20,7 +20,8 @@
                        FontWeight="Bold"
                        Margin="20,20,0,0"
                        HorizontalAlignment="Left"/>
-            <TextBlock Text="Jueves, 09 de Julio de 2025 - 10:30 AM"
+            <TextBlock Text="----"
+                       x:Name="txtFechaHora"
                        FontSize="20"
                        Margin="20,5,0,0"
                        HorizontalAlignment="Left"/>
@@ -167,11 +168,13 @@
                     BorderThickness="2"
                     BorderBrush="LightGray" 
                     CornerRadius="20">
-                <StackPanel Margin="10" Height="500">
+                <StackPanel Margin="10">
                     <!--Grafica de Dona Empleados-->
                     <oxy:PlotView x:Name="piePlot"
                                   Height="350"
-                                  Margin="10"/>
+                                  Margin="10"
+                                  BorderThickness="0"
+                                  Background="Transparent"/>
                 </StackPanel>
                 
                 
@@ -181,9 +184,14 @@
                     BorderThickness="2"
                     BorderBrush="LightGray" 
                     CornerRadius="20">
-                <StackPanel Margin="10" Height="500">
-                    <!--Grafica de Gatos-->
-                    
+                <StackPanel Margin="10">
+                    <oxy:PlotView x:Name="linePlot"
+                                  Grid.Row="2" Grid.ColumnSpan="4"
+                                  Height="300"
+                                  Margin="10"
+                                  BorderThickness="0"
+                                  Background="Transparent"/>
+
                 </StackPanel>
 
 
