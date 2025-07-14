@@ -16,7 +16,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using IOPath = System.IO.Path;
 
 namespace CivitasERP.Views
 {
@@ -64,21 +63,23 @@ namespace CivitasERP.Views
         {
             try
             {
-                // Ruta más simple - busca en la carpeta Templates junto al exe
-                string templatePath = "Views\\EmailTemplate.html";
+                // 1) Obtén la carpeta raíz donde está el ejecutable
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                // 2) Construye la ruta incluyendo Views
+                string templatePath = System.IO.Path.Combine(baseDir, "Views", "EmailTemplate.html");
 
                 if (!File.Exists(templatePath))
-                {
-                    throw new FileNotFoundException($"No se encontró el archivo de plantilla: {templatePath}");
-                }
+                    throw new FileNotFoundException($"No se encontró la plantilla en: {templatePath}");
 
                 return File.ReadAllText(templatePath, Encoding.UTF8);
             }
-            catch (Exception ex)
+            catch
             {
+                // Si algo falla, regresa la plantilla básica
                 return CrearPlantillaBasica();
             }
         }
+
 
         /// <summary>
         /// Plantilla básica de respaldo en caso de error
@@ -171,7 +172,7 @@ namespace CivitasERP.Views
                 // Configurar el mensaje
                 var mail = new MailMessage
                 {
-                    From = new MailAddress("juanvc210876@gmail.com", "CivitasERP - Soporte"),
+                    From = new MailAddress("lolgratis8@gmail.com", "CivitasERP - Soporte"),
                     Subject = "🔐 Código de Recuperación - CivitasERP",
                     Body = contenidoFinal,
                     IsBodyHtml = true // ¡MUY IMPORTANTE! Esto permite HTML
@@ -183,7 +184,7 @@ namespace CivitasERP.Views
                     smtp.EnableSsl = true;
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new NetworkCredential("juanvc210876@gmail.com", "dzhl tfhi osgr njzo");
+                    smtp.Credentials = new NetworkCredential("lolgratis8@gmail.com", "dzhl tfhi osgr njzo");
                     smtp.Send(mail);
                 }
 

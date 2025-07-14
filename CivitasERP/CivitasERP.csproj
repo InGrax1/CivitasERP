@@ -41,7 +41,8 @@
     <None Remove="Images\Photo.png" />
     <None Remove="Images\SearchPersonBlue.png" />
     <None Remove="Images\Settings.png" />
-    <None Remove="Images\usuario.png" />	  
+    <None Remove="Images\usuario.png" />
+    <None Remove="Views\EmailTemplate.html" />	  
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +53,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\CivitasERP.Api\appsettings.Production.json" Link="appsettings.Production.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\EmailTemplate.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
