@@ -82,9 +82,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-
-
-
+                
                 <!-- Codigo -->
                 <StackPanel Grid.Row="0" 
                             Grid.Column="1" 
@@ -92,16 +90,156 @@
                     <TextBlock Text="Código de Verificación" 
                                Foreground="{StaticResource titleColorA}" 
                                FontSize="15" 
-                               Margin="0,20,0,5"/>
-                    <Border Background="#F0F0F0" 
-                            CornerRadius="10" 
-                            Padding="5" 
-                            BorderThickness="0.3" 
-                            BorderBrush="{StaticResource primaryColor3}">
-                        <TextBox x:Name="txtCodigo" 
-                                 BorderThickness="0" 
-                                 Background="Transparent"/>
-                    </Border>
+                               Margin="0,20,0,15"/>
+                    <!-- Contenedor para los 6 cuadros del código -->
+                    <Grid HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Cuadro 1 -->
+                        <Border Grid.Column="0" 
+                                Background="#F0F0F0" 
+                                CornerRadius="10" 
+                                Padding="0" 
+                                Margin="5"
+                                BorderThickness="2" 
+                                BorderBrush="{StaticResource primaryColor1}"
+                                Width="50" Height="50">
+                            <TextBox x:Name="txtCodigo1" 
+                                     BorderThickness="0" 
+                                     Background="Transparent"
+                                     FontSize="20"
+                                     FontWeight="Bold"
+                                     TextAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     MaxLength="1"
+                                     PreviewTextInput="TextBox_PreviewTextInput"
+                                     TextChanged="TextBox_TextChanged"
+                                     PreviewKeyDown="TextBox_PreviewKeyDown"
+                                     GotFocus="TextBox_GotFocus"/>
+                        </Border>
+                        
+                        <!-- Cuadro 2 -->
+                        <Border Grid.Column="1" 
+                                Background="#F0F0F0" 
+                                CornerRadius="10" 
+                                Padding="0" 
+                                Margin="5"
+                                BorderThickness="2" 
+                                BorderBrush="{StaticResource primaryColor3}"
+                                Width="50" Height="50">
+                            <TextBox x:Name="txtCodigo2" 
+                                     BorderThickness="0" 
+                                     Background="Transparent"
+                                     FontSize="20"
+                                     FontWeight="Bold"
+                                     TextAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     MaxLength="1"
+                                     PreviewTextInput="TextBox_PreviewTextInput"
+                                     TextChanged="TextBox_TextChanged"
+                                     PreviewKeyDown="TextBox_PreviewKeyDown"
+                                     GotFocus="TextBox_GotFocus"/>
+                        </Border>
+                        
+                        <!-- Cuadro 3 -->
+                        <Border Grid.Column="2" 
+                                Background="#F0F0F0" 
+                                CornerRadius="10" 
+                                Padding="0" 
+                                Margin="5"
+                                BorderThickness="2" 
+                                BorderBrush="{StaticResource primaryColor3}"
+                                Width="50" Height="50">
+                            <TextBox x:Name="txtCodigo3" 
+                                     BorderThickness="0" 
+                                     Background="Transparent"
+                                     FontSize="20"
+                                     FontWeight="Bold"
+                                     TextAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     MaxLength="1"
+                                     PreviewTextInput="TextBox_PreviewTextInput"
+                                     TextChanged="TextBox_TextChanged"
+                                     PreviewKeyDown="TextBox_PreviewKeyDown"
+                                     GotFocus="TextBox_GotFocus"/>
+                        </Border>
+
+                        <!-- Cuadro 4 -->
+                        <Border Grid.Column="3" 
+                                Background="#F0F0F0" 
+                                CornerRadius="10" 
+                                Padding="0" 
+                                Margin="5"
+                                BorderThickness="2" 
+                                BorderBrush="{StaticResource primaryColor3}"
+                                Width="50" Height="50">
+                            <TextBox x:Name="txtCodigo4" 
+                                     BorderThickness="0" 
+                                     Background="Transparent"
+                                     FontSize="20"
+                                     FontWeight="Bold"
+                                     TextAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     MaxLength="1"
+                                     PreviewTextInput="TextBox_PreviewTextInput"
+                                     TextChanged="TextBox_TextChanged"
+                                     PreviewKeyDown="TextBox_PreviewKeyDown"
+                                     GotFocus="TextBox_GotFocus"/>
+                        </Border>
+
+                        <!-- Cuadro 5 -->
+                        <Border Grid.Column="4" 
+                                Background="#F0F0F0" 
+                                CornerRadius="10" 
+                                Padding="0" 
+                                Margin="5"
+                                BorderThickness="2" 
+                                BorderBrush="{StaticResource primaryColor3}"
+                                Width="50" Height="50">
+                            <TextBox x:Name="txtCodigo5" 
+                                     BorderThickness="0" 
+                                     Background="Transparent"
+                                     FontSize="20"
+                                     FontWeight="Bold"
+                                     TextAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     MaxLength="1"
+                                     PreviewTextInput="TextBox_PreviewTextInput"
+                                     TextChanged="TextBox_TextChanged"
+                                     PreviewKeyDown="TextBox_PreviewKeyDown"
+                                     GotFocus="TextBox_GotFocus"/>
+                        </Border>
+
+                        <!-- Cuadro 6 -->
+                        <Border Grid.Column="5" 
+                                Background="#F0F0F0" 
+                                CornerRadius="10" 
+                                Padding="0" 
+                                Margin="5"
+                                BorderThickness="2" 
+                                BorderBrush="{StaticResource primaryColor3}"
+                                Width="50" Height="50">
+                            <TextBox x:Name="txtCodigo6" 
+                                     BorderThickness="0" 
+                                     Background="Transparent"
+                                     FontSize="20"
+                                     FontWeight="Bold"
+                                     TextAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     MaxLength="1"
+                                     PreviewTextInput="TextBox_PreviewTextInput"
+                                     TextChanged="TextBox_TextChanged"
+                                     PreviewKeyDown="TextBox_PreviewKeyDown"
+                                     GotFocus="TextBox_GotFocus"/>
+                        </Border>
+                    </Grid>
                 </StackPanel>
 
                 <!-- Botón Guardar -->
