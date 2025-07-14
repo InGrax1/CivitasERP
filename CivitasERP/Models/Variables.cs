@@ -97,5 +97,7 @@ namespace CivitasERP.Models
             set { _AdminSeleccionado = value; }
         }
 
+        public static string FechaHomePage { get; set; }
+
     }
 }

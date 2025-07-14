@@ -53,22 +53,28 @@ namespace CivitasERP.Views
             piePlot.Model = _svc.GetPieChartModel(Variables.IdAdmin ?? 0);
             linePlot.Model = _svc.GetLineChartModel(Variables.IdAdmin ?? 0);
 
-            // 3) Actualizar fecha y hora
+           /* // 3) Actualizar fecha y hora
             _timer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(1)
             };
             _timer.Tick += (s, e) => UpdateFechaHora();
-            _timer.Start();
+            _timer.Start();*/
         }
         private void UpdateFechaHora()
         {
             var now = DateTime.Now;
             var culture = new CultureInfo("es-ES");
-            // Formato: "jueves, 09 de julio de 2025 - 10:30 AM"
-            string text = now.ToString("dddd, dd 'de' MMMM 'de' yyyy - hh:mm tt", culture);
-            // Solo poner mayúscula en la primera letra:
-            txtFechaHora.Text = char.ToUpper(text[0]) + text.Substring(1);
+
+            if (string.IsNullOrEmpty(Variables.FechaHomePage))
+            {
+                // Generar la fecha solo una vez y guardarla
+                string fecha = now.ToString("dddd, dd 'de' MMMM 'de' yyyy", culture);
+                Variables.FechaHomePage = char.ToUpper(fecha[0]) + fecha.Substring(1);
+            }
+
+            string hora = now.ToString("hh:mm tt");
+            txtFechaHora.Text = $"{Variables.FechaHomePage} - {hora}";
         }
     }
 }
