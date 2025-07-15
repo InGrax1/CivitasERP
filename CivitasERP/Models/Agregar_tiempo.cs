@@ -30,9 +30,6 @@ namespace CivitasERP.Models
             return (false, DateTime.MinValue, DateTime.MinValue);
         }
 
-
-
-
         public List<int> GetAnios()
         {
             int anioActual = DateTime.Now.Year;
@@ -77,6 +74,17 @@ namespace CivitasERP.Models
             }
 
             return semanas;
+        }
+
+        //Obitiene la semana actual desde el lunes hasta el domingo
+        public (DateTime inicio, DateTime fin) GetSemanaActual()
+        {
+            var hoy = DateTime.Today;
+            // Cuántos días restar para llegar al lunes
+            int diffLunes = (7 + (hoy.DayOfWeek - DayOfWeek.Monday)) % 7;
+            var lunes = hoy.AddDays(-diffLunes);
+            var domingo = lunes.AddDays(6);
+            return (lunes, domingo);
         }
 
     }

@@ -19,23 +19,30 @@
 
   <ItemGroup>
     <None Remove="Images\AdminPanel.png" />
+    <None Remove="Images\Copyright.png" />
     <None Remove="Images\Delete.png" />
+    <None Remove="Images\Description.png" />
     <None Remove="Images\Empleados.png" />
     <None Remove="Images\FrontLoaderBlue.png" />
+    <None Remove="Images\Group.png" />
     <None Remove="Images\home.png" />
     <None Remove="Images\huella-dactilar.png" />
+    <None Remove="Images\Info.png" />
     <None Remove="Images\Justification.png" />
     <None Remove="Images\Key.png" />
     <None Remove="Images\lista.png" />
     <None Remove="Images\LOGO CONSORCIO CIVIL 2.png" />
     <None Remove="Images\LOGO CONSORCIO CIVIL.png" />
+    <None Remove="Images\Logo-CivitasERP-B ico.ico" />
     <None Remove="Images\Logout.png" />
     <None Remove="Images\NewRegister.png" />
     <None Remove="Images\Nomina.png" />
     <None Remove="Images\Obra.png" />
     <None Remove="Images\Photo.png" />
     <None Remove="Images\SearchPersonBlue.png" />
-    <None Remove="Images\usuario.png" />	  
+    <None Remove="Images\Settings.png" />
+    <None Remove="Images\usuario.png" />
+    <None Remove="Views\EmailTemplate.html" />	  
   </ItemGroup>
 
   <ItemGroup>
@@ -46,6 +53,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\CivitasERP.Api\appsettings.Production.json" Link="appsettings.Production.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\EmailTemplate.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -59,6 +69,8 @@
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.6" />
+    <PackageReference Include="OxyPlot.Core" Version="2.2.0" />
+    <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="8.0.0" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
@@ -83,7 +95,13 @@
     <Resource Include="Images\AdminPanel.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\Copyright.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\Delete.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Description.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Empleados.png">
@@ -92,7 +110,13 @@
     <Resource Include="Images\FrontLoaderBlue.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\Group.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\huella-dactilar.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Info.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Justification.png">
@@ -116,6 +140,9 @@
     <Resource Include="Images\LOGO CONSORCIO CIVIL.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\Logo-CivitasERP-B ico.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\Logout.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -132,6 +159,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\SearchPersonBlue.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Settings.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\usuario.png">

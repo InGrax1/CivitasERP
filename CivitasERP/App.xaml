@@ -11,6 +11,8 @@
                 <ResourceDictionary Source="Styles/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="Styles/UIColors.xaml"/>
                 <ResourceDictionary Source="Styles/DataGridColumnHeader.xaml"/>
+                
+                
             </ResourceDictionary.MergedDictionaries>
 
             <conv:DeleteButtonVisibilityConverter x:Key="DeleteBtnVisConverter"/>

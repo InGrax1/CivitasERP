@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang='es'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Código de Recuperación</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(130deg, #5F5FFF 0%, #274288 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+            .header h1 {
+                margin: 0;
+                font-size: 24px;
+                font-weight: 300;
+            }
+
+        .content {
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+            .content h2 {
+                color: #333;
+                margin-bottom: 20px;
+                font-size: 20px;
+            }
+
+            .content p {
+                color: #666;
+                line-height: 1.6;
+                margin-bottom: 25px;
+            }
+
+        .code-container {
+            background-color: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            display: inline-block;
+        }
+
+        .code {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+            letter-spacing: 5px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .expiry {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='header'>
+            <h1>CivitasERP</h1>
+            <p>Sistema de Recuperación de Contraseña</p>
+        </div>
+
+        <div class='content'>
+            <h2>¡Hola {NOMBRE_USUARIO}!</h2>
+            <p>Hemos recibido una solicitud para restablecer tu contraseña. Utiliza el siguiente código de verificación:</p>
+
+            <div class='code-container'>
+                <div class='code'>{CODIGO_VERIFICACION}</div>
+            </div>
+
+            <div class='warning'>
+                <strong>⚠️ Importante:</strong> Este código es válido únicamente por 15 minutos y es de un solo uso.
+            </div>
+
+            <p class='expiry'>
+                El código expirará el: <strong>{FECHA_EXPIRACION}</strong>
+            </p>
+
+            <p>Si no solicitaste este restablecimiento, puedes ignorar este mensaje de forma segura.</p>
+        </div>
+
+        <div class='footer'>
+            <p>Este es un mensaje automático, por favor no respondas a este correo.</p>
+            <p>© 2025 CivitasERP - Todos los derechos reservados</p>
+        </div>
+    </div>
+</body>
+</html>

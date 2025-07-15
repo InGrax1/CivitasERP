@@ -384,7 +384,11 @@ namespace CivitasERP
                 case "btnAdmins":
                     MainFrame.Navigate(new EditAdminPage());
                     break;
-             
+                case "btnConfiguracion":
+                    MainFrame.Navigate(new ConfigurationPage());
+                    break;
+
+
             }
             // Resaltar el botón activo
             HighlightNavButton(btn);
@@ -394,7 +398,7 @@ namespace CivitasERP
         private void HighlightNavButton(Button btnToActivate)
         {
             // Lista de todos los botones de menú
-            var navButtons = new[] { btnMenu, btnNomina, btnLista, btnJustificaciones, btnEmpleados, btnAdmins };
+            var navButtons = new[] { btnMenu, btnNomina, btnLista, btnJustificaciones, btnEmpleados, btnAdmins, btnConfiguracion };
 
             // Rescata los brushes de los recursos
             var defaultBrush = (Brush)FindResource("buttonColor2"); // #4772E3

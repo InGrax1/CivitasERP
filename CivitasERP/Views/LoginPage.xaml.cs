@@ -121,7 +121,7 @@ namespace CivitasERP.Views
         private void brnResetPassword(object sender, RoutedEventArgs e)
         {
             ForgotPasswordPage forgotPasswordPage = new ForgotPasswordPage();
-            forgotPasswordPage.ShowDialog();
+            forgotPasswordPage.Show();
             this.Hide();
         }
 
