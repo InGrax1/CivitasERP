@@ -53,8 +53,46 @@ namespace CivitasERP.Views
         {
             public static string usuario;
             public static int? id_admin;
+            public static string correoUsuario;
         }
 
+        // 2. método público para enviar el correo
+        public bool EnviarCodigoRecuperacion(string usuario, string correo, string codigo)
+        {
+            try
+            {
+                // Cargar y preparar la plantilla
+                string plantillaHTML = CargarPlantillaHTML();
+                string contenidoFinal = ReemplazarPlaceholders(plantillaHTML, codigo, usuario);
+
+                // Configurar el mensaje
+                var mail = new MailMessage
+                {
+                    From = new MailAddress("lolgratis8@gmail.com", "CivitasERP - Soporte"),
+                    Subject = "🔐 Código de Recuperación - CivitasERP",
+                    Body = contenidoFinal,
+                    IsBodyHtml = true
+                };
+                mail.To.Add(correo);
+
+                using (var smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.EnableSsl = true;
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new NetworkCredential("lolgratis8@gmail.com", "dzhl tfhi osgr njzo");
+                    smtp.Send(mail);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al enviar correo: {ex.Message}",
+                                "Error SMTP", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+        }
         /// <summary>
         /// Carga la plantilla HTML desde el archivo externo
         /// </summary>
@@ -122,12 +160,14 @@ namespace CivitasERP.Views
             string correo = txtCorreo.Text.Trim();
 
             GlobalVariables.usuario = usuario;
+            GlobalVariables.correoUsuario = correo;
 
             // 1) Comprueba existencia en dbo.admins
             int? adminId = null;
             var conexion = new Conexion();
             string cs = conexion.ObtenerCadenaConexion();
 
+            // 1) Comprueba existencia en dbo.admins
             using (var conn = new SqlConnection(cs))
             using (var cmd = new SqlCommand(@"
               SELECT id_admins

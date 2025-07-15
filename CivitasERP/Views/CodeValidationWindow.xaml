@@ -132,7 +132,7 @@
                                 Padding="0" 
                                 Margin="5"
                                 BorderThickness="2" 
-                                BorderBrush="{StaticResource primaryColor3}"
+                                BorderBrush="{StaticResource primaryColor1}"
                                 Width="50" Height="50">
                             <TextBox x:Name="txtCodigo2" 
                                      BorderThickness="0" 
@@ -155,7 +155,7 @@
                                 Padding="0" 
                                 Margin="5"
                                 BorderThickness="2" 
-                                BorderBrush="{StaticResource primaryColor3}"
+                                BorderBrush="{StaticResource primaryColor1}"
                                 Width="50" Height="50">
                             <TextBox x:Name="txtCodigo3" 
                                      BorderThickness="0" 
@@ -178,7 +178,7 @@
                                 Padding="0" 
                                 Margin="5"
                                 BorderThickness="2" 
-                                BorderBrush="{StaticResource primaryColor3}"
+                                BorderBrush="{StaticResource primaryColor1}"
                                 Width="50" Height="50">
                             <TextBox x:Name="txtCodigo4" 
                                      BorderThickness="0" 
@@ -201,7 +201,7 @@
                                 Padding="0" 
                                 Margin="5"
                                 BorderThickness="2" 
-                                BorderBrush="{StaticResource primaryColor3}"
+                                BorderBrush="{StaticResource primaryColor1}"
                                 Width="50" Height="50">
                             <TextBox x:Name="txtCodigo5" 
                                      BorderThickness="0" 
@@ -224,7 +224,7 @@
                                 Padding="0" 
                                 Margin="5"
                                 BorderThickness="2" 
-                                BorderBrush="{StaticResource primaryColor3}"
+                                BorderBrush="{StaticResource primaryColor1}"
                                 Width="50" Height="50">
                             <TextBox x:Name="txtCodigo6" 
                                      BorderThickness="0" 

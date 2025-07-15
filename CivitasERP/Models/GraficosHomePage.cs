@@ -231,40 +231,49 @@ namespace CivitasERP.Models
                 {
                     // Jefe con obra específica seleccionada
                     queryAusencias = @"
-                        SELECT COUNT(*) 
-                        FROM asistencia a
-                        INNER JOIN empleado e ON a.id_empleado = e.id_empleado
-                        INNER JOIN obra o ON e.id_obra = o.id_obra
-                        WHERE o.id_obra = @idObra
-                          AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
-                          AND (a.asis_hora IS NULL OR a.asis_hora = '') 
-                          AND (a.asis_salida IS NULL OR a.asis_salida = '')";
+                                    SELECT COUNT(*) 
+                                    FROM empleado e
+                                    INNER JOIN obra o ON e.id_obra = o.id_obra
+                                    WHERE o.id_obra = @idObra
+                                      AND NOT EXISTS (
+                                          SELECT 1 FROM asistencia a 
+                                          WHERE a.id_empleado = e.id_empleado 
+                                            AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
+                                            AND a.asis_hora IS NOT NULL 
+                                            AND a.asis_hora != ''
+                                      )";
                 }
                 else
                 {
                     // Jefe sin selección específica o mostrar todo - SUMA TOTAL
                     queryAusencias = @"
-                        SELECT COUNT(*) 
-                        FROM asistencia a
-                        INNER JOIN empleado e ON a.id_empleado = e.id_empleado
-                        INNER JOIN obra o ON e.id_obra = o.id_obra
-                        WHERE a.asis_dia BETWEEN @fechaInicio AND @fechaFin
-                          AND (a.asis_hora IS NULL OR a.asis_hora = '') 
-                          AND (a.asis_salida IS NULL OR a.asis_salida = '')";
+                                    SELECT COUNT(*) 
+                                    FROM empleado e
+                                    INNER JOIN obra o ON e.id_obra = o.id_obra
+                                    WHERE NOT EXISTS (
+                                        SELECT 1 FROM asistencia a 
+                                        WHERE a.id_empleado = e.id_empleado 
+                                          AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
+                                          AND a.asis_hora IS NOT NULL 
+                                          AND a.asis_hora != ''
+                                    )";
                 }
             }
             else
             {
                 // Admin específico
                 queryAusencias = @"
-                    SELECT COUNT(*) 
-                    FROM asistencia a
-                    LEFT JOIN empleado e ON a.id_empleado = e.id_empleado
-                    LEFT JOIN obra o ON e.id_obra = o.id_obra
-                    WHERE (o.id_admin_obra = @idAdmin OR a.admins_id_asistencia = @idAdmin)
-                      AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
-                      AND (a.asis_hora IS NULL OR a.asis_hora = '') 
-                      AND (a.asis_salida IS NULL OR a.asis_salida = '')";
+                                SELECT COUNT(*) 
+                                FROM empleado e
+                                INNER JOIN obra o ON e.id_obra = o.id_obra
+                                WHERE o.id_admin_obra = @idAdmin
+                                  AND NOT EXISTS (
+                                      SELECT 1 FROM asistencia a 
+                                      WHERE a.id_empleado = e.id_empleado 
+                                        AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
+                                        AND a.asis_hora IS NOT NULL 
+                                        AND a.asis_hora != ''
+                                  )";
             }
 
             using (var cmd = new SqlCommand(queryAusencias, conn))

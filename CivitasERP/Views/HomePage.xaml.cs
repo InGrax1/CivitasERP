@@ -53,13 +53,13 @@ namespace CivitasERP.Views
             piePlot.Model = _svc.GetPieChartModel(Variables.IdAdmin ?? 0);
             linePlot.Model = _svc.GetLineChartModel(Variables.IdAdmin ?? 0);
 
-           /* // 3) Actualizar fecha y hora
+            // 3) Actualizar fecha y hora
             _timer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(1)
             };
             _timer.Tick += (s, e) => UpdateFechaHora();
-            _timer.Start();*/
+            _timer.Start();
         }
         private void UpdateFechaHora()
         {

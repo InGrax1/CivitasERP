@@ -29,9 +29,10 @@
 
         <!--Resumen-->
         <Border Grid.Row="1" Margin="10"
-                BorderThickness="2"
+                BorderThickness="4"
                 BorderBrush="LightGray" 
-                CornerRadius="20">
+                CornerRadius="20"
+                Padding = "10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -45,7 +46,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="Resumen"
                            FontSize="20"
-                           Margin="10,10,0,0"
+                           Margin="10,0,0,0"
                            HorizontalAlignment="Left"
                            Grid.Row="0"/>
                 <!--Total Empleados-->
