@@ -167,13 +167,14 @@
 
             <!-- Empleados x obra -->
             <Border Grid.Column="0" Margin="10"
-              BorderThickness="2"
-              BorderBrush="LightGray"
-              CornerRadius="20">
+                    BorderThickness="2"
+                    BorderBrush="LightGray"
+                    CornerRadius="20">
                 <StackPanel Margin="10" VerticalAlignment="Stretch">
                     <oxy:PlotView x:Name="piePlot"
                         VerticalAlignment="Stretch"
                         HorizontalAlignment="Stretch"
+                        Height="350"
                         Margin="10"
                         Background="Transparent"/>
                 </StackPanel>
@@ -188,6 +189,7 @@
                     <oxy:PlotView x:Name="linePlot"
                         VerticalAlignment="Stretch"
                         HorizontalAlignment="Stretch"
+                        Height="350"          
                         Margin="10"
                         Background="Transparent"/>
                 </StackPanel>
