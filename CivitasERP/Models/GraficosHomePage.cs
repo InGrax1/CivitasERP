@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CivitasERP.Models
 {
@@ -31,8 +32,11 @@ namespace CivitasERP.Models
         }
 
         // Método modificado para manejar casos donde no hay selección específica
-        public Summary GetSummary(int? idAdmin = null, bool esJefe = false, int? idObraSeleccionada = null)
+        public Summary GetSummary()
         {
+            bool esJefe = Variables.Jefe;
+            int? idObraSeleccionada = Variables.IdObra;
+            int? idAdmin = Variables.IdAdmin;
             var (ini, fin) = _tiempo.GetSemanaActual();
             string fi = ini.ToString("yyyy-MM-dd");
             string ff = fin.ToString("yyyy-MM-dd");
@@ -47,97 +51,101 @@ namespace CivitasERP.Models
 
             // Total empleados activos
             string queryTotalEmpleados;
+            bool usaIdObra = false;
+            bool usaIdAdmin = false;
+
             if (esJefe || mostrarTodo)
             {
                 if (idObraSeleccionada != null && idObraSeleccionada > 0)
                 {
-                    // Jefe con obra específica seleccionada
+                    //Jefe, muestra empleados con obra
                     queryTotalEmpleados = @"
-                        SELECT COUNT(*) 
-                        FROM empleado e
-                        INNER JOIN obra o ON e.id_obra = o.id_obra
-                        WHERE o.id_obra = @idObra";
+                                            SELECT COUNT(*) 
+                                            FROM empleado e
+                                            INNER JOIN obra o ON e.id_obra = o.id_obra";
+                    usaIdObra = true;
                 }
                 else
                 {
-                    // Jefe sin selección específica o mostrar todo
+                    //Jefe, muestra todods los empleados
                     queryTotalEmpleados = @"
-                        SELECT COUNT(*) 
-                        FROM empleado e
-                        INNER JOIN obra o ON e.id_obra = o.id_obra";
+                                            SELECT COUNT(*) 
+                                            FROM empleado e
+                                            INNER JOIN obra o ON e.id_obra = o.id_obra";
+
                 }
             }
             else
             {
-                // Admin específico
+                //admin muestra empleados de su obra
                 queryTotalEmpleados = @"
-                    SELECT COUNT(*) 
-                    FROM empleado e
-                    INNER JOIN obra o ON e.id_obra = o.id_obra
-                    WHERE o.id_admin_obra = @idAdmin";
+                                        SELECT COUNT(*) 
+                                        FROM empleado e
+                                        INNER JOIN obra o ON e.id_obra = o.id_obra
+                                        WHERE o.id_admin_obra = @idAdmin";
+                usaIdAdmin = true;
             }
 
             using (var cmd = new SqlCommand(queryTotalEmpleados, conn))
             {
-                if (idObraSeleccionada != null && idObraSeleccionada > 0)
+                if (usaIdObra)
                 {
-                    cmd.Parameters.AddWithValue("@idObra", idObraSeleccionada);
+                    cmd.Parameters.AddWithValue("@idObra", idObraSeleccionada.Value);
                 }
-                else if (!esJefe && !mostrarTodo && idAdmin != null)
+                if (usaIdAdmin)
                 {
-                    cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
+                    cmd.Parameters.AddWithValue("@idAdmin", idAdmin.Value);
                 }
-                s.TotalEmpleados = (int)cmd.ExecuteScalar();
+
+                var result = cmd.ExecuteScalar();
+                s.TotalEmpleados = result != null ? Convert.ToInt32(result) : 0;
             }
+
 
             // Nómina semanal
             string queryNomina;
+            // 1. Nómina Semanal
+            usaIdObra = false;
+            usaIdAdmin = false;
+
             if (esJefe || mostrarTodo)
             {
                 if (idObraSeleccionada != null && idObraSeleccionada > 0)
                 {
-                    // Jefe con obra específica seleccionada
+
                     queryNomina = @"
-                        SELECT 
-                          ISNULL(SUM(
-                            CASE WHEN a.salariofecha IS NOT NULL THEN a.salariofecha ELSE 0 END + 
-                            CASE WHEN a.paga_horaXT IS NOT NULL THEN a.paga_horaXT ELSE 0 END
-                          ), 0) AS total_nomina
-                        FROM asistencia a
-                        INNER JOIN empleado e ON a.id_empleado = e.id_empleado
-                        INNER JOIN obra o ON e.id_obra = o.id_obra
-                        WHERE o.id_obra = @idObra
-                          AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
+                                    SELECT ISNULL(SUM(
+                                        ISNULL(a.salariofecha, 0) + ISNULL(a.paga_horaXT, 0)
+                                    ), 0) AS total_nomina
+                                    FROM asistencia a
+                                    LEFT JOIN empleado e ON a.id_empleado = e.id_empleado
+                                    LEFT JOIN obra o ON e.id_obra = o.id_obra
+                                    WHERE a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
                 }
                 else
                 {
-                    // Jefe sin selección específica o mostrar todo - SUMA TOTAL
                     queryNomina = @"
-                        SELECT 
-                          ISNULL(SUM(
-                            CASE WHEN a.salariofecha IS NOT NULL THEN a.salariofecha ELSE 0 END + 
-                            CASE WHEN a.paga_horaXT IS NOT NULL THEN a.paga_horaXT ELSE 0 END
-                          ), 0) AS total_nomina
-                        FROM asistencia a
-                        INNER JOIN empleado e ON a.id_empleado = e.id_empleado
-                        INNER JOIN obra o ON e.id_obra = o.id_obra
-                        WHERE a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
+                                    SELECT ISNULL(SUM(
+                                        ISNULL(a.salariofecha, 0) + ISNULL(a.paga_horaXT, 0)
+                                    ), 0) AS total_nomina
+                                    FROM asistencia a
+                                    LEFT JOIN empleado e ON a.id_empleado = e.id_empleado
+                                    LEFT JOIN obra o ON e.id_obra = o.id_obra
+                                    WHERE a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
                 }
             }
             else
             {
-                // Admin específico
+                usaIdAdmin = true;
                 queryNomina = @"
-                    SELECT 
-                      ISNULL(SUM(
-                        CASE WHEN a.salariofecha IS NOT NULL THEN a.salariofecha ELSE 0 END + 
-                        CASE WHEN a.paga_horaXT IS NOT NULL THEN a.paga_horaXT ELSE 0 END
-                      ), 0) AS total_nomina
-                    FROM asistencia a
-                    LEFT JOIN empleado e ON a.id_empleado = e.id_empleado
-                    LEFT JOIN obra o ON e.id_obra = o.id_obra
-                    WHERE (o.id_admin_obra = @idAdmin OR a.admins_id_asistencia = @idAdmin)
-                      AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
+                                SELECT ISNULL(SUM(
+                                    ISNULL(a.salariofecha, 0) + ISNULL(a.paga_horaXT, 0)
+                                ), 0) AS total_nomina
+                                FROM asistencia a
+                                LEFT JOIN empleado e ON a.id_empleado = e.id_empleado
+                                LEFT JOIN obra o ON e.id_obra = o.id_obra
+                                WHERE (o.id_admin_obra = @idAdmin OR a.admins_id_asistencia = @idAdmin)
+                                  AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
             }
 
             using (var cmd = new SqlCommand(queryNomina, conn))
@@ -145,64 +153,59 @@ namespace CivitasERP.Models
                 cmd.Parameters.AddWithValue("@fechaInicio", fi);
                 cmd.Parameters.AddWithValue("@fechaFin", ff);
 
-                if (idObraSeleccionada != null && idObraSeleccionada > 0)
-                {
-                    cmd.Parameters.AddWithValue("@idObra", idObraSeleccionada);
-                }
-                else if (!esJefe && !mostrarTodo && idAdmin != null)
-                {
-                    cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
-                }
+                if (usaIdObra)
+                    cmd.Parameters.AddWithValue("@idObra", idObraSeleccionada.Value);
+                if (usaIdAdmin)
+                    cmd.Parameters.AddWithValue("@idAdmin", idAdmin.Value);
 
                 var result = cmd.ExecuteScalar();
                 s.NominaSemanal = result != DBNull.Value ? Convert.ToDecimal(result) : 0;
             }
 
+
             // Horas extra
             string queryHorasExtra;
+            usaIdObra = false;
+            usaIdAdmin = false;
+
             if (esJefe || mostrarTodo)
             {
                 if (idObraSeleccionada != null && idObraSeleccionada > 0)
                 {
-                    // Jefe con obra específica seleccionada
+                    usaIdObra = true;
                     queryHorasExtra = @"
-                        SELECT 
-                          ISNULL(SUM(DATEDIFF(MINUTE, '00:00:00', a.asis_hora_extra))/60.0, 0)
-                        FROM asistencia a
-                        INNER JOIN empleado e ON a.id_empleado = e.id_empleado
-                        INNER JOIN obra o ON e.id_obra = o.id_obra
-                        WHERE o.id_obra = @idObra
-                          AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
-                          AND a.asis_hora_extra IS NOT NULL
-                          AND a.asis_hora_extra != '00:00:00'";
+                                        SELECT ISNULL(SUM(DATEDIFF(MINUTE, '00:00:00', a.asis_hora_extra))/60.0, 0)
+                                        FROM asistencia a
+                                        LEFT JOIN empleado e ON a.id_empleado = e.id_empleado
+                                        LEFT JOIN obra o ON e.id_obra = o.id_obra
+                                        WHERE a.asis_dia BETWEEN @fechaInicio AND @fechaFin
+                                          AND a.asis_hora_extra IS NOT NULL
+                                          AND a.asis_hora_extra != '00:00:00'";
                 }
                 else
                 {
-                    // Jefe sin selección específica o mostrar todo - SUMA TOTAL
                     queryHorasExtra = @"
-                        SELECT 
-                          ISNULL(SUM(DATEDIFF(MINUTE, '00:00:00', a.asis_hora_extra))/60.0, 0)
-                        FROM asistencia a
-                        INNER JOIN empleado e ON a.id_empleado = e.id_empleado
-                        INNER JOIN obra o ON e.id_obra = o.id_obra
-                        WHERE a.asis_dia BETWEEN @fechaInicio AND @fechaFin
-                          AND a.asis_hora_extra IS NOT NULL
-                          AND a.asis_hora_extra != '00:00:00'";
+                                        SELECT ISNULL(SUM(DATEDIFF(MINUTE, '00:00:00', a.asis_hora_extra))/60.0, 0)
+                                        FROM asistencia a
+                                        LEFT JOIN empleado e ON a.id_empleado = e.id_empleado
+                                        LEFT JOIN obra o ON e.id_obra = o.id_obra
+                                        WHERE a.asis_dia BETWEEN @fechaInicio AND @fechaFin
+                                          AND a.asis_hora_extra IS NOT NULL
+                                          AND a.asis_hora_extra != '00:00:00'";
                 }
             }
             else
             {
-                // Admin específico
+                usaIdAdmin = true;
                 queryHorasExtra = @"
-                    SELECT 
-                      ISNULL(SUM(DATEDIFF(MINUTE, '00:00:00', a.asis_hora_extra))/60.0, 0)
-                    FROM asistencia a
-                    LEFT JOIN empleado e ON a.id_empleado = e.id_empleado
-                    LEFT JOIN obra o ON e.id_obra = o.id_obra
-                    WHERE (o.id_admin_obra = @idAdmin OR a.admins_id_asistencia = @idAdmin)
-                      AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
-                      AND a.asis_hora_extra IS NOT NULL
-                      AND a.asis_hora_extra != '00:00:00'";
+                                    SELECT ISNULL(SUM(DATEDIFF(MINUTE, '00:00:00', a.asis_hora_extra))/60.0, 0)
+                                    FROM asistencia a
+                                    LEFT JOIN empleado e ON a.id_empleado = e.id_empleado
+                                    LEFT JOIN obra o ON e.id_obra = o.id_obra
+                                    WHERE (o.id_admin_obra = @idAdmin OR a.admins_id_asistencia = @idAdmin)
+                                      AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
+                                      AND a.asis_hora_extra IS NOT NULL
+                                      AND a.asis_hora_extra != '00:00:00'";
             }
 
             using (var cmd = new SqlCommand(queryHorasExtra, conn))
@@ -210,31 +213,61 @@ namespace CivitasERP.Models
                 cmd.Parameters.AddWithValue("@fechaInicio", fi);
                 cmd.Parameters.AddWithValue("@fechaFin", ff);
 
-                if (idObraSeleccionada != null && idObraSeleccionada > 0)
-                {
-                    cmd.Parameters.AddWithValue("@idObra", idObraSeleccionada);
-                }
-                else if (!esJefe && !mostrarTodo && idAdmin != null)
-                {
-                    cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
-                }
+                if (usaIdObra)
+                    cmd.Parameters.AddWithValue("@idObra", idObraSeleccionada.Value);
+                if (usaIdAdmin)
+                    cmd.Parameters.AddWithValue("@idAdmin", idAdmin.Value);
 
                 var result = cmd.ExecuteScalar();
                 s.HorasExtra = result != DBNull.Value ? Convert.ToDecimal(result) : 0;
             }
 
+
             // Ausencias
             string queryAusencias;
+            usaIdObra = false;
+            usaIdAdmin = false;
+
             if (esJefe || mostrarTodo)
             {
                 if (idObraSeleccionada != null && idObraSeleccionada > 0)
                 {
-                    // Jefe con obra específica seleccionada
+                    usaIdObra = true;
                     queryAusencias = @"
+                                        SELECT COUNT(*) 
+                                        FROM empleado e
+                                        inner JOIN obra o ON e.id_obra = o.id_obra
+                                        WHERE NOT EXISTS (
+                                            SELECT 1 FROM asistencia a 
+                                            WHERE a.id_empleado = e.id_empleado 
+                                              AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
+                                              AND a.asis_hora IS NOT NULL 
+                                              AND a.asis_hora != ''
+                                          )";
+                }
+                else
+                {
+                    queryAusencias = @"
+                                        SELECT COUNT(*) 
+                                        FROM empleado e
+                                        inner JOIN obra o ON e.id_obra = o.id_obra
+                                        WHERE NOT EXISTS (
+                                            SELECT 1 FROM asistencia a 
+                                            WHERE a.id_empleado = e.id_empleado 
+                                              AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
+                                              AND a.asis_hora IS NOT NULL 
+                                              AND a.asis_hora != ''
+                                          )";
+                }
+            }
+            else
+            {
+                usaIdAdmin = true;
+                queryAusencias = @"
                                     SELECT COUNT(*) 
                                     FROM empleado e
-                                    INNER JOIN obra o ON e.id_obra = o.id_obra
-                                    WHERE o.id_obra = @idObra
+                                    inner JOIN obra o ON e.id_obra = o.id_obra
+                                    WHERE o.id_admin_obra = @idAdmin
                                       AND NOT EXISTS (
                                           SELECT 1 FROM asistencia a 
                                           WHERE a.id_empleado = e.id_empleado 
@@ -242,38 +275,6 @@ namespace CivitasERP.Models
                                             AND a.asis_hora IS NOT NULL 
                                             AND a.asis_hora != ''
                                       )";
-                }
-                else
-                {
-                    // Jefe sin selección específica o mostrar todo - SUMA TOTAL
-                    queryAusencias = @"
-                                    SELECT COUNT(*) 
-                                    FROM empleado e
-                                    INNER JOIN obra o ON e.id_obra = o.id_obra
-                                    WHERE NOT EXISTS (
-                                        SELECT 1 FROM asistencia a 
-                                        WHERE a.id_empleado = e.id_empleado 
-                                          AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
-                                          AND a.asis_hora IS NOT NULL 
-                                          AND a.asis_hora != ''
-                                    )";
-                }
-            }
-            else
-            {
-                // Admin específico
-                queryAusencias = @"
-                                SELECT COUNT(*) 
-                                FROM empleado e
-                                INNER JOIN obra o ON e.id_obra = o.id_obra
-                                WHERE o.id_admin_obra = @idAdmin
-                                  AND NOT EXISTS (
-                                      SELECT 1 FROM asistencia a 
-                                      WHERE a.id_empleado = e.id_empleado 
-                                        AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin
-                                        AND a.asis_hora IS NOT NULL 
-                                        AND a.asis_hora != ''
-                                  )";
             }
 
             using (var cmd = new SqlCommand(queryAusencias, conn))
@@ -281,47 +282,50 @@ namespace CivitasERP.Models
                 cmd.Parameters.AddWithValue("@fechaInicio", fi);
                 cmd.Parameters.AddWithValue("@fechaFin", ff);
 
-                if (idObraSeleccionada != null && idObraSeleccionada > 0)
-                {
-                    cmd.Parameters.AddWithValue("@idObra", idObraSeleccionada);
-                }
-                else if (!esJefe && !mostrarTodo && idAdmin != null)
-                {
-                    cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
-                }
+                if (usaIdObra)
+                    cmd.Parameters.AddWithValue("@idObra", idObraSeleccionada.Value);
+                if (usaIdAdmin)
+                    cmd.Parameters.AddWithValue("@idAdmin", idAdmin.Value);
 
-                s.Ausencias = (int)cmd.ExecuteScalar();
+                var result = cmd.ExecuteScalar();
+                s.Ausencias = result != DBNull.Value ? Convert.ToInt32(result) : 0;
             }
+
 
             return s;
         }
 
         // Método modificado para el gráfico de dona
-        public PlotModel GetPieChartModel(int? idAdmin = null, bool esJefe = false, int? idObraSeleccionada = null)
+        public PlotModel GetPieChartModel()
         {
+            bool esJefe = Variables.Jefe;
+            int? idObraSeleccionada = Variables.IdObra;
+            int? idAdmin = Variables.IdAdmin;
             var data = new List<(string Name, int Count)>();
+
             using var conn = new SqlConnection(_connStr);
             conn.Open();
 
             bool mostrarTodo = (idAdmin == null || idAdmin == 0) && (idObraSeleccionada == null || idObraSeleccionada == 0);
 
             string queryPie;
+            bool usaIdObra = false;
+            bool usaIdAdmin = false;
+
             if (esJefe || mostrarTodo)
             {
                 if (idObraSeleccionada != null && idObraSeleccionada > 0)
                 {
-                    // Jefe con obra específica seleccionada
+                    usaIdObra = true;
                     queryPie = @"
                         SELECT o.obra_nombre, COUNT(e.id_empleado) as total_empleados
                         FROM obra o
                         LEFT JOIN empleado e ON e.id_obra = o.id_obra
-                        WHERE o.id_obra = @idObra
                         GROUP BY o.obra_nombre, o.id_obra
                         ORDER BY total_empleados DESC";
                 }
                 else
                 {
-                    // Jefe sin selección específica o mostrar todo - TODAS LAS OBRAS
                     queryPie = @"
                         SELECT o.obra_nombre, COUNT(e.id_empleado) as total_empleados
                         FROM obra o
@@ -332,7 +336,7 @@ namespace CivitasERP.Models
             }
             else
             {
-                // Admin específico
+                usaIdAdmin = true;
                 queryPie = @"
                     SELECT o.obra_nombre, COUNT(e.id_empleado) as total_empleados
                     FROM obra o
@@ -344,20 +348,17 @@ namespace CivitasERP.Models
 
             using (var cmd = new SqlCommand(queryPie, conn))
             {
-                if (idObraSeleccionada != null && idObraSeleccionada > 0)
-                {
-                    cmd.Parameters.AddWithValue("@idObra", idObraSeleccionada);
-                }
-                else if (!esJefe && !mostrarTodo && idAdmin != null)
-                {
-                    cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
-                }
+                if (usaIdObra)
+                    cmd.Parameters.AddWithValue("@idObra", idObraSeleccionada.Value);
+                if (usaIdAdmin)
+                    cmd.Parameters.AddWithValue("@idAdmin", idAdmin.Value);
 
                 using var rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                     data.Add((rdr.GetString(0), rdr.GetInt32(1)));
             }
 
+            // Crear gráfico
             var model = new PlotModel { Title = "Empleados por Obra" };
             model.Legends.Add(new Legend
             {
@@ -381,11 +382,16 @@ namespace CivitasERP.Models
 
             model.Series.Add(pie);
             return model;
+
         }
 
         // Método modificado para el gráfico lineal
-        public PlotModel GetLineChartModel(int? idAdmin = null, bool esJefe = false, int? idObraSeleccionada = null)
+        public PlotModel GetLineChartModel()
         {
+            int? idObraSeleccionada = Variables.IdObra;
+            bool esJefe = Variables.Jefe;
+            int? idAdmin = Variables.IdAdmin;
+
             var modelo = new PlotModel { Title = "Nómina semanal (mes actual)" };
 
             modelo.Axes.Add(new DateTimeAxis
@@ -413,54 +419,53 @@ namespace CivitasERP.Models
             bool mostrarTodo = (idAdmin == null || idAdmin == 0) && (idObraSeleccionada == null || idObraSeleccionada == 0);
 
             string queryLineal;
+            bool usaIdObra = false;
+            bool usaIdAdmin = false;
+
             if (esJefe || mostrarTodo)
             {
                 if (idObraSeleccionada != null && idObraSeleccionada > 0)
                 {
-                    // Jefe con obra específica seleccionada
+                    usaIdObra = true;
                     queryLineal = @"
-                        SELECT 
-                          ISNULL(SUM(
-                            CASE WHEN a.salariofecha IS NOT NULL THEN a.salariofecha ELSE 0 END + 
-                            CASE WHEN a.paga_horaXT IS NOT NULL THEN a.paga_horaXT ELSE 0 END
-                          ), 0) AS total_nomina
-                        FROM asistencia a
-                        INNER JOIN empleado e ON a.id_empleado = e.id_empleado
-                        INNER JOIN obra o ON e.id_obra = o.id_obra
-                        WHERE o.id_obra = @idObra
-                          AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
+            SELECT 
+              ISNULL(SUM(
+                ISNULL(a.salariofecha, 0) + ISNULL(a.paga_horaXT, 0)
+              ), 0) AS total_nomina
+            FROM asistencia a
+            left JOIN empleado e ON a.id_empleado = e.id_empleado
+            left JOIN obra o ON e.id_obra = o.id_obra
+            WHERE a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
                 }
                 else
                 {
-                    // Jefe sin selección específica o mostrar todo - SUMA TOTAL
                     queryLineal = @"
-                        SELECT 
-                          ISNULL(SUM(
-                            CASE WHEN a.salariofecha IS NOT NULL THEN a.salariofecha ELSE 0 END + 
-                            CASE WHEN a.paga_horaXT IS NOT NULL THEN a.paga_horaXT ELSE 0 END
-                          ), 0) AS total_nomina
-                        FROM asistencia a
-                        INNER JOIN empleado e ON a.id_empleado = e.id_empleado
-                        INNER JOIN obra o ON e.id_obra = o.id_obra
-                        WHERE a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
+            SELECT 
+              ISNULL(SUM(
+                ISNULL(a.salariofecha, 0) + ISNULL(a.paga_horaXT, 0)
+              ), 0) AS total_nomina
+            FROM asistencia a
+            left JOIN empleado e ON a.id_empleado = e.id_empleado
+            left JOIN obra o ON e.id_obra = o.id_obra
+            WHERE a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
                 }
             }
             else
             {
-                // Admin específico
+                usaIdAdmin = true;
                 queryLineal = @"
-                    SELECT 
-                      ISNULL(SUM(
-                        CASE WHEN a.salariofecha IS NOT NULL THEN a.salariofecha ELSE 0 END + 
-                        CASE WHEN a.paga_horaXT IS NOT NULL THEN a.paga_horaXT ELSE 0 END
-                      ), 0) AS total_nomina
-                    FROM asistencia a
-                    LEFT JOIN empleado e ON a.id_empleado = e.id_empleado
-                    LEFT JOIN obra o ON e.id_obra = o.id_obra
-                    WHERE (o.id_admin_obra = @idAdmin OR a.admins_id_asistencia = @idAdmin)
-                      AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
+        SELECT 
+          ISNULL(SUM(
+            ISNULL(a.salariofecha, 0) + ISNULL(a.paga_horaXT, 0)
+          ), 0) AS total_nomina
+        FROM asistencia a
+        LEFT JOIN empleado e ON a.id_empleado = e.id_empleado
+        LEFT JOIN obra o ON e.id_obra = o.id_obra
+        WHERE (o.id_admin_obra = @idAdmin OR a.admins_id_asistencia = @idAdmin)
+          AND a.asis_dia BETWEEN @fechaInicio AND @fechaFin";
             }
 
+            // Ejecutar consulta por semana
             foreach (var rango in semanas)
             {
                 var p = rango.Split(" - ");
@@ -471,14 +476,10 @@ namespace CivitasERP.Models
                 cmd.Parameters.AddWithValue("@fechaInicio", ini.ToString("yyyy-MM-dd"));
                 cmd.Parameters.AddWithValue("@fechaFin", fin.ToString("yyyy-MM-dd"));
 
-                if (idObraSeleccionada != null && idObraSeleccionada > 0)
-                {
-                    cmd.Parameters.AddWithValue("@idObra", idObraSeleccionada);
-                }
-                else if (!esJefe && !mostrarTodo && idAdmin != null)
-                {
-                    cmd.Parameters.AddWithValue("@idAdmin", idAdmin);
-                }
+                if (usaIdObra)
+                    cmd.Parameters.AddWithValue("@idObra", idObraSeleccionada.Value);
+                if (usaIdAdmin)
+                    cmd.Parameters.AddWithValue("@idAdmin", idAdmin.Value);
 
                 var result = cmd.ExecuteScalar();
                 var total = result != DBNull.Value ? Convert.ToDouble(result) : 0;
@@ -491,6 +492,7 @@ namespace CivitasERP.Models
             modelo.Series.Add(line);
 
             return modelo;
+
         }
     }
 }
