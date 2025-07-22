@@ -4,28 +4,67 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-using GlobalCalendar = System.Globalization.Calendar; // Alias para evitar ambigüedad
+using GlobalCalendar = System.Globalization.Calendar;
 
 namespace CivitasERP.Views
 {
-    /// <summary>
-    /// Lógica de interacción para NominaPage.xaml
-    /// </summary>
     public partial class NominaPage : Page
     {
         private DataGridNominas repo;
         private NuevoEmpleadoPage _NuevoEmpleadoPage = null;
-
+        private string _connectionString;
+        private DB_admins _dbAdmins;
+        private bool _isInitializing = true;
 
         public NominaPage()
         {
-
             InitializeComponent();
-            cargar_admin();
-            //Ocultar botones de navegación según el tipo de usuario
+
+            // Cachear conexión y objetos reutilizables
+            _connectionString = ObtenerConexion();
+            _dbAdmins = new DB_admins();
+            repo = new DataGridNominas(_connectionString);
+
+            // Cargar datos de forma asíncrona
+            _ = InitializeAsync();
+        }
+
+        private async Task InitializeAsync()
+        {
+            try
+            {
+                // Mostrar indicador de carga (opcional)
+                // LoadingIndicator.Visibility = Visibility.Visible;
+
+                // Cargar configuración de UI sin bloquear
+                ConfigurarUI();
+
+                // Cargar datos iniciales de forma asíncrona
+                await CargarDatosInicialesAsync();
+
+                // Procesar variables guardadas
+                ProcesarVariablesGuardadas();
+
+                _isInitializing = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al inicializar: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                // Ocultar indicador de carga
+                // LoadingIndicator.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void ConfigurarUI()
+        {
+            // Configurar visibilidad según tipo de usuario
             if (Variables.Jefe == false)
             {
                 AdminLabel.Visibility = Visibility.Collapsed;
@@ -36,63 +75,62 @@ namespace CivitasERP.Views
             {
                 btnNuevoEmpleadoBorder.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private async Task CargarDatosInicialesAsync()
+        {
+            // 1) Lee datos en background
+            var adminsTask = Task.Run(() => {
+                CargarAdministradores(); // este usa Dispatcher.Invoke internamente
+            });
+            var aniosTask = Task.Run(() => new Agregar_tiempo().GetAnios());
+            var mesesTask = Task.Run(() => new Agregar_tiempo().GetMeses());
+
+            // 2) Espera resultados
+            await adminsTask;
+            var anios = await aniosTask;
+            var meses = await mesesTask;
+
+            // 3) Actualiza UI en el hilo correcto
+            Dispatcher.Invoke(() =>
+            {
+                ComBoxAnio.ItemsSource = anios;
+                ComBoxAnio.SelectedItem = DateTime.Now.Year;
+
+                ComBoxMes.ItemsSource = meses;
+                ComBoxMes.SelectedItem = DateTime.Now.Month;
+            });
+        }
 
 
+        private void ProcesarVariablesGuardadas()
+        {
+            // Procesar variables guardadas sin recargar innecesariamente
             if (Variables.AdminSeleccionado != null)
             {
-                cargar_admin();
                 AdminComboBox.SelectedItem = Variables.AdminSeleccionado;
-                CargarEmpleados();
             }
-
 
             if (Variables.ObraNom != null)
             {
-                CargarDatosComboBox();
+                _ = CargarObrasAsync();
                 ObraComboBox.SelectedItem = Variables.ObraNom;
-                //CargarEmpleados();
-                CargarYSumar();
             }
 
-            if (Variables.indexComboboxAño != null || Variables.indexComboboxMes != null)
+            if (Variables.indexComboboxAño != null)
             {
-                if (Variables.ObraNom != null)
-                {
-                    CargarDatosComboBox();
-                    ObraComboBox.SelectedItem = Variables.ObraNom;
-                    //CargarEmpleados();
+                ComBoxAnio.SelectedItem = Variables.indexComboboxAño;
+            }
 
-                }
+            if (Variables.indexComboboxMes != null)
+            {
+                ComBoxMes.SelectedItem = Variables.indexComboboxMes;
+                ActualizarSemanas();
+            }
 
-                if (Variables.indexComboboxAño != null)
-                {
-                    CargarAnios();
-                    ComBoxAnio.SelectedItem = Variables.indexComboboxAño;
-                }
-
-                if (Variables.indexComboboxMes != null)
-                {
-                    CargarMeses();
-                    ComBoxMes.SelectedItem = Variables.indexComboboxMes;
-
-                    Agregar_tiempo tiempo = new Agregar_tiempo();
-
-                    // Limpiar semanas antes de actualizar
-                    ComBoxSemana.ItemsSource = null;
-                    ComBoxSemana.SelectedItem = null;
-
-                    if (ComBoxAnio.SelectedItem is int anio && ComBoxMes.SelectedIndex >= 0)
-                    {
-                        int mes = ComBoxMes.SelectedIndex + 1;
-                        ComBoxSemana.ItemsSource = tiempo.GetSemanasDelMes(anio, mes);
-                    }
-                }
-
-                if (Variables.indexComboboxSemana != null)
-                {
-                    ComBoxSemana.SelectedItem = Variables.indexComboboxSemana;
-                }
-
+            if (Variables.indexComboboxSemana != null)
+            {
+                ComBoxSemana.SelectedItem = Variables.indexComboboxSemana;
             }
         }
 
@@ -101,24 +139,32 @@ namespace CivitasERP.Views
             return new Conexion().ObtenerCadenaConexion();
         }
 
+        private async Task CargarEmpleadosAsync()
+        {
+            if (_isInitializing) return;
+
+            try
+            {
+                int? idAdmin = AdminComboBox.SelectedItem != null
+                    ? _dbAdmins.ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString())
+                    : Variables.IdAdmin;
+
+                string usuario = AdminComboBox.SelectedItem?.ToString() ?? Variables.Usuario;
+
+                var empleados = await Task.Run(() => repo.ObtenerEmpleados(idAdmin, usuario));
+
+                dataGridNomina.ItemsSource = empleados;
+                CalcularTotales(empleados);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar empleados: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void CargarEmpleados()
         {
-            DB_admins dB_Admins = new DB_admins();
-            if (AdminComboBox.SelectedItem != null)
-            {
-               
-                repo = new DataGridNominas(ObtenerConexion());
-                var empleados = repo.ObtenerEmpleados(dB_Admins.ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString()),AdminComboBox.SelectedItem.ToString());
-                dataGridNomina.ItemsSource = null;
-                dataGridNomina.ItemsSource = empleados;
-            }
-            else {
-
-                repo = new DataGridNominas(ObtenerConexion());
-                var empleados = repo.ObtenerEmpleados(Variables.IdAdmin, Variables.Usuario);
-                dataGridNomina.ItemsSource = empleados;
-            }
-
+            _ = CargarEmpleadosAsync();
         }
 
         private void btnNuevoEmpleado_Click(object sender, RoutedEventArgs e)
@@ -126,10 +172,11 @@ namespace CivitasERP.Views
             if (_NuevoEmpleadoPage == null)
             {
                 _NuevoEmpleadoPage = new NuevoEmpleadoPage();
-                // Cuando se cierre por completo, dejamos la referencia en null:
                 _NuevoEmpleadoPage.Closed += (s, args) =>
                 {
                     _NuevoEmpleadoPage = null;
+                    // Recargar empleados después de cerrar
+                    CargarEmpleados();
                 };
                 _NuevoEmpleadoPage.ShowDialog();
             }
@@ -139,209 +186,191 @@ namespace CivitasERP.Views
             }
         }
 
-        //ELIMINAR EMPLEADO
         private async void BtnEliminarEmpleado_Click(object sender, RoutedEventArgs e)
         {
-            // 1) Sacar el Empleado asociado a la fila
             var btn = sender as Button;
             if (btn?.DataContext is DataGridNominas.Empleado empleado)
             {
-                // 2) Confirmar
                 var resp = MessageBox.Show(
                     $"¿Seguro que deseas eliminar a {empleado.Nombre}?",
                     "Confirmar eliminación",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Warning);
 
-                if (resp != MessageBoxResult.Yes)
-                    return;
+                if (resp != MessageBoxResult.Yes) return;
 
                 try
                 {
-                    // 3) Llamar a tu repositorio para borrar
                     await repo.EliminarEmpleadoAsync(empleado.ID);
+                    await CargarEmpleadosAsync();
 
-                    // 4) Refrescar el grid y recalcular totales
-                    CargarEmpleados();
-                    CalcularTotales((IEnumerable<DataGridNominas.Empleado>)dataGridNomina.ItemsSource);
-
-                    MessageBox.Show("Empleado eliminado correctamente.",
-                                    "Éxito",
-                                    MessageBoxButton.OK,
-                                    MessageBoxImage.Information);
+                    MessageBox.Show("Empleado eliminado correctamente.", "Éxito",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al eliminar: {ex.Message}",
-                                    "Error",
-                                    MessageBoxButton.OK,
-                                    MessageBoxImage.Error);
+                    MessageBox.Show($"Error al eliminar: {ex.Message}", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
 
-        private void ObraComboBox_DropDownOpened(object sender, EventArgs e)
+        private async void ObraComboBox_DropDownOpened(object sender, EventArgs e)
         {
-            CargarDatosComboBox();
+            await CargarObrasAsync();
         }
 
-        private void ObraComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void ObraComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (_isInitializing) return;
+
+            await ProcesarSeleccionObraAsync();
+        }
+
+        private async Task ProcesarSeleccionObraAsync()
+        {
+            // Configurar fechas por defecto solo si no existen
             if (Variables.FechaFin == null || Variables.FechaInicio == null)
             {
-                DateTime hoy = DateTime.Now;
-
-                int diferenciaConLunes = (int)hoy.DayOfWeek - (int)DayOfWeek.Monday;
-                if (diferenciaConLunes < 0)
-                    diferenciaConLunes += 7;
-
-                DateTime lunes = hoy.AddDays(-diferenciaConLunes);
-                DateTime domingo = lunes.AddDays(6);
-
-                string formato = "yyyy-MM-dd";
-
-                Variables.FechaInicio = lunes.ToString(formato);
-                Variables.FechaFin = domingo.ToString(formato);
-
-                CultureInfo cultura = CultureInfo.InvariantCulture;
-                GlobalCalendar calendario = cultura.Calendar;
-
-                int numeroMes = hoy.Month;
-                string año = hoy.Year.ToString();
-
-                int numeroSemana = calendario.GetWeekOfYear(hoy, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-
-                CargarAnios();
-                CargarMeses();
-
-                ComBoxSemana.SelectedIndex = numeroSemana;
-                ComBoxMes.SelectedIndex = numeroMes - 1;
-                ComBoxAnio.SelectedItem = año;
+                ConfigurarFechasPorDefecto();
             }
 
-            string usuario = Variables.Usuario;
-            DB_admins dB_Admins = new DB_admins();
-            int? idAdmin;
-            if (AdminComboBox.SelectedItem != null)
-            {
-                idAdmin = dB_Admins.ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString());
-
-            }
-            else
-            {
-                 idAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
-            }
             if (ObraComboBox.SelectedItem != null)
             {
-                string nombre_obra = ObraComboBox.SelectedItem.ToString();
+                string nombreObra = ObraComboBox.SelectedItem.ToString();
+                Variables.ObraNom = nombreObra;
 
-                Variables.ObraNom = nombre_obra;
+                int? idAdmin = AdminComboBox.SelectedItem != null
+                    ? _dbAdmins.ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString())
+                    : _dbAdmins.ObtenerIdPorUsuario(Variables.Usuario);
 
-                int? id_obra = ObtenerID_obra(idAdmin, nombre_obra);
-                Variables.IdObra = id_obra;
+                var tasks = new List<Task>();
 
-                UbicacionLabel.Text = ObtenerUbicacionObra(id_obra);
+                // Ejecutar operaciones en paralelo
+                tasks.Add(Task.Run(async () =>
+                {
+                    Variables.IdObra = await ObtenerIdObraAsync(idAdmin, nombreObra);
+                    var ubicacion = await ObtenerUbicacionObraAsync(Variables.IdObra);
 
-                CargarEmpleados();
+                    Dispatcher.Invoke(() => UbicacionLabel.Text = ubicacion);
+                }));
+
+                tasks.Add(CargarEmpleadosAsync());
+
+                await Task.WhenAll(tasks);
             }
-
-            //carga suma footer
-            CargarYSumar();
         }
 
-        private int? ObtenerID_obra(int? idAdminObra, string obraNombre)
+        private void ConfigurarFechasPorDefecto()
+        {
+            DateTime hoy = DateTime.Now;
+            int diferenciaConLunes = (int)hoy.DayOfWeek - (int)DayOfWeek.Monday;
+            if (diferenciaConLunes < 0) diferenciaConLunes += 7;
+
+            DateTime lunes = hoy.AddDays(-diferenciaConLunes);
+            DateTime domingo = lunes.AddDays(6);
+
+            Variables.FechaInicio = lunes.ToString("yyyy-MM-dd");
+            Variables.FechaFin = domingo.ToString("yyyy-MM-dd");
+
+            // Configurar selecciones por defecto
+            var cultura = CultureInfo.InvariantCulture;
+            var calendario = cultura.Calendar;
+            int numeroSemana = calendario.GetWeekOfYear(hoy, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+            ComBoxSemana.SelectedIndex = numeroSemana;
+            ComBoxMes.SelectedIndex = hoy.Month - 1;
+            ComBoxAnio.SelectedItem = hoy.Year.ToString();
+        }
+
+        private async Task<int?> ObtenerIdObraAsync(int? idAdminObra, string obraNombre)
         {
             if (idAdminObra == null || string.IsNullOrWhiteSpace(obraNombre))
                 return null;
 
-            using (var conn = new SqlConnection(ObtenerConexion()))
+            return await Task.Run(() =>
             {
-                string query = "SELECT id_obra FROM obra WHERE id_admin_obra = @idAdminObra AND obra_nombre = @obraNombre";
-                using (var cmd = new SqlCommand(query, conn))
+                using (var conn = new SqlConnection(_connectionString))
                 {
-                    cmd.Parameters.AddWithValue("@idAdminObra", idAdminObra);
-                    cmd.Parameters.AddWithValue("@obraNombre", obraNombre);
-                    conn.Open();
-
-                    object resultado = cmd.ExecuteScalar();
-                    if (resultado != null && int.TryParse(resultado.ToString(), out int idObra))
-                        return idObra;
-
-
-                    return null;
-                }
-
-            }
-        }
-
-        private void CargarDatosComboBox()
-        {
-            
-            string usuario = Variables.Usuario;
-            var dB_Admins = new DB_admins();
-            int? idAdminObra;
-
-            if (AdminComboBox.SelectedItem!=null) {
-                idAdminObra = dB_Admins.ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString());
-            }
-            else
-            {
-                 idAdminObra = dB_Admins.ObtenerIdPorUsuario(usuario);
-            }
-
-            try
-            {
-                using (var conn = new SqlConnection(ObtenerConexion()))
-                {
-                    string query = "SELECT obra_nombre FROM obra WHERE id_admin_obra = @idAdminObra";
+                    string query = "SELECT id_obra FROM obra WHERE id_admin_obra = @idAdminObra AND obra_nombre = @obraNombre";
                     using (var cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@idAdminObra", idAdminObra);
+                        cmd.Parameters.AddWithValue("@obraNombre", obraNombre);
                         conn.Open();
 
-                        using (var reader = cmd.ExecuteReader())
+                        var resultado = cmd.ExecuteScalar();
+                        return resultado != null && int.TryParse(resultado.ToString(), out int idObra) ? idObra : (int?)null;
+                    }
+                }
+            });
+        }
+
+        private async Task CargarObrasAsync()
+        {
+            try
+            {
+                int? idAdminObra = AdminComboBox.SelectedItem != null
+                    ? _dbAdmins.ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString())
+                    : _dbAdmins.ObtenerIdPorUsuario(Variables.Usuario);
+
+                var obras = await Task.Run(() =>
+                {
+                    var listaObras = new List<string>();
+                    using (var conn = new SqlConnection(_connectionString))
+                    {
+                        string query = "SELECT obra_nombre FROM obra WHERE id_admin_obra = @idAdminObra";
+                        using (var cmd = new SqlCommand(query, conn))
                         {
-                            ObraComboBox.Items.Clear();
-                            while (reader.Read())
+                            cmd.Parameters.AddWithValue("@idAdminObra", idAdminObra);
+                            conn.Open();
+
+                            using (var reader = cmd.ExecuteReader())
                             {
-                                ObraComboBox.Items.Add(reader["obra_nombre"].ToString());
+                                while (reader.Read())
+                                {
+                                    listaObras.Add(reader["obra_nombre"].ToString());
+                                }
                             }
                         }
                     }
+                    return listaObras;
+                });
+
+                ObraComboBox.Items.Clear();
+                foreach (var obra in obras)
+                {
+                    ObraComboBox.Items.Add(obra);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar datos: " + ex.Message);
+                MessageBox.Show($"Error al cargar obras: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private void ComBoxSemana_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void ComBoxSemana_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (_isInitializing) return;
+
             Variables.Fecha = ComBoxSemana.SelectedItem?.ToString() ?? string.Empty;
+            Variables.indexComboboxSemana = ComBoxSemana.SelectedItem?.ToString();
 
-            Agregar_tiempo tiempo = new Agregar_tiempo();
-
+            var tiempo = new Agregar_tiempo();
             var resultado = tiempo.ObtenerFechasDesdeGlobal();
 
             if (resultado.exito)
             {
-                DateTime inicio = resultado.fechaInicio;
-                DateTime fin = resultado.fechaFin;
-
-                Variables.FechaInicio = inicio.ToString("yyyy-MM-dd");
-                Variables.FechaFin = fin.ToString("yyyy-MM-dd");
-                Variables.indexComboboxSemana = ComBoxSemana.SelectedItem.ToString();
+                Variables.FechaInicio = resultado.fechaInicio.ToString("yyyy-MM-dd");
+                Variables.FechaFin = resultado.fechaFin.ToString("yyyy-MM-dd");
             }
 
-            CargarEmpleados();
-            //carga suma footer
-            CargarYSumar();
+            await CargarEmpleadosAsync();
         }
 
         private void ActualizarSemanas()
         {
-            Agregar_tiempo tiempo = new Agregar_tiempo();
+            var tiempo = new Agregar_tiempo();
 
             ComBoxSemana.ItemsSource = null;
             ComBoxSemana.SelectedItem = null;
@@ -351,203 +380,139 @@ namespace CivitasERP.Views
                 int mes = ComBoxMes.SelectedIndex + 1;
                 ComBoxSemana.ItemsSource = tiempo.GetSemanasDelMes(anio, mes);
             }
-        }
-
-        private void ComBoxSemana_DropDownOpened(object sender, EventArgs e)
-        {
-            CargarMeses();
-
-        }
-
-        private void ComBoxMes_DropDownOpened(object sender, EventArgs e)
-        {
-            CargarMeses();
         }
 
         private void ComBoxMes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Agregar_tiempo tiempo = new Agregar_tiempo();
+            if (_isInitializing) return;
 
-            ComBoxSemana.ItemsSource = null;
-            ComBoxSemana.SelectedItem = null;
-
-            if (ComBoxAnio.SelectedItem is int anio && ComBoxMes.SelectedIndex >= 0)
-            {
-                int mes = ComBoxMes.SelectedIndex + 1;
-                ComBoxSemana.ItemsSource = tiempo.GetSemanasDelMes(anio, mes);
-            }
             ActualizarSemanas();
-
             Variables.indexComboboxMes = ComBoxMes.SelectedItem?.ToString();
         }
 
         private void CargarMeses()
         {
-            Agregar_tiempo tiempo = new Agregar_tiempo();
+            var tiempo = new Agregar_tiempo();
             ComBoxMes.ItemsSource = tiempo.GetMeses();
-            ComBoxMes.SelectedItem = DateTime.Now.Month;  // Corregí para que sea el mes actual (no año)
-
+            ComBoxMes.SelectedItem = DateTime.Now.Month;
         }
 
         private void ComBoxAnio_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Agregar_tiempo tiempo = new Agregar_tiempo();
+            if (_isInitializing) return;
 
-            if (ComBoxAnio.ItemsSource == null)
-            {
-                ComBoxAnio.ItemsSource = tiempo.GetAnios();
-            }
-
-            if (ComBoxAnio.SelectedItem == null || !(ComBoxAnio.SelectedItem is int))
-            {
-                int anioActual = DateTime.Now.Year;
-                if (ComBoxAnio.Items.Contains(anioActual))
-                {
-                    ComBoxAnio.SelectedItem = Variables.indexComboboxAño;
-                }
-            }
             ActualizarSemanas();
-
             Variables.indexComboboxAño = ComBoxAnio.SelectedItem?.ToString();
-        }
-
-        private void ComBoxAnio_DropDownOpened(object sender, EventArgs e)
-        {
-            CargarAnios();
         }
 
         private void CargarAnios()
         {
-            Agregar_tiempo tiempo = new Agregar_tiempo();
+            var tiempo = new Agregar_tiempo();
             ComBoxAnio.ItemsSource = tiempo.GetAnios();
             ComBoxAnio.SelectedItem = DateTime.Now.Year;
         }
 
-        //Calcula los totales de la nómina en el Footer
         private void CalcularTotales(IEnumerable<DataGridNominas.Empleado> lista)
         {
-            int totalPersonal = lista.Count();
-            decimal tJornada = lista.Sum(e => e.SueldoJornada);
-            decimal tSemanal = lista.Sum(x => x.SueldoSemanal);
-            decimal tHrsExtra = lista.Sum(x => x.HorasExtra);
-            decimal tPrecioHE = lista.Sum(x => x.PHoraExtra);
-            decimal tSuelExtra = lista.Sum(x => x.SuelExtra);
-            decimal tTrabajado = lista.Sum(x => x.SuelTrabajado);
-            decimal tGeneral = lista.Sum(x => x.SuelTotal);
+            if (lista == null) return;
 
-            TotalPersonal.Text = totalPersonal.ToString();
-            TotalSuelJornal.Text = tJornada.ToString("C2");
-            TotalSuelSemanal.Text = tSemanal.ToString("C2");
-            TotalHrsExtra.Text = tHrsExtra.ToString("N2");
-            TotalPrecioHrsExt.Text = tPrecioHE.ToString("C2");
-            TotalSuelExt.Text = tSuelExtra.ToString("C2");
-            TotalSuelTrabajado.Text = tTrabajado.ToString("C2");
-            TotalGeneral.Text = tGeneral.ToString("C2");
+            var empleados = lista.ToList(); // Materializar una vez
+
+            TotalPersonal.Text = empleados.Count.ToString();
+            TotalSuelJornal.Text = empleados.Sum(e => e.SueldoJornada).ToString("C2");
+            TotalSuelSemanal.Text = empleados.Sum(x => x.SueldoSemanal).ToString("C2");
+            TotalHrsExtra.Text = empleados.Sum(x => x.HorasExtra).ToString("N2");
+            TotalPrecioHrsExt.Text = empleados.Sum(x => x.PHoraExtra).ToString("C2");
+            TotalSuelExt.Text = empleados.Sum(x => x.SuelExtra).ToString("C2");
+            TotalSuelTrabajado.Text = empleados.Sum(x => x.SuelTrabajado).ToString("C2");
+            TotalGeneral.Text = empleados.Sum(x => x.SuelTotal).ToString("C2");
         }
 
-        private void CargarYSumar()
+        private async Task<string> ObtenerUbicacionObraAsync(int? idObra)
         {
-            DB_admins dB_Admins = new DB_admins();
-            if (AdminComboBox.SelectedItem != null)
-            {
-                var empleados = repo.ObtenerEmpleados(dB_Admins.ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString()), AdminComboBox.SelectedItem.ToString());
-                dataGridNomina.ItemsSource = null;            // ← 🔄 Resetear
-                dataGridNomina.ItemsSource = empleados;       // ← 🆕 Asignar nueva lista
-                CalcularTotales(empleados);
-            }
-            else
-            {
-                var empleados = repo.ObtenerEmpleados(Variables.IdAdmin, Variables.Usuario);
-                dataGridNomina.ItemsSource = null;            // ← 🔄 Resetear
-                dataGridNomina.ItemsSource = empleados;       // ← 🆕 Asignar nueva lista
-                CalcularTotales(empleados);
-            }
+            if (idObra == null) return string.Empty;
 
-        }
-
-        public string ObtenerUbicacionObra(int? idObra)
-        {
-            string ubicacion = null;
-
-            using (SqlConnection connection = new SqlConnection(ObtenerConexion()))
-            using (SqlCommand command = new SqlCommand("SELECT obra_ubicacion FROM obra WHERE id_obra = @IdObra", connection))
+            return await Task.Run(() =>
             {
-                command.Parameters.AddWithValue("@IdObra", idObra);
-                try
+                using (var connection = new SqlConnection(_connectionString))
+                using (var command = new SqlCommand("SELECT obra_ubicacion FROM obra WHERE id_obra = @IdObra", connection))
                 {
-                    connection.Open();
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    command.Parameters.AddWithValue("@IdObra", idObra);
+                    try
                     {
-                        if (reader.Read())
+                        connection.Open();
+                        using (var reader = command.ExecuteReader())
                         {
-                            ubicacion = reader["obra_ubicacion"].ToString();
+                            return reader.Read() ? reader["obra_ubicacion"].ToString() : string.Empty;
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error al obtener ubicación: {ex.Message}");
+                        return string.Empty;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error al obtener la ubicación: " + ex.Message);
-                }
-            }
-
-            return ubicacion;
+            });
         }
 
-        private void AdminComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void AdminComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DB_admins dB_Admins = new DB_admins();
+            if (_isInitializing) return;
+
             if (AdminComboBox.SelectedItem != null)
             {
-                string nombreadmin = AdminComboBox.SelectedItem.ToString();
-                Variables.IdAdmin = dB_Admins.ObtenerIdPorUsuario(nombreadmin);
-                Variables.AdminSeleccionado = nombreadmin;
+                string nombreAdmin = AdminComboBox.SelectedItem.ToString();
+                Variables.IdAdmin = _dbAdmins.ObtenerIdPorUsuario(nombreAdmin);
+                Variables.AdminSeleccionado = nombreAdmin;
+
+                // Recargar obras y empleados
+                await CargarObrasAsync();
+                await CargarEmpleadosAsync();
             }
         }
-        private void AdminComboBox_DropDownOpened(object sender, EventArgs e)
+
+        private void CargarAdministradores()
         {
-
-        }
-        private void cargar_admin()
-        {
-
-            string usuario = Variables.Usuario;
-            var dB_Admins = new DB_admins();
-            Variables.IdAdmin = dB_Admins.ObtenerIdPorUsuario(usuario);
-            int? idAdminObra = Variables.IdAdmin;
-
             try
             {
-                var conexion = new Conexion();
-                string connectionString = conexion.ObtenerCadenaConexion();
-
-                using (var conn = new SqlConnection(connectionString))
+                var admins = new List<string>();
+                using (var conn = new SqlConnection(_connectionString))
                 {
-                    // Suponiendo que quieres obtener todos los admins, o filtrar de alguna forma
-                    string query = @"SELECT
-                            admins_usuario AS admin_nombre
-                     FROM admins;";
-
+                    string query = "SELECT admins_usuario FROM admins";
                     using (var cmd = new SqlCommand(query, conn))
                     {
                         conn.Open();
-
                         using (var reader = cmd.ExecuteReader())
                         {
-                            AdminComboBox.Items.Clear();
                             while (reader.Read())
                             {
-                                AdminComboBox.Items.Add(reader["admin_nombre"].ToString());
+                                admins.Add(reader["admins_usuario"].ToString());
                             }
                         }
                     }
                 }
+
+                Dispatcher.Invoke(() =>
+                {
+                    AdminComboBox.Items.Clear();
+                    foreach (var admin in admins)
+                    {
+                        AdminComboBox.Items.Add(admin);
+                    }
+                });
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar administradores: " + ex.Message);
+                Dispatcher.Invoke(() =>
+                    MessageBox.Show($"Error al cargar administradores: {ex.Message}", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error));
             }
-
-
         }
+
+        // Eventos simplificados que no requieren lógica adicional
+        private void ComBoxSemana_DropDownOpened(object sender, EventArgs e) => CargarMeses();
+        private void ComBoxMes_DropDownOpened(object sender, EventArgs e) => CargarMeses();
+        private void ComBoxAnio_DropDownOpened(object sender, EventArgs e) => CargarAnios();
+        private void AdminComboBox_DropDownOpened(object sender, EventArgs e) { } // Ya se carga en Initialize
     }
 }
