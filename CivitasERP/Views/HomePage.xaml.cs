@@ -43,15 +43,15 @@ namespace CivitasERP.Views
             _svc = new GraficosHomePage();
 
             // 1) Resumen
-            var sum = _svc.GetSummary(Variables.IdAdmin ?? 0);
+            var sum = _svc.GetSummary();
             txtTotalEmpleados.Text = sum.TotalEmpleados.ToString();
             txtNominaSemanal.Text = sum.NominaSemanal.ToString("C2");
             txtHorasExtra.Text = sum.HorasExtra.ToString("N2");
             txtAusencias.Text = sum.Ausencias.ToString();
 
             // 2) Gráficas
-            piePlot.Model = _svc.GetPieChartModel(Variables.IdAdmin ?? 0);
-            linePlot.Model = _svc.GetLineChartModel(Variables.IdAdmin ?? 0);
+            piePlot.Model = _svc.GetPieChartModel();
+            linePlot.Model = _svc.GetLineChartModel();
 
             // 3) Actualizar fecha y hora
             _timer = new DispatcherTimer

@@ -162,7 +162,7 @@ namespace CivitasERP.Views
                     await repo.EliminarEmpleadoAsync(empleado.ID);
 
                     // 4) Refrescar el grid y recalcular totales
-                    CargarEmpleados();
+                    //CargarEmpleados();
                     CalcularTotales((IEnumerable<DataGridNominas.Empleado>)dataGridNomina.ItemsSource);
 
                     MessageBox.Show("Empleado eliminado correctamente.",
@@ -217,6 +217,7 @@ namespace CivitasERP.Views
                 ComBoxSemana.SelectedIndex = numeroSemana;
                 ComBoxMes.SelectedIndex = numeroMes - 1;
                 ComBoxAnio.SelectedItem = año;
+
             }
 
             string usuario = Variables.Usuario;
@@ -225,7 +226,6 @@ namespace CivitasERP.Views
             if (AdminComboBox.SelectedItem != null)
             {
                 idAdmin = dB_Admins.ObtenerIdPorUsuario(AdminComboBox.SelectedItem.ToString());
-
             }
             else
             {
@@ -239,7 +239,6 @@ namespace CivitasERP.Views
 
                 int? id_obra = ObtenerID_obra(idAdmin, nombre_obra);
                 Variables.IdObra = id_obra;
-
                 UbicacionLabel.Text = ObtenerUbicacionObra(id_obra);
 
                 CargarEmpleados();
@@ -334,7 +333,7 @@ namespace CivitasERP.Views
                 Variables.indexComboboxSemana = ComBoxSemana.SelectedItem.ToString();
             }
 
-            CargarEmpleados();
+            //CargarEmpleados();
             //carga suma footer
             CargarYSumar();
         }
