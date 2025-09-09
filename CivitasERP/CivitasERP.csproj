@@ -50,16 +50,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\CivitasERP.Api\appsettings.Development.json" Link="appsettings.Development.json">
+    <Content Include="..\CivitasERP.Api\appsettings.Development.json" Link="Conexiones\appsettings.Development.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\CivitasERP.Api\appsettings.json" Link="appsettings.json">
+    <Content Include="..\CivitasERP.Api\appsettings.json" Link="Conexiones\appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\CivitasERP.Api\appsettings.Production.json" Link="appsettings.Production.json">
+    <Content Include="..\CivitasERP.Api\appsettings.Production.json" Link="Conexiones\appsettings.Production.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\EmailTemplate.html">
+    <Content Include="Views\Usuario\EmailTemplate.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -176,6 +176,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BiometriaDP\BiometriaDP.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Usuario\LoginPage.xaml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Page>
   </ItemGroup>
 
 </Project>

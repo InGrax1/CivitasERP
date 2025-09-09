@@ -1,11 +1,11 @@
 ﻿using System;
+using CivitasERP.Conexiones;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using CivitasERP.Models;
 using System.Security.Cryptography;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -35,7 +35,7 @@ namespace CivitasERP.Models
            
 
 
-            Conexion Sconexion = new Conexion();
+            DBConexion Sconexion = new DBConexion();
             string connectionString = Sconexion.ObtenerCadenaConexion();
 
             using (SqlConnection conexion = new SqlConnection(connectionString))

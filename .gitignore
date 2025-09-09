@@ -20,3 +20,5 @@ publish/
 
 # Archivos Para la conexion de base de datos
 Conexion.cs
+AppSecrets.cs
+

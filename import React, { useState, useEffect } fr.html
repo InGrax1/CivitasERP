@@ -1,0 +1,853 @@
+import React, { useState, useEffect } from 'react';
+import { Search, ShoppingCart, Heart, User, MessageCircle, Star, Filter, Plus, MapPin, Clock, Bell, Menu, X, Home, Package, Users, BarChart3, Settings } from 'lucide-react';
+
+const UniversityMarketplace = () => {
+  const [currentView, setCurrentView] = useState('home');
+  const [user, setUser] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('todos');
+  const [cartItems, setCartItems] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+
+  // Mock data
+  const categories = [
+    { id: 'todos', name: 'Todos', icon: '🔍' },
+    { id: 'comida', name: 'Comida', icon: '🍕' },
+    { id: 'ropa', name: 'Ropa', icon: '👕' },
+    { id: 'electronicos', name: 'Electrónicos', icon: '📱' },
+    { id: 'libros', name: 'Libros', icon: '📚' },
+    { id: 'accesorios', name: 'Accesorios', icon: '🎒' },
+    { id: 'segunda-mano', name: 'Segunda Mano', icon: '♻️' }
+  ];
+
+  const mockProducts = [
+    {
+      id: 1,
+      title: 'iPhone 13 Pro Max',
+      description: 'Excelente estado, batería al 95%, incluye cargador y funda',
+      price: 18500,
+      category: 'electronicos',
+      images: ['https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=400'],
+      seller: { name: 'Ana García', rating: 4.8, reviews: 23, career: 'Ingeniería', semester: '6to' },
+      location: 'Biblioteca Central',
+      available: true,
+      stock: 1,
+      rating: 4.9,
+      reviews: 12
+    },
+    {
+      id: 2,
+      title: 'Tacos de Canasta',
+      description: 'Deliciosos tacos caseros, salsa verde y roja incluida',
+      price: 45,
+      category: 'comida',
+      images: ['https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400'],
+      seller: { name: 'Carlos Mendez', rating: 4.9, reviews: 156, career: 'Gastronomía', semester: '4to' },
+      location: 'Cafetería Facultad',
+      available: true,
+      stock: 20,
+      rating: 4.8,
+      reviews: 89,
+      schedule: '11:00 AM - 2:00 PM'
+    },
+    {
+      id: 3,
+      title: 'Cálculo Diferencial - Stewart',
+      description: 'Libro en perfecto estado, sin rayones ni marcas',
+      price: 350,
+      category: 'libros',
+      images: ['https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400'],
+      seller: { name: 'María López', rating: 4.7, reviews: 45, career: 'Matemáticas', semester: '8vo' },
+      location: 'Aula Magna',
+      available: true,
+      stock: 1,
+      rating: 4.6,
+      reviews: 8
+    }
+  ];
+
+  const mockNotifications = [
+    { id: 1, type: 'sale', message: 'Tu iPhone 13 Pro Max ha sido vendido', time: '5 min' },
+    { id: 2, type: 'message', message: 'Nuevo mensaje de Carlos sobre los tacos', time: '15 min' },
+    { id: 3, type: 'favorite', message: 'Hay stock del libro que tienes en favoritos', time: '1 h' }
+  ];
+
+  // Componente de Header
+  const Header = () => (
+    <header className="bg-gradient-to-r from-blue-600 to-purple-700 text-white shadow-lg sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center space-x-4">
+            <button 
+              className="md:hidden"
+              onClick={() => setShowMobileMenu(!showMobileMenu)}
+            >
+              {showMobileMenu ? <X size={24} /> : <Menu size={24} />}
+            </button>
+            <h1 className="text-xl font-bold cursor-pointer" onClick={() => setCurrentView('home')}>
+              UniMarket 🎓
+            </h1>
+          </div>
+          
+          <div className="hidden md:flex flex-1 max-w-2xl mx-8">
+            <div className="relative w-full">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Buscar productos..."
+                className="w-full pl-10 pr-4 py-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-white"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <button 
+              className="relative p-2 hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
+              onClick={() => setShowNotifications(!showNotifications)}
+            >
+              <Bell size={20} />
+              <span className="absolute -top-1 -right-1 bg-red-500 text-xs w-5 h-5 rounded-full flex items-center justify-center">3</span>
+            </button>
+            
+            <button 
+              className="relative p-2 hover:bg-white hover:bg-opacity-20 rounded-full transition-colors"
+              onClick={() => setCurrentView('cart')}
+            >
+              <ShoppingCart size={20} />
+              {cartItems.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                  {cartItems.length}
+                </span>
+              )}
+            </button>
+
+            {user ? (
+              <button 
+                className="flex items-center space-x-2 hover:bg-white hover:bg-opacity-20 rounded-lg px-3 py-2 transition-colors"
+                onClick={() => setCurrentView('profile')}
+              >
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face" 
+                     alt="Profile" className="w-8 h-8 rounded-full" />
+                <span className="hidden sm:inline">{user.name}</span>
+              </button>
+            ) : (
+              <button 
+                className="bg-white text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+                onClick={() => setCurrentView('login')}
+              >
+                Iniciar Sesión
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Mobile Search */}
+        <div className="md:hidden pb-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Buscar productos..."
+              className="w-full pl-10 pr-4 py-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-white"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Notifications Dropdown */}
+      {showNotifications && (
+        <div className="absolute right-4 top-16 bg-white text-gray-800 rounded-lg shadow-xl w-80 z-50">
+          <div className="p-4 border-b">
+            <h3 className="font-semibold">Notificaciones</h3>
+          </div>
+          <div className="max-h-64 overflow-y-auto">
+            {mockNotifications.map((notification) => (
+              <div key={notification.id} className="p-4 border-b hover:bg-gray-50 cursor-pointer">
+                <p className="text-sm">{notification.message}</p>
+                <p className="text-xs text-gray-500 mt-1">{notification.time}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </header>
+  );
+
+  // Componente de Mobile Menu
+  const MobileMenu = () => (
+    showMobileMenu && (
+      <div className="fixed inset-0 z-40 bg-gray-800 bg-opacity-75 md:hidden">
+        <div className="bg-white w-64 h-full p-6">
+          <nav className="space-y-4">
+            <button 
+              className="flex items-center space-x-2 w-full text-left p-2 rounded-lg hover:bg-gray-100"
+              onClick={() => { setCurrentView('home'); setShowMobileMenu(false); }}
+            >
+              <Home size={20} />
+              <span>Inicio</span>
+            </button>
+            <button 
+              className="flex items-center space-x-2 w-full text-left p-2 rounded-lg hover:bg-gray-100"
+              onClick={() => { setCurrentView('marketplace'); setShowMobileMenu(false); }}
+            >
+              <Package size={20} />
+              <span>Marketplace</span>
+            </button>
+            <button 
+              className="flex items-center space-x-2 w-full text-left p-2 rounded-lg hover:bg-gray-100"
+              onClick={() => { setCurrentView('profile'); setShowMobileMenu(false); }}
+            >
+              <User size={20} />
+              <span>Mi Perfil</span>
+            </button>
+            <button 
+              className="flex items-center space-x-2 w-full text-left p-2 rounded-lg hover:bg-gray-100"
+              onClick={() => { setCurrentView('admin'); setShowMobileMenu(false); }}
+            >
+              <Settings size={20} />
+              <span>Administración</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+    )
+  );
+
+  // Componente de Home
+  const HomePage = () => (
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
+            Marketplace Universitario
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 opacity-90">
+            Compra, vende e intercambia con estudiantes de tu universidad
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button 
+              className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+              onClick={() => setCurrentView('marketplace')}
+            >
+              Explorar Productos
+            </button>
+            <button 
+              className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
+              onClick={() => setCurrentView('sell')}
+            >
+              Vender Producto
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Categories */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Categorías Populares</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6">
+            {categories.slice(1).map((category) => (
+              <button
+                key={category.id}
+                className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105"
+                onClick={() => { setSelectedCategory(category.id); setCurrentView('marketplace'); }}
+              >
+                <div className="text-4xl mb-3">{category.icon}</div>
+                <h3 className="font-medium text-gray-800">{category.name}</h3>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Products */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Productos Destacados</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {mockProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="py-16 bg-gray-800 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+              <div className="text-4xl font-bold mb-2">1,200+</div>
+              <div className="text-gray-300">Estudiantes Activos</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold mb-2">5,000+</div>
+              <div className="text-gray-300">Productos Vendidos</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold mb-2">4.8</div>
+              <div className="text-gray-300">Calificación Promedio</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold mb-2">98%</div>
+              <div className="text-gray-300">Transacciones Exitosas</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+
+  // Componente de Product Card
+  const ProductCard = ({ product }) => {
+    const isInCart = cartItems.some(item => item.id === product.id);
+    const isFavorite = favorites.some(fav => fav === product.id);
+
+    const addToCart = () => {
+      if (!isInCart) {
+        setCartItems([...cartItems, product]);
+      }
+    };
+
+    const toggleFavorite = () => {
+      if (isFavorite) {
+        setFavorites(favorites.filter(fav => fav !== product.id));
+      } else {
+        setFavorites([...favorites, product.id]);
+      }
+    };
+
+    return (
+      <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group">
+        <div className="relative">
+          <img 
+            src={product.images[0]} 
+            alt={product.title}
+            className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          <button 
+            className={`absolute top-3 right-3 p-2 rounded-full ${isFavorite ? 'bg-red-500 text-white' : 'bg-white text-gray-600'} hover:scale-110 transition-all`}
+            onClick={toggleFavorite}
+          >
+            <Heart size={16} fill={isFavorite ? 'white' : 'none'} />
+          </button>
+          {product.schedule && (
+            <div className="absolute bottom-3 left-3 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-xs flex items-center">
+              <Clock size={12} className="mr-1" />
+              {product.schedule}
+            </div>
+          )}
+        </div>
+        
+        <div className="p-4">
+          <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2">{product.title}</h3>
+          <p className="text-gray-600 text-sm mb-3 line-clamp-2">{product.description}</p>
+          
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-2xl font-bold text-green-600">${product.price}</span>
+            <div className="flex items-center">
+              <Star size={16} className="text-yellow-400 fill-current" />
+              <span className="ml-1 text-sm text-gray-600">{product.rating} ({product.reviews})</span>
+            </div>
+          </div>
+
+          <div className="flex items-center text-sm text-gray-500 mb-3">
+            <MapPin size={14} className="mr-1" />
+            {product.location}
+          </div>
+
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center">
+              <img 
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face"
+                alt={product.seller.name}
+                className="w-6 h-6 rounded-full mr-2"
+              />
+              <div>
+                <div className="text-sm font-medium">{product.seller.name}</div>
+                <div className="text-xs text-gray-500">{product.seller.career}</div>
+              </div>
+            </div>
+            <div className="flex items-center text-sm">
+              <Star size={14} className="text-yellow-400 fill-current" />
+              <span className="ml-1">{product.seller.rating}</span>
+            </div>
+          </div>
+
+          <div className="flex gap-2">
+            <button 
+              className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
+                isInCart 
+                  ? 'bg-gray-200 text-gray-600 cursor-not-allowed' 
+                  : 'bg-blue-600 text-white hover:bg-blue-700'
+              }`}
+              onClick={addToCart}
+              disabled={isInCart}
+            >
+              {isInCart ? 'En Carrito' : 'Agregar'}
+            </button>
+            <button 
+              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              onClick={() => { setSelectedProduct(product); setCurrentView('product-detail'); }}
+            >
+              Ver
+            </button>
+            <button 
+              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              onClick={() => setCurrentView('chat')}
+            >
+              <MessageCircle size={16} />
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Componente de Marketplace
+  const MarketplacePage = () => {
+    const filteredProducts = mockProducts.filter(product => {
+      const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           product.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = selectedCategory === 'todos' || product.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
+
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Filters */}
+          <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="flex items-center">
+                <Filter size={20} className="mr-2 text-gray-600" />
+                <span className="font-medium text-gray-700">Filtros:</span>
+              </div>
+              
+              <select 
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+
+              <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <option value="">Precio</option>
+                <option value="low-high">Menor a Mayor</option>
+                <option value="high-low">Mayor a Menor</option>
+              </select>
+
+              <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <option value="">Calificación</option>
+                <option value="high-rating">Mejor Calificados</option>
+                <option value="most-reviews">Más Reseñas</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Results */}
+          <div className="mb-4">
+            <h2 className="text-2xl font-bold text-gray-800">
+              {selectedCategory === 'todos' ? 'Todos los productos' : categories.find(c => c.id === selectedCategory)?.name}
+            </h2>
+            <p className="text-gray-600">{filteredProducts.length} productos encontrados</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Componente de Login
+  const LoginPage = () => (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Inicia sesión en UniMarket
+          </h2>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Solo para estudiantes con correo institucional
+          </p>
+        </div>
+        <form className="mt-8 space-y-6" onSubmit={(e) => {
+          e.preventDefault();
+          setUser({ name: 'Juan Pérez', email: 'juan.perez@universidad.edu.mx' });
+          setCurrentView('home');
+        }}>
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <input
+                type="email"
+                required
+                className="relative block w-full px-3 py-2 border border-gray-300 rounded-t-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Correo institucional"
+              />
+            </div>
+            <div>
+              <input
+                type="password"
+                required
+                className="relative block w-full px-3 py-2 border border-gray-300 rounded-b-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Contraseña"
+              />
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Iniciar Sesión
+            </button>
+          </div>
+
+          <div>
+            <button
+              type="button"
+              className="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Continuar con Google Institucional
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+
+  // Componente de Chat
+  const ChatPage = () => (
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-white rounded-lg shadow-lg h-96 flex flex-col">
+          <div className="border-b p-4">
+            <h3 className="font-semibold">Chat con Carlos Mendez</h3>
+            <p className="text-sm text-gray-600">Tacos de Canasta</p>
+          </div>
+          
+          <div className="flex-1 p-4 overflow-y-auto">
+            <div className="space-y-4">
+              <div className="flex items-start">
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face" 
+                     className="w-8 h-8 rounded-full mr-2" />
+                <div className="bg-gray-100 rounded-lg p-3 max-w-xs">
+                  <p className="text-sm">¡Hola! ¿Te interesan los tacos? Están fresquitos</p>
+                </div>
+              </div>
+              <div className="flex items-start justify-end">
+                <div className="bg-blue-600 text-white rounded-lg p-3 max-w-xs">
+                  <p className="text-sm">Sí, me interesan. ¿Cuánto cuestan 5 tacos?</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="border-t p-4">
+            <div className="flex">
+              <input
+                type="text"
+                placeholder="Escribe tu mensaje..."
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+              />
+              <button className="bg-blue-600 text-white px-6 py-2 rounded-r-lg hover:bg-blue-700">
+                Enviar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Componente de Admin Dashboard
+  const AdminDashboard = () => (
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="text-3xl font-bold text-gray-800 mb-8">Panel de Administración</h1>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center">
+              <Users className="h-8 w-8 text-blue-600" />
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-500">Usuarios Activos</p>
+                <p className="text-2xl font-semibold text-gray-900">1,234</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center">
+              <Package className="h-8 w-8 text-green-600" />
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-500">Productos Activos</p>
+                <p className="text-2xl font-semibold text-gray-900">856</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center">
+              <ShoppingCart className="h-8 w-8 text-purple-600" />
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-500">Ventas del Mes</p>
+                <p className="text-2xl font-semibold text-gray-900">342</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center">
+              <BarChart3 className="h-8 w-8 text-orange-600" />
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-500">Ingresos</p>
+                <p className="text-2xl font-semibold text-gray-900">$45,678</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="bg-white rounded-lg shadow">
+            <div className="px-6 py-4 border-b">
+              <h3 className="text-lg font-medium text-gray-900">Productos Recientes</h3>
+            </div>
+            <div className="p-6">
+              <div className="space-y-4">
+                {mockProducts.map((product) => (
+                  <div key={product.id} className="flex items-center space-x-4">
+                    <img src={product.images[0]} alt={product.title} className="w-12 h-12 rounded-lg object-cover" />
+                    <div className="flex-1">
+                      <p className="font-medium text-gray-900">{product.title}</p>
+                      <p className="text-sm text-gray-500">${product.price} - {product.seller.name}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow">
+            <div className="px-6 py-4 border-b">
+              <h3 className="text-lg font-medium text-gray-900">Actividad Reciente</h3>
+            </div>
+            <div className="p-6">
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <div className="bg-green-100 rounded-full p-1">
+                    <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-900">Nueva venta realizada</p>
+                    <p className="text-xs text-gray-500">hace 5 minutos</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="bg-blue-100 rounded-full p-1">
+                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-900">Nuevo usuario registrado</p>
+                    <p className="text-xs text-gray-500">hace 15 minutos</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="bg-yellow-100 rounded-full p-1">
+                    <div className="w-2 h-2 bg-yellow-600 rounded-full"></div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-900">Producto reportado</p>
+                    <p className="text-xs text-gray-500">hace 1 hora</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Componente de Profile
+  const ProfilePage = () => (
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-600 to-purple-700 px-6 py-8">
+            <div className="flex items-center space-x-6">
+              <img 
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
+                alt="Profile"
+                className="w-20 h-20 rounded-full border-4 border-white"
+              />
+              <div className="text-white">
+                <h1 className="text-2xl font-bold">Juan Pérez</h1>
+                <p className="opacity-90">Ingeniería en Sistemas - 6to Semestre</p>
+                <div className="flex items-center mt-2">
+                  <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                  <span className="ml-1">4.8 (23 reseñas)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-gray-900">15</div>
+                <div className="text-sm text-gray-600">Productos Vendidos</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-gray-900">$2,450</div>
+                <div className="text-sm text-gray-600">Ingresos Totales</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-gray-900">98%</div>
+                <div className="text-sm text-gray-600">Satisfacción</div>
+              </div>
+            </div>
+
+            <div className="border-t pt-6">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Mis Productos</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {mockProducts.slice(0, 2).map((product) => (
+                  <div key={product.id} className="border rounded-lg p-4">
+                    <div className="flex items-center space-x-4">
+                      <img src={product.images[0]} alt={product.title} className="w-16 h-16 rounded-lg object-cover" />
+                      <div className="flex-1">
+                        <h4 className="font-medium text-gray-900">{product.title}</h4>
+                        <p className="text-sm text-gray-600">${product.price}</p>
+                        <span className="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
+                          Disponible
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Componente de Cart
+  const CartPage = () => {
+    const total = cartItems.reduce((sum, item) => sum + item.price, 0);
+
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-8">Carrito de Compras</h1>
+          
+          {cartItems.length === 0 ? (
+            <div className="bg-white rounded-lg shadow p-8 text-center">
+              <ShoppingCart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-medium text-gray-900 mb-2">Tu carrito está vacío</h3>
+              <p className="text-gray-600 mb-6">Agrega algunos productos para comenzar</p>
+              <button 
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                onClick={() => setCurrentView('marketplace')}
+              >
+                Explorar Productos
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              <div className="bg-white rounded-lg shadow">
+                {cartItems.map((item, index) => (
+                  <div key={item.id} className={`p-6 ${index !== cartItems.length - 1 ? 'border-b' : ''}`}>
+                    <div className="flex items-center space-x-4">
+                      <img src={item.images[0]} alt={item.title} className="w-20 h-20 rounded-lg object-cover" />
+                      <div className="flex-1">
+                        <h3 className="font-medium text-gray-900">{item.title}</h3>
+                        <p className="text-sm text-gray-600">{item.seller.name}</p>
+                        <p className="text-lg font-semibold text-green-600">${item.price}</p>
+                      </div>
+                      <button 
+                        className="text-red-600 hover:text-red-800"
+                        onClick={() => setCartItems(cartItems.filter(cartItem => cartItem.id !== item.id))}
+                      >
+                        <X size={20} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-lg font-medium">Total:</span>
+                  <span className="text-2xl font-bold text-green-600">${total}</span>
+                </div>
+                <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                  Proceder al Pago
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  // Render principal
+  const renderCurrentView = () => {
+    switch (currentView) {
+      case 'home':
+        return <HomePage />;
+      case 'marketplace':
+        return <MarketplacePage />;
+      case 'login':
+        return <LoginPage />;
+      case 'chat':
+        return <ChatPage />;
+      case 'admin':
+        return <AdminDashboard />;
+      case 'profile':
+        return <ProfilePage />;
+      case 'cart':
+        return <CartPage />;
+      default:
+        return <HomePage />;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <MobileMenu />
+      {renderCurrentView()}
+      
+      {/* Floating Action Button para vender */}
+      <button 
+        className="fixed bottom-6 right-6 bg-gradient-to-r from-blue-600 to-purple-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+        onClick={() => setCurrentView('sell')}
+      >
+        <Plus size={24} />
+      </button>
+    </div>
