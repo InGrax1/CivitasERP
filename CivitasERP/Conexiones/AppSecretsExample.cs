@@ -10,5 +10,6 @@ namespace CivitasERP.Conexion
     {
         public const string UpdateUrl = "https://TU_STORAGE.blob.core.windows.net/releases/";
         public const string AzureConnectionString = "REEMPLAZAR_CON_TU_CONNECTION_STRING";
+        public const string DefaultConnection = "REEMPLAZAR_CON_TU_CONNECTION_STRING";
     }
 }
