@@ -1,4 +1,5 @@
 ﻿using OxyPlot;
+using CivitasERP.Conexiones;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
 using OxyPlot.Series;
@@ -19,7 +20,7 @@ namespace CivitasERP.Models
 
         public GraficosHomePage()
         {
-            _connStr = new Conexion().ObtenerCadenaConexion();
+            _connStr = new DBConexion().ObtenerCadenaConexion();
             _tiempo = new Agregar_tiempo();
         }
 

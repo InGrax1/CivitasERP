@@ -1,4 +1,5 @@
 ﻿using System;
+using CivitasERP.Conexiones;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ using System.Windows.Input;
 using CivitasERP.Models;
 using BiometriaDP.Services;
 using static CivitasERP.Models.Datagrid_lista;
-using static CivitasERP.Views.LoginPage;
+using static CivitasERP.Views.Usuario.LoginPage;
 using CivitasERP.Views;
 using static CivitasERP.Models.DataGridNominas;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -51,7 +52,7 @@ namespace CivitasERP.ViewModels
 
         public ListaViewModel()
         {
-            _cs = new Conexion().ObtenerCadenaConexion();
+            _cs = new DBConexion().ObtenerCadenaConexion();
             _repo = new Datagrid_lista(_cs);
             int loggedAdmin;
 
