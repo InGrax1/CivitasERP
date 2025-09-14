@@ -1,0 +1,254 @@
+﻿<Window x:Class="CivitasERP.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CivitasERP"
+        mc:Ignorable="d"
+        Title="NominaPage"
+        Width="1800" Height="1000"
+        MinHeight="600" MinWidth="800"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        WindowStyle="None"
+        MouseLeftButtonDown="DragWindow"
+        Background= "{StaticResource BackgroudColor}">
+
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- FOTO DE PERFIL -->
+        <StackPanel Grid.Column="0" 
+                    Panel.ZIndex="3"
+                    HorizontalAlignment="Left" 
+                    Margin="6,43,0,0">
+            <Grid Width="137" Height="137">
+                <Ellipse x:Name="EllipseProfile"
+                         Width="137" Height="137"
+                         Stroke="DarkBlue" 
+                         StrokeThickness="2"
+                         Fill="{StaticResource BackgroudColor}"
+                         Cursor="Hand"
+                         MouseLeftButtonDown="EllipseProfile_MouseLeftButtonUp"/>
+                <Image x:Name="ImgPlaceholder"
+                       Source="/Images/Photo.png"
+                       Width="40" Height="40"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+            </Grid>
+        </StackPanel>
+
+        <!-- MENÚ LATERAL -->
+        <Border Grid.Column="0" Panel.ZIndex="2"
+                CornerRadius="0,0,0,0"
+                Background="{StaticResource BackgroudColor}"> 
+            <Border CornerRadius="0,30,0,0" Margin="0,150,0,0">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#1C2F5F" Offset="0"/>
+                        <GradientStop Color="#4B2C7D" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <Grid HorizontalAlignment="Center" Width="240">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <!-- Foto/Usuario -->
+                        <RowDefinition Height="*"/>
+                        <!-- Botones de menú -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Logout al pie -->
+                    </Grid.RowDefinitions>
+
+                    <!-- 1) Info de Usuario (fila 0) -->
+                    <StackPanel Grid.Row="0" Margin="0,80,0,20">
+                        <TextBlock x:Name="LabelRol"
+                           Text="ROL"
+                           Foreground="{StaticResource titleColor4}" FontSize="20" FontWeight="Bold"
+                           TextAlignment="Center"/>
+                        <TextBlock x:Name="LabelName"
+                           Text="Nombre"
+                           Foreground="{StaticResource titleColor4}" FontSize="16"
+                           TextAlignment="Center"
+                           Margin="0,5,0,0"/>
+                    </StackPanel>
+
+                    <!-- 2) Botones de Menú (fila 1) -->
+                    <StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="0,20,0,0">
+                        <!-- Menú -->
+                        <Button Style="{StaticResource LargeRoundButton}" 
+                                x:Name="btnMenu"
+                                Background="{StaticResource buttonColor1}"
+                                Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image Source="/Images/home.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <TextBlock Text="Menu" FontSize="20" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+                        
+                        <!-- Nómina -->
+                        <Button Style="{StaticResource LargeRoundButton}"
+                                Background="{StaticResource buttonColor2}"
+                                Click="Nav_Click"
+                                x:Name="btnNomina">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image Source="/Images/Nomina.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <TextBlock Text="Nomina" FontSize="20" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Pase de lista -->
+                        <Button Style="{StaticResource LargeRoundButton}"
+                                Background="{StaticResource buttonColor2}"
+                                x:Name="btnLista"
+                                Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image Source="/Images/lista.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <TextBlock Text="Pase de lista" FontSize="20" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+                        <!-- Nueva Obra-->
+                        <Button Style="{StaticResource LargeRoundButton}"
+                                Background="{StaticResource buttonColor2}"
+                                x:Name="btnNuevaObra"
+                                Click="btnNuevaObra_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image Source="/Images/Obra.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <TextBlock Text="Nueva Obra" FontSize="20" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+                        
+                        <!-- Registro Nuevo -->
+                        <Button Style="{StaticResource LargeRoundButton}"
+                                Background="DarkRed"
+                                x:Name="btnRegis"
+                                Click="btnRegister_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image Source="/Images/NewRegister.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <TextBlock Text="Registro Nuevo" FontSize="20" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+                        
+                        <!-- Justificaciones -->
+                        <Button Style="{StaticResource LargeRoundButton}"
+                                Background="{StaticResource buttonColor2}"
+                                x:Name="btnJustificaciones"
+                                Click="Nav_Click" Cursor="Hand">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image Source="/Images/Justification.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <TextBlock Text="Justificaciones" FontSize="20" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Datos Empleados -->
+                        <Button Style="{StaticResource LargeRoundButton}"
+                                Background="{StaticResource buttonColor2}"
+                                x:Name="btnEmpleados"
+                                Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image Source="/Images/Empleados.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <TextBlock Text="Datos Empleados" FontSize="20" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Datos Administradores -->
+                        <Button Style="{StaticResource LargeRoundButton}"
+                                Background="{StaticResource buttonColor2}"
+                                x:Name="btnAdmins"
+                                Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Image Source="/Images/AdminPanel.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <TextBlock Text="Datos Administradores" FontSize="20" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Configuracion -->
+                        <Button Style="{StaticResource LargeRoundButton}"
+                                Background="{StaticResource buttonColor2}"
+                                x:Name="btnConfiguracion"
+                                Click="Nav_Click">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Image Source="/Images/Settings.png" Width="25" Height="25" Margin="0,0,5,0"/>
+                                <TextBlock Text="Configuracion" FontSize="20" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+
+                        
+                    </StackPanel>
+
+                    <!-- 3) Logout al pie (fila 2) -->
+                    <StackPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="0,0,0,20">
+                        <Button Style="{StaticResource LargeRoundButton}"
+                                Background="DarkRed"
+                                x:Name="btnLogout"
+                                Click="Nav_Click" Cursor="Hand">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image Source="/Images/Logout.png" Width="20" Height="20" Margin="0,0,5,0"/>
+                                <TextBlock Text="Logout" FontSize="20" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Border>
+
+        <!-- ========== CONTENIDO DINÁMICO (columna 1) ========== -->
+        <Border Margin="20" Grid.Column="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- TopBar (min/max/close) -->
+                    <RowDefinition Height="*"/>
+                    <!-- Pages -->
+                </Grid.RowDefinitions>
+                
+                <!-- 1) TOPBAR -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <!--Minimizar-->
+                    <Border Background="{StaticResource buttonMin}"
+                            CornerRadius="30" 
+                            Margin="0,0,5,0">
+                        <Button Name="btnMin" 
+                                Style="{StaticResource RoundButton}"
+                                Background="{StaticResource buttonMin}"
+                                Content="—" 
+                                Click="TopBar_Click"/>
+                    </Border>
+                    <!--Maximizar-->
+                    <Border Background="{StaticResource buttonMax}"
+                            CornerRadius="30" 
+                            Margin="0,0,5,0">
+                        <Button Name="btnMax" 
+                                Style="{StaticResource RoundButton}"
+                                Background="{StaticResource buttonMax}"
+                                Content="[]" 
+                                Click="TopBar_Click"/>
+                    </Border>
+                    <!--Cerrar-->
+                    <Border Background="{StaticResource buttonExit}"
+                            CornerRadius="30">
+                        <Button Name="btnExit" 
+                                Style="{StaticResource RoundButton}"
+                                Background="{StaticResource buttonExit}"
+                                Content="×" 
+                                Click="TopBar_Click"/>
+                    </Border>
+                </StackPanel>
+                
+                <!-- 2) FRAME QUE MOSTRARÁ LAS PÁGINAS -->
+                <Frame x:Name="MainFrame"
+                       Grid.Row="1"
+                       NavigationUIVisibility="Hidden"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"
+                       Margin="0"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

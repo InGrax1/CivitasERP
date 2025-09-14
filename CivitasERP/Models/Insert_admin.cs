@@ -1,4 +1,5 @@
 ﻿using System;
+using CivitasERP.Conexiones;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -6,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using CivitasERP.Models;
 using System.Windows;
 using System.Data;
 
@@ -29,7 +29,7 @@ namespace CivitasERP.Models
 
         public void InsertarAdmin()
         {
-            Conexion Sconexion = new Conexion();
+            DBConexion Sconexion = new DBConexion();
             string connectionString;
 
             string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
@@ -98,7 +98,7 @@ namespace CivitasERP.Models
 
             public void InsertarJefe()
             {
-                string connectionString = new Conexion().ObtenerCadenaConexion();
+                string connectionString = new DBConexion().ObtenerCadenaConexion();
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {

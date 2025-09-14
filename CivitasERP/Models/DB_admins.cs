@@ -1,4 +1,5 @@
 ﻿using System;
+using CivitasERP.Conexiones;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace CivitasERP.Models
 
         public byte[] ObtenerHashContraseña(string Usuario)
         {
-            Conexion Sconexion = new Conexion();
+            DBConexion Sconexion = new DBConexion();
             string connectionString;
 
             string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
@@ -48,7 +49,7 @@ namespace CivitasERP.Models
         }
         public int? ObtenerIdPorUsuario(string nombreUsuario)
         {
-            Conexion Sconexion = new Conexion();
+            DBConexion Sconexion = new DBConexion();
             string connectionString;
 
             string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
@@ -89,7 +90,7 @@ namespace CivitasERP.Models
 
         public byte[] ObtenerHashContraseñaJefe(string Usuario)
         {
-            Conexion Sconexion = new Conexion();
+            DBConexion Sconexion = new DBConexion();
             string connectionString;
 
             string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
@@ -124,7 +125,7 @@ namespace CivitasERP.Models
         }
         public int? ObtenerIdPorUsuarioJefe(string nombreJefe)
         {
-            Conexion Sconexion = new Conexion();
+            DBConexion Sconexion = new DBConexion();
             string connectionString;
 
             string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();

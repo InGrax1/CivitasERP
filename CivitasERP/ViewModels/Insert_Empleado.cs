@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using CivitasERP.Conexiones;
+
+
 namespace CivitasERP.Models
 {
     class Insert_Empleado
@@ -26,7 +29,7 @@ namespace CivitasERP.Models
 
         public void InsertEmpleado()
         {
-            Conexion Sconexion = new Conexion();
+            DBConexion Sconexion = new DBConexion();
             string connectionString;
 
             string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();

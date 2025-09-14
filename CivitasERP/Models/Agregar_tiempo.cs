@@ -5,7 +5,7 @@ using System.Linq;
 using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
-using static CivitasERP.Views.LoginPage;
+using static CivitasERP.Views.Usuario.LoginPage;
 
 namespace CivitasERP.Models
 {

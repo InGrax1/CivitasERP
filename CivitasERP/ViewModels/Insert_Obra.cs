@@ -1,8 +1,9 @@
-﻿using CivitasERP.Models;
-using CivitasERP.ViewModels;
+﻿using CivitasERP.ViewModels;
 using System;
+using CivitasERP.Conexiones;
 using System.Collections.Generic;
 using System.Data;
+using CivitasERP.Conexion;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace CivitasERP.ViewModels
     {
         public bool AgregarObra(string nombreObra, string ubicacion, int? idAdminObra)
         {
-            Conexion Sconexion = new Conexion();
+            DBConexion Sconexion = new DBConexion();
             string connectionString;
 
             string obtenerCadenaConexion = Sconexion.ObtenerCadenaConexion();
