@@ -7,6 +7,7 @@ using System.Data;
 using System.Threading.Tasks;
 using System.Windows;
 using Velopack;
+using Azure.Identity;
 
 
 namespace CivitasERP
@@ -29,6 +30,10 @@ namespace CivitasERP
             app.Run();
         }
         */
+
+
+
+
     }
 
 
