@@ -99,93 +99,158 @@
                               SelectionChanged="ObraComboBox_SelectionChanged">
                     </ComboBox>
                 </Border>
-                <!-- Combos Mes + Año (ambos dentro de un StackPanel) -->
-                <StackPanel Grid.Row="2" Grid.Column="2"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Center"
-                            Margin="0,0,10,0">
-                    <!-- Combo Semana -->
-                    <TextBlock Text="Semana"
-                               FontSize="16"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Stretch"
-                               Margin="10,0,10,0"
-                               Foreground="{StaticResource titleColorB}"/>
-                    <Border Background="White"
-                            CornerRadius="5"
-                            BorderBrush="#6666FF"
-                            MinHeight="30"
-                            MinWidth="80"
-                            BorderThickness="2"
-                            Padding="1"
-                            Margin="0,0,15,0">
-                        <ComboBox x:Name="ComBoxSemana"
-                                  Background="White"
-                                  BorderBrush="Transparent"
-                                  BorderThickness="0"
-                                  FontSize="14"                             
-                                  Foreground="DarkBlue"
-                                  FontWeight="Normal"
-                                  HorizontalContentAlignment="Stretch"
-                                  VerticalContentAlignment="Center"
-                                  DropDownOpened="ComBoxSemana_DropDownOpened"
-                                  SelectionChanged="ComBoxSemana_SelectionChanged"/>
-                    </Border>
-                    <!-- Combo Mes -->
-                    <TextBlock Text="Mes"
-                               FontSize="16"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Stretch"
-                               Margin="0,0,10,0"
-                               Foreground="{StaticResource titleColorB}"/>
-                    <Border Background="White"
-                            CornerRadius="5"
-                            BorderBrush="#6666FF"
-                            MinHeight="30"
-                            MinWidth="80"
-                            BorderThickness="2"
-                            Padding="1"
-                            Margin="0,0,15,0">
-                        <ComboBox x:Name="ComBoxMes"
-                                  Background="White"
-                                  BorderBrush="Transparent"
-                                  BorderThickness="0"
-                                  FontSize="14"                             
-                                  Foreground="DarkBlue"
-                                  FontWeight="Normal"
-                                  HorizontalContentAlignment="Stretch"
-                                  VerticalContentAlignment="Center"
-                                  DropDownOpened="ComBoxMes_DropDownOpened"
-                                  SelectionChanged="ComBoxMes_SelectionChanged"/>
-                    </Border>
-                    <!-- Combo Año -->
-                    <TextBlock Text="Año"
-                               FontSize="16"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Stretch"
-                               Margin="0,0,10,0"
-                               Foreground="{StaticResource titleColorB}"/>
-                    <Border Background="White"
-                            CornerRadius="5"
-                            BorderBrush="#6666FF"
-                            MinHeight="30"
-                            MinWidth="80"
-                            BorderThickness="2"
-                            Padding="1"
-                            Margin="0,0,0,0">
-                        <ComboBox x:Name="ComBoxAnio"
-                                  Background="White"
-                                  BorderBrush="Transparent"
-                                  BorderThickness="0"
-                                  FontSize="14"
-                                  Foreground="DarkBlue"
-                                  FontWeight="Normal"
-                                  HorizontalContentAlignment="Stretch"
-                                  VerticalContentAlignment="Center"
-                                  DropDownOpened="ComBoxAnio_DropDownOpened"
-                                  SelectionChanged="ComBoxAnio_SelectionChanged"/>
-                    </Border>
-                </StackPanel>
+                
+                <!-- Controles de fecha y botones -->
+                <Border Grid.Row="1" Grid.Column="2" Background="White" Padding="10" Margin="5" CornerRadius="5" BorderBrush="#E0E0E0" BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <!-- Selector de fechas -->
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+                            <!-- Botón que muestra el rango actual y abre el calendario -->
+                            <Button x:Name="btnSeleccionarFechas"
+                                    Content="📅 Seleccionar fechas"
+                                    Click="AbrirCalendario_Click"   
+                                    Foreground="{StaticResource titleColor4}"
+                                    Background="{StaticResource buttonColor1}"
+                                    Style="{StaticResource LargeRoundButton}"/>
+
+                            <!-- Información del rango seleccionado label -->
+                            <Border Background="#ECF0F1" 
+                                    CornerRadius="5" 
+                                    Padding="10,8" 
+                                    Margin="10,0,0,0">
+                                <TextBlock x:Name="lblRangoInfo" 
+                                           Text="Selecciona un rango de fechas"
+                                           FontWeight="Bold"
+                                           Foreground="#2C3E50"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                            <!-- Popup con el Calendar -->
+                            <!--Hace referencia al boton btnSeleccionarFechas -->
+                            <Popup x:Name="PopupCalendario" 
+                                   PlacementTarget="{Binding ElementName=btnSeleccionarFechas}"
+                                   Placement="Bottom" 
+                                   StaysOpen="False"
+                                   AllowsTransparency="True"
+                                   PopupAnimation="Slide">
+                                <Border BorderBrush="#BDC3C7" 
+                                BorderThickness="2" 
+                                Background="White" 
+                                CornerRadius="10">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="Black" 
+                                                  Direction="315" 
+                                                  ShadowDepth="5" 
+                                                  Opacity="0.3" 
+                                                  BlurRadius="10"/>
+                                    </Border.Effect>
+
+                                    <StackPanel Margin="15">
+                                        <!-- Encabezado del popup -->
+                                        <Border Background="#3498DB" 
+                                        CornerRadius="5,5,0,0" 
+                                        Padding="10,5" 
+                                        Margin="-15,-15,-15,10">
+                                            <TextBlock Text="Seleccionar Rango de Fechas" 
+                                               Foreground="White" 
+                                               FontWeight="Bold" 
+                                               HorizontalAlignment="Center"/>
+                                        </Border>
+
+                                        <!-- Calendar -->
+                                        <Calendar x:Name="CalendarRango"
+                                          SelectionMode="SingleRange"
+                                          FirstDayOfWeek="Monday"
+                                          IsTodayHighlighted="True"
+                                          SelectedDatesChanged="CalendarRango_SelectedDatesChanged"
+                                          DisplayModeChanged="CalendarRango_DisplayModeChanged">
+
+                                            <!-- Estilo personalizado para el Calendar -->
+                                            <Calendar.CalendarDayButtonStyle>
+                                                <Style TargetType="CalendarDayButton">
+                                                    <Setter Property="Width" Value="35"/>
+                                                    <Setter Property="Height" Value="30"/>
+                                                    <Setter Property="FontSize" Value="11"/>
+                                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                                </Style>
+                                            </Calendar.CalendarDayButtonStyle>
+                                        </Calendar>
+
+                                        <!-- Información y botones de cierre -->
+                                        <Border Background="#F8F9FA" 
+                                        CornerRadius="5" 
+                                        Padding="8" 
+                                        Margin="0,10,0,0">
+                                            <StackPanel>
+                                                <TextBlock Text="💡 Haz clic en una fecha para iniciar, luego en otra para completar el rango" 
+                                                   FontSize="10" 
+                                                   Foreground="#7F8C8D" 
+                                                   TextWrapping="Wrap"
+                                                   HorizontalAlignment="Center"/>
+
+                                                <Button Content="Cerrar" 
+                                                Click="CerrarCalendario_Click"
+                                                Margin="0,5,0,0"
+                                                Padding="20,3"
+                                                Background="#95A5A6"
+                                                Foreground="White"
+                                                BorderThickness="0"
+                                                FontSize="10"
+                                                HorizontalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
+                            </Popup>
+                        </StackPanel>
+                        <!-- Botones de rango rápido -->
+                        <StackPanel Grid.Row="1" 
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Center" 
+                            Margin="0,5">
+
+                            <Button x:Name="btnSemanaActual" 
+                                    Content="📅 Semana Actual"
+                                    Style="{StaticResource LargeRoundButton}"
+                                    Background="#27AE60"
+                                    Foreground="WhiteSmoke"
+                                    Click="BtnSemanaActual_Click"/>
+
+                            <Button x:Name="btnMesActual" 
+                                    Content="📊 Mes Actual"
+                                    Style="{StaticResource LargeRoundButton}"
+                                    Background="#2ECC71"
+                                    Foreground="WhiteSmoke"
+                                    Click="BtnMesActual_Click"/>
+
+                            <Button x:Name="btnSemanaAnterior" 
+                                    Content="⬅️ Semana Anterior"
+                                    Style="{StaticResource LargeRoundButton}"
+                                    Background="#E67E22"
+                                    Foreground="WhiteSmoke"
+                                    Click="BtnSemanaAnterior_Click"/>
+
+                            <Button x:Name="btnMesAnterior" 
+                                    Content="⬅️ Mes Anterior"
+                                    Style="{StaticResource LargeRoundButton}"
+                                    Background="#D35400"
+                                    Foreground="WhiteSmoke"
+                                    Click="BtnMesAnterior_Click"/>
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+                
+                
+                
+                
+                
+                
                 <!-- Agregar Nuevo Empleado -->
                 <Border Grid.Row="2" Grid.Column="4"
                         x:Name="btnNuevoEmpleadoBorder"
