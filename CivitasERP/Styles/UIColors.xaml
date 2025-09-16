@@ -13,6 +13,7 @@
     <SolidColorBrush x:Key="Color1" Color="#E5E5E5"/>
     <SolidColorBrush x:Key="Color2" Color="LightGreen"/>
     <SolidColorBrush x:Key="Color3" Color="LightCoral"/>
+    <SolidColorBrush x:Key="Color4" Color="#FDFDFD"/>
 
 
     <!--Colores de texto-->
@@ -22,7 +23,7 @@
     <SolidColorBrush x:Key="titleColor1" Color="Black"/>
     <SolidColorBrush x:Key="titleColor2" Color="#565360"/>
     <SolidColorBrush x:Key="titleColor3" Color="#908E9B"/>
-    <SolidColorBrush x:Key="titleColor4" Color="#E1DFE9"/>
+    <SolidColorBrush x:Key="titleColor4" Color="#FFF7F7F7"/>
     
 
     
