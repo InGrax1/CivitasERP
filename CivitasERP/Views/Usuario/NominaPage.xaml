@@ -40,8 +40,14 @@
                            Foreground="{StaticResource titleColorA}"/>
 
                 <!--Filtros-->
-                <Border Grid.Row="1" Grid.Column="0" Background="White" Padding="10" Margin="5" CornerRadius="5" BorderBrush="#E0E0E0" BorderThickness="1">
-                    <StackPanel Grid.Row="1" Margin="0,0,0,20">
+                <Border Grid.Row="1" Grid.Column="0" 
+                        Background="White" 
+                        Padding="5" 
+                        Margin="5" 
+                        CornerRadius="15" 
+                        BorderBrush="#E0E0E0" 
+                        BorderThickness="1">
+                    <StackPanel Grid.Row="1" Margin="5">
                         <!--OPCION ADMINISTRADOR ADMINS-->
                         <StackPanel>
                             <TextBlock x:Name="AdminLabel"
@@ -125,7 +131,13 @@
                 
                 
                 <!-- Controles de fecha y botones -->
-                <Border Grid.Row="1" Grid.Column="1" Background="White" Padding="10" Margin="5" CornerRadius="5" BorderBrush="#E0E0E0" BorderThickness="1">
+                <Border Grid.Row="1" Grid.Column="1" 
+                        Background="White" 
+                        Padding="5" 
+                        Margin="5" 
+                        CornerRadius="15" 
+                        BorderBrush="#E0E0E0" 
+                        BorderThickness="1">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -144,7 +156,7 @@
 
                             <!-- Información del rango seleccionado label -->
                             <Border Background="#ECF0F1" 
-                                    CornerRadius="5" 
+                                    CornerRadius="10" 
                                     Padding="10,8" 
                                     Margin="10,0,0,0">
                                 <TextBlock x:Name="lblRangoInfo" 
@@ -271,7 +283,14 @@
                 </Border>
 
                 <!-- Agregar Nuevo Empleado -->
-                <Border Grid.Row="1" Grid.Column="3" Background="White" Padding="10" Margin="5" CornerRadius="5" BorderBrush="#E0E0E0" BorderThickness="1" x:Name="Stack3Menu">
+                <Border Grid.Row="1" Grid.Column="3" 
+                        Background="White" 
+                        Padding="5" 
+                        Margin="5" 
+                        CornerRadius="15" 
+                        BorderBrush="#E0E0E0" 
+                        BorderThickness="1" 
+                        x:Name="Stack3Menu">
                     <Button x:Name="btnNuevoEmpleado"
                                 Background="{StaticResource buttonColor1}"
                                 Foreground="{StaticResource titleColor4}"
@@ -285,6 +304,7 @@
                 </Border>
             </Grid>
         </ScrollViewer>
+        
         <!-- DATA GRID -->
         <Border Grid.Row="1" 
                 CornerRadius="20"
