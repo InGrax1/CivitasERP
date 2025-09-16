@@ -70,7 +70,7 @@ namespace CivitasERP.Views.Usuario
             }
             else if (Variables.Jefe == true)
             {
-                btnNuevoEmpleadoBorder.Visibility = Visibility.Collapsed;
+                Stack3Menu.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -81,7 +81,7 @@ namespace CivitasERP.Views.Usuario
 
             try
             {
-                // Configurar semana actual (Lunes a Domingo)
+                // Configurar semana actual COMPLETA (Lunes a Domingo, sin importar el mes)
                 DateTime hoy = DateTime.Now;
                 int diferenciaConLunes = (int)hoy.DayOfWeek == 0 ? 6 : (int)hoy.DayOfWeek - 1;
                 DateTime lunes = hoy.AddDays(-diferenciaConLunes);
@@ -90,7 +90,7 @@ namespace CivitasERP.Views.Usuario
                 // Seleccionar rango en el calendario
                 CalendarRango.SelectedDates.Clear();
 
-                // Agregar todas las fechas del rango
+                // Agregar todas las fechas del rango (semana completa)
                 for (DateTime fecha = lunes; fecha <= domingo; fecha = fecha.AddDays(1))
                 {
                     CalendarRango.SelectedDates.Add(fecha);
@@ -190,6 +190,7 @@ namespace CivitasERP.Views.Usuario
             await SeleccionarRangoAsync(() =>
             {
                 DateTime hoy = DateTime.Now;
+                // Calcular el lunes de esta semana (semana completa, sin importar el mes)
                 int diferenciaConLunes = (int)hoy.DayOfWeek == 0 ? 6 : (int)hoy.DayOfWeek - 1;
                 DateTime lunes = hoy.AddDays(-diferenciaConLunes);
                 DateTime domingo = lunes.AddDays(6);
@@ -202,6 +203,7 @@ namespace CivitasERP.Views.Usuario
             await SeleccionarRangoAsync(() =>
             {
                 DateTime hoy = DateTime.Now;
+                // Para mes actual: TODOS los días del mes (1 al 30/31)
                 DateTime primerDia = new DateTime(hoy.Year, hoy.Month, 1);
                 DateTime ultimoDia = primerDia.AddMonths(1).AddDays(-1);
                 return (primerDia, ultimoDia);
@@ -213,8 +215,11 @@ namespace CivitasERP.Views.Usuario
             await SeleccionarRangoAsync(() =>
             {
                 DateTime hoy = DateTime.Now;
+                // Calcular el lunes de esta semana
                 int diferenciaConLunes = (int)hoy.DayOfWeek == 0 ? 6 : (int)hoy.DayOfWeek - 1;
                 DateTime lunesActual = hoy.AddDays(-diferenciaConLunes);
+
+                // Ir a la semana anterior (semana completa, lunes a domingo)
                 DateTime lunesAnterior = lunesActual.AddDays(-7);
                 DateTime domingoAnterior = lunesAnterior.AddDays(6);
                 return (lunesAnterior, domingoAnterior);
@@ -226,6 +231,7 @@ namespace CivitasERP.Views.Usuario
             await SeleccionarRangoAsync(() =>
             {
                 DateTime hoy = DateTime.Now;
+                // Para mes anterior: TODOS los días de ese mes (1 al 30/31)
                 DateTime mesAnterior = hoy.AddMonths(-1);
                 DateTime primerDia = new DateTime(mesAnterior.Year, mesAnterior.Month, 1);
                 DateTime ultimoDia = primerDia.AddMonths(1).AddDays(-1);
@@ -393,7 +399,31 @@ namespace CivitasERP.Views.Usuario
 
         private async void ObraComboBox_DropDownOpened(object sender, EventArgs e)
         {
-            await CargarObrasAsync();
+            try
+            {
+                if (AdminComboBox.SelectedValue == null)
+                {
+                    MessageBox.Show(
+                        "⚠️ Primero selecciona un administrador antes de elegir la obra.",
+                        "Advertencia",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning
+                    );
+                    ObraComboBox.SelectedIndex = -1; // Reinicia la selección
+                    return;
+                }
+
+                // Aquí ya puedes ejecutar la carga de obras porque hay Admin seleccionado
+                await CargarObrasAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error al cargar obras:\n{ex.Message}",
+                                "Error",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+            }
+            
         }
 
         private async void ObraComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

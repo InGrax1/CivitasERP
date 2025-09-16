@@ -18,7 +18,7 @@
         <ScrollViewer Grid.Row="0"
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Disabled"
-                      Margin="0,0,0,20">
+                      Margin="0,0,0,10">
             <!-- FILTROS -->
             <Grid Grid.Row="1" Margin="0,0,0,20">
                 <Grid.RowDefinitions>
@@ -28,10 +28,8 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <!-- Título -->
@@ -40,68 +38,94 @@
                            FontSize="26" FontWeight="Bold"
                            Margin="0,0,0,20"
                            Foreground="{StaticResource titleColorA}"/>
-                         
-                <!--OPCION ADMINISTRADOR ADMINS-->
-                <TextBlock Grid.Row="1" Grid.Column="0"
-                           x:Name="AdminLabel"
-                           Text="Superintendente" FontSize="16"
-                           VerticalAlignment="Center"
-                           Margin="0,0,10,0"
-                           Foreground="{StaticResource titleColorB}"/>
-                <Border Grid.Row="1" Grid.Column="1"
-                        x:Name="AdminBorder"
-                        Background="White" 
-                        CornerRadius="10"
-                        BorderBrush="#6666FF" 
-                        BorderThickness="1"
-                        MinHeight="30"
-                        MinWidth="80"
-                        Padding="3"
-                        Margin="0,0,0,10">
-                    <ComboBox x:Name="AdminComboBox"
-                              Background="Transparent"
-                              BorderBrush="Transparent"
-                              BorderThickness="0"
-                              FontSize="14"
-                              VerticalContentAlignment="Stretch"
-                              Padding="5"
-                              IsEditable="False"
-                              IsReadOnly="False"
-                              DropDownOpened="AdminComboBox_DropDownOpened"
-                              SelectionChanged="AdminComboBox_SelectionChanged">
-                    </ComboBox>
+
+                <!--Filtros-->
+                <Border Grid.Row="1" Grid.Column="0" Background="White" Padding="10" Margin="5" CornerRadius="5" BorderBrush="#E0E0E0" BorderThickness="1">
+                    <StackPanel Grid.Row="1" Margin="0,0,0,20">
+                        <!--OPCION ADMINISTRADOR ADMINS-->
+                        <StackPanel>
+                            <TextBlock x:Name="AdminLabel"
+                                       Text="Superintendente" FontSize="16"
+                                       VerticalAlignment="Center"
+                                       Foreground="{StaticResource titleColorB}"/>
+                            <Border x:Name="AdminBorder"
+                                    Background="White" 
+                                    CornerRadius="10"
+                                    BorderBrush="#6666FF" 
+                                    BorderThickness="1"
+                                    MinHeight="30"
+                                    MinWidth="80"
+                                    Padding="3"
+                                    Margin="0,0,0,10">
+                                <ComboBox x:Name="AdminComboBox"
+                                          Background="Transparent"
+                                          BorderBrush="Transparent"
+                                          BorderThickness="0"
+                                          FontSize="14"
+                                          VerticalContentAlignment="Stretch"
+                                          Padding="5"
+                                          IsEditable="False"
+                                          IsReadOnly="False"
+                                          DropDownOpened="AdminComboBox_DropDownOpened"
+                                          SelectionChanged="AdminComboBox_SelectionChanged">
+                                </ComboBox>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Obra -->
+                        <StackPanel>
+                            <TextBlock Text="Obra" FontSize="16"
+                                       VerticalAlignment="Center"
+                                       Foreground="{StaticResource titleColorB}"/>
+                            <Border Background="White" 
+                                    CornerRadius="10"
+                                    BorderBrush="#6666FF" 
+                                    BorderThickness="1"
+                                    MinHeight="30"
+                                    MinWidth="80"
+                                    Padding="3"
+                                    Margin="0,0,0,10">
+                                <ComboBox x:Name="ObraComboBox"
+                                          Background="Transparent"
+                                          BorderBrush="Transparent"
+                                          BorderThickness="0"
+                                          FontSize="14"
+                                          VerticalContentAlignment="Stretch"
+                                          Padding="5"
+                                          IsEditable="False"
+                                          IsReadOnly="False" 
+                                          DropDownOpened="ObraComboBox_DropDownOpened"
+                                          SelectionChanged="ObraComboBox_SelectionChanged">
+                                </ComboBox>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Ubicación -->
+                        <StackPanel>
+                            <TextBlock Text="Ubicación"
+                                       FontSize="16"
+                                       VerticalAlignment="Center"
+                                       Foreground="{StaticResource titleColorB}"/>
+                            <Border Background="White"
+                                    CornerRadius="10"
+                                    BorderBrush="#6666FF"
+                                    BorderThickness="1"
+                                    Height="30"
+                                    Margin="0,0,0,0">
+                                <TextBlock x:Name="UbicacionLabel"
+                                           Text="Ubicacion..."
+                                           Background="Transparent"
+                                           Padding="5"
+                                           Foreground="Black"/>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                    <!--Stackpanel filtros fin-->
                 </Border>
                 
-                <!-- Obra -->
-                <TextBlock Grid.Row="2" Grid.Column="0"
-                           Text="Obra" FontSize="16"
-                           VerticalAlignment="Center"
-                           Margin="0,0,10,0"
-                           Foreground="{StaticResource titleColorB}"/>
-                <Border Grid.Row="2" Grid.Column="1"
-                        Background="White" 
-                        CornerRadius="10"
-                        BorderBrush="#6666FF" 
-                        BorderThickness="1"
-                        MinHeight="30"
-                        MinWidth="80"
-                        Padding="3">
-                    <ComboBox x:Name="ObraComboBox"
-                              Background="Transparent"
-                              BorderBrush="Transparent"
-                              BorderThickness="0"
-                              FontSize="14"
-                              VerticalContentAlignment="Stretch"
-                              Padding="5"
-                              IsEditable="False"
-                              IsReadOnly="False" 
-                              DropDownOpened="ObraComboBox_DropDownOpened"
-                              SelectionChanged="ObraComboBox_SelectionChanged">
-                    </ComboBox>
-                </Border>
                 
                 <!-- Controles de fecha y botones -->
-                <Border Grid.Row="1" Grid.Column="2" Background="White" Padding="10" Margin="5" CornerRadius="5" BorderBrush="#E0E0E0" BorderThickness="1">
+                <Border Grid.Row="1" Grid.Column="1" Background="White" Padding="10" Margin="5" CornerRadius="5" BorderBrush="#E0E0E0" BorderThickness="1">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -138,36 +162,36 @@
                                    AllowsTransparency="True"
                                    PopupAnimation="Slide">
                                 <Border BorderBrush="#BDC3C7" 
-                                BorderThickness="2" 
-                                Background="White" 
-                                CornerRadius="10">
+                                        BorderThickness="2" 
+                                        Background="White" 
+                                        CornerRadius="10">
                                     <Border.Effect>
                                         <DropShadowEffect Color="Black" 
-                                                  Direction="315" 
-                                                  ShadowDepth="5" 
-                                                  Opacity="0.3" 
-                                                  BlurRadius="10"/>
+                                                          Direction="315" 
+                                                          ShadowDepth="5" 
+                                                          Opacity="0.3" 
+                                                          BlurRadius="10"/>
                                     </Border.Effect>
 
                                     <StackPanel Margin="15">
                                         <!-- Encabezado del popup -->
                                         <Border Background="#3498DB" 
-                                        CornerRadius="5,5,0,0" 
-                                        Padding="10,5" 
-                                        Margin="-15,-15,-15,10">
+                                                CornerRadius="5,5,0,0" 
+                                                Padding="10,5" 
+                                                Margin="-15,-15,-15,10">
                                             <TextBlock Text="Seleccionar Rango de Fechas" 
-                                               Foreground="White" 
-                                               FontWeight="Bold" 
-                                               HorizontalAlignment="Center"/>
+                                                       Foreground="White" 
+                                                       FontWeight="Bold" 
+                                                       HorizontalAlignment="Center"/>
                                         </Border>
 
                                         <!-- Calendar -->
                                         <Calendar x:Name="CalendarRango"
-                                          SelectionMode="SingleRange"
-                                          FirstDayOfWeek="Monday"
-                                          IsTodayHighlighted="True"
-                                          SelectedDatesChanged="CalendarRango_SelectedDatesChanged"
-                                          DisplayModeChanged="CalendarRango_DisplayModeChanged">
+                                                  SelectionMode="MultipleRange"
+                                                  FirstDayOfWeek="Monday"
+                                                  IsTodayHighlighted="True"
+                                                  SelectedDatesChanged="CalendarRango_SelectedDatesChanged"
+                                                  DisplayModeChanged="CalendarRango_DisplayModeChanged">
 
                                             <!-- Estilo personalizado para el Calendar -->
                                             <Calendar.CalendarDayButtonStyle>
@@ -245,53 +269,19 @@
 
                     </Grid>
                 </Border>
-                
-                
-                
-                
-                
-                
+
                 <!-- Agregar Nuevo Empleado -->
-                <Border Grid.Row="2" Grid.Column="4"
-                        x:Name="btnNuevoEmpleadoBorder"
-                        Background="{StaticResource buttonColor1}" 
-                        CornerRadius="5"
-                        Width="auto" 
-                        MinHeight="30"
-                        MinWidth="80"
-                        HorizontalAlignment="Center">
+                <Border Grid.Row="1" Grid.Column="3" Background="White" Padding="10" Margin="5" CornerRadius="5" BorderBrush="#E0E0E0" BorderThickness="1" x:Name="Stack3Menu">
                     <Button x:Name="btnNuevoEmpleado"
-                            Background="Transparent"
-                            BorderBrush="Transparent"
-                            Foreground="{StaticResource titleColor4}"
-                            FontWeight="Bold"
-                            Click="btnNuevoEmpleado_Click" 
-                            HorizontalAlignment="Stretch" 
-                            Width="170"
-                            HorizontalContentAlignment="Center">
+                                Background="{StaticResource buttonColor1}"
+                                Foreground="{StaticResource titleColor4}"
+                                Style="{StaticResource LargeRoundButton}"
+                                FontWeight="Bold"
+                                Click="btnNuevoEmpleado_Click" 
+                                HorizontalAlignment="Stretch"        
+                                VerticalAlignment="Top">
                         + Agregar Nuevo Personal
                     </Button>
-                </Border>
-                <!-- Ubicación -->
-                <TextBlock Grid.Row="3" Grid.Column="0"
-                           Text="Ubicación"
-                           FontSize="16"
-                           VerticalAlignment="Center"
-                           Margin="0,20,10,0"
-                           Foreground="{StaticResource titleColorB}"/>
-                <Border Grid.Row="3" Grid.Column="1"
-                        Background="White"
-                        CornerRadius="10"
-                        BorderBrush="#6666FF"
-                        BorderThickness="1"
-                        Height="30"
-                        Margin="0,20,0,0">
-                    <TextBlock x:Name="UbicacionLabel"
-                           Text="Ubicacion..."
-                           Background="Transparent"
-                           Padding="5"
-                           Foreground="Black"
-                            />
                 </Border>
             </Grid>
         </ScrollViewer>
