@@ -75,7 +75,7 @@ namespace CivitasERP.Views.Usuario
             }
             else
             {
-                btnHuellaLista.Visibility = Visibility.Collapsed; // Asumiendo que este es el nombre correcto del botón
+                Stack3Menu.Visibility = Visibility.Collapsed;
             }
         }
 

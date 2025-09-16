@@ -289,6 +289,10 @@ namespace CivitasERP.Views.Usuario
                 return;
             }
 
+            // 1. Calcula la duración del rango seleccionado.
+            var duracionRango = (FechaFinSeleccionada.Value - FechaInicioSeleccionada.Value).Days + 1;
+            bool esRangoLargo = duracionRango > 7;
+
             try
             {
                 int? idAdmin = AdminComboBox.SelectedItem != null
@@ -298,6 +302,11 @@ namespace CivitasERP.Views.Usuario
                 string usuario = AdminComboBox.SelectedItem?.ToString() ?? Variables.Usuario;
 
                 var empleados = await Task.Run(() => repo.ObtenerEmpleados(idAdmin, usuario));
+
+                foreach (var empleado in empleados)
+                {
+                    empleado.IsLongRange = esRangoLargo;
+                }
 
                 dataGridNomina.ItemsSource = empleados;
                 CalcularTotales(empleados);

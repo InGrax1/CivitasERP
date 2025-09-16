@@ -332,70 +332,75 @@
                     <StaticResource ResourceKey="ColumnHeaderRound"/>
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="#" Binding="{Binding ID}" />
-                    <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
-                    <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" />
+                    <DataGridTextColumn Header="#" Binding="{Binding ID}" Width="Auto" />
+                    <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="2*" />
+                    <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" Width="1.5*" />
 
-                    <DataGridTemplateColumn Header="Días Trabajados">
+                    <DataGridTemplateColumn Header="Días Trabajados" Width="3*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ItemsControl ItemsSource="{Binding DiasTrabajadosDetalle}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <WrapPanel Orientation="Horizontal" />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border CornerRadius="5" Margin="2" Padding="3"
-                                                    Background="LightGray">
-                                                <StackPanel>
-                                                    <TextBlock Text="{Binding DayName}"
-                                                               FontWeight="Bold"
-                                                               HorizontalAlignment="Center"/>
-                                                    <StackPanel Orientation="Horizontal"
-                                                                HorizontalAlignment="Center">
-                                                        <TextBlock Text="In"
-                                                                   Margin="0,0,4,0"
-                                                                   Padding="2,0"
-                                                                   Background="{Binding HasCheckIn, Converter={StaticResource StatusToBrush}}"/>
-                                                        <TextBlock Text="Out"
-                                                                   Padding="2,0"
-                                                                   Background="{Binding HasCheckOut, Converter={StaticResource StatusToBrush}}"/>
+                                <Grid>
+                                    <ItemsControl x:Name="DetailedView" ItemsSource="{Binding DiasTrabajadosDetalle}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border CornerRadius="5" Margin="2" Padding="3" Background="LightGray">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding DayName}" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                            <TextBlock Text="In" Margin="0,0,4,0" Padding="2,0" Background="{Binding HasCheckIn, Converter={StaticResource StatusToBrush}}"/>
+                                                            <TextBlock Text="Out" Padding="2,0" Background="{Binding HasCheckOut, Converter={StaticResource StatusToBrush}}"/>
+                                                        </StackPanel>
                                                     </StackPanel>
-                                                </StackPanel>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <TextBlock x:Name="CompressedView" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0} de {1} días">
+                                                <Binding Path="Dias"/>
+                                                <Binding Path="DiasTrabajadosDetalle.Count"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Grid>
+
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsLongRange}" Value="True">
+                                        <Setter TargetName="DetailedView" Property="Visibility" Value="Collapsed" />
+                                        <Setter TargetName="CompressedView" Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTextColumn Header="Días" Binding="{Binding Dias}" />
-                    <DataGridTextColumn Header="Sueldo Jornada" Binding="{Binding SueldoJornada, StringFormat={}{0:F2}}" />
-                    <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal, StringFormat={}{0:F2}}"  />
-                    <DataGridTextColumn Header="Horas Extra" Binding="{Binding HorasExtra, StringFormat={}{0:N0}}"  />
-                    <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding PHoraExtra, StringFormat={}{0:F2}}" />
-                    <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado, StringFormat={}{0:F2}}"   />
-                    <DataGridTextColumn Header="Sueldo Total" Binding="{Binding SuelTotal, StringFormat={}{0:F2}}" />
+                    <DataGridTextColumn Header="Días" Binding="{Binding Dias}" Width="*" />
+                    <DataGridTextColumn Header="Sueldo Jornada" Binding="{Binding SueldoJornada, StringFormat=C2}" Width="*" />
+                    <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal, StringFormat=C2}" Width="*" />
+                    <DataGridTextColumn Header="Horas Extra" Binding="{Binding HorasExtra, StringFormat=N0}" Width="*" />
+                    <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding SuelExtra, StringFormat=C2}" Width="*" />
+                    <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado, StringFormat=C2}" Width="*" />
+                    <DataGridTextColumn Header="Sueldo Total" Binding="{Binding SuelTotal, StringFormat=C2}" Width="1.2*" />
 
-                    <DataGridTemplateColumn Header="Eliminar">
+                    <DataGridTemplateColumn Header="Eliminar" Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Border Background="{StaticResource buttonExit}" CornerRadius="5" Width="35" Height="35">
-                                    <Button Padding="5,2"
-                                            Background="Transparent"
-                                            BorderThickness="0"
-                                            Width="35" Height="35"
-                                            Click="BtnEliminarEmpleado_Click"
-                                            ToolTip="Eliminar"
-                                            Visibility="{Binding ID, Converter={StaticResource DeleteBtnVisConverter}}">
-                                        <Image Source="/Images/Delete.png" Width="35" Height="35"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"/>
-                                    </Button>
-                                </Border>
+                                <Button Padding="5,2"
+                                        Background="{StaticResource buttonExit}"
+                                        BorderThickness="0"
+                                        Width="35" Height="35"
+                                        Click="BtnEliminarEmpleado_Click"
+                                        ToolTip="Eliminar"
+                                        Visibility="{Binding ID, Converter={StaticResource DeleteBtnVisConverter}}">
+                                    <Image Source="/Images/Delete.png" Width="20" Height="20" />
+                                </Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

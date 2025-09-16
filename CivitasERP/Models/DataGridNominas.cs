@@ -25,8 +25,8 @@ namespace CivitasERP.Models
             public decimal SuelExtra { get; set; }
             public decimal SuelTrabajado { get; set; }
             public decimal SuelTotal { get; set; }
-
-            public List<DayAttendance> DiasTrabajadosDetalle { get; set; }
+            public List<DayAttendance> DiasTrabajadosDetalle { get; set; }     
+            public bool IsLongRange { get; set; } // Esta propiedad le dirá al XAML si debe usar la vista comprimida.
         }
 
         public class DayAttendance
