@@ -18,7 +18,7 @@
         <ScrollViewer Grid.Row="0"
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Disabled"
-                      Margin="0,0,0,20">
+                      Margin="0,0,0,10">
             <!-- FILTROS -->
             <Grid Grid.Row="1" Margin="0,0,0,20">
                 <Grid.RowDefinitions>
@@ -28,10 +28,8 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <!-- Título -->
@@ -40,196 +38,273 @@
                            FontSize="26" FontWeight="Bold"
                            Margin="0,0,0,20"
                            Foreground="{StaticResource titleColorA}"/>
-                         
-                <!--OPCION ADMINISTRADOR ADMINS-->
-                <TextBlock Grid.Row="1" Grid.Column="0"
-                           x:Name="AdminLabel"
-                           Text="Superintendente" FontSize="16"
-                           VerticalAlignment="Center"
-                           Margin="0,0,10,0"
-                           Foreground="{StaticResource titleColorB}"/>
-                <Border Grid.Row="1" Grid.Column="1"
-                        x:Name="AdminBorder"
-                        Background="White" 
-                        CornerRadius="10"
-                        BorderBrush="#6666FF" 
-                        BorderThickness="1"
-                        MinHeight="30"
-                        MinWidth="80"
-                        Padding="3"
-                        Margin="0,0,0,10">
-                    <ComboBox x:Name="AdminComboBox"
-                              Background="Transparent"
-                              BorderBrush="Transparent"
-                              BorderThickness="0"
-                              FontSize="14"
-                              VerticalContentAlignment="Stretch"
-                              Padding="5"
-                              IsEditable="False"
-                              IsReadOnly="False"
-                              DropDownOpened="AdminComboBox_DropDownOpened"
-                              SelectionChanged="AdminComboBox_SelectionChanged">
-                    </ComboBox>
+
+                <!--Filtros-->
+                <Border Grid.Row="1" Grid.Column="0" 
+                        Background="{StaticResource Color4}" 
+                        Padding="5" 
+                        Margin="5" 
+                        CornerRadius="15" 
+                        BorderBrush="{StaticResource Color1}" 
+                        BorderThickness="1">
+                    <StackPanel Grid.Row="1" Margin="5">
+                        <!--OPCION ADMINISTRADOR ADMINS-->
+                        <StackPanel>
+                            <TextBlock x:Name="AdminLabel"
+                                       Text="Superintendente" FontSize="16"
+                                       VerticalAlignment="Center"
+                                       Foreground="{StaticResource titleColorB}"/>
+                            <Border x:Name="AdminBorder"
+                                    Background="Transparent" 
+                                    CornerRadius="10"
+                                    BorderBrush="{StaticResource primaryColor1}" 
+                                    BorderThickness="1"
+                                    MinHeight="30"
+                                    MinWidth="80"
+                                    Padding="3"
+                                    Margin="0,0,0,10">
+                                <ComboBox x:Name="AdminComboBox"
+                                          Background="Transparent"
+                                          BorderBrush="Transparent"
+                                          BorderThickness="0"
+                                          FontSize="14"
+                                          VerticalContentAlignment="Stretch"
+                                          Padding="5"
+                                          IsEditable="False"
+                                          IsReadOnly="False"
+                                          DropDownOpened="AdminComboBox_DropDownOpened"
+                                          SelectionChanged="AdminComboBox_SelectionChanged">
+                                </ComboBox>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Obra -->
+                        <StackPanel>
+                            <TextBlock Text="Obra" FontSize="16"
+                                       VerticalAlignment="Center"
+                                       Foreground="{StaticResource titleColorB}"/>
+                            <Border Background="Transparent" 
+                                    CornerRadius="10"
+                                    BorderBrush="{StaticResource primaryColor1}" 
+                                    BorderThickness="1"
+                                    MinHeight="30"
+                                    MinWidth="80"
+                                    Padding="3"
+                                    Margin="0,0,0,10">
+                                <ComboBox x:Name="ObraComboBox"
+                                          Background="Transparent"
+                                          BorderBrush="Transparent"
+                                          BorderThickness="0"
+                                          FontSize="14"
+                                          VerticalContentAlignment="Stretch"
+                                          Padding="5"
+                                          IsEditable="False"
+                                          IsReadOnly="False" 
+                                          DropDownOpened="ObraComboBox_DropDownOpened"
+                                          SelectionChanged="ObraComboBox_SelectionChanged">
+                                </ComboBox>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Ubicación -->
+                        <StackPanel>
+                            <TextBlock Text="Ubicación"
+                                       FontSize="16"
+                                       VerticalAlignment="Center"
+                                       Foreground="{StaticResource titleColorB}"/>
+                            <Border Background="Transparent"
+                                    CornerRadius="10"
+                                    BorderBrush="{StaticResource primaryColor1}" 
+                                    BorderThickness="1"
+                                    Height="30"
+                                    Margin="0,0,0,0">
+                                <TextBlock x:Name="UbicacionLabel"
+                                           Text="Ubicacion..."
+                                           Background="Transparent"
+                                           Padding="5"
+                                           Foreground="Black"/>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                    <!--Stackpanel filtros fin-->
                 </Border>
                 
-                <!-- Obra -->
-                <TextBlock Grid.Row="2" Grid.Column="0"
-                           Text="Obra" FontSize="16"
-                           VerticalAlignment="Center"
-                           Margin="0,0,10,0"
-                           Foreground="{StaticResource titleColorB}"/>
-                <Border Grid.Row="2" Grid.Column="1"
-                        Background="White" 
-                        CornerRadius="10"
-                        BorderBrush="#6666FF" 
-                        BorderThickness="1"
-                        MinHeight="30"
-                        MinWidth="80"
-                        Padding="3">
-                    <ComboBox x:Name="ObraComboBox"
-                              Background="Transparent"
-                              BorderBrush="Transparent"
-                              BorderThickness="0"
-                              FontSize="14"
-                              VerticalContentAlignment="Stretch"
-                              Padding="5"
-                              IsEditable="False"
-                              IsReadOnly="False" 
-                              DropDownOpened="ObraComboBox_DropDownOpened"
-                              SelectionChanged="ObraComboBox_SelectionChanged">
-                    </ComboBox>
+                
+                <!-- Controles de fecha y botones -->
+                <Border Grid.Row="1" Grid.Column="1" 
+                        Background="{StaticResource Color4}" 
+                        Padding="5" 
+                        Margin="5" 
+                        CornerRadius="15" 
+                        BorderBrush="{StaticResource Color1}" 
+                        BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <!-- Selector de fechas -->
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+                            <!-- Botón que muestra el rango actual y abre el calendario -->
+                            <Button x:Name="btnSeleccionarFechas"
+                                    Content="📅 Seleccionar fechas"
+                                    Click="AbrirCalendario_Click"   
+                                    Foreground="{StaticResource titleColor4}"
+                                    Background="{StaticResource buttonColor1}"
+                                    Style="{StaticResource LargeRoundButton}"/>
+
+                            <!-- Información del rango seleccionado label -->
+                            <Border Background="#ECF0F1" 
+                                    CornerRadius="10" 
+                                    Padding="10,8" 
+                                    Margin="10,0,0,0">
+                                <TextBlock x:Name="lblRangoInfo" 
+                                           Text="Selecciona un rango de fechas"
+                                           FontWeight="Bold"
+                                           Foreground="#2C3E50"
+                                           VerticalAlignment="Center"/>
+                            </Border>
+                            <!-- Popup con el Calendar -->
+                            <!--Hace referencia al boton btnSeleccionarFechas -->
+                            <Popup x:Name="PopupCalendario" 
+                                   PlacementTarget="{Binding ElementName=btnSeleccionarFechas}"
+                                   Placement="Bottom" 
+                                   StaysOpen="False"
+                                   AllowsTransparency="True"
+                                   PopupAnimation="Slide">
+                                <Border BorderBrush="#BDC3C7" 
+                                        BorderThickness="2" 
+                                        Background="White" 
+                                        CornerRadius="10">
+                                    <Border.Effect>
+                                        <DropShadowEffect Color="Black" 
+                                                          Direction="315" 
+                                                          ShadowDepth="5" 
+                                                          Opacity="0.3" 
+                                                          BlurRadius="10"/>
+                                    </Border.Effect>
+
+                                    <StackPanel Margin="15">
+                                        <!-- Encabezado del popup -->
+                                        <Border Background="#3498DB" 
+                                                CornerRadius="5,5,0,0" 
+                                                Padding="10,5" 
+                                                Margin="-15,-15,-15,10">
+                                            <TextBlock Text="Seleccionar Rango de Fechas" 
+                                                       Foreground="White" 
+                                                       FontWeight="Bold" 
+                                                       HorizontalAlignment="Center"/>
+                                        </Border>
+
+                                        <!-- Calendar -->
+                                        <Calendar x:Name="CalendarRango"
+                                                  SelectionMode="MultipleRange"
+                                                  FirstDayOfWeek="Monday"
+                                                  IsTodayHighlighted="True"
+                                                  SelectedDatesChanged="CalendarRango_SelectedDatesChanged"
+                                                  DisplayModeChanged="CalendarRango_DisplayModeChanged">
+
+                                            <!-- Estilo personalizado para el Calendar -->
+                                            <Calendar.CalendarDayButtonStyle>
+                                                <Style TargetType="CalendarDayButton">
+                                                    <Setter Property="Width" Value="35"/>
+                                                    <Setter Property="Height" Value="30"/>
+                                                    <Setter Property="FontSize" Value="11"/>
+                                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                                </Style>
+                                            </Calendar.CalendarDayButtonStyle>
+                                        </Calendar>
+
+                                        <!-- Información y botones de cierre -->
+                                        <Border Background="#F8F9FA" 
+                                        CornerRadius="5" 
+                                        Padding="8" 
+                                        Margin="0,10,0,0">
+                                            <StackPanel>
+                                                <TextBlock Text="💡 Haz clic en una fecha para iniciar, luego en otra para completar el rango" 
+                                                   FontSize="10" 
+                                                   Foreground="#7F8C8D" 
+                                                   TextWrapping="Wrap"
+                                                   HorizontalAlignment="Center"/>
+
+                                                <Button Content="Cerrar" 
+                                                Click="CerrarCalendario_Click"
+                                                Margin="0,5,0,0"
+                                                Padding="20,3"
+                                                Background="#95A5A6"
+                                                Foreground="White"
+                                                BorderThickness="0"
+                                                FontSize="10"
+                                                HorizontalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
+                            </Popup>
+                        </StackPanel>
+                        <!-- Botones de rango rápido -->
+                        <StackPanel Grid.Row="1" 
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Center" 
+                            Margin="0,5">
+
+                            <Button x:Name="btnSemanaActual" 
+                                    Content="📅 Semana Actual"
+                                    Style="{StaticResource LargeRoundButton}"
+                                    Background="#27AE60"
+                                    Foreground="WhiteSmoke"
+                                    Click="BtnSemanaActual_Click"/>
+
+                            <Button x:Name="btnMesActual" 
+                                    Content="📊 Mes Actual"
+                                    Style="{StaticResource LargeRoundButton}"
+                                    Background="#2ECC71"
+                                    Foreground="WhiteSmoke"
+                                    Click="BtnMesActual_Click"/>
+
+                            <Button x:Name="btnSemanaAnterior" 
+                                    Content="⬅️ Semana Anterior"
+                                    Style="{StaticResource LargeRoundButton}"
+                                    Background="#E67E22"
+                                    Foreground="WhiteSmoke"
+                                    Click="BtnSemanaAnterior_Click"/>
+
+                            <Button x:Name="btnMesAnterior" 
+                                    Content="⬅️ Mes Anterior"
+                                    Style="{StaticResource LargeRoundButton}"
+                                    Background="#D35400"
+                                    Foreground="WhiteSmoke"
+                                    Click="BtnMesAnterior_Click"/>
+                        </StackPanel>
+
+                    </Grid>
                 </Border>
-                <!-- Combos Mes + Año (ambos dentro de un StackPanel) -->
-                <StackPanel Grid.Row="2" Grid.Column="2"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Center"
-                            Margin="0,0,10,0">
-                    <!-- Combo Semana -->
-                    <TextBlock Text="Semana"
-                               FontSize="16"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Stretch"
-                               Margin="10,0,10,0"
-                               Foreground="{StaticResource titleColorB}"/>
-                    <Border Background="White"
-                            CornerRadius="5"
-                            BorderBrush="#6666FF"
-                            MinHeight="30"
-                            MinWidth="80"
-                            BorderThickness="2"
-                            Padding="1"
-                            Margin="0,0,15,0">
-                        <ComboBox x:Name="ComBoxSemana"
-                                  Background="White"
-                                  BorderBrush="Transparent"
-                                  BorderThickness="0"
-                                  FontSize="14"                             
-                                  Foreground="DarkBlue"
-                                  FontWeight="Normal"
-                                  HorizontalContentAlignment="Stretch"
-                                  VerticalContentAlignment="Center"
-                                  DropDownOpened="ComBoxSemana_DropDownOpened"
-                                  SelectionChanged="ComBoxSemana_SelectionChanged"/>
-                    </Border>
-                    <!-- Combo Mes -->
-                    <TextBlock Text="Mes"
-                               FontSize="16"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Stretch"
-                               Margin="0,0,10,0"
-                               Foreground="{StaticResource titleColorB}"/>
-                    <Border Background="White"
-                            CornerRadius="5"
-                            BorderBrush="#6666FF"
-                            MinHeight="30"
-                            MinWidth="80"
-                            BorderThickness="2"
-                            Padding="1"
-                            Margin="0,0,15,0">
-                        <ComboBox x:Name="ComBoxMes"
-                                  Background="White"
-                                  BorderBrush="Transparent"
-                                  BorderThickness="0"
-                                  FontSize="14"                             
-                                  Foreground="DarkBlue"
-                                  FontWeight="Normal"
-                                  HorizontalContentAlignment="Stretch"
-                                  VerticalContentAlignment="Center"
-                                  DropDownOpened="ComBoxMes_DropDownOpened"
-                                  SelectionChanged="ComBoxMes_SelectionChanged"/>
-                    </Border>
-                    <!-- Combo Año -->
-                    <TextBlock Text="Año"
-                               FontSize="16"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Stretch"
-                               Margin="0,0,10,0"
-                               Foreground="{StaticResource titleColorB}"/>
-                    <Border Background="White"
-                            CornerRadius="5"
-                            BorderBrush="#6666FF"
-                            MinHeight="30"
-                            MinWidth="80"
-                            BorderThickness="2"
-                            Padding="1"
-                            Margin="0,0,0,0">
-                        <ComboBox x:Name="ComBoxAnio"
-                                  Background="White"
-                                  BorderBrush="Transparent"
-                                  BorderThickness="0"
-                                  FontSize="14"
-                                  Foreground="DarkBlue"
-                                  FontWeight="Normal"
-                                  HorizontalContentAlignment="Stretch"
-                                  VerticalContentAlignment="Center"
-                                  DropDownOpened="ComBoxAnio_DropDownOpened"
-                                  SelectionChanged="ComBoxAnio_SelectionChanged"/>
-                    </Border>
-                </StackPanel>
+
                 <!-- Agregar Nuevo Empleado -->
-                <Border Grid.Row="2" Grid.Column="4"
-                        x:Name="btnNuevoEmpleadoBorder"
-                        Background="{StaticResource buttonColor1}" 
-                        CornerRadius="5"
-                        Width="auto" 
-                        MinHeight="30"
-                        MinWidth="80"
-                        HorizontalAlignment="Center">
+                <Border Grid.Row="1" Grid.Column="3" 
+                        Background="{StaticResource Color4}" 
+                        Padding="5" 
+                        Margin="5" 
+                        CornerRadius="15" 
+                        BorderBrush="{StaticResource Color1}" 
+                        BorderThickness="1" 
+                        x:Name="Stack3Menu">
                     <Button x:Name="btnNuevoEmpleado"
-                            Background="Transparent"
-                            BorderBrush="Transparent"
-                            Foreground="{StaticResource titleColor4}"
-                            FontWeight="Bold"
-                            Click="btnNuevoEmpleado_Click" 
-                            HorizontalAlignment="Stretch" 
-                            Width="170"
-                            HorizontalContentAlignment="Center">
+                                Background="{StaticResource buttonColor1}"
+                                Foreground="{StaticResource titleColor4}"
+                                Style="{StaticResource LargeRoundButton}"
+                                FontWeight="Bold"
+                                Click="btnNuevoEmpleado_Click" 
+                                HorizontalAlignment="Stretch"        
+                                VerticalAlignment="Top">
                         + Agregar Nuevo Personal
                     </Button>
                 </Border>
-                <!-- Ubicación -->
-                <TextBlock Grid.Row="3" Grid.Column="0"
-                           Text="Ubicación"
-                           FontSize="16"
-                           VerticalAlignment="Center"
-                           Margin="0,20,10,0"
-                           Foreground="{StaticResource titleColorB}"/>
-                <Border Grid.Row="3" Grid.Column="1"
-                        Background="White"
-                        CornerRadius="10"
-                        BorderBrush="#6666FF"
-                        BorderThickness="1"
-                        Height="30"
-                        Margin="0,20,0,0">
-                    <TextBlock x:Name="UbicacionLabel"
-                           Text="Ubicacion..."
-                           Background="Transparent"
-                           Padding="5"
-                           Foreground="Black"
-                            />
-                </Border>
             </Grid>
         </ScrollViewer>
+        
         <!-- DATA GRID -->
         <Border Grid.Row="1" 
                 CornerRadius="20"
@@ -257,70 +332,75 @@
                     <StaticResource ResourceKey="ColumnHeaderRound"/>
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="#" Binding="{Binding ID}" />
-                    <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" />
-                    <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" />
+                    <DataGridTextColumn Header="#" Binding="{Binding ID}" Width="Auto" />
+                    <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="2*" />
+                    <DataGridTextColumn Header="Categoría" Binding="{Binding Categoria}" Width="1.5*" />
 
-                    <DataGridTemplateColumn Header="Días Trabajados">
+                    <DataGridTemplateColumn Header="Días Trabajados" Width="3*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ItemsControl ItemsSource="{Binding DiasTrabajadosDetalle}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <WrapPanel Orientation="Horizontal" />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border CornerRadius="5" Margin="2" Padding="3"
-                                                    Background="LightGray">
-                                                <StackPanel>
-                                                    <TextBlock Text="{Binding DayName}"
-                                                               FontWeight="Bold"
-                                                               HorizontalAlignment="Center"/>
-                                                    <StackPanel Orientation="Horizontal"
-                                                                HorizontalAlignment="Center">
-                                                        <TextBlock Text="In"
-                                                                   Margin="0,0,4,0"
-                                                                   Padding="2,0"
-                                                                   Background="{Binding HasCheckIn, Converter={StaticResource StatusToBrush}}"/>
-                                                        <TextBlock Text="Out"
-                                                                   Padding="2,0"
-                                                                   Background="{Binding HasCheckOut, Converter={StaticResource StatusToBrush}}"/>
+                                <Grid>
+                                    <ItemsControl x:Name="DetailedView" ItemsSource="{Binding DiasTrabajadosDetalle}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border CornerRadius="5" Margin="2" Padding="3" Background="LightGray">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding DayName}" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                            <TextBlock Text="In" Margin="0,0,4,0" Padding="2,0" Background="{Binding HasCheckIn, Converter={StaticResource StatusToBrush}}"/>
+                                                            <TextBlock Text="Out" Padding="2,0" Background="{Binding HasCheckOut, Converter={StaticResource StatusToBrush}}"/>
+                                                        </StackPanel>
                                                     </StackPanel>
-                                                </StackPanel>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <TextBlock x:Name="CompressedView" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Collapsed">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0} de {1} días">
+                                                <Binding Path="Dias"/>
+                                                <Binding Path="DiasTrabajadosDetalle.Count"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Grid>
+
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding IsLongRange}" Value="True">
+                                        <Setter TargetName="DetailedView" Property="Visibility" Value="Collapsed" />
+                                        <Setter TargetName="CompressedView" Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTextColumn Header="Días" Binding="{Binding Dias}" />
-                    <DataGridTextColumn Header="Sueldo Jornada" Binding="{Binding SueldoJornada, StringFormat={}{0:F2}}" />
-                    <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal, StringFormat={}{0:F2}}"  />
-                    <DataGridTextColumn Header="Horas Extra" Binding="{Binding HorasExtra, StringFormat={}{0:N0}}"  />
-                    <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding PHoraExtra, StringFormat={}{0:F2}}" />
-                    <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado, StringFormat={}{0:F2}}"   />
-                    <DataGridTextColumn Header="Sueldo Total" Binding="{Binding SuelTotal, StringFormat={}{0:F2}}" />
+                    <DataGridTextColumn Header="Días" Binding="{Binding Dias}" Width="*" />
+                    <DataGridTextColumn Header="Sueldo Jornada" Binding="{Binding SueldoJornada, StringFormat=C2}" Width="*" />
+                    <DataGridTextColumn Header="Sueldo Semanal" Binding="{Binding SueldoSemanal, StringFormat=C2}" Width="*" />
+                    <DataGridTextColumn Header="Horas Extra" Binding="{Binding HorasExtra, StringFormat=N0}" Width="*" />
+                    <DataGridTextColumn Header="Sueldo Extra" Binding="{Binding SuelExtra, StringFormat=C2}" Width="*" />
+                    <DataGridTextColumn Header="Sueldo Trabajado" Binding="{Binding SuelTrabajado, StringFormat=C2}" Width="*" />
+                    <DataGridTextColumn Header="Sueldo Total" Binding="{Binding SuelTotal, StringFormat=C2}" Width="1.2*" />
 
-                    <DataGridTemplateColumn Header="Eliminar">
+                    <DataGridTemplateColumn Header="Eliminar" Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Border Background="{StaticResource buttonExit}" CornerRadius="5" Width="35" Height="35">
-                                    <Button Padding="5,2"
-                                            Background="Transparent"
-                                            BorderThickness="0"
-                                            Width="35" Height="35"
-                                            Click="BtnEliminarEmpleado_Click"
-                                            ToolTip="Eliminar"
-                                            Visibility="{Binding ID, Converter={StaticResource DeleteBtnVisConverter}}">
-                                        <Image Source="/Images/Delete.png" Width="35" Height="35"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"/>
-                                    </Button>
-                                </Border>
+                                <Button Padding="5,2"
+                                        Background="{StaticResource buttonExit}"
+                                        BorderThickness="0"
+                                        Width="35" Height="35"
+                                        Click="BtnEliminarEmpleado_Click"
+                                        ToolTip="Eliminar"
+                                        Visibility="{Binding ID, Converter={StaticResource DeleteBtnVisConverter}}">
+                                    <Image Source="/Images/Delete.png" Width="20" Height="20" />
+                                </Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

@@ -41,17 +41,21 @@
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Padding" Value="10,5"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="PART_Border"
-                          Background="{TemplateBinding Background}"
-                          CornerRadius="10"
-                          SnapsToDevicePixels="True"
-                          Margin="5"
-                          Height="35">
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="10"
+                        SnapsToDevicePixels="True"
+                        Margin="5"
+                        Height="35">
                         <ContentPresenter HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
+                                      VerticalAlignment="Center"
+                                      RecognizesAccessKey="True"
+                                      Margin="{TemplateBinding Padding}"/>
+                        <!-- usa el Padding -->
                     </Border>
                     <ControlTemplate.Triggers>
                         <!-- Hover -->
